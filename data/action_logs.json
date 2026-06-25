@@ -1,0 +1,52 @@
+[
+    {
+        "id": "7595286c-a403-4f9e-9456-af76160d3137",
+        "timestamp": "2026-06-25 10:02:27",
+        "action_type_vn": "OT Excel (Hàng Loạt)",
+        "action_type_jp": "残業代一括計算 (Excel)",
+        "description_vn": "Tính OT hàng loạt (76 bản ghi)",
+        "description_jp": "残業一括計算 (76 レコード)",
+        "original_filename": "Bảng tổng hợp tăng ca (OT).xlsx",
+        "saved_path": "data/history_files\\7595286c-a403-4f9e-9456-af76160d3137.xlsx"
+    },
+    {
+        "id": "16052625-794e-4b10-8019-5a4663d4ea52",
+        "timestamp": "2026-06-25 08:12:39",
+        "action_type_vn": "OT Excel (Hàng Loạt)",
+        "action_type_jp": "残業代一括計算 (Excel)",
+        "description_vn": "Tính OT hàng loạt (29 bản ghi)",
+        "description_jp": "残業一括計算 (29 レコード)",
+        "original_filename": "Bảng tổng hợp tăng ca (OT)_Import Excel (1).xlsx",
+        "saved_path": "data/history_files\\16052625-794e-4b10-8019-5a4663d4ea52.xlsx"
+    },
+    {
+        "id": "0ea41a2d-c4df-42bb-8528-8f0524c18872",
+        "timestamp": "2026-06-24 15:31:28",
+        "action_type_vn": "Tính Incentive",
+        "action_type_jp": "インセンティブ計算",
+        "description_vn": "Tính Incentive (3 bản ghi)",
+        "description_jp": "インセンティブ計算 (3 レコード)",
+        "original_filename": "Bảng tổng hợp Incentive_20260624.xlsx",
+        "saved_path": "data/history_files\\0ea41a2d-c4df-42bb-8528-8f0524c18872.xlsx"
+    },
+    {
+        "id": "63c3a685-f7d4-4877-a6d8-2edcdd794b40",
+        "timestamp": "2026-06-24 15:30:05",
+        "action_type_vn": "OT Excel (Hàng Loạt)",
+        "action_type_jp": "残業代一括計算 (Excel)",
+        "description_vn": "Tính OT hàng loạt (124 bản ghi)",
+        "description_jp": "残業一括計算 (124 レコード)",
+        "original_filename": "Bảng tổng hợp tăng ca (OT).xlsx",
+        "saved_path": "data/history_files\\63c3a685-f7d4-4877-a6d8-2edcdd794b40.xlsx"
+    },
+    {
+        "id": "6643cd3f-4574-46e7-8e85-8d20af5d2889",
+        "timestamp": "2026-06-24 15:29:36",
+        "action_type_vn": "OT Excel (Hàng Loạt)",
+        "action_type_jp": "残業代一括計算 (Excel)",
+        "description_vn": "Tính OT hàng loạt (29 bản ghi)",
+        "description_jp": "残業一括計算 (29 レコード)",
+        "original_filename": "Bảng tổng hợp tăng ca (OT).xlsx",
+        "saved_path": "data/history_files\\6643cd3f-4574-46e7-8e85-8d20af5d2889.xlsx"
+    }
+]

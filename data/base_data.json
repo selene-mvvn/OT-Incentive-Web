@@ -1,0 +1,23 @@
+{
+    "employee_name": "Quân",
+    "working_month": "02/2026",
+    "standard_days": 23.0,
+    "holidays_df": [
+        {
+            "Ngày nghỉ": "2026-02-16",
+            "Lý do": "Ngày lễ"
+        },
+        {
+            "Ngày nghỉ": "2026-02-19",
+            "Lý do": "Ngày lễ"
+        },
+        {
+            "Ngày nghỉ": "2026-02-20",
+            "Lý do": "Ngày lễ"
+        }
+    ],
+    "basic_salary": 1700000,
+    "lunch_allowance": 40000,
+    "other_allowance": 100000,
+    "gross_salary": 1840000
+}

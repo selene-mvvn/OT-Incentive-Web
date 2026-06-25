@@ -1,0 +1,45 @@
+{
+    "employees": [
+        "Quân",
+        "Hưng",
+        "Minh",
+        "Tiến",
+        "Tuấn"
+    ],
+    "months": [
+        "06/2026",
+        "05/2026",
+        "02/2026",
+        "02/2026 - 03/2026"
+    ],
+    "project_types": [],
+    "client_orders": [],
+    "orders": [],
+    "order_names": [],
+    "managers": [],
+    "reasons": [
+        "Đẩy nhanh tiến độ",
+        "Đẩy nhanh tiến độ để hôm sau họp với khách",
+        "Chỉnh sửa theo khách hàng",
+        "Đẩy nhanh tiến độ thiết kế chi tiết",
+        "Kịp tiến độ",
+        "Thiết kế dao cắt",
+        "Hạn giao trong ngày",
+        "Sửa lại các bản vẽ của Thắng và Hiển",
+        "Kiểm tra các bản vẽ  hạn giao 11/3",
+        "Sai nhiều cần sửa hôm sau gửi khách",
+        "Thiết kế Holder",
+        "Sửa thiết kế do làm sai phần motor",
+        "Hoàn thiện lại cad gửi khách trong ngày",
+        "Làm sai nên cần sửa lại lựa chọn cáp xích",
+        "Đáp ứng tiến độ của khách",
+        "Chậm tiến độ",
+        "Sửa lại bản vẽ do vẽ sai",
+        "Khách yêu cầu sửa lại bản vẽ",
+        "Khách sửa CAD nên cần vẽ lại",
+        "Hoàn thành trước khi nghỉ việc",
+        "Xử lý 27 bản vẽ hạn  giao sáng 13/2",
+        "Thay đổi thiết kế dao",
+        "Tăng ca thứ 7"
+    ]
+}

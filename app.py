@@ -1,0 +1,594 @@
+import streamlit as st
+
+st.set_page_config(page_title="OT & Incentive Calculator", layout="wide", initial_sidebar_state="expanded")
+
+# Custom CSS for a beautiful corporate look (White & Blue)
+st.markdown("""
+<style>
+    /* Global Font */
+    html, body, [class*="css"]  {
+        font-family: 'Times New Roman', serif !important;
+    }
+    
+    /* Hide default streamlit elements for cleaner look */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    
+    /* Metric cards styling - matching the clean soft shadow design */
+    div[data-testid="metric-container"] {
+        background-color: #ffffff;
+        border: none;
+        border-radius: 12px;
+        padding: 25px 20px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        text-align: center;
+        transition: transform 0.3s ease;
+        margin-bottom: 15px;
+    }
+    div[data-testid="metric-container"]:hover {
+        transform: translateY(-5px);
+    }
+    
+    div[data-testid="metric-container"] > div {
+        justify-content: center;
+    }
+    
+    /* Headers and Titles */
+    h1, h2, h3 {
+        color: #2c3e50;
+        text-transform: uppercase;
+        font-weight: bold !important;
+        position: relative;
+        padding-bottom: 12px;
+        margin-bottom: 25px;
+    }
+    
+    /* Add a custom blue line under h2 and h3 like the reference image */
+    h2::after, h3::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        width: 60px;
+        background-color: #00B0F0;
+    }
+    
+    /* Buttons */
+    .stButton>button {
+        border-radius: 30px !important;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 30px;
+        border: 2px solid #00B0F0 !important;
+        background-color: transparent !important;
+        color: #00B0F0 !important;
+        transition: all 0.3s ease !important;
+    }
+    .stButton>button:hover {
+        background-color: #00B0F0 !important;
+        color: white !important;
+        box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3);
+    }
+    
+    /* Input Fields */
+    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div {
+        border-radius: 8px;
+        border: 1px solid #e0e6ed;
+        padding: 10px;
+        background-color: #f8fafc;
+        transition: all 0.3s ease;
+    }
+    .stTextInput>div>div>input:focus, .stNumberInput>div>div>input:focus {
+        border-color: #00B0F0;
+        box-shadow: 0 0 0 2px rgba(0, 176, 240, 0.2);
+        background-color: #ffffff;
+    }
+    
+    /* Highlight Data Editor Delete Button (Trash Can) */
+    [data-testid="stDataEditor"] button[aria-label*="delete" i],
+    [data-testid="stDataEditor"] button[title*="delete" i],
+    [data-testid="stElementToolbar"] button[aria-label*="delete" i],
+    [data-testid="stElementToolbar"] button[title*="delete" i] {
+        border: 2px solid #ff4b4b !important;
+        background-color: #fff0f0 !important;
+        border-radius: 6px !important;
+        box-shadow: 0 0 8px rgba(255,75,75,0.3) !important;
+    }
+    
+    [data-testid="stDataEditor"] button[aria-label*="delete" i] svg,
+    [data-testid="stDataEditor"] button[title*="delete" i] svg,
+    [data-testid="stElementToolbar"] button[aria-label*="delete" i] svg,
+    [data-testid="stElementToolbar"] button[title*="delete" i] svg {
+        fill: #ff4b4b !important;
+        color: #ff4b4b !important;
+    }
+    
+    /* === SIDEBAR STYLING === */
+    [data-testid="stSidebar"] {
+        background-color: #00B0F0 !important;
+        box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+    }
+    
+    [data-testid="stSidebar"] .stMarkdown, 
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] h1, 
+    [data-testid="stSidebar"] h2, 
+    [data-testid="stSidebar"] h3, 
+    [data-testid="stSidebar"] label {
+        color: #FFFFFF !important;
+        font-family: 'Times New Roman', serif !important;
+    }
+    
+    /* Radio buttons in sidebar */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label {
+        background-color: transparent;
+        padding: 12px 15px;
+        border-radius: 8px;
+        border: 1px solid transparent;
+        margin: 4px 15px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
+        background-color: rgba(255, 255, 255, 0.1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.2) !important;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.15) !important;
+        transform: translateX(3px);
+    }
+    
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:hover p {
+        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4) !important;
+    }
+    
+    /* Selected Menu Item */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border: 1px solid rgba(255, 255, 255, 0.4) !important;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.25) !important;
+        transform: translateX(3px);
+    }
+    
+    [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] p {
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
+    }
+    
+    [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p {
+        font-weight: bold;
+        font-size: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+    }
+    
+    /* Sidebar buttons (Quay lại trang chủ) */
+    [data-testid="stSidebar"] .stButton>button {
+        border-color: rgba(255, 255, 255, 0.4) !important;
+        color: #ffffff !important;
+    }
+    [data-testid="stSidebar"] .stButton>button:hover {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border-color: #ffffff !important;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2) !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
+        transform: translateY(-2px);
+    }
+    
+    /* Main category styling for the first item (now clickable) */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) {
+        border-bottom: 2px solid rgba(255,255,255,0.3) !important;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+        border-radius: 0;
+        background-color: transparent !important;
+        box-shadow: none !important;
+        transform: none !important;
+        cursor: pointer;
+    }
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p {
+        text-shadow: none !important;
+        font-size: 16px;
+        color: #e0f7ff !important;
+        transition: all 0.3s;
+    }
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):hover p {
+        color: #ffffff !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
+    }
+    
+    /* 5. PAGE FADE-IN TRANSITION */
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    /* Make the title area cleaner */
+    .block-container {
+        animation: fadeIn 0.4s ease-out;
+        padding-top: 3rem;
+        padding-bottom: 5rem;
+    }
+    
+    /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS */
+    [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.05);
+        padding: 5px;
+        transition: box-shadow 0.3s ease;
+    }
+    [data-testid="stDataFrame"]:hover, [data-testid="stDataEditor"]:hover {
+        box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    }
+    
+    [data-testid="stMetric"] {
+        background: linear-gradient(145deg, #ffffff, #f5f7fa);
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.03);
+        padding: 15px !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    [data-testid="stMetric"]:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+    
+    /* Compact popover for history delete */
+    [data-testid="stPopoverBody"] {
+        max-width: 280px !important;
+    }
+    [data-testid="stPopoverBody"] button {
+        font-size: 11px !important;
+        padding: 4px 8px !important;
+        min-height: 24px !important;
+        height: auto !important;
+        line-height: 1.2 !important;
+        border-radius: 4px !important;
+        width: 100% !important;
+        white-space: nowrap !important;
+    }
+    [data-testid="stPopoverBody"] button p,
+    [data-testid="stPopoverBody"] button div,
+    [data-testid="stPopoverBody"] button span {
+        white-space: nowrap !important;
+        font-size: 11px !important;
+        line-height: 1.2 !important;
+    }
+    [data-testid="stPopover"] > button {
+        font-size: 12px !important;
+        padding: 2px 10px !important;
+        border-radius: 6px !important;
+    }
+</style>
+""", unsafe_allow_html=True)
+
+from components.ot_manual import render_base_data, render_project_data
+from components.ot_excel import render_ot_excel
+from components.incentive_ui import render_incentive
+from components.welcome import render_welcome
+from components.action_history_ui import render_action_history
+from logic.i18n import t
+
+@st.dialog(t("📖 HƯỚNG DẪN SỬ DỤNG", "📖 使い方ガイド"))
+def show_user_guide():
+    st.markdown(t("""
+### 1. Dữ liệu nền
+- Nhập thông tin nhân sự và thiết lập mức lương cơ bản (Gross).
+- Dữ liệu này **bắt buộc** phải có để hệ thống tính toán chính xác.
+
+### 2. Tính tiền tăng ca
+- **Dữ liệu dự án**: Nhập thủ công số giờ làm việc cho từng dự án.
+- **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu Excel của bạn. Hệ thống thông minh sẽ tự động nhận diện các cột (Ngày, Tên nhân viên, OT, Lý do...) và tính toán hàng loạt nhanh chóng.
+
+### 3. Tính Incentive
+- Tự động gợi ý thông minh các Dữ liệu Dự án và Nhân sự từ kho lịch sử.
+- Đánh giá hiệu suất làm việc dựa trên số giờ tiết kiệm được (Kế hoạch - Thực tế), từ đó quy đổi chính xác ra mức tiền thưởng (Incentive).
+
+### 4. Lịch sử thao tác
+- Các file Excel bạn xuất ra sẽ được tự động lưu lại.
+- Bạn có thể xem lại lịch sử, tải lại file cũ, hoặc xóa dữ liệu thừa.
+    """, """
+### 1. 基本データ
+- スタッフ情報の入力および基本給（Gross）の設定を行います。
+- このデータは計算のための**必須項目**です。
+
+### 2. 残業代計算
+- **プロジェクト**: プロジェクトごとに手動で残業時間を入力します。
+- **一括入力 (Excel)**: お持ちのExcelデータを直接アップロードするだけで、システムが自動的に列（日付、名前、OT、理由など）を認識し、スマートに一括計算します。
+
+### 3. インセンティブ計算
+- 履歴からプロジェクトとスタッフのデータを自動提案します。
+- 節約された時間（計画工数 - 実績工数）に基づいてパフォーマンスを評価し、獲得インセンティブを正確に算出します。
+
+### 4. 操作履歴
+- ダウンロードしたExcelファイルは自動保存されます。
+- いつでも履歴の確認、ファイルの再ダウンロード、削除が可能です。
+    """))
+
+# --- Creative Language Switcher (Always visible) ---
+st.markdown("""
+<style>
+/* Creative Pill Toggle for Language Switcher */
+div[role="radiogroup"][aria-label="LangToggle_123"] {
+    background-color: rgba(0, 176, 240, 0.08) !important;
+    border-radius: 30px !important;
+    padding: 5px !important;
+    display: inline-flex !important;
+    gap: 0 !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+    float: right;
+}
+
+/* SAFELY hide radio circles: Hide any div inside the label that is NOT the text container */
+div[role="radiogroup"][aria-label="LangToggle_123"] label > div:not(:has(p)):not([data-testid="stMarkdownContainer"]) {
+    display: none !important;
+}
+div[role="radiogroup"][aria-label="LangToggle_123"] input[type="radio"] {
+    display: none !important;
+}
+
+div[role="radiogroup"][aria-label="LangToggle_123"] label {
+    padding: 6px 18px !important;
+    margin: 0 !important;
+    border-radius: 25px !important;
+    cursor: pointer !important;
+    background-color: transparent !important;
+    transition: all 0.3s ease !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0 !important;
+    color: transparent !important;
+}
+
+/* The active label */
+div[role="radiogroup"][aria-label="LangToggle_123"] label[data-checked="true"],
+div[role="radiogroup"][aria-label="LangToggle_123"] label:has(input:checked) {
+    background-color: #00B0F0 !important;
+    box-shadow: 0 3px 10px rgba(0, 176, 240, 0.4) !important;
+}
+
+/* Target specifically the text paragraphs inside the label */
+div[role="radiogroup"][aria-label="LangToggle_123"] label p {
+    font-weight: 800 !important;
+    font-size: 14px !important;
+    color: #00B0F0 !important;
+    margin: 0 !important;
+    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    letter-spacing: 0.5px !important;
+    line-height: 1 !important;
+}
+
+div[role="radiogroup"][aria-label="LangToggle_123"] label[data-checked="true"] p,
+div[role="radiogroup"][aria-label="LangToggle_123"] label:has(input:checked) p {
+    color: #ffffff !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
+# Dynamically adjust position based on current page
+current_page = st.session_state.get('current_page', 'welcome')
+lang_top_pos = "45px" if current_page == "welcome" else "2px"
+st.markdown(f"""
+<style>
+/* Floating Language Switcher Container */
+.lang-switcher-container {{
+    position: fixed !important;
+    top: {lang_top_pos} !important;
+    right: 20px !important;
+    z-index: 9999 !important;
+}}
+</style>
+""", unsafe_allow_html=True)
+
+col_space, col_lang = st.columns([8, 2])
+with col_lang:
+    st.markdown("<div class='lang-switcher-container'>", unsafe_allow_html=True)
+    def update_lang():
+        val = st.session_state['lang_radio']
+        st.session_state['lang'] = 'VN' if 'VN' in val else 'JP'
+        
+    st.radio(
+        "LangToggle_123", 
+        options=["VN", "JP"], 
+        index=0 if st.session_state.get('lang', 'VN') == 'VN' else 1,
+        horizontal=True,
+        key="lang_radio",
+        on_change=update_lang,
+        label_visibility="hidden"
+    )
+    st.markdown("</div>", unsafe_allow_html=True)
+
+
+if 'current_page' not in st.session_state:
+    st.session_state['current_page'] = 'welcome'
+
+if st.session_state['current_page'] == 'welcome':
+    render_welcome()
+else:
+    # Sidebar Menu
+    with st.sidebar:
+        if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
+            st.session_state['current_page'] = 'welcome'
+            st.rerun()
+            
+        st.markdown("<br>", unsafe_allow_html=True)
+        import os
+        if os.path.exists("logo.png"):
+            # Create columns to center the logo and make it not too large
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                st.image("logo.png", use_container_width=True)
+        elif os.path.exists("logo.jpg"):
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                st.image("logo.jpg", use_container_width=True)
+        
+        menu_title = t("MENU", "管理メニュー")
+        st.markdown(f"<h2 style='text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
+        
+        options = [
+            t("TÍNH TIỀN TĂNG CA", "残業代計算"),
+            t("— DỮ LIỆU NỀN", "— 基本データ"),
+            t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"),
+            t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"),
+            t("TÍNH INCENTIVE (JPY)", "インセンティブ"),
+            t("LỊCH SỬ THAO TÁC", "操作履歴")
+        ]
+        
+        if 'ot_menu_expanded' not in st.session_state:
+            st.session_state['ot_menu_expanded'] = True
+            
+        header_text = t("TÍNH TIỀN TĂNG CA ▼", "残業代計算 ▼") if st.session_state['ot_menu_expanded'] else t("TÍNH TIỀN TĂNG CA ▶", "残業代計算 ▶")
+        
+        options = [
+            header_text,
+            t("— DỮ LIỆU NỀN", "— 基本データ"),
+            t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"),
+            t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"),
+            t("TÍNH INCENTIVE (JPY)", "インセンティブ"),
+            t("LỊCH SỬ THAO TÁC", "操作履歴")
+        ]
+        
+        if st.session_state['ot_menu_expanded']:
+            st.markdown("""
+            <style>
+                /* Sub-menu items (2, 3, 4) */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+                    margin-left: 30px;
+                    padding-left: 10px;
+                    border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
+                    border-radius: 0 8px 8px 0;
+                }
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):hover,
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover,
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4):hover {
+                    border-left: 2px solid #ffffff !important;
+                }
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2)[data-checked="true"],
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)[data-checked="true"],
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4)[data-checked="true"] {
+                    border-left: 2px solid #ffffff !important;
+                }
+                /* Main items 5 and 6 styling */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6) {
+                    margin-top: 15px;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <style>
+                /* Hide sub-items when collapsed */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+                    display: none !important;
+                }
+                
+                /* Main items 5 and 6 styling when collapsed */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6) {
+                    margin-top: 15px;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+            
+        # We need to map English internal keys to options to persist selection across language changes
+        # Or just reset it if not found
+        if 'menu_selection' not in st.session_state or st.session_state['menu_selection'] not in options:
+            st.session_state['menu_selection'] = t("— DỮ LIỆU NỀN", "— 基本データ")
+            
+        def on_menu_change():
+            sel = st.session_state['menu_selection']
+            if "▼" in sel or "▶" in sel:
+                st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
+                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t("— DỮ LIỆU NỀN", "— 基本データ"))
+            else:
+                st.session_state['prev_ot_selection'] = sel
+            
+        st.radio(
+            "Điều hướng",
+            options,
+            key="menu_selection",
+            on_change=on_menu_change,
+            label_visibility="collapsed"
+        )
+        
+        menu_selection = st.session_state['menu_selection']
+        
+        st.markdown("<br><br><br><br>", unsafe_allow_html=True)
+        st.markdown("<div style='text-align: center; opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px;'>VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0</div>", unsafe_allow_html=True)
+
+    # Main Content Area
+    st.markdown("""
+    <div style="text-align: center; color: #00a8e8; font-family: 'Times New Roman', serif !important; font-size: 2.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px; line-height: 1.2;">
+        OVERTIME & INCENTIVE MANAGEMENT SYSTEM
+    </div>
+    <div style='text-align: center; color: #00a8e8; font-family: "Times New Roman", serif; font-size: 1.2rem; margin-top: 10px; margin-bottom: 50px; font-weight: bold; font-style: italic; letter-spacing: 2px;'>
+        VIET.MOS COMPANY LIMITED
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Floating Guide Button (Using CSS adjacent sibling trick to target Streamlit element container)
+    st.markdown("""
+    <style>
+    /* Target the button container that immediately follows the anchor */
+    div[data-testid="stElementContainer"]:has(#guide-button-anchor) + div[data-testid="stElementContainer"] {
+        position: fixed !important;
+        bottom: 30px !important;
+        right: 30px !important;
+        z-index: 9999 !important;
+        width: auto !important;
+    }
+    
+    div[data-testid="stElementContainer"]:has(#guide-button-anchor) + div[data-testid="stElementContainer"] button {
+        border-radius: 50% !important;
+        width: 55px !important;
+        height: 55px !important;
+        background-color: #00B0F0 !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.3) !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transition: all 0.3s ease !important;
+        padding: 0 !important;
+    }
+    div[data-testid="stElementContainer"]:has(#guide-button-anchor) + div[data-testid="stElementContainer"] button p {
+        color: white !important;
+        font-size: 26px !important;
+        font-weight: bold !important;
+        margin: 0 !important;
+        line-height: 1 !important;
+    }
+    div[data-testid="stElementContainer"]:has(#guide-button-anchor) + div[data-testid="stElementContainer"] button:hover {
+        transform: scale(1.1) !important;
+        background-color: #0090d0 !important;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.4) !important;
+    }
+    </style>
+    <div id="guide-button-anchor"></div>
+    """, unsafe_allow_html=True)
+    
+    if st.button("?", key="floating_guide_btn", help=t("Hướng dẫn sử dụng", "使い方ガイド")):
+        show_user_guide()
+    
+    if "TÍNH TIỀN TĂNG CA" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("— DỮ LIỆU NỀN", "— 基本データ"):
+        render_base_data()
+    elif menu_selection == t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"):
+        render_project_data()
+    elif menu_selection == t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"):
+        render_ot_excel()
+    elif menu_selection == t("TÍNH INCENTIVE (JPY)", "インセンティブ"):
+        render_incentive()
+    elif menu_selection == t("LỊCH SỬ THAO TÁC", "操作履歴"):
+        render_action_history()
