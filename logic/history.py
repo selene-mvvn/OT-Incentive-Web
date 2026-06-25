@@ -1,9 +1,29 @@
 import json
 import os
+import requests
+import streamlit as st
+
+def get_firebase_url(path):
+    try:
+        base_url = st.secrets.get("FIREBASE_URL")
+        if base_url:
+            return f"{base_url.rstrip('/')}/{path}"
+    except Exception:
+        pass
+    return None
 
 HISTORY_FILE = "data/history.json"
 
 def load_history():
+    firebase_url = get_firebase_url("history.json")
+    if firebase_url:
+        try:
+            resp = requests.get(firebase_url, timeout=5)
+            if resp.status_code == 200 and resp.json() is not None:
+                return resp.json()
+        except Exception:
+            pass
+
     if not os.path.exists("data"):
         os.makedirs("data")
     if not os.path.exists(HISTORY_FILE):
@@ -15,6 +35,13 @@ def load_history():
         return {}
 
 def save_all_history(history_dict):
+    firebase_url = get_firebase_url("history.json")
+    if firebase_url:
+        try:
+            requests.put(firebase_url, json=history_dict, timeout=5)
+        except Exception:
+            pass
+
     if not os.path.exists("data"):
         os.makedirs("data")
     try:
@@ -72,6 +99,13 @@ def save_base_data(data_dict):
             serializable['holidays_df'] = df_copy.to_dict(orient='records')
     
     try:
+        firebase_url = get_firebase_url("base_data.json")
+        if firebase_url:
+            requests.put(firebase_url, json=serializable, timeout=5)
+    except Exception:
+        pass
+
+    try:
         with open(BASE_DATA_FILE, "w", encoding="utf-8") as f:
             json.dump(serializable, f, ensure_ascii=False, indent=4, default=str)
     except Exception:
@@ -79,12 +113,28 @@ def save_base_data(data_dict):
 
 def load_base_data():
     """Load base data from persistent JSON file. Returns None if not found."""
-    if not os.path.exists(BASE_DATA_FILE):
-        return None
+    data = None
+    
+    firebase_url = get_firebase_url("base_data.json")
+    if firebase_url:
+        try:
+            resp = requests.get(firebase_url, timeout=5)
+            if resp.status_code == 200 and resp.json() is not None:
+                data = resp.json()
+        except Exception:
+            pass
+
+    if data is None:
+        if not os.path.exists(BASE_DATA_FILE):
+            return None
+        try:
+            with open(BASE_DATA_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:
+            return None
+            
     try:
         import pandas as pd
-        with open(BASE_DATA_FILE, "r", encoding="utf-8") as f:
-            data = json.load(f)
         
         # Convert holidays back to DataFrame, ensuring correct columns
         if 'holidays_df' in data and isinstance(data['holidays_df'], list):
