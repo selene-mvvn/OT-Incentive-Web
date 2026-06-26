@@ -334,7 +334,7 @@ def render_ot_excel():
                 display_records,
                 num_rows="dynamic",
                 use_container_width=True,
-                key="ot_excel_records_editor",
+                key="ot_excel_records_editor_v2",
                 column_config=col_cfg
             )
             # Clean commas and save back

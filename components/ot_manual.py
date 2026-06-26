@@ -115,7 +115,7 @@ def render_base_data():
             num_rows="dynamic",
             use_container_width=True,
             column_config=col_cfg,
-            key="employees_editor"
+            key="employees_editor_v2"
         )
         
         with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
