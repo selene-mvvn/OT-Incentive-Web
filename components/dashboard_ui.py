@@ -135,8 +135,32 @@ def render_dashboard():
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_ot_edit = pd.DataFrame(ot_history)
+                
+                col_order_ot = ["ot_date", "employee_name", "ot_hours", "ot_reason", "manager_name", "order_name"] + [c for c in df_ot_edit.columns if str(c).endswith("%")] + ["project_type", "order_id", "client_order_id", "hourly_rate", "payment_period"]
+                col_order_ot = [c for c in col_order_ot if c in df_ot_edit.columns] + [c for c in df_ot_edit.columns if c not in col_order_ot]
+                
+                col_cfg_ot = {
+                    "ot_date": st.column_config.TextColumn(t("Ngày OT", "残業日")),
+                    "employee_name": st.column_config.TextColumn(t("Nhân sự", "担当者")),
+                    "ot_hours": st.column_config.NumberColumn(t("Giờ OT", "残業時間")),
+                    "ot_reason": st.column_config.TextColumn(t("Lý do", "残業理由")),
+                    "manager_name": st.column_config.TextColumn(t("Quản lý", "PM")),
+                    "project_type": st.column_config.TextColumn(t("Loại dự án", "プロジェクト種別")),
+                    "order_id": st.column_config.TextColumn(t("Mã dự án", "注文番号")),
+                    "order_name": st.column_config.TextColumn(t("Tên dự án", "注文名")),
+                    "client_order_id": st.column_config.TextColumn(t("Mã đơn khách", "客先注文番号")),
+                    "hourly_rate": st.column_config.NumberColumn(t("Lương/h", "時給")),
+                    "payment_period": st.column_config.TextColumn(t("Kỳ thanh toán", "支払期間"))
+                }
+                
                 with st.form("form_edit_ot"):
-                    edited_df_ot = st.data_editor(df_ot_edit, num_rows="dynamic", use_container_width=True)
+                    edited_df_ot = st.data_editor(
+                        df_ot_edit, 
+                        column_order=col_order_ot,
+                        column_config=col_cfg_ot,
+                        num_rows="dynamic", 
+                        use_container_width=True
+                    )
                     submit_ot = st.form_submit_button(t("💾 Lưu thay đổi dữ liệu OT", "💾 OTデータ変更を保存"))
                     
                 if submit_ot:
@@ -264,8 +288,31 @@ def render_dashboard():
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_inc_edit = pd.DataFrame(inc_history)
+                
+                col_order_inc = ["employee_name", "total_incentive", "efficiency_pct", "base_amount", "manager_name", "order_name", "project_type", "order_id", "client_order_id", "payment_period"]
+                col_order_inc = [c for c in col_order_inc if c in df_inc_edit.columns] + [c for c in df_inc_edit.columns if c not in col_order_inc]
+                
+                col_cfg_inc = {
+                    "employee_name": st.column_config.TextColumn(t("Nhân sự", "担当者")),
+                    "total_incentive": st.column_config.NumberColumn(t("Incentive (VND)", "インセンティブ (VND)")),
+                    "efficiency_pct": st.column_config.NumberColumn(t("Hiệu suất (%)", "効率 (%)")),
+                    "base_amount": st.column_config.NumberColumn(t("Tổng phân bổ", "配分総額")),
+                    "manager_name": st.column_config.TextColumn(t("Quản lý", "PM")),
+                    "project_type": st.column_config.TextColumn(t("Loại dự án", "プロジェクト種別")),
+                    "order_id": st.column_config.TextColumn(t("Mã dự án", "注文番号")),
+                    "order_name": st.column_config.TextColumn(t("Tên dự án", "注文名")),
+                    "client_order_id": st.column_config.TextColumn(t("Mã đơn khách", "客先注文番号")),
+                    "payment_period": st.column_config.TextColumn(t("Kỳ thanh toán", "支払期間"))
+                }
+                
                 with st.form("form_edit_inc"):
-                    edited_df_inc = st.data_editor(df_inc_edit, num_rows="dynamic", use_container_width=True)
+                    edited_df_inc = st.data_editor(
+                        df_inc_edit, 
+                        column_order=col_order_inc,
+                        column_config=col_cfg_inc,
+                        num_rows="dynamic", 
+                        use_container_width=True
+                    )
                     submit_inc = st.form_submit_button(t("💾 Lưu thay đổi dữ liệu Incentive", "💾 Incentiveデータ変更を保存"))
                     
                 if submit_inc:
