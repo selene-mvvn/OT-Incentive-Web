@@ -108,7 +108,7 @@ def render_base_data():
         display_df = emp_df.copy()
         for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
             display_df[c] = pd.to_numeric(display_df[c], errors='coerce').fillna(0)
-            display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}")
+            display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}").astype(str)
 
         edited_emp = st.data_editor(
             display_df,
