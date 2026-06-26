@@ -401,7 +401,11 @@ def render_project_data():
         elif is_weekend:
             st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span></div>", unsafe_allow_html=True)
         else:
-            st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {t('Ngày đi làm hành chính (có chú thích thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')} (1.5x - 2.0x)</span></div>", unsafe_allow_html=True)
+            if ot_date.weekday() == 5:
+                label = t('Ngày đi làm hành chính (Thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')
+            else:
+                label = t('Ngày đi làm hành chính', '平日')
+            st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {label} (1.5x - 2.0x)</span></div>", unsafe_allow_html=True)
         
         tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
         
