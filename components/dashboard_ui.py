@@ -77,9 +77,9 @@ def render_dashboard():
             
         c_year, c_emp = st.columns(2)
         with c_year:
-            sel_year_ot = st.selectbox(t("Chọn năm (OT)", "年を選択 (OT)"), ["Tất cả"] + years_ot, key="sel_year_ot_dash")
+            sel_year_ot = st.selectbox(t("Chọn năm (OT)", "年を選択 (OT)"), [t("Tất cả", "すべて")] + years_ot, key="sel_year_ot_dash")
             
-        if sel_year_ot != "Tất cả":
+        if sel_year_ot not in ["Tất cả", "すべて"]:
             df_ot_filtered = df_ot[df_ot['date_obj'].dt.year == sel_year_ot]
         else:
             df_ot_filtered = df_ot
@@ -187,9 +187,9 @@ def render_dashboard():
             
         c_year_inc, c_emp_inc = st.columns(2)
         with c_year_inc:
-            sel_year_inc = st.selectbox(t("Chọn năm (Incentive)", "年を選択 (Inc)"), ["Tất cả"] + years_inc, key="sel_year_inc_dash")
+            sel_year_inc = st.selectbox(t("Chọn năm (Incentive)", "年を選択 (Inc)"), [t("Tất cả", "すべて")] + years_inc, key="sel_year_inc_dash")
             
-        if sel_year_inc != "Tất cả":
+        if sel_year_inc not in ["Tất cả", "すべて"]:
             df_inc_filtered = df_inc[df_inc['date_obj'].dt.year == sel_year_inc]
         else:
             df_inc_filtered = df_inc
