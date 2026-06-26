@@ -31,7 +31,12 @@ def get_projects_df():
                 data = resp.json()
                 if not data:
                     return pd.DataFrame(columns=["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"])
-                return pd.DataFrame(data)
+                df = pd.DataFrame(data)
+                cols = ["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"]
+                for c in cols:
+                    if c not in df.columns:
+                        df[c] = ""
+                return df[cols]
         except Exception:
             pass
 
@@ -41,12 +46,22 @@ def get_projects_df():
             data = json.load(f)
             if not data:
                 return pd.DataFrame(columns=["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"])
-            return pd.DataFrame(data)
+            df = pd.DataFrame(data)
+            cols = ["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"]
+            for c in cols:
+                if c not in df.columns:
+                    df[c] = ""
+            return df[cols]
     except Exception:
         return pd.DataFrame(columns=["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"])
 
 def save_projects_df(df):
     try:
+        cols = ["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"]
+        for c in cols:
+            if c not in df.columns:
+                df[c] = ""
+        df = df[cols]
         json_str = df.to_json(orient="records", force_ascii=False)
         data = json.loads(json_str)
         

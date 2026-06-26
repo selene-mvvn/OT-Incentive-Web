@@ -293,6 +293,7 @@ def render_project_data():
                 num_rows="dynamic",
                 use_container_width=True,
                 column_config=column_config,
+                column_order=["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"],
                 key="projects_editor"
             )
             
