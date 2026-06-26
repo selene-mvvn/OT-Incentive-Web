@@ -214,7 +214,13 @@ def render_ot_excel():
                                 def match_all_parts(pm_val):
                                     pm_val_clean = str(pm_val).lower()
                                     return all(part in pm_val_clean for part in parts)
-                                pm_row = projects_df[projects_df['Tên PM'].apply(match_all_parts)]
+                                pm_matches = projects_df[projects_df['Tên PM'].apply(match_all_parts)]
+                                if not pm_matches.empty:
+                                    best_match = min(
+                                        pm_matches['Tên PM'].tolist(),
+                                        key=lambda x: abs(len([p for p in re.split(r'[/,&]+', str(x).lower()) if p.strip()]) - len(parts))
+                                    )
+                                    pm_row = projects_df[projects_df['Tên PM'] == best_match]
                         if not pm_row.empty:
                             manager_name = str(pm_row.iloc[0]['Tên PM'])
                     
