@@ -128,6 +128,10 @@ def render_dashboard():
                 )
                 st.plotly_chart(fig, use_container_width=True)
 
+            if st.session_state.get('show_success_ot'):
+                st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                st.session_state['show_success_ot'] = False
+                
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_ot_edit = pd.DataFrame(ot_history)
@@ -137,8 +141,8 @@ def render_dashboard():
                     
                 if submit_ot:
                     from logic.history_records import save_all_records
-                    save_all_records("ot", edited_df_ot.to_dict('records'))
-                    st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                    save_all_records("ot", edited_df_ot.fillna("").to_dict('records'))
+                    st.session_state['show_success_ot'] = True
                     st.rerun()
                 
             with c_table:
@@ -253,6 +257,10 @@ def render_dashboard():
                     
                 st.dataframe(agg_display2.style.apply(highlight_top3_inc, axis=1).format({col_inc: "{:,.0f}", col_eff: "{:,.1f}%"}), use_container_width=True, height=400)
                 
+            if st.session_state.get('show_success_inc'):
+                st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                st.session_state['show_success_inc'] = False
+                
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_inc_edit = pd.DataFrame(inc_history)
@@ -262,6 +270,6 @@ def render_dashboard():
                     
                 if submit_inc:
                     from logic.history_records import save_all_records
-                    save_all_records("incentive", edited_df_inc.to_dict('records'))
-                    st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                    save_all_records("incentive", edited_df_inc.fillna("").to_dict('records'))
+                    st.session_state['show_success_inc'] = True
                     st.rerun()
