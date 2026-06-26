@@ -3,7 +3,7 @@ import pandas as pd
 import datetime
 import plotly.graph_objects as go
 from logic.history_records import get_records
-from utils.lang import t
+from logic.i18n import t
 
 def render_gamified_cards(agg_df, metric_col, title_col, unit, theme="ot"):
     top_3 = agg_df.head(3).to_dict('records')
