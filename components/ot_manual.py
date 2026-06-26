@@ -82,7 +82,7 @@ def render_base_data():
         st.caption(t("Quản lý thông tin nhân sự. Bạn có thể tự tính và nhập tổng Lương Gross vào cột tương ứng.", "スタッフ情報の管理。総支給額は手動で入力してください。"))
         
         col_cfg = {
-            "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=True),
+            "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=False),
             "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
             "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
             "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),

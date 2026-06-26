@@ -47,7 +47,8 @@ def get_projects_df():
 
 def save_projects_df(df):
     try:
-        data = df.to_dict("records")
+        json_str = df.to_json(orient="records", force_ascii=False)
+        data = json.loads(json_str)
         
         firebase_url = get_firebase_url("projects.json")
         if firebase_url:
