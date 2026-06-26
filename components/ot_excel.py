@@ -313,21 +313,38 @@ def render_ot_excel():
                 "ot_reason": t("Lý Do OT", "残業理由"),
                 "ot_date": t("Ngày OT", "残業日"),
                 "ot_hours": t("Tổng Giờ OT", "総残業時間"),
-                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format="%,d"),
+                "hourly_rate": st.column_config.TextColumn(t("Số Lương/H (VND)", "時給")),
             }
             
             for record in st.session_state['ot_excel_records']:
                 for key in record.keys():
                     if key.endswith("%") and key not in col_cfg:
-                        col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="%,d")
+                        col_cfg[key] = st.column_config.TextColumn(f"{t('Tiền', '金額')} {key}")
                         
+            import copy
+            display_records = copy.deepcopy(st.session_state['ot_excel_records'])
+            for r in display_records:
+                if 'hourly_rate' in r and r['hourly_rate']:
+                    r['hourly_rate'] = f"{int(r['hourly_rate']):,}"
+                for key in r.keys():
+                    if key.endswith('%') and r[key]:
+                        r[key] = f"{int(r[key]):,}"
+
             edited_df = st.data_editor(
-                st.session_state['ot_excel_records'],
+                display_records,
                 num_rows="dynamic",
                 use_container_width=True,
                 key="ot_excel_records_editor",
                 column_config=col_cfg
             )
+            # Clean commas and save back
+            for r in edited_df:
+                if 'hourly_rate' in r and isinstance(r['hourly_rate'], str):
+                    r['hourly_rate'] = int(r['hourly_rate'].replace(',', ''))
+                for key in r.keys():
+                    if key.endswith('%') and isinstance(r[key], str):
+                        r[key] = int(r[key].replace(',', ''))
+                        
             st.session_state['ot_excel_records'] = edited_df
         
         st.markdown("---")

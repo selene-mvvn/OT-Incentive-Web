@@ -86,8 +86,8 @@ def render_base_data():
             "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
             "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
             "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
-            "Lương cơ bản": st.column_config.NumberColumn(t("Lương cơ bản", "基本給"), min_value=0, format="%,d"),
-            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), disabled=True, format="%,d")
+            "Lương cơ bản": st.column_config.TextColumn(t("Lương cơ bản", "基本給")),
+            "Lương Gross": st.column_config.TextColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), disabled=True)
         }
         
         # Determine allowance columns (columns that are not standard)
@@ -101,10 +101,17 @@ def render_base_data():
             
         allowance_cols = [c for c in emp_df.columns if c not in standard_cols]
         for c in allowance_cols:
-            col_cfg[c] = st.column_config.NumberColumn(c, min_value=0, format="%,d")
+            col_cfg[c] = st.column_config.TextColumn(c)
             
+        
+        # Convert numeric columns to string with commas for display
+        display_df = emp_df.copy()
+        for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+            display_df[c] = pd.to_numeric(display_df[c], errors='coerce').fillna(0)
+            display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}")
+
         edited_emp = st.data_editor(
-            emp_df,
+            display_df,
             num_rows="dynamic",
             use_container_width=True,
             column_config=col_cfg,
@@ -141,6 +148,11 @@ def render_base_data():
             save_base_data(st.session_state['ot_base_data'])
             
             # Tự động tính Lương Gross
+            # Convert strings back to numeric for calculation and saving
+            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
+                edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+
             edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
             gross = edited_emp['Lương cơ bản'].copy()
             for c in allowance_cols:
