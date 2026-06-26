@@ -105,7 +105,12 @@ def render_base_data():
         emp_df = emp_df[ordered_cols]
         
         for c in allowance_cols:
-            col_cfg[c] = st.column_config.TextColumn(c)
+            if c == "PC ăn trưa":
+                col_cfg[c] = st.column_config.TextColumn(t("PC ăn trưa", "昼食手当"))
+            elif c == "PC khác":
+                col_cfg[c] = st.column_config.TextColumn(t("PC khác", "その他手当"))
+            else:
+                col_cfg[c] = st.column_config.TextColumn(c)
             
         
         # Convert numeric columns to string with commas for display
@@ -353,11 +358,12 @@ def render_project_data():
         with col4:
             manager_name = st.text_input(t("TÊN NGƯỜI QUẢN LÝ - PM", "プロジェクトマネージャー"), key="txt_pm_manual")
             
-            emp_names = emp_df['Tên NV'].tolist() if not emp_df.empty else []
-            employee_name_proj = st.selectbox(t("TÊN NHÂN SỰ LÀM VIỆC", "担当スタッフ"), ["--- Chọn nhân viên ---"] + emp_names, key="sel_emp_proj_manual")
+            emp_names = sorted(emp_df['Tên NV'].tolist()) if not emp_df.empty else []
+            opt_emp = t("--- Chọn nhân viên ---", "--- スタッフを選択 ---")
+            employee_name_proj = st.selectbox(t("TÊN NHÂN SỰ LÀM VIỆC", "担当スタッフ"), [opt_emp] + emp_names, key="sel_emp_proj_manual")
             
             emp_gross = 0.0
-            if employee_name_proj and employee_name_proj != "--- Chọn nhân viên ---":
+            if employee_name_proj and employee_name_proj != opt_emp:
                 emp_row = emp_df[emp_df['Tên NV'] == employee_name_proj]
                 if not emp_row.empty:
                     emp_gross = float(emp_row.iloc[0].get('Lương Gross', 0.0))
@@ -369,7 +375,7 @@ def render_project_data():
         st.divider()
         st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CHI TIẾT TĂNG CA', '残業詳細')}</h3>", unsafe_allow_html=True)
         
-        if employee_name_proj and employee_name_proj != "--- Chọn nhân viên ---":
+        if employee_name_proj and employee_name_proj != opt_emp:
             st.success(f"{t('Đang tính cho nhân sự', '対象者')}: **{employee_name_proj}** | {t('Lương Gross', '総支給額')}: **{emp_gross:,.0f} VND** | {t('Ngày chuẩn', '所定労働日数')}: **{base.get('standard_days', 22.0)}**")
         else:
             st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
@@ -433,7 +439,7 @@ def render_project_data():
                 with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h & 22h-24h")
                 
             if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
-                if employee_name_proj == "--- Chọn nhân viên ---":
+                if employee_name_proj == opt_emp:
                     st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
                 elif total_hours_auto <= 0:
                     st.error(t("Vui lòng nhập Tổng số giờ tăng ca!", "残業時間を入力してください！"))
@@ -481,7 +487,7 @@ def render_project_data():
             
             if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
                 manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
-                if employee_name_proj == "--- Chọn nhân viên ---":
+                if employee_name_proj == opt_emp:
                     st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
                 elif manual_total <= 0:
                     st.error(t("Vui lòng nhập ít nhất một trường thời gian lớn hơn 0!", "1つ以上の時間を入力してください！"))
