@@ -237,7 +237,12 @@ def render_incentive():
                     col_eff: "{:,.1f}%"
                 }
                 
-                styled_df = agg_display.style.format(format_dict)
+                def highlight_top3(row):
+                    if row.name in [1, 2, 3]:
+                        return ['background-color: #e0f7fa; font-weight: bold;'] * len(row)
+                    return [''] * len(row)
+                
+                styled_df = agg_display.style.apply(highlight_top3, axis=1).format(format_dict)
                 
                 st.dataframe(styled_df, use_container_width=True)
                 
