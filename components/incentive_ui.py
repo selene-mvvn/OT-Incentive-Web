@@ -112,7 +112,6 @@ def render_incentive():
                                     # check weekend
                                     is_weekend = curr.weekday() >= 5
                                     if curr.weekday() == 5:
-                                        import datetime
                                         next_week = curr + datetime.timedelta(days=7)
                                         if next_week.month != curr.month:
                                             is_weekend = False
