@@ -614,25 +614,86 @@ def render_project_data():
                     x=agg_df['employee_name'],
                     y=agg_df['total_ot_hours'],
                     name=t("Tổng số giờ OT", "総残業時間"),
-                    marker_color='#ef6c00'
+                    marker=dict(
+                        color=agg_df['total_ot_hours'],
+                        colorscale=[[0, '#fff3e0'], [1, '#ef6c00']], # Light orange to deep orange to fit OT context, or Blue? Wait, let's use the global cyan/blue
+                        line=dict(color='rgba(0,0,0,0)', width=0)
+                    ),
+                    text=agg_df['total_ot_hours'].apply(lambda x: f"{x:,.1f}"),
+                    textposition='auto',
                 ))
                 fig.update_layout(
                     title=t("Biểu đồ Tổng Số Giờ OT", "総残業時間チャート"),
-                    xaxis_title=t("Nhân sự", "スタッフ"),
+                    xaxis_title="",
                     yaxis_title=t("Số giờ (h)", "時間 (h)"),
                     paper_bgcolor='rgba(0,0,0,0)',
-                    font={'family': "Inter, sans-serif"}
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font={'family': "Inter, sans-serif"},
+                    margin=dict(l=0, r=0, t=40, b=0),
+                    yaxis=dict(gridcolor='#e0e0e0')
                 )
+                
+                # Let's override colorscale to match "giao diện toàn trang web" (Global theme - cyan/blue)
+                fig.data[0].marker.colorscale = [[0, '#e0f7fa'], [1, '#00aced']]
+                
                 st.plotly_chart(fig, use_container_width=True)
+                
+                st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
                 
                 agg_display = agg_df.copy()
                 agg_display.index = agg_display.index + 1
+                
+                col_emp = t("Nhân sự", "担当者")
+                col_ot = t("Tổng Giờ OT", "総残業時間")
+                col_prj = t("Số Lượt Báo Cáo", "レポート回数")
+                
                 agg_display.rename(columns={
-                    'employee_name': t("Nhân sự", "担当者"),
-                    'total_ot_hours': t("Tổng Giờ OT", "総残業時間"),
-                    'projects_count': t("Số Lượt Báo Cáo", "レポート回数")
+                    'employee_name': col_emp,
+                    'total_ot_hours': col_ot,
+                    'projects_count': col_prj
                 }, inplace=True)
                 
-                agg_display[t("Tổng Giờ OT", "総残業時間")] = agg_display[t("Tổng Giờ OT", "総残業時間")].apply(lambda x: f"{x:,.1f}")
+                format_dict = {
+                    col_ot: "{:,.1f}"
+                }
                 
-                st.dataframe(agg_display, use_container_width=True)
+                styled_df = agg_display.style.format(format_dict).background_gradient(
+                    subset=[col_ot], 
+                    cmap='Blues'
+                )
+                
+                st.dataframe(styled_df, use_container_width=True)
+                
+                st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
+                with st.expander(t("⚙️ Quản lý / Chỉnh sửa Dữ liệu Lịch sử Xếp hạng", "⚙️ 履歴データ管理・編集")):
+                    st.markdown(t("Bạn có thể sửa trực tiếp hoặc xóa các hàng dữ liệu nháp ở bảng bên dưới, sau đó bấm **Lưu thay đổi**.", "以下の表で直接データを編集・削除し、「変更を保存」をクリックしてください。"))
+                    
+                    hist_display = df_hist.copy()
+                    if 'date_obj' in hist_display.columns:
+                        hist_display = hist_display.drop(columns=['date_obj'])
+                        
+                    hist_display_map = {
+                        "date": t("Ngày", "日"),
+                        "order_name": t("Mã đơn hàng", "注文番号"),
+                        "project_name": t("Tên dự án", "案件名"),
+                        "employee_name": t("Nhân viên", "担当者"),
+                        "start_time": t("Bắt đầu", "開始時間"),
+                        "end_time": t("Kết thúc", "終了時間"),
+                        "break_time": t("Nghỉ (h)", "休憩 (h)"),
+                        "ot_hours": t("Giờ OT", "残業時間 (h)"),
+                        "meal_allowance": t("Phụ cấp ăn", "食事手当"),
+                        "transport_allowance": t("PC đi lại", "交通手当"),
+                        "ot_reason": t("Lý do OT", "残業理由")
+                    }
+                    
+                    hist_display = hist_display.rename(columns=hist_display_map)
+                    
+                    edited_hist_df = st.data_editor(hist_display, use_container_width=True, num_rows="dynamic", key="edit_hist_ot")
+                    
+                    if st.button(t("💾 Lưu thay đổi Lịch sử", "💾 履歴を保存"), type="primary", key="btn_save_hist_ot"):
+                        reverse_hist_map = {v: k for k, v in hist_display_map.items()}
+                        updated_records = edited_hist_df.rename(columns=reverse_hist_map).to_dict('records')
+                        from logic.history_records import save_all_records
+                        save_all_records("ot", updated_records)
+                        st.success(t("Đã cập nhật lịch sử thành công!", "履歴を正常に更新しました！"))
+                        st.rerun()
