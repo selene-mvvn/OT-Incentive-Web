@@ -298,7 +298,12 @@ def render_ot_excel():
                 return ['background-color: #ffebee; color: #c62828; font-weight: bold; text-align: right;'] * len(s)
             return [''] * len(s)
             
-        styled_df = df_display.style.apply(color_ot_cols, axis=0).format(precision=0, thousands=",", na_rep="")
+        format_dict = {}
+        for col in df_display.columns:
+            if t("Lương/H", "時給") in col or t("Tiền", "金額") in col:
+                format_dict[col] = "{:,.0f}"
+                
+        styled_df = df_display.style.apply(color_ot_cols, axis=0).format(format_dict, na_rep="")
         st.dataframe(styled_df, use_container_width=True)
         
         with st.expander("✏️ " + t("Sửa dữ liệu thủ công (Nếu cần)", "手動でデータ編集（必要に応じて）")):
