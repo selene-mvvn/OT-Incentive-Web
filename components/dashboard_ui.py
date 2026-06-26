@@ -56,7 +56,7 @@ def render_gamified_cards(agg_df, metric_col, title_col, unit, theme="ot"):
         st.markdown(card_html("🥉", "TOP 3", t3_bg, t3_border, t3_color, top_3[2][title_col], top_3[2][metric_col]), unsafe_allow_html=True)
 
 def render_dashboard():
-    st.markdown(f"<h2 style='text-align: center; color: #00a8e8; margin-bottom: 30px;'>{t('🏆 TỔNG QUAN & XẾP HẠNG', '🏆 総合ダッシュボード')}</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='text-align: center; color: #00a8e8; margin-bottom: 30px;'>{t('🏆 XẾP HẠNG CHUNG', '🏆 総合ランキング')}</h2>", unsafe_allow_html=True)
     
     # === OT RANKING ===
     st.markdown(f"<h3 style='font-size: 22px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>1. {t('XẾP HẠNG THỜI GIAN OT', '残業時間ランキング')}</h3>", unsafe_allow_html=True)

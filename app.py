@@ -447,11 +447,11 @@ else:
         header_text = t("OVERTIME ▼", "残業代計算 ▼") if st.session_state['ot_menu_expanded'] else t("OVERTIME ▶", "残業代計算 ▶")
         
         options = [
-            t("🏆 DASHBOARD CHUNG", "🏆 総合ダッシュボード"),
             header_text,
             t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"),
             t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"),
             t("INCENTIVE", "インセンティブ"),
+            t("🏆 XẾP HẠNG CHUNG", "🏆 総合ランキング"),
             t("LỊCH SỬ THAO TÁC", "操作履歴"),
             t("CÀI ĐẶT CHUNG", "一般設定")
         ]
@@ -459,23 +459,24 @@ else:
         if st.session_state['ot_menu_expanded']:
             st.markdown("""
             <style>
-                /* Sub-menu items (3, 4) */
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+                /* Sub-menu items (2, 3) */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
                     margin-left: 30px;
                     padding-left: 10px;
                     border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
                     border-radius: 0 8px 8px 0;
                 }
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover,
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4):hover {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):hover,
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover {
                     border-left: 2px solid #ffffff !important;
                 }
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)[data-checked="true"],
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4)[data-checked="true"] {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2)[data-checked="true"],
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)[data-checked="true"] {
                     border-left: 2px solid #ffffff !important;
                 }
-                /* Main items 5, 6, 7 styling */
+                /* Main items 4, 5, 6, 7 styling */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(7) {
@@ -487,12 +488,13 @@ else:
             st.markdown("""
             <style>
                 /* Hide sub-items when collapsed */
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
                     display: none !important;
                 }
                 
-                /* Main items 5, 6, 7 styling when collapsed */
+                /* Main items 4, 5, 6, 7 styling when collapsed */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(7) {
@@ -581,7 +583,7 @@ else:
     if st.button("?", key="floating_guide_btn", help=t("Hướng dẫn sử dụng", "使い方ガイド")):
         show_user_guide()
     
-    if menu_selection == t("🏆 DASHBOARD CHUNG", "🏆 総合ダッシュボード"):
+    if menu_selection == t("🏆 XẾP HẠNG CHUNG", "🏆 総合ランキング"):
         from components.dashboard_ui import render_dashboard
         render_dashboard()
     elif "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"):
