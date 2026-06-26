@@ -57,6 +57,10 @@ def add_records(file_type, new_records_list):
     current_records = get_records(file_type)
     current_records.extend(new_records_list)
     
+    import pandas as pd
+    if current_records:
+        current_records = pd.DataFrame(current_records).drop_duplicates().to_dict('records')
+
     firebase_url = get_firebase_url(filename)
     if firebase_url:
         try:
@@ -78,6 +82,10 @@ def save_all_records(file_type, records_list):
     filename = "ot_history.json" if file_type == "ot" else "incentive_history.json"
     local_file = OT_HISTORY_FILE if file_type == "ot" else INCENTIVE_HISTORY_FILE
     
+    import pandas as pd
+    if records_list:
+        records_list = pd.DataFrame(records_list).drop_duplicates().to_dict('records')
+
     firebase_url = get_firebase_url(filename)
     if firebase_url:
         try:
