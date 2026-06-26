@@ -136,7 +136,7 @@ def render_dashboard():
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_ot_edit = pd.DataFrame(ot_history)
                 
-                col_order_ot = ["ot_date", "employee_name", "ot_hours", "ot_reason", "manager_name", "order_name"] + [c for c in df_ot_edit.columns if str(c).endswith("%")] + ["project_type", "order_id", "client_order_id", "hourly_rate", "payment_period"]
+                col_order_ot = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df_ot_edit.columns if str(c).endswith("%")]
                 col_order_ot = [c for c in col_order_ot if c in df_ot_edit.columns] + [c for c in df_ot_edit.columns if c not in col_order_ot]
                 
                 col_cfg_ot = {
