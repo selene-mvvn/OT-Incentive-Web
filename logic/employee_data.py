@@ -30,7 +30,7 @@ def get_employees_df():
             if resp.status_code == 200 and resp.json() is not None:
                 data = resp.json()
                 if not data:
-                    return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Ngày vào làm", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
+                    return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
                 return pd.DataFrame(data)
         except Exception:
             pass
@@ -40,10 +40,10 @@ def get_employees_df():
         with open(EMPLOYEE_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
             if not data:
-                return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Ngày vào làm", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
+                return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
             return pd.DataFrame(data)
     except Exception:
-        return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Ngày vào làm", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
+        return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
 
 def save_employees_df(df):
     try:

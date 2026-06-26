@@ -76,6 +76,8 @@ def render_base_data():
         st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ', 'スタッフ情報')}</h3>", unsafe_allow_html=True)
         from logic.employee_data import get_employees_df, save_employees_df
         emp_df = get_employees_df()
+        if "Ngày vào làm" in emp_df.columns:
+            emp_df = emp_df.drop(columns=["Ngày vào làm"])
         
         st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu (Lương cơ bản + PC ăn trưa + PC khác).", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
         
@@ -84,13 +86,12 @@ def render_base_data():
             "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
             "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
             "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
-            "Ngày vào làm": st.column_config.DateColumn(t("Ngày vào làm", "入社日"), format="DD/MM/YYYY"),
             "Lương cơ bản": st.column_config.NumberColumn(t("Lương cơ bản", "基本給"), format="%d", min_value=0),
             "Lương Gross": st.column_config.NumberColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), format="%d", disabled=True)
         }
         
         # Determine allowance columns (columns that are not standard)
-        standard_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Ngày vào làm", "Lương cơ bản", "Lương Gross"]
+        standard_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "Lương Gross"]
         
         # Ensure default allowances exist if not present initially
         if "PC ăn trưa" not in emp_df.columns:

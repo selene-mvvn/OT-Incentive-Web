@@ -78,59 +78,7 @@ def render_incentive():
         st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
         col1, col2 = st.columns(2)
         with col1:
-            st.markdown(f"**{t('Tính Tự Động Giờ Theo Kế Hoạch', '自動目標工数計算')}**")
-            c_calc1, c_calc2, c_calc_btn = st.columns([2, 2, 1])
-            with c_calc1:
-                calc_from = st.date_input(t("Từ ngày", "開始日"), key="inc_calc_from")
-            with c_calc2:
-                calc_to = st.date_input(t("Đến ngày", "終了日"), key="inc_calc_to")
-            with c_calc_btn:
-                st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                if st.button("TÍNH", key="btn_auto_calc_target"):
-                    if sel_emp == opt_choose_emp:
-                        st.error("Vui lòng chọn nhân viên!")
-                    else:
-                        emp_row = emp_df[emp_df['Tên NV'] == sel_emp]
-                        if emp_row.empty:
-                            st.warning("Nhân viên không tồn tại trong Cài đặt chung!")
-                        else:
-                            join_date_val = emp_row.iloc[0].get("Ngày vào làm")
-                            try:
-                                join_date = pd.to_datetime(join_date_val, dayfirst=True).date()
-                                # Start date is max of calc_from and join_date
-                                start_calc = max(calc_from, join_date)
-                                end_calc = calc_to
-                                
-                                base = st.session_state.get('ot_base_data', {})
-                                holidays = []
-                                if 'holidays_df' in base and not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
-                                    holidays = pd.to_datetime(base['holidays_df']["Ngày nghỉ"], errors="coerce").dropna().dt.date.tolist()
-                                    
-                                valid_days = 0
-                                curr = start_calc
-                                while curr <= end_calc:
-                                    # check weekend
-                                    is_weekend = curr.weekday() >= 5
-                                    if curr.weekday() == 5:
-                                        next_week = curr + datetime.timedelta(days=7)
-                                        if next_week.month != curr.month:
-                                            is_weekend = False
-                                    
-                                    # check holiday
-                                    is_holiday = curr in holidays
-                                    
-                                    if not is_weekend and not is_holiday:
-                                        valid_days += 1
-                                    curr += datetime.timedelta(days=1)
-                                    
-                                hours_per_day = float(base.get('hours_per_day', 8.0))
-                                st.session_state['auto_target_hours'] = valid_days * hours_per_day
-                                st.success(f"Đã tính: {valid_days} ngày * {hours_per_day}h")
-                            except:
-                                st.error("Ngày vào làm không hợp lệ!")
-                                
-            auto_val = st.session_state.get('auto_target_hours', 0.0)
-            target_hours = st.number_input(t("Giờ công theo kế hoạch", "目標工数"), min_value=0.0, step=1.0, format="%f", value=auto_val)
+            target_hours = st.number_input(t("Giờ công theo kế hoạch", "目標工数"), min_value=0.0, step=1.0, format="%f")
             actual_hours = st.number_input(t("Giờ công thực tế", "実工数"), min_value=0.0, step=1.0, format="%f")
         
         with col2:
