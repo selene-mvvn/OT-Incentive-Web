@@ -377,6 +377,10 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
             elif col_name == col_ly_do:
                 max_len = min(max_len, 45) # Cap the reason column so it doesn't get ridiculously wide
                 
+            if is_template:
+                # Ensure columns have enough space to type into and headers don't get clipped
+                max_len = max(max_len, 16)
+                
             worksheet.set_column(col_num, col_num, max_len + 2)
             
     buffer.seek(0)
