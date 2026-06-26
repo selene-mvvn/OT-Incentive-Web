@@ -64,7 +64,7 @@ def render_dashboard():
     if not ot_history:
         st.info(t("Chưa có dữ liệu OT nào được lưu.", "保存されたデータがありません。"))
     else:
-        df_ot = pd.DataFrame(ot_history)
+        df_ot = pd.DataFrame(ot_history).drop_duplicates()
         df_ot['date_obj'] = pd.to_datetime(df_ot.get('ot_date'), format='%d/%m/%Y', errors='coerce')
         if 'ot_hours' not in df_ot.columns:
             df_ot['ot_hours'] = 0
@@ -134,7 +134,7 @@ def render_dashboard():
                 
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
-                df_ot_edit = pd.DataFrame(ot_history)
+                df_ot_edit = pd.DataFrame(ot_history).drop_duplicates()
                 
                 col_order_ot = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df_ot_edit.columns if str(c).endswith("%")]
                 col_order_ot = [c for c in col_order_ot if c in df_ot_edit.columns] + [c for c in df_ot_edit.columns if c not in col_order_ot]
@@ -201,7 +201,7 @@ def render_dashboard():
     if not inc_history:
         st.info(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"))
     else:
-        df_inc = pd.DataFrame(inc_history)
+        df_inc = pd.DataFrame(inc_history).drop_duplicates()
         df_inc['date_obj'] = pd.to_datetime(df_inc.get('date'), format='%d/%m/%Y', errors='coerce')
         for col in ['final_incentive', 'target_hours', 'actual_hours']:
             if col not in df_inc.columns:
@@ -291,7 +291,7 @@ def render_dashboard():
                 
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
-                df_inc_edit = pd.DataFrame(inc_history)
+                df_inc_edit = pd.DataFrame(inc_history).drop_duplicates()
                 
                 col_order_inc = ["date", "employee_name", "project_name", "target_hours", "actual_hours", "unit_price", "company_charge", "profit", "standard_incentive", "final_incentive", "notes"]
                 col_order_inc = [c for c in col_order_inc if c in df_inc_edit.columns] + [c for c in df_inc_edit.columns if c not in col_order_inc]
