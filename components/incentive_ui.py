@@ -131,72 +131,74 @@ def render_incentive():
                 col5.caption(f"≈ **{vnd_amount:,.0f} VND** ({t('Tỷ giá', 'レート')}: 1 JPY = {rate:,.1f} VND)")
         except:
             pass
+
+        # Ranking Section
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-top: 20px;'>{t('BẢNG XẾP HẠNG HIỆU SUẤT', 'パフォーマンスランキング')}</h3>", unsafe_allow_html=True)
+        st.caption(t("Bảng xếp hạng tổng hợp dựa trên dữ liệu Incentive đã được lưu trong lịch sử hệ thống.", "システム履歴に保存されたインセンティブデータに基づく総合ランキング。"))
+        
+        from logic.history_records import get_records
+        inc_history = get_records("incentive")
+        if not inc_history:
+            st.info(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"))
+        else:
+            df_hist = pd.DataFrame(inc_history)
+            df_hist['date_obj'] = pd.to_datetime(df_hist['date'], format='%d/%m/%Y', errors='coerce')
             
-        # Charts
-        c1, c2 = st.columns(2)
-        with c1:
-            # Progress Gauge
-            completion_rate = (inputs['actual_hours'] / inputs['target_hours'] * 100) if inputs['target_hours'] > 0 else 0
-            gauge_color = "#66bb6a" if completion_rate <= 100 else "#ef5350" # Lighter Green/Red
-            
-            fig_gauge = go.Figure(go.Indicator(
-                mode = "gauge+number",
-                value = completion_rate,
-                number = {'suffix': "%", 'font': {'size': 40, 'color': gauge_color}},
-                gauge = {
-                    'axis': {'range': [None, max(150, completion_rate + 20)], 'tickwidth': 1, 'tickcolor': "#b0bec5"},
-                    'bar': {'color': gauge_color, 'thickness': 0.75},
-                    'bgcolor': "white",
-                    'borderwidth': 0,
-                    'steps': [
-                        {'range': [0, 100], 'color': "#e8f5e9"}, # Very light green
-                        {'range': [100, max(150, completion_rate + 20)], 'color': "#ffebee"} # Very light red
-                    ],
-                    'threshold': {
-                        'line': {'color': "#ef5350", 'width': 3},
-                        'thickness': 0.85,
-                        'value': 100
-                    }
-                }
-            ))
-            fig_gauge.update_layout(
-                height=250, 
-                margin=dict(l=20, r=20, t=30, b=20),
-                paper_bgcolor='rgba(0,0,0,0)',
-                font={'family': "Inter, sans-serif"}
-            )
-            st.plotly_chart(fig_gauge, use_container_width=True)
-            st.markdown(f"<p style='text-align: center; font-size: 15px; font-weight: 600; color: #455a64;'>{t('TIẾN ĐỘ TIÊU HAO GIỜ CÔNG', '工数消化率')}</p>", unsafe_allow_html=True)
-            
-        with c2:
-            # Pie Chart of Profit Allocation (if there is a positive standard incentive)
-            if result['standard_incentive'] > 0 and result['profit'] > 0:
-                labels = [t('Incentive Cty cấp', '会社付与分'), t('Incentive Khách cấp thêm', '顧客追加分')]
-                values = [result['profit'] - result['standard_incentive'], result['standard_incentive']]
+            # Ensure proper types
+            for col in ['target_hours', 'actual_hours', 'final_incentive']:
+                df_hist[col] = pd.to_numeric(df_hist.get(col, 0), errors='coerce').fillna(0)
                 
-                fig_pie = go.Figure(data=[go.Pie(
-                    labels=labels, 
-                    values=values, 
-                    hole=.6, # Sleek donut
-                    textinfo='percent',
-                    hoverinfo='label+value',
-                    marker=dict(
-                        colors=['#90caf9', '#a5d6a7'], # Pastel Blue and Green
-                        line=dict(color='#ffffff', width=2)
-                    )
-                )])
-                fig_pie.update_layout(
-                    height=250, 
-                    margin=dict(l=20, r=20, t=30, b=20),
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    showlegend=True,
-                    legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
-                    font={'family': "Inter, sans-serif"}
-                )
-                st.plotly_chart(fig_pie, use_container_width=True)
-                st.markdown(f"<p style='text-align: center; font-size: 15px; font-weight: 600; color: #455a64; margin-top: -15px;'>{t('CƠ CẤU LỢI NHUẬN', '利益構成')}</p>", unsafe_allow_html=True)
+            years = sorted(df_hist['date_obj'].dt.year.dropna().unique().tolist(), reverse=True)
+            years = [int(y) for y in years]
+            if not years:
+                years = [datetime.datetime.now().year]
+                
+            c_year, c_emp = st.columns(2)
+            with c_year:
+                sel_year = st.selectbox(t("Chọn năm", "年を選択"), ["Tất cả"] + years)
+            
+            if sel_year != "Tất cả":
+                df_filtered = df_hist[df_hist['date_obj'].dt.year == sel_year]
             else:
-                st.info(t("Dự án không phát sinh Incentive hoặc đang lỗ.", "プロジェクトでインセンティブが発生していないか、赤字です。"))
+                df_filtered = df_hist
+                
+            if df_filtered.empty:
+                st.warning("Không có dữ liệu cho năm này.")
+            else:
+                # Aggregate by employee
+                agg_df = df_filtered.groupby('employee_name').agg(
+                    total_target=('target_hours', 'sum'),
+                    total_actual=('actual_hours', 'sum'),
+                    total_incentive=('final_incentive', 'sum'),
+                    projects_count=('project_name', 'count')
+                ).reset_index()
+                
+                # Calculate Efficiency (Hiệu suất) %
+                agg_df['efficiency_pct'] = (agg_df['total_target'] / agg_df['total_actual'] * 100).fillna(0).replace([float('inf'), float('-inf')], 0)
+                
+                # Sort by highest Incentive
+                agg_df = agg_df.sort_values(by='total_incentive', ascending=False).reset_index(drop=True)
+                
+                st.markdown("<br>", unsafe_allow_html=True)
+                
+                # Show Table
+                agg_display = agg_df.copy()
+                agg_display.index = agg_display.index + 1
+                agg_display.rename(columns={
+                    'employee_name': t("Nhân sự", "担当者"),
+                    'total_target': t("Tổng Giờ Kế Hoạch", "総目標工数"),
+                    'total_actual': t("Tổng Giờ Thực Tế", "総実工数"),
+                    'efficiency_pct': t("Hiệu Suất (%)", "効率 (%)"),
+                    'total_incentive': t("Tổng Incentive Nhận (JPY)", "総受取額 (JPY)"),
+                    'projects_count': t("Số Dự Án", "案件数")
+                }, inplace=True)
+                
+                # Format
+                for col in [t("Tổng Giờ Kế Hoạch", "総目標工数"), t("Tổng Giờ Thực Tế", "総実工数"), t("Tổng Incentive Nhận (JPY)", "総受取額 (JPY)")]:
+                    agg_display[col] = agg_display[col].apply(lambda x: f"{x:,.0f}")
+                agg_display[t("Hiệu Suất (%)", "効率 (%)")] = agg_display[t("Hiệu Suất (%)", "効率 (%)")].apply(lambda x: f"{x:,.1f}%")
+                
+                st.dataframe(agg_display, use_container_width=True)
                 
         # Add to List button
         if st.button(t("➕ Thêm vào Danh sách Chờ xuất", "➕ リストに追加")):
@@ -205,6 +207,7 @@ def render_incentive():
             else:
                 st.session_state['incentive_records'].append({**inputs, **result})
                 st.success(t("Đã thêm vào danh sách!", "リストに追加しました！"))
+                st.rerun()
                 
     # Data list
     if st.session_state.get('incentive_records') and len(st.session_state['incentive_records']) > 0:
@@ -284,93 +287,3 @@ def render_incentive():
             "使用計算式:\n- 利益 = (目標 × 単価) - (実績 × チャージ)\n- 基準金額 = (単価 - チャージ) × 0.3\n- 受取額 = (目標 - 実績) × 基準金額"
         )
         st.info(info_text)
-
-    # ==========================
-    # TAB 2: RANKING & CHARTS
-    # ==========================
-    if 'last_incentive_calc' in st.session_state:
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG XẾP HẠNG HIỆU SUẤT', 'パフォーマンスランキング')}</h3>", unsafe_allow_html=True)
-        st.caption(t("Bảng xếp hạng tổng hợp dựa trên dữ liệu Incentive đã được lưu trong lịch sử hệ thống.", "システム履歴に保存されたインセンティブデータに基づく総合ランキング。"))
-        
-        from logic.history_records import get_records
-        inc_history = get_records("incentive")
-        if not inc_history:
-            st.info(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"))
-        else:
-            df_hist = pd.DataFrame(inc_history)
-            df_hist['date_obj'] = pd.to_datetime(df_hist['date'], format='%d/%m/%Y', errors='coerce')
-            
-            # Ensure proper types
-            for col in ['target_hours', 'actual_hours', 'final_incentive']:
-                df_hist[col] = pd.to_numeric(df_hist.get(col, 0), errors='coerce').fillna(0)
-                
-            years = sorted(df_hist['date_obj'].dt.year.dropna().unique().tolist(), reverse=True)
-            years = [int(y) for y in years]
-            if not years:
-                years = [datetime.datetime.now().year]
-                
-            c_year, c_emp = st.columns(2)
-            with c_year:
-                sel_year = st.selectbox(t("Chọn năm", "年を選択"), ["Tất cả"] + years)
-            
-            if sel_year != "Tất cả":
-                df_filtered = df_hist[df_hist['date_obj'].dt.year == sel_year]
-            else:
-                df_filtered = df_hist
-                
-            if df_filtered.empty:
-                st.warning("Không có dữ liệu cho năm này.")
-            else:
-                # Aggregate by employee
-                # Hiệu suất làm việc (Efficiency) = (Target Hours - Actual Hours) / Target Hours?
-                # Or total Final Incentive?
-                agg_df = df_filtered.groupby('employee_name').agg(
-                    total_target=('target_hours', 'sum'),
-                    total_actual=('actual_hours', 'sum'),
-                    total_incentive=('final_incentive', 'sum'),
-                    projects_count=('project_name', 'count')
-                ).reset_index()
-                
-                # Calculate Efficiency (Hiệu suất) %
-                agg_df['efficiency_pct'] = (agg_df['total_target'] / agg_df['total_actual'] * 100).fillna(0).replace([float('inf'), float('-inf')], 0)
-                
-                # Sort by highest Incentive
-                agg_df = agg_df.sort_values(by='total_incentive', ascending=False).reset_index(drop=True)
-                
-                st.markdown("<br>", unsafe_allow_html=True)
-                
-                # Show Chart
-                fig = go.Figure()
-                fig.add_trace(go.Bar(
-                    x=agg_df['employee_name'],
-                    y=agg_df['total_incentive'],
-                    name=t("Tổng Incentive (JPY)", "総インセンティブ (JPY)"),
-                    marker_color='#4caf50'
-                ))
-                fig.update_layout(
-                    title=t("Biểu đồ Tổng Incentive Nhận Được", "総受取額チャート"),
-                    xaxis_title=t("Nhân sự", "スタッフ"),
-                    yaxis_title=t("Incentive (JPY)", "インセンティブ (JPY)"),
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    font={'family': "Inter, sans-serif"}
-                )
-                st.plotly_chart(fig, use_container_width=True)
-                
-                # Show Table
-                agg_display = agg_df.copy()
-                agg_display.index = agg_display.index + 1
-                agg_display.rename(columns={
-                    'employee_name': t("Nhân sự", "担当者"),
-                    'total_target': t("Tổng Giờ Kế Hoạch", "総目標工数"),
-                    'total_actual': t("Tổng Giờ Thực Tế", "総実工数"),
-                    'efficiency_pct': t("Hiệu Suất (%)", "効率 (%)"),
-                    'total_incentive': t("Tổng Incentive Nhận (JPY)", "総受取額 (JPY)"),
-                    'projects_count': t("Số Dự Án", "案件数")
-                }, inplace=True)
-                
-                # Format
-                for col in [t("Tổng Giờ Kế Hoạch", "総目標工数"), t("Tổng Giờ Thực Tế", "総実工数"), t("Tổng Incentive Nhận (JPY)", "総受取額 (JPY)")]:
-                    agg_display[col] = agg_display[col].apply(lambda x: f"{x:,.0f}")
-                agg_display[t("Hiệu Suất (%)", "効率 (%)")] = agg_display[t("Hiệu Suất (%)", "効率 (%)")].apply(lambda x: f"{x:,.1f}%")
-                
-                st.dataframe(agg_display, use_container_width=True)
