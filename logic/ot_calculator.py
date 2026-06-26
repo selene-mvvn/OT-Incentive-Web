@@ -378,8 +378,11 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
                 max_len = min(max_len, 45) # Cap the reason column so it doesn't get ridiculously wide
                 
             if is_template:
-                # Ensure columns have enough space to type into and headers don't get clipped
-                max_len = max(max_len, 16)
+                # Narrower columns for time, hours, and money to prevent them from being too wide
+                if col_name in [col_tinh_ot, col_chi_tra, col_gio, col_luong] or col_name in mult_columns:
+                    max_len = max(max_len, 11)
+                else:
+                    max_len = max(max_len, 16)
                 
             worksheet.set_column(col_num, col_num, max_len + 2)
             
