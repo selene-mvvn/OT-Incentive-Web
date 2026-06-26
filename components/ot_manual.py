@@ -143,7 +143,11 @@ def render_base_data():
             
             # Feature to remove allowance columns
             if len(allowance_cols) > 0:
-                del_pc_name = st.selectbox(t("Chọn cột Phụ cấp để xóa:", "削除する手当列を選択:"), allowance_cols)
+                del_pc_name = st.selectbox(
+                    t("Chọn cột Phụ cấp để xóa:", "削除する手当列を選択:"), 
+                    allowance_cols,
+                    format_func=lambda x: t("PC ăn trưa", "昼食手当") if x == "PC ăn trưa" else (t("PC khác", "その他手当") if x == "PC khác" else x)
+                )
                 if st.button(t("Xóa Cột", "列を削除")):
                     if del_pc_name in emp_df.columns:
                         emp_df = emp_df.drop(columns=[del_pc_name])
