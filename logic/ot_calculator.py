@@ -102,12 +102,17 @@ def calculate_ot_pay(gross_salary: float, standard_days: float, ot_hours: float,
         "ot_pay": ot_pay
     }
 
-def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "") -> io.BytesIO:
+def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "", is_template: bool = False) -> io.BytesIO:
     """
     Generates an Excel file matching the requested columns exactly.
     data is a list of dictionaries with the required fields.
     If allow_merge is False, no cells will be merged (except for headers).
     """
+    if is_template and not data:
+        # Generate 4 empty rows for the template
+        for _ in range(4):
+            data.append({})
+            
     col_tinh_ot = t("Thời gian Tính OT", "OT計算期間")
     col_chi_tra = t("Thời gian Chi trả", "支払期間")
     col_loai_da = t("Loại dự án", "プロジェクト種別")
@@ -224,6 +229,8 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "")
         })
         if filename:
             title_text = filename.replace(".xlsx", "").upper()
+            if is_template:
+                title_text = title_text.replace("_MẪU", "")
         else:
             title_text = t("BẢNG TỔNG HỢP TĂNG CA (OT) & CHI PHÍ", "残業・費用集計表 (OT)")
         worksheet.merge_range(0, 0, 0, len(all_columns) - 1, title_text, title_format)
