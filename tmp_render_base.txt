@@ -1,0 +1,131 @@
+def render_base_data():
+    init_session_state()
+    
+    title = t("CÀI ĐẶT CHUNG", "一般設定")
+    st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
+    st.info(t("Cài đặt thông số hệ thống, danh sách nhân sự và ngày nghỉ lễ tại đây.", "システムパラメータ、スタッフリスト、休日を設定します。"))
+    
+    tab1, tab2, tab3 = st.tabs([t("1. THÔNG SỐ HỆ THỐNG", "1. システム設定"), t("2. DANH SÁCH NHÂN SỰ", "2. スタッフリスト"), t("3. NGÀY NGHỈ & LỄ", "3. 休日・祭日")])
+    
+    with tab1:
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CÀI ĐẶT THÔNG SỐ', 'パラメータ設定')}</h3>", unsafe_allow_html=True)
+        st.caption(t("Các thông số này được dùng làm chuẩn để tính toán Giờ làm việc, OT và Incentive.", "これらのパラメータは労働時間、OT、インセンティブの基準となります。"))
+        
+        c1, c2 = st.columns(2)
+        with c1:
+            std_hours_yr = st.number_input(t("TỔNG SỐ GIỜ LÀM VIỆC CHUẨN / NĂM", "年間標準労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_hours_per_year', 1900.0)), step=10.0)
+            hours_per_day = st.number_input(t("SỐ GIỜ LÀM VIỆC / NGÀY", "1日の労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('hours_per_day', 8.0)), step=0.5)
+        with c2:
+            std_days_mo = st.number_input(t("SỐ NGÀY LÀM VIỆC CHUẨN / THÁNG (Tính OT)", "月の標準労働日数 (OT計算用)"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_days', 22.0)), step=0.5)
+            
+        if st.button(t("LƯU THÔNG SỐ", "設定を保存"), type="primary"):
+            st.session_state['ot_base_data']['standard_hours_per_year'] = std_hours_yr
+            st.session_state['ot_base_data']['hours_per_day'] = hours_per_day
+            st.session_state['ot_base_data']['standard_days'] = std_days_mo
+            save_base_data(st.session_state['ot_base_data'])
+            st.success(t("Đã lưu thông số hệ thống!", "システム設定を保存しました！"))
+            
+    with tab2:
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NHÂN SỰ', 'スタッフ一覧')}</h3>", unsafe_allow_html=True)
+        from logic.employee_data import get_employees_df, save_employees_df
+        emp_df = get_employees_df()
+        
+        st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được lấy tự động hoặc bạn có thể nhập thủ công.", "スタッフ情報の管理。注:「総支給額」は自動計算、または手入力可能です。"))
+        
+        col_cfg = {
+            "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=True),
+            "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
+            "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
+            "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
+            "Ngày vào làm": st.column_config.DateColumn(t("Ngày vào làm", "入社日"), format="DD/MM/YYYY"),
+            "Lương cơ bản": st.column_config.NumberColumn(t("Lương cơ bản", "基本給"), format="%d", min_value=0),
+            "PC ăn trưa": st.column_config.NumberColumn(t("PC ăn trưa", "昼食手当"), format="%d", min_value=0),
+            "PC khác": st.column_config.NumberColumn(t("PC khác", "その他手当"), format="%d", min_value=0),
+            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross", "総支給額"), format="%d", min_value=0)
+        }
+        
+        edited_emp = st.data_editor(
+            emp_df,
+            num_rows="dynamic",
+            use_container_width=True,
+            column_config=col_cfg,
+            key="employees_editor"
+        )
+        
+        if st.button(t("💾 Lưu Danh sách Nhân sự", "💾 スタッフリストを保存"), key="save_emps"):
+            save_employees_df(edited_emp)
+            st.success(t("Đã lưu danh sách nhân sự!", "スタッフリストを保存しました！"))
+            st.rerun()
+        
+    with tab3:
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
+        
+        guide_text = t(
+            "✨ **HƯỚNG DẪN:**<br>- **Thêm mới:** Bấm vào dấu **+** mờ mờ ở góc dưới cùng bên trái của bảng.<br>- **Chọn ngày/Sửa:** Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- **Xóa:** Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím **Delete** trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).",
+            "✨ **操作ガイド:**<br>- **新規追加:** 表の左下にある **+** ボタンを押してください。<br>- **日付選択・編集:** セルをダブルクリックして編集またはカレンダーから選択。<br>- **削除:** 左端のチェックボックスを選択し、**Delete**キーまたはゴミ箱アイコンで削除。"
+        )
+        st.caption(guide_text, unsafe_allow_html=True)
+        
+        current_df = st.session_state['ot_base_data'].get('holidays_df')
+        if current_df is None or not isinstance(current_df, pd.DataFrame):
+            current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
+        
+        # Ensure correct columns exist
+        if "Ngày nghỉ" not in current_df.columns or "Lý do" not in current_df.columns:
+            current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
+            
+        # Fix StreamlitAPIException: Ensure the column is a datetime64 dtype so Streamlit doesn't think it's a string
+        current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce")
+            
+        import datetime
+        # Extract year from selected period to make it dynamic
+        selected_year = datetime.datetime.now().year
+        
+        if st.button(t(f"Tự động điền Ngày Lễ VN {selected_year}", f"{selected_year}年ベトナム祝日を自動入力")):
+            # Standard Solar Holidays
+            solar_holidays = [
+                {"Ngày nghỉ": f"{selected_year}-01-01", "Lý do": "Tết Dương lịch"},
+                {"Ngày nghỉ": f"{selected_year}-04-30", "Lý do": "Giải phóng Miền Nam"},
+                {"Ngày nghỉ": f"{selected_year}-05-01", "Lý do": "Quốc tế Lao động"},
+                {"Ngày nghỉ": f"{selected_year}-09-02", "Lý do": "Lễ Quốc khánh"}
+            ]
+            
+            # Mapping of Lunar Holidays (Tết + Giỗ Tổ) for 2025-2028
+            lunar_map = {
+                2025: [("2025-01-27", "Nghỉ Tết Nguyên Đán"), ("2025-01-28", "Nghỉ Tết Nguyên Đán"), ("2025-01-29", "Nghỉ Tết Nguyên Đán"), ("2025-01-30", "Nghỉ Tết Nguyên Đán"), ("2025-01-31", "Nghỉ Tết Nguyên Đán"), ("2025-04-07", "Giỗ Tổ Hùng Vương")],
+                2026: [("2026-02-16", "Nghỉ Tết Nguyên Đán"), ("2026-02-17", "Nghỉ Tết Nguyên Đán"), ("2026-02-18", "Nghỉ Tết Nguyên Đán"), ("2026-02-19", "Nghỉ Tết Nguyên Đán"), ("2026-02-20", "Nghỉ Tết Nguyên Đán"), ("2026-04-26", "Giỗ Tổ Hùng Vương")],
+                2027: [("2027-02-05", "Nghỉ Tết Nguyên Đán"), ("2027-02-08", "Nghỉ Tết Nguyên Đán"), ("2027-02-09", "Nghỉ Tết Nguyên Đán"), ("2027-02-10", "Nghỉ Tết Nguyên Đán"), ("2027-02-11", "Nghỉ Tết Nguyên Đán"), ("2027-04-16", "Giỗ Tổ Hùng Vương")],
+                2028: [("2028-01-25", "Nghỉ Tết Nguyên Đán"), ("2028-01-26", "Nghỉ Tết Nguyên Đán"), ("2028-01-27", "Nghỉ Tết Nguyên Đán"), ("2028-01-28", "Nghỉ Tết Nguyên Đán"), ("2028-01-31", "Nghỉ Tết Nguyên Đán"), ("2028-04-04", "Giỗ Tổ Hùng Vương")]
+            }
+            
+            holidays_data = solar_holidays
+            if selected_year in lunar_map:
+                for date_str, reason in lunar_map[selected_year]:
+                    holidays_data.append({"Ngày nghỉ": date_str, "Lý do": reason})
+            else:
+                st.warning(t(f"Lưu ý: Hệ thống chỉ có sẵn dữ liệu Dương lịch cho năm {selected_year}, các ngày Lễ Âm lịch (Tết, Giỗ tổ) bạn vui lòng bổ sung thêm thủ công nhé.", f"注意：{selected_year}年の太陽暦の祝日のみ自動入力されました。旧正月などは手動で追加してください。"))
+            
+            vn_holidays = pd.DataFrame(holidays_data)
+            vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"])
+            combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="first").reset_index(drop=True)
+            st.session_state['ot_base_data']['holidays_df'] = combined
+            if "holidays_editor" in st.session_state:
+                del st.session_state["holidays_editor"]
+            st.rerun()
+            
+        holidays_df = st.data_editor(
+            current_df,
+            num_rows="dynamic",
+            column_config={
+                "Ngày nghỉ": st.column_config.DatetimeColumn(t("Ngày nghỉ (Chọn lịch)", "休日 (カレンダー選択)"), format="YYYY-MM-DD", required=True),
+                "Lý do": st.column_config.TextColumn(t("Lý do / Tên ngày lễ", "理由・祭日名"), required=True)
+            },
+            use_container_width=True,
+            key="holidays_editor"
+        )
+        
+        if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
+            st.session_state['ot_base_data']['holidays_df'] = holidays_df
+            save_base_data(st.session_state['ot_base_data'])
+            st.success(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"))
+

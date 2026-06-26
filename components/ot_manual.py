@@ -36,34 +36,48 @@ def render_base_data():
     
     title = t("CÀI ĐẶT CHUNG", "一般設定")
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
-    st.info(t("Cài đặt thông số hệ thống, danh sách nhân sự và ngày nghỉ lễ tại đây.", "システムパラメータ、スタッフリスト、休日を設定します。"))
+    st.info(t("Cài đặt thông tin hệ thống, nhân sự và ngày nghỉ lễ tại đây.", "システム情報、スタッフ、休日を設定します。"))
     
-    tab1, tab2, tab3 = st.tabs([t("1. THÔNG SỐ HỆ THỐNG", "1. システム設定"), t("2. DANH SÁCH NHÂN SỰ", "2. スタッフリスト"), t("3. NGÀY NGHỈ & LỄ", "3. 休日・祭日")])
+    tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG & NHÂN SỰ", "1. 一般情報・スタッフ"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
     
     with tab1:
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CÀI ĐẶT THÔNG SỐ', 'パラメータ設定')}</h3>", unsafe_allow_html=True)
-        st.caption(t("Các thông số này được dùng làm chuẩn để tính toán Giờ làm việc, OT và Incentive.", "これらのパラメータは労働時間、OT、インセンティブの基準となります。"))
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN CHUNG', '一般情報')}</h3>", unsafe_allow_html=True)
         
-        c1, c2 = st.columns(2)
+        c1, c2, c3 = st.columns(3)
         with c1:
-            std_hours_yr = st.number_input(t("TỔNG SỐ GIỜ LÀM VIỆC CHUẨN / NĂM", "年間標準労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_hours_per_year', 1900.0)), step=10.0)
-            hours_per_day = st.number_input(t("SỐ GIỜ LÀM VIỆC / NGÀY", "1日の労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('hours_per_day', 8.0)), step=0.5)
+            import datetime
+            try:
+                fd_str = st.session_state['ot_base_data'].get('from_date', '')
+                if fd_str:
+                    fd_val = datetime.datetime.strptime(fd_str, "%Y-%m-%d").date()
+                else:
+                    fd_val = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
+            except:
+                fd_val = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
+            
+            from_date = st.date_input(t("TỪ NGÀY (Kỳ Tính Lương)", "開始日 (給与計算期間)"), value=fd_val)
+            
         with c2:
-            std_days_mo = st.number_input(t("SỐ NGÀY LÀM VIỆC CHUẨN / THÁNG (Tính OT)", "月の標準労働日数 (OT計算用)"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_days', 22.0)), step=0.5)
+            try:
+                td_str = st.session_state['ot_base_data'].get('to_date', '')
+                if td_str:
+                    td_val = datetime.datetime.strptime(td_str, "%Y-%m-%d").date()
+                else:
+                    td_val = datetime.date.today().replace(day=20)
+            except:
+                td_val = datetime.date.today().replace(day=20)
+                
+            to_date = st.date_input(t("ĐẾN NGÀY (Kỳ Tính Lương)", "終了日 (給与計算期間)"), value=td_val)
             
-        if st.button(t("LƯU THÔNG SỐ", "設定を保存"), type="primary"):
-            st.session_state['ot_base_data']['standard_hours_per_year'] = std_hours_yr
-            st.session_state['ot_base_data']['hours_per_day'] = hours_per_day
-            st.session_state['ot_base_data']['standard_days'] = std_days_mo
-            save_base_data(st.session_state['ot_base_data'])
-            st.success(t("Đã lưu thông số hệ thống!", "システム設定を保存しました！"))
-            
-    with tab2:
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NHÂN SỰ', 'スタッフ一覧')}</h3>", unsafe_allow_html=True)
+        with c3:
+            std_days_mo = st.number_input(t("SỐ NGÀY LÀM VIỆC CHUẨN / THÁNG", "月の標準労働日数"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_days', 22.0)), step=0.5)
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ', 'スタッフ情報')}</h3>", unsafe_allow_html=True)
         from logic.employee_data import get_employees_df, save_employees_df
         emp_df = get_employees_df()
         
-        st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được lấy tự động hoặc bạn có thể nhập thủ công.", "スタッフ情報の管理。注:「総支給額」は自動計算、または手入力可能です。"))
+        st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu (Lương cơ bản + PC ăn trưa + PC khác).", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
         
         col_cfg = {
             "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=True),
@@ -72,11 +86,22 @@ def render_base_data():
             "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
             "Ngày vào làm": st.column_config.DateColumn(t("Ngày vào làm", "入社日"), format="DD/MM/YYYY"),
             "Lương cơ bản": st.column_config.NumberColumn(t("Lương cơ bản", "基本給"), format="%d", min_value=0),
-            "PC ăn trưa": st.column_config.NumberColumn(t("PC ăn trưa", "昼食手当"), format="%d", min_value=0),
-            "PC khác": st.column_config.NumberColumn(t("PC khác", "その他手当"), format="%d", min_value=0),
-            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross", "総支給額"), format="%d", min_value=0)
+            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), format="%d", disabled=True)
         }
         
+        # Determine allowance columns (columns that are not standard)
+        standard_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Ngày vào làm", "Lương cơ bản", "Lương Gross"]
+        
+        # Ensure default allowances exist if not present initially
+        if "PC ăn trưa" not in emp_df.columns:
+            emp_df.insert(5, "PC ăn trưa", 0)
+        if "PC khác" not in emp_df.columns:
+            emp_df.insert(6, "PC khác", 0)
+            
+        allowance_cols = [c for c in emp_df.columns if c not in standard_cols]
+        for c in allowance_cols:
+            col_cfg[c] = st.column_config.NumberColumn(c, format="%d", min_value=0)
+            
         edited_emp = st.data_editor(
             emp_df,
             num_rows="dynamic",
@@ -85,12 +110,48 @@ def render_base_data():
             key="employees_editor"
         )
         
-        if st.button(t("💾 Lưu Danh sách Nhân sự", "💾 スタッフリストを保存"), key="save_emps"):
-            save_employees_df(edited_emp)
-            st.success(t("Đã lưu danh sách nhân sự!", "スタッフリストを保存しました！"))
-            st.rerun()
+        with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
+            add_c1, add_c2 = st.columns([3, 1])
+            with add_c1:
+                new_pc_name = st.text_input(t("Nhập tên Phụ cấp mới:", "新しい手当名:"), key="new_pc_input")
+            with add_c2:
+                st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                if st.button(t("Thêm Cột", "列を追加"), use_container_width=True):
+                    if new_pc_name and new_pc_name not in emp_df.columns:
+                        emp_df[new_pc_name] = 0
+                        save_employees_df(emp_df)
+                        st.rerun()
+                    elif new_pc_name in emp_df.columns:
+                        st.warning(t("Cột này đã tồn tại!", "この列は既に存在します！"))
+            
+            # Feature to remove allowance columns
+            if len(allowance_cols) > 0:
+                del_pc_name = st.selectbox(t("Chọn cột Phụ cấp để xóa:", "削除する手当列を選択:"), allowance_cols)
+                if st.button(t("Xóa Cột", "列を削除")):
+                    if del_pc_name in emp_df.columns:
+                        emp_df = emp_df.drop(columns=[del_pc_name])
+                        save_employees_df(emp_df)
+                        st.rerun()
         
-    with tab3:
+        if st.button(t("💾 LƯU THÔNG TIN CHUNG & NHÂN SỰ", "💾 一般情報とスタッフを保存"), key="save_emps", type="primary"):
+            st.session_state['ot_base_data']['standard_days'] = std_days_mo
+            st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
+            st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
+            save_base_data(st.session_state['ot_base_data'])
+            
+            # Tự động tính Lương Gross
+            edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
+            gross = edited_emp['Lương cơ bản'].copy()
+            for c in allowance_cols:
+                edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                gross += edited_emp[c]
+            edited_emp['Lương Gross'] = gross
+            
+            save_employees_df(edited_emp)
+            st.success(t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！"))
+            st.rerun()
+            
+    with tab2:
         st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
         
         guide_text = t(
@@ -177,13 +238,24 @@ def render_project_data():
     tab_calc, tab_charts = st.tabs([t("1. TÍNH TĂNG CA (OT)", "1. 残業代計算"), t("2. BẢNG XẾP HẠNG & BIỂU ĐỒ", "2. ランキング＆チャート")])
     
     with tab_calc:
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('1. KỲ TÍNH LƯƠNG', '1. 給与計算期間')}</h3>", unsafe_allow_html=True)
-        c1, c2 = st.columns(2)
-        with c1:
-            import datetime
-            from_date = st.date_input(t("TỪ NGÀY", "開始日"), key="ot_from_date", value=datetime.date.today().replace(day=21) - datetime.timedelta(days=30))
-        with c2:
-            to_date = st.date_input(t("ĐẾN NGÀY", "終了日"), key="ot_to_date", value=datetime.date.today().replace(day=20))
+        import datetime
+        try:
+            fd_str = st.session_state['ot_base_data'].get('from_date', '')
+            if fd_str:
+                from_date = datetime.datetime.strptime(fd_str, "%Y-%m-%d").date()
+            else:
+                from_date = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
+        except:
+            from_date = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
+            
+        try:
+            td_str = st.session_state['ot_base_data'].get('to_date', '')
+            if td_str:
+                to_date = datetime.datetime.strptime(td_str, "%Y-%m-%d").date()
+            else:
+                to_date = datetime.date.today().replace(day=20)
+        except:
+            to_date = datetime.date.today().replace(day=20)
             
         calculated_period = f"{from_date.strftime('%d/%m/%Y')} - {to_date.strftime('%d/%m/%Y')}"
         
