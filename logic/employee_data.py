@@ -47,6 +47,7 @@ def get_employees_df():
 
 def save_employees_df(df):
     try:
+        df = df.where(pd.notnull(df), None)
         data = df.to_dict("records")
         
         firebase_url = get_firebase_url("employees.json")

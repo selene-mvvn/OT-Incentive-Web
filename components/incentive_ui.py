@@ -41,7 +41,7 @@ def render_incentive():
     known_employees = get_history("employees")
     combined_employees = list(dict.fromkeys(master_employees + known_employees))
     
-    tab_calc, tab_charts = st.tabs([t("1. TÍNH INCENTIVE", "1. インセンティブ計算"), t("2. BẢNG XẾP HẠNG & BIỂU ĐỒ", "2. ランキング＆チャート")])
+    tab_calc = st.container()
     
     with tab_calc:
         st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
@@ -288,7 +288,7 @@ def render_incentive():
     # ==========================
     # TAB 2: RANKING & CHARTS
     # ==========================
-    with tab_charts:
+    if 'last_incentive_calc' in st.session_state:
         st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG XẾP HẠNG HIỆU SUẤT', 'パフォーマンスランキング')}</h3>", unsafe_allow_html=True)
         st.caption(t("Bảng xếp hạng tổng hợp dựa trên dữ liệu Incentive đã được lưu trong lịch sử hệ thống.", "システム履歴に保存されたインセンティブデータに基づく総合ランキング。"))
         
