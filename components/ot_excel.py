@@ -313,13 +313,13 @@ def render_ot_excel():
                 "ot_reason": t("Lý Do OT", "残業理由"),
                 "ot_date": t("Ngày OT", "残業日"),
                 "ot_hours": t("Tổng Giờ OT", "総残業時間"),
-                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format="%d"),
+                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format=",d"),
             }
             
             for record in st.session_state['ot_excel_records']:
                 for key in record.keys():
                     if key.endswith("%") and key not in col_cfg:
-                        col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="%d")
+                        col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format=",d")
                         
             edited_df = st.data_editor(
                 st.session_state['ot_excel_records'],
