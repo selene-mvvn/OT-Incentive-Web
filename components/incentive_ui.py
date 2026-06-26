@@ -41,9 +41,7 @@ def render_incentive():
     known_employees = get_history("employees")
     combined_employees = list(dict.fromkeys(master_employees + known_employees))
     
-    tab_calc = st.container()
-    
-    with tab_calc:
+    if True:
         st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
         col_info1, col_info2, col_info3 = st.columns(3)
         
@@ -209,9 +207,8 @@ def render_incentive():
                 st.success(t("Đã thêm vào danh sách!", "リストに追加しました！"))
                 st.rerun()
                 
-    # Data list
     if st.session_state.get('incentive_records') and len(st.session_state['incentive_records']) > 0:
-        with tab_calc:
+        if True:
             st.markdown("---")
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU CHỜ XUẤT', '出力待ちデータ一覧')}</h3>", unsafe_allow_html=True)
             
@@ -233,6 +230,12 @@ def render_incentive():
             
             df_display = df_records.rename(columns=display_map)
             
+            # Format numbers with commas for display
+            format_cols = [t("Đơn giá", "単価"), t("Charge", "ﾁｬｰｼﾞ"), t("Lợi nhuận", "利益"), t("Incentive TC", "基準金額"), t("Nhận được", "受取額")]
+            for col in format_cols:
+                if col in df_display.columns:
+                    df_display[col] = pd.to_numeric(df_display[col], errors='coerce').apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else "")
+            
             edited_df = st.data_editor(
                 df_display,
                 use_container_width=True,
@@ -242,6 +245,11 @@ def render_incentive():
             
             # Sync back edited df
             if not edited_df.equals(df_display):
+                # Convert strings back to numbers before saving
+                for col in format_cols:
+                    if col in edited_df.columns:
+                        edited_df[col] = edited_df[col].astype(str).str.replace(',', '').apply(pd.to_numeric, errors='coerce').fillna(0)
+                
                 reverse_map = {v: k for k, v in display_map.items()}
                 st.session_state['incentive_records'] = edited_df.rename(columns=reverse_map).to_dict('records')
                 
@@ -281,7 +289,7 @@ def render_incentive():
                         st.session_state['incentive_records'] = []
                         st.rerun()
                 
-    with tab_calc:
+    if True:
         info_text = t(
             "Công thức sử dụng:\n- Lợi Nhuận = (Kế hoạch * Đơn giá) - (Thực tế * Charge)\n- Incentive Tiêu Chuẩn = (Đơn giá - Charge) * 0.3\n- Nhận Được = (Kế hoạch - Thực tế) * Incentive Tiêu Chuẩn",
             "使用計算式:\n- 利益 = (目標 × 単価) - (実績 × チャージ)\n- 基準金額 = (単価 - チャージ) × 0.3\n- 受取額 = (目標 - 実績) × 基準金額"
