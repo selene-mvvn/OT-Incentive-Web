@@ -72,3 +72,26 @@ def add_records(file_type, new_records_list):
     except Exception as e:
         print(f"Error saving history records: {e}")
         return False
+
+
+def save_all_records(file_type, records_list):
+    filename = "ot_history.json" if file_type == "ot" else "incentive_history.json"
+    local_file = OT_HISTORY_FILE if file_type == "ot" else INCENTIVE_HISTORY_FILE
+    
+    firebase_url = get_firebase_url(filename)
+    if firebase_url:
+        try:
+            import requests
+            requests.put(firebase_url, json=records_list, timeout=5)
+        except Exception:
+            pass
+            
+    init_history_records()
+    try:
+        import json
+        with open(local_file, "w", encoding="utf-8") as f:
+            json.dump(records_list, f, ensure_ascii=False, indent=4)
+        return True
+    except Exception as e:
+        print(f"Error saving history records: {e}")
+        return False

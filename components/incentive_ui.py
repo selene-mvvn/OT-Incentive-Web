@@ -179,24 +179,102 @@ def render_incentive():
                 
                 st.markdown("<br>", unsafe_allow_html=True)
                 
-                # Show Table
+                st.markdown("<br>", unsafe_allow_html=True)
+                
+                # Show Beautiful Chart
+                fig = go.Figure()
+                fig.add_trace(go.Bar(
+                    x=agg_df['employee_name'],
+                    y=agg_df['total_incentive'],
+                    name=t("Tổng Incentive (JPY)", "総インセンティブ (JPY)"),
+                    marker=dict(
+                        color=agg_df['total_incentive'],
+                        colorscale=[[0, '#e0f7fa'], [1, '#00aced']], # Light cyan to deep cyan
+                        line=dict(color='rgba(0,0,0,0)', width=0)
+                    ),
+                    text=agg_df['total_incentive'].apply(lambda x: f"{x:,.0f}"),
+                    textposition='auto',
+                ))
+                fig.update_layout(
+                    title=t("Biểu đồ Tổng Incentive Nhận Được", "総受取額チャート"),
+                    xaxis_title="",
+                    yaxis_title=t("Incentive (JPY)", "インセンティブ (JPY)"),
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    font={'family': "Inter, sans-serif"},
+                    margin=dict(l=0, r=0, t=40, b=0),
+                    yaxis=dict(gridcolor='#e0e0e0')
+                )
+                st.plotly_chart(fig, use_container_width=True)
+                
+                st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+                
+                # Show Beautiful Table
                 agg_display = agg_df.copy()
                 agg_display.index = agg_display.index + 1
+                
+                col_emp = t("Nhân sự", "担当者")
+                col_tgt = t("Tổng Giờ Kế Hoạch", "総目標工数")
+                col_act = t("Tổng Giờ Thực Tế", "総実工数")
+                col_eff = t("Hiệu Suất (%)", "効率 (%)")
+                col_inc = t("Tổng Incentive Nhận (JPY)", "総受取額 (JPY)")
+                col_prj = t("Số Dự Án", "案件数")
+                
                 agg_display.rename(columns={
-                    'employee_name': t("Nhân sự", "担当者"),
-                    'total_target': t("Tổng Giờ Kế Hoạch", "総目標工数"),
-                    'total_actual': t("Tổng Giờ Thực Tế", "総実工数"),
-                    'efficiency_pct': t("Hiệu Suất (%)", "効率 (%)"),
-                    'total_incentive': t("Tổng Incentive Nhận (JPY)", "総受取額 (JPY)"),
-                    'projects_count': t("Số Dự Án", "案件数")
+                    'employee_name': col_emp,
+                    'total_target': col_tgt,
+                    'total_actual': col_act,
+                    'efficiency_pct': col_eff,
+                    'total_incentive': col_inc,
+                    'projects_count': col_prj
                 }, inplace=True)
                 
-                # Format
-                for col in [t("Tổng Giờ Kế Hoạch", "総目標工数"), t("Tổng Giờ Thực Tế", "総実工数"), t("Tổng Incentive Nhận (JPY)", "総受取額 (JPY)")]:
-                    agg_display[col] = agg_display[col].apply(lambda x: f"{x:,.0f}")
-                agg_display[t("Hiệu Suất (%)", "効率 (%)")] = agg_display[t("Hiệu Suất (%)", "効率 (%)")].apply(lambda x: f"{x:,.1f}%")
+                # Format with Pandas Styler for a beautiful table
+                format_dict = {
+                    col_tgt: "{:,.0f}",
+                    col_act: "{:,.0f}",
+                    col_inc: "{:,.0f}",
+                    col_eff: "{:,.1f}%"
+                }
                 
-                st.dataframe(agg_display, use_container_width=True)
+                styled_df = agg_display.style.format(format_dict).background_gradient(
+                    subset=[col_inc], 
+                    cmap='Blues'
+                )
+                
+                st.dataframe(styled_df, use_container_width=True)
+                
+                st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
+                with st.expander(t("⚙️ Quản lý / Chỉnh sửa Dữ liệu Lịch sử Xếp hạng", "⚙️ 履歴データ管理・編集")):
+                    st.markdown(t("Bạn có thể sửa trực tiếp hoặc xóa các hàng dữ liệu nháp ở bảng bên dưới, sau đó bấm **Lưu thay đổi**.", "以下の表で直接データを編集・削除し、「変更を保存」をクリックしてください。"))
+                    
+                    hist_display = df_hist.copy()
+                    if 'date_obj' in hist_display.columns:
+                        hist_display = hist_display.drop(columns=['date_obj'])
+                        
+                    hist_display_map = {
+                        "date": t("Ngày", "日"),
+                        "project_name": t("Dự án", "案件名"),
+                        "employee_name": t("Nhân sự", "担当者"),
+                        "target_hours": t("KH / Mục tiêu (h)", "目標 (h)"),
+                        "actual_hours": t("TT / Thực tế (h)", "実績 (h)"),
+                        "unit_price": t("Đơn giá", "単価"),
+                        "company_charge": t("Charge", "ﾁｬｰｼﾞ"),
+                        "profit": t("Lợi nhuận", "利益"),
+                        "standard_incentive": t("Incentive TC", "基準金額"),
+                        "final_incentive": t("Nhận được", "受取額")
+                    }
+                    hist_display = hist_display.rename(columns=hist_display_map)
+                    
+                    edited_hist_df = st.data_editor(hist_display, use_container_width=True, num_rows="dynamic", key="edit_hist_inc")
+                    
+                    if st.button(t("💾 Lưu thay đổi Lịch sử", "💾 履歴を保存"), type="primary"):
+                        reverse_hist_map = {v: k for k, v in hist_display_map.items()}
+                        updated_records = edited_hist_df.rename(columns=reverse_hist_map).to_dict('records')
+                        from logic.history_records import save_all_records
+                        save_all_records("incentive", updated_records)
+                        st.success(t("Đã cập nhật lịch sử thành công!", "履歴を正常に更新しました！"))
+                        st.rerun()
                 
         # Add to List button
         if st.button(t("➕ Thêm vào Danh sách Chờ xuất", "➕ リストに追加")):
