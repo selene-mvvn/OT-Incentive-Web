@@ -545,12 +545,12 @@ def render_project_data():
                 "ot_reason": t("Lý Do OT", "残業理由"),
                 "ot_date": t("Ngày OT", "残業日"),
                 "ot_hours": t("Tổng Giờ OT", "総残業時間"),
-                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format="%,d"),
+                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format="0,0"),
             }
             
             for key in df.columns:
                 if key.endswith("%"):
-                    col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="%,d")
+                    col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="0,0")
                         
             edited_df = st.data_editor(
                 st.session_state['ot_records'],
