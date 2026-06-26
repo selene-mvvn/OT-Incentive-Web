@@ -1,8 +1,9 @@
 import streamlit as st
 import os
 import math
+import base64
 from logic.i18n import t
-from logic.action_log import get_action_logs, get_file_bytes, clear_all_logs, delete_action_log, cleanup_missing_files
+from logic.action_log import get_action_logs, clear_all_logs, delete_action_log, cleanup_missing_files
 
 def render_action_history():
     title = t("LỊCH SỬ THAO TÁC", "操作履歴")
@@ -156,8 +157,8 @@ def render_action_history():
     # 4. Render Logs
     for i, log in enumerate(paginated_logs):
         log_id = log.get("id")
-        file_path = log.get("saved_path")
-        is_missing = not (file_path and os.path.exists(file_path))
+        file_b64 = log.get("file_b64")
+        is_missing = file_b64 is None
         
         action_type_vn = log.get('action_type_vn', log.get('action_type', ''))
         action_type_jp = log.get('action_type_jp', log.get('action_type', ''))
@@ -176,7 +177,7 @@ def render_action_history():
                 st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
             with c_dl:
                 if not is_missing:
-                    file_bytes = get_file_bytes(file_path)
+                    file_bytes = base64.b64decode(file_b64)
                     st.download_button(
                         label=t("TẢI LẠI", "再DL"),
                         data=file_bytes,
