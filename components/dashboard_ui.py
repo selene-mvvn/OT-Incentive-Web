@@ -131,13 +131,14 @@ def render_dashboard():
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_ot_edit = pd.DataFrame(ot_history)
-                edited_df_ot = st.data_editor(df_ot_edit, num_rows="dynamic", use_container_width=True, key="edit_ot_history")
-                if st.button(t("💾 Lưu thay đổi dữ liệu OT", "💾 OTデータ変更を保存"), key="save_ot_btn"):
+                with st.form("form_edit_ot"):
+                    edited_df_ot = st.data_editor(df_ot_edit, num_rows="dynamic", use_container_width=True)
+                    submit_ot = st.form_submit_button(t("💾 Lưu thay đổi dữ liệu OT", "💾 OTデータ変更を保存"))
+                    
+                if submit_ot:
                     from logic.history_records import save_all_records
                     save_all_records("ot", edited_df_ot.to_dict('records'))
                     st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
-                    if "edit_ot_history" in st.session_state:
-                        del st.session_state["edit_ot_history"]
                     st.rerun()
                 
             with c_table:
@@ -255,11 +256,12 @@ def render_dashboard():
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_inc_edit = pd.DataFrame(inc_history)
-                edited_df_inc = st.data_editor(df_inc_edit, num_rows="dynamic", use_container_width=True, key="edit_inc_history")
-                if st.button(t("💾 Lưu thay đổi dữ liệu Incentive", "💾 Incentiveデータ変更を保存"), key="save_inc_btn"):
+                with st.form("form_edit_inc"):
+                    edited_df_inc = st.data_editor(df_inc_edit, num_rows="dynamic", use_container_width=True)
+                    submit_inc = st.form_submit_button(t("💾 Lưu thay đổi dữ liệu Incentive", "💾 Incentiveデータ変更を保存"))
+                    
+                if submit_inc:
                     from logic.history_records import save_all_records
                     save_all_records("incentive", edited_df_inc.to_dict('records'))
                     st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
-                    if "edit_inc_history" in st.session_state:
-                        del st.session_state["edit_inc_history"]
                     st.rerun()
