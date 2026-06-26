@@ -86,8 +86,8 @@ def render_base_data():
             "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
             "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
             "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
-            "Lương cơ bản": st.column_config.NumberColumn(t("Lương cơ bản", "基本給"), format=",d", min_value=0),
-            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), format=",d", disabled=True)
+            "Lương cơ bản": st.column_config.NumberColumn(t("Lương cơ bản", "基本給"), min_value=0),
+            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), disabled=True)
         }
         
         # Determine allowance columns (columns that are not standard)
@@ -101,7 +101,7 @@ def render_base_data():
             
         allowance_cols = [c for c in emp_df.columns if c not in standard_cols]
         for c in allowance_cols:
-            col_cfg[c] = st.column_config.NumberColumn(c, format=",d", min_value=0)
+            col_cfg[c] = st.column_config.NumberColumn(c, min_value=0)
             
         edited_emp = st.data_editor(
             emp_df,
@@ -516,12 +516,12 @@ def render_project_data():
                 "ot_reason": t("Lý Do OT", "残業理由"),
                 "ot_date": t("Ngày OT", "残業日"),
                 "ot_hours": t("Tổng Giờ OT", "総残業時間"),
-                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format=",d"),
+                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給")),
             }
             
             for key in df.columns:
                 if key.endswith("%"):
-                    col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format=",d")
+                    col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}")
                         
             edited_df = st.data_editor(
                 st.session_state['ot_records'],
