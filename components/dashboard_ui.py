@@ -127,6 +127,16 @@ def render_dashboard():
                     yaxis=dict(gridcolor='#e0e0e0')
                 )
                 st.plotly_chart(fig, use_container_width=True)
+
+            with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
+                st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
+                df_ot_edit = pd.DataFrame(ot_history)
+                edited_df_ot = st.data_editor(df_ot_edit, num_rows="dynamic", use_container_width=True, key="edit_ot_history")
+                if st.button(t("💾 Lưu thay đổi dữ liệu OT", "💾 OTデータ変更を保存"), key="save_ot_btn"):
+                    from logic.history_records import save_all_records
+                    save_all_records("ot", edited_df_ot.to_dict('records'))
+                    st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                    st.rerun()
                 
             with c_table:
                 st.markdown(f"<div style='margin-bottom: 15px;'><b>{t('Bảng chi tiết', '詳細テーブル')}</b></div>", unsafe_allow_html=True)
@@ -239,3 +249,13 @@ def render_dashboard():
                     return [''] * len(row)
                     
                 st.dataframe(agg_display2.style.apply(highlight_top3_inc, axis=1).format({col_inc: "{:,.0f}", col_eff: "{:,.1f}%"}), use_container_width=True, height=400)
+                
+            with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
+                st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
+                df_inc_edit = pd.DataFrame(inc_history)
+                edited_df_inc = st.data_editor(df_inc_edit, num_rows="dynamic", use_container_width=True, key="edit_inc_history")
+                if st.button(t("💾 Lưu thay đổi dữ liệu Incentive", "💾 Incentiveデータ変更を保存"), key="save_inc_btn"):
+                    from logic.history_records import save_all_records
+                    save_all_records("incentive", edited_df_inc.to_dict('records'))
+                    st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                    st.rerun()
