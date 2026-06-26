@@ -136,6 +136,8 @@ def render_dashboard():
                     from logic.history_records import save_all_records
                     save_all_records("ot", edited_df_ot.to_dict('records'))
                     st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                    if "edit_ot_history" in st.session_state:
+                        del st.session_state["edit_ot_history"]
                     st.rerun()
                 
             with c_table:
@@ -258,4 +260,6 @@ def render_dashboard():
                     from logic.history_records import save_all_records
                     save_all_records("incentive", edited_df_inc.to_dict('records'))
                     st.success(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"))
+                    if "edit_inc_history" in st.session_state:
+                        del st.session_state["edit_inc_history"]
                     st.rerun()
