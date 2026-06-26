@@ -79,7 +79,7 @@ def render_base_data():
         if "Ngày vào làm" in emp_df.columns:
             emp_df = emp_df.drop(columns=["Ngày vào làm"])
         
-        st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu (Lương cơ bản + PC ăn trưa + PC khác).", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
+        st.caption(t("Quản lý thông tin nhân sự. Bạn có thể tự tính và nhập tổng Lương Gross vào cột tương ứng.", "スタッフ情報の管理。総支給額は手動で入力してください。"))
         
         col_cfg = {
             "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=True),
@@ -87,7 +87,7 @@ def render_base_data():
             "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
             "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
             "Lương cơ bản": st.column_config.NumberColumn(t("Lương cơ bản", "基本給"), format="%d", min_value=0),
-            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), format="%d", disabled=True)
+            "Lương Gross": st.column_config.NumberColumn(t("Lương Gross", "総支給額"), format="%d", min_value=0)
         }
         
         # Determine allowance columns (columns that are not standard)
@@ -146,7 +146,8 @@ def render_base_data():
             for c in allowance_cols:
                 edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
                 gross += edited_emp[c]
-            edited_emp['Lương Gross'] = gross
+              # (User prefers manual Gross Salary input, so we don't overwrite it here)
+              # edited_emp['Lương Gross'] = gross
             
             save_employees_df(edited_emp)
             st.success(t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！"))

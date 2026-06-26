@@ -183,12 +183,20 @@ def render_ot_excel():
                     buckets = breakdown_ot_hours(date_obj, ot_hours, holidays_list)
                     
                     emp_name = str(row.get(col_map["ten"], "")) if col_map["ten"] and pd.notna(row.get(col_map["ten"])) else ""
-                    
                     emp_gross = 0.0
                     if emp_name:
-                        emp_row = emp_df[emp_df['Tên NV'] == emp_name.strip()]
+                        emp_name_clean = str(emp_name).strip().lower()
+                        emp_row = emp_df[emp_df['Tên NV'].astype(str).str.strip().str.lower() == emp_name_clean]
+                          
+                        if emp_row.empty:
+                            emp_row = emp_df[emp_df['Tên NV'].astype(str).str.lower().str.contains(emp_name_clean, na=False)]
+                              
                         if not emp_row.empty:
-                            emp_gross = float(emp_row.iloc[0].get('Lương Gross', 0.0))
+                            raw_gross = str(emp_row.iloc[0].get('Lương Gross', '0')).replace(',', '')
+                            try:
+                                emp_gross = float(raw_gross)
+                            except ValueError:
+                                emp_gross = 0.0
                     
                     std_days = float(base.get('standard_days', 22.0))
                     
