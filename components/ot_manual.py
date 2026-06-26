@@ -401,12 +401,12 @@ def render_project_data():
         elif is_weekend:
             st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span></div>", unsafe_allow_html=True)
         else:
-            st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {t('Ngày thường', '平日')} (1.5x - 2.0x)</span></div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {t('Ngày đi làm hành chính (có chú thích thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')} (1.5x - 2.0x)</span></div>", unsafe_allow_html=True)
         
         tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
         
         with tab_auto:
-            st.info(t("Hệ thống sẽ tự động phân bổ số giờ vào các mức hệ số dựa trên loại ngày (Ngày thường, Cuối tuần, Ngày lễ).", "システムは日種（平日・週末・祭日）に基づいて自動配分します。"))
+            st.info(t("Hệ thống sẽ tự động phân bổ số giờ vào các mức hệ số dựa trên loại ngày (Ngày đi làm hành chính, Cuối tuần, Ngày lễ).", "システムは日種（平日・週末・祭日）に基づいて自動配分します。"))
             total_hours_auto = st.number_input(t("TỔNG SỐ GIỜ TĂNG CA", "残業時間合計"), min_value=0.0, step=0.1, value=1.0, format="%.1f")
                 
             auto_buckets = {150: 0.0, 200: 0.0, 270: 0.0, 300: 0.0, 400: 0.0}
@@ -419,7 +419,7 @@ def render_project_data():
                 auto_buckets = breakdown_ot_hours(ot_date, total_hours_auto, holidays)
                 
                 b_col1, b_col2, b_col3, b_col4, b_col5 = st.columns(5)
-                nt = t("Ngày thường", "平日")
+                nt = t("Ngày đi làm hành chính", "平日")
                 ct = t("Cuối tuần", "週末")
                 nl = t("Ngày lễ", "祭日")
                 with b_col1: st.metric("150%", f"{auto_buckets[150]:.1f} h", help=f"{nt}: 17h-22h")
