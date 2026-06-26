@@ -657,10 +657,7 @@ def render_project_data():
                     col_ot: "{:,.1f}"
                 }
                 
-                styled_df = agg_display.style.format(format_dict).background_gradient(
-                    subset=[col_ot], 
-                    cmap='Blues'
-                )
+                styled_df = agg_display.style.format(format_dict)
                 
                 st.dataframe(styled_df, use_container_width=True)
                 

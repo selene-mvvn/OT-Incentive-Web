@@ -237,10 +237,7 @@ def render_incentive():
                     col_eff: "{:,.1f}%"
                 }
                 
-                styled_df = agg_display.style.format(format_dict).background_gradient(
-                    subset=[col_inc], 
-                    cmap='Blues'
-                )
+                styled_df = agg_display.style.format(format_dict)
                 
                 st.dataframe(styled_df, use_container_width=True)
                 
