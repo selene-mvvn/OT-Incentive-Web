@@ -53,9 +53,11 @@ def save_employees_df(df):
         firebase_url = get_firebase_url("employees.json")
         if firebase_url:
             try:
-                requests.put(firebase_url, json=data, timeout=5)
-            except Exception:
-                pass
+                resp = requests.put(firebase_url, json=data, timeout=5)
+                if resp.status_code != 200:
+                    st.toast(f"⚠️ Lỗi Firebase: {resp.text}", icon="🚨")
+            except Exception as e:
+                st.toast(f"⚠️ Lỗi kết nối Firebase: {e}", icon="🚨")
                 
         init_employee_data()
         with open(EMPLOYEE_FILE, "w", encoding="utf-8") as f:
