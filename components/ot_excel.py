@@ -14,7 +14,19 @@ def render_ot_excel():
     title = t("TÍNH TIỀN TĂNG CA HÀNG LOẠT (File Excel)", "残業代一括計算（Excelファイル）")
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
     
-    st.markdown(t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: **Ngày**, **Tên nhân viên**, **OT**, **Lý do tăng ca**.", "システムからExcelファイルをアップロードしてください。必要な列：日付、社員名、OT、残業理由"), unsafe_allow_html=True)
+    c_inst1, c_inst2 = st.columns([2, 1])
+    with c_inst1:
+        st.markdown(t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: **Ngày**, **Tên nhân viên**, **OT**, **Lý do tăng ca**.", "システムからExcelファイルをアップロードしてください。必要な列：日付、社員名、OT、残業理由"), unsafe_allow_html=True)
+    with c_inst2:
+        from logic.ot_calculator import export_ot_to_excel
+        template_buffer = export_ot_to_excel([], allow_merge=False, filename="OT_Template.xlsx")
+        st.download_button(
+            label="📥 " + t("Tải file Excel mẫu", "テンプレートをダウンロード"),
+            data=template_buffer,
+            file_name="OT_Template.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            use_container_width=True
+        )
     
     # Placeholder for stepper UI
     stepper_placeholder = st.empty()
