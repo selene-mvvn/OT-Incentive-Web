@@ -102,7 +102,7 @@ def calculate_ot_pay(gross_salary: float, standard_days: float, ot_hours: float,
         "ot_pay": ot_pay
     }
 
-def export_ot_to_excel(data: list, allow_merge: bool = True) -> io.BytesIO:
+def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "") -> io.BytesIO:
     """
     Generates an Excel file matching the requested columns exactly.
     data is a list of dictionaries with the required fields.
@@ -222,7 +222,11 @@ def export_ot_to_excel(data: list, allow_merge: bool = True) -> io.BytesIO:
             'valign': 'vcenter',
             'font_name': 'Times New Roman'
         })
-        worksheet.merge_range(0, 0, 0, len(all_columns) - 1, t("BẢNG TỔNG HỢP TĂNG CA (OT) & CHI PHÍ", "残業・費用集計表 (OT)"), title_format)
+        if filename:
+            title_text = filename.replace(".xlsx", "").upper()
+        else:
+            title_text = t("BẢNG TỔNG HỢP TĂNG CA (OT) & CHI PHÍ", "残業・費用集計表 (OT)")
+        worksheet.merge_range(0, 0, 0, len(all_columns) - 1, title_text, title_format)
         worksheet.set_row(0, 30)  # Make title row taller
         
         # Write headers

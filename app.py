@@ -433,51 +433,49 @@ else:
         st.markdown(f"<h2 style='text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
         options = [
-            t("TÍNH TIỀN TĂNG CA", "残業代計算"),
-            t("— DỮ LIỆU NỀN", "— 基本データ"),
+            t("OVERTIME", "残業代計算"),
             t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"),
             t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"),
-            t("TÍNH INCENTIVE (JPY)", "インセンティブ"),
-            t("LỊCH SỬ THAO TÁC", "操作履歴")
+            t("INCENTIVE", "インセンティブ"),
+            t("LỊCH SỬ THAO TÁC", "操作履歴"),
+            t("CÀI ĐẶT CHUNG", "一般設定")
         ]
         
         if 'ot_menu_expanded' not in st.session_state:
             st.session_state['ot_menu_expanded'] = True
             
-        header_text = t("TÍNH TIỀN TĂNG CA ▼", "残業代計算 ▼") if st.session_state['ot_menu_expanded'] else t("TÍNH TIỀN TĂNG CA ▶", "残業代計算 ▶")
+        header_text = t("OVERTIME ▼", "残業代計算 ▼") if st.session_state['ot_menu_expanded'] else t("OVERTIME ▶", "残業代計算 ▶")
         
         options = [
             header_text,
-            t("— DỮ LIỆU NỀN", "— 基本データ"),
             t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"),
             t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"),
-            t("TÍNH INCENTIVE (JPY)", "インセンティブ"),
-            t("LỊCH SỬ THAO TÁC", "操作履歴")
+            t("INCENTIVE", "インセンティブ"),
+            t("LỊCH SỬ THAO TÁC", "操作履歴"),
+            t("CÀI ĐẶT CHUNG", "一般設定")
         ]
         
         if st.session_state['ot_menu_expanded']:
             st.markdown("""
             <style>
-                /* Sub-menu items (2, 3, 4) */
+                /* Sub-menu items (2, 3) */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
                     margin-left: 30px;
                     padding-left: 10px;
                     border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
                     border-radius: 0 8px 8px 0;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):hover,
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover,
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4):hover {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover {
                     border-left: 2px solid #ffffff !important;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2)[data-checked="true"],
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)[data-checked="true"],
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4)[data-checked="true"] {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)[data-checked="true"] {
                     border-left: 2px solid #ffffff !important;
                 }
-                /* Main items 5 and 6 styling */
+                /* Main items 4, 5, 6 styling */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6) {
                     margin-top: 15px;
@@ -489,12 +487,12 @@ else:
             <style>
                 /* Hide sub-items when collapsed */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4) {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
                     display: none !important;
                 }
                 
-                /* Main items 5 and 6 styling when collapsed */
+                /* Main items 4, 5, 6 styling when collapsed */
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6) {
                     margin-top: 15px;
@@ -505,13 +503,13 @@ else:
         # We need to map English internal keys to options to persist selection across language changes
         # Or just reset it if not found
         if 'menu_selection' not in st.session_state or st.session_state['menu_selection'] not in options:
-            st.session_state['menu_selection'] = t("— DỮ LIỆU NỀN", "— 基本データ")
+            st.session_state['menu_selection'] = t("— DỮ LIỆU DỰ ÁN", "— プロジェクト")
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
             if "▼" in sel or "▶" in sel:
                 st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
-                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t("— DỮ LIỆU NỀN", "— 基本データ"))
+                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"))
             else:
                 st.session_state['prev_ot_selection'] = sel
             
@@ -582,13 +580,13 @@ else:
     if st.button("?", key="floating_guide_btn", help=t("Hướng dẫn sử dụng", "使い方ガイド")):
         show_user_guide()
     
-    if "TÍNH TIỀN TĂNG CA" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("— DỮ LIỆU NỀN", "— 基本データ"):
-        render_base_data()
-    elif menu_selection == t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"):
+    if "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"):
         render_project_data()
     elif menu_selection == t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"):
         render_ot_excel()
-    elif menu_selection == t("TÍNH INCENTIVE (JPY)", "インセンティブ"):
+    elif menu_selection == t("INCENTIVE", "インセンティブ"):
         render_incentive()
     elif menu_selection == t("LỊCH SỬ THAO TÁC", "操作履歴"):
         render_action_history()
+    elif menu_selection == t("CÀI ĐẶT CHUNG", "一般設定"):
+        render_base_data()

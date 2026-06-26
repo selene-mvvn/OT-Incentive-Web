@@ -21,12 +21,15 @@ def render_ot_excel():
     
     st.divider()
     
-    if 'ot_base_data' not in st.session_state or st.session_state['ot_base_data']['gross_salary'] <= 0:
-        st.warning("⚠️ " + t("Bạn chưa nhập hoặc lưu Dữ Liệu Nền (hoặc Lương Gross đang bằng 0). Vui lòng quay lại mục DỮ LIỆU NỀN ở thanh menu bên trái để thiết lập Lương và Lịch nghỉ lễ trước khi import file.", "基本データが未入力です。左メニューから給与と休日を設定してください。"))
+    from logic.employee_data import get_employees_df
+    emp_df = get_employees_df()
+    
+    if emp_df.empty:
+        st.warning("⚠️ " + t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước khi import file.", "一般設定でスタッフを1名以上追加してください。"))
         return
         
     base = st.session_state['ot_base_data']
-    st.info("💡 " + t(f"Hệ thống sẽ sử dụng Mức lương cơ bản và Danh sách Ngày nghỉ/Lễ từ mục **DỮ LIỆU NỀN** để tính toán tự động. (Số ngày chuẩn: {base['standard_days']})", f"システムは基本データの給与と休日を使用して自動計算します。（標準日数: {base['standard_days']}）"))
+    st.info("💡 " + t(f"Hệ thống sẽ sử dụng Mức lương cơ bản từ Danh sách Nhân sự và Ngày nghỉ/Lễ để tính toán tự động. (Số ngày chuẩn: {base.get('standard_days', 22.0)})", f"システムはスタッフリストの基本給と休日を使用して自動計算します。（標準日数: {base.get('standard_days', 22.0)}）"))
     
     # Removed Project Overrides expander
     uploaded_file = st.file_uploader(t("Upload File Dữ Liệu Tăng Ca", "残業データファイルをアップロード"), type=['xlsx', 'xls'])
@@ -179,6 +182,16 @@ def render_ot_excel():
                     # Split buckets
                     buckets = breakdown_ot_hours(date_obj, ot_hours, holidays_list)
                     
+                    emp_name = str(row.get(col_map["ten"], "")) if col_map["ten"] and pd.notna(row.get(col_map["ten"])) else ""
+                    
+                    emp_gross = 0.0
+                    if emp_name:
+                        emp_row = emp_df[emp_df['Tên NV'] == emp_name.strip()]
+                        if not emp_row.empty:
+                            emp_gross = float(emp_row.iloc[0].get('Lương Gross', 0.0))
+                    
+                    std_days = float(base.get('standard_days', 22.0))
+                    
                     entry = {
                         "payment_period": get_payroll_period(date_obj),
                         "project_type": str(row.get(col_map["loai_da"], "")) if col_map["loai_da"] and pd.notna(row.get(col_map["loai_da"])) else "",
@@ -186,11 +199,11 @@ def render_ot_excel():
                         "order_id": str(row.get(col_map["ma_dh"], "")) if col_map["ma_dh"] and pd.notna(row.get(col_map["ma_dh"])) else "",
                         "order_name": str(row.get(col_map["ten_dh"], "")) if col_map["ten_dh"] and pd.notna(row.get(col_map["ten_dh"])) else "",
                         "manager_name": str(row.get(col_map["quan_ly"], "")) if col_map["quan_ly"] and pd.notna(row.get(col_map["quan_ly"])) else "",
-                        "employee_name": str(row.get(col_map["ten"], "")) if col_map["ten"] and pd.notna(row.get(col_map["ten"])) else "",
+                        "employee_name": emp_name,
                         "ot_reason": str(row.get(col_map["lydo"], "")) if col_map["lydo"] and pd.notna(row.get(col_map["lydo"])) else "",
                         "ot_date": ot_date_str,
                         "ot_hours": ot_hours,
-                        "hourly_rate": int(base['gross_salary'] / base['standard_days'] / 8) if base['gross_salary'] else 0
+                        "hourly_rate": int(emp_gross / std_days / 8) if std_days > 0 else 0
                     }
                     
                     # Look up project info
@@ -213,7 +226,7 @@ def render_ot_excel():
                         if b_hours > 0:
                             has_buckets = True
                             multiplier = float(bucket_name)
-                            calc = calculate_ot_pay(base['gross_salary'], base['standard_days'], b_hours, multiplier)
+                            calc = calculate_ot_pay(emp_gross, std_days, b_hours, multiplier)
                             k_name = f"{int(multiplier)}%" if float(multiplier).is_integer() else f"{multiplier}%"
                             entry[k_name] = int(calc["ot_pay"])
                             
@@ -309,8 +322,6 @@ def render_ot_excel():
             )
             st.session_state['ot_excel_records'] = edited_df
         
-        excel_buffer = export_ot_to_excel(st.session_state['ot_excel_records'], allow_merge=True)
-        
         st.markdown("---")
         c_name, c_btn = st.columns([6, 4])
         with c_name:
@@ -318,8 +329,17 @@ def render_ot_excel():
             export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="ot_excel_filename")
             if not export_name.endswith(".xlsx"):
                 export_name += ".xlsx"
+                
+        excel_buffer = export_ot_to_excel(st.session_state['ot_excel_records'], allow_merge=True, filename=export_name)
+        
         with c_btn:
             st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+            
+            def download_and_save_ot_excel(*args):
+                save_action_log(*args)
+                from logic.history_records import add_records
+                add_records("ot", st.session_state['ot_excel_records'])
+                
             st.download_button(
                 label=t("TẢI FILE EXCEL KẾT QUẢ", "結果ファイルダウンロード"),
                 data=excel_buffer,
@@ -327,7 +347,7 @@ def render_ot_excel():
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 type="primary",
                 use_container_width=True,
-                on_click=save_action_log,
+                on_click=download_and_save_ot_excel,
                 args=("OT Excel (Hàng Loạt)", "残業代一括計算 (Excel)", f"Tính OT hàng loạt ({len(st.session_state['ot_excel_records'])} bản ghi)", f"残業一括計算 ({len(st.session_state['ot_excel_records'])} レコード)", excel_buffer, export_name)
             )
         
