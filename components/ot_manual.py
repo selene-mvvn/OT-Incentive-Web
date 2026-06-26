@@ -674,8 +674,12 @@ def render_project_data():
                 }
                 
                 def highlight_top3(row):
-                    if row.name in [1, 2, 3]:
-                        return ['background-color: #e0f7fa; font-weight: bold;'] * len(row)
+                    if row.name == 1:
+                        return ['background-color: #ffebee; color: #c62828; font-weight: bold;'] * len(row)
+                    elif row.name == 2:
+                        return ['background-color: #fff3e0; color: #ef6c00; font-weight: bold;'] * len(row)
+                    elif row.name == 3:
+                        return ['background-color: #fffde7; color: #f57f17; font-weight: bold;'] * len(row)
                     return [''] * len(row)
                 
                 styled_df = agg_display.style.apply(highlight_top3, axis=1).format(format_dict)
