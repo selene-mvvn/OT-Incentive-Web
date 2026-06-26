@@ -65,8 +65,10 @@ def render_dashboard():
         st.info(t("Chưa có dữ liệu OT nào được lưu.", "保存されたデータがありません。"))
     else:
         df_ot = pd.DataFrame(ot_history)
-        df_ot['date_obj'] = pd.to_datetime(df_ot['ot_date'], format='%d/%m/%Y', errors='coerce')
-        df_ot['ot_hours'] = pd.to_numeric(df_ot.get('ot_hours', 0), errors='coerce').fillna(0)
+        df_ot['date_obj'] = pd.to_datetime(df_ot.get('ot_date'), format='%d/%m/%Y', errors='coerce')
+        if 'ot_hours' not in df_ot.columns:
+            df_ot['ot_hours'] = 0
+        df_ot['ot_hours'] = pd.to_numeric(df_ot['ot_hours'], errors='coerce').fillna(0)
         
         years_ot = sorted(df_ot['date_obj'].dt.year.dropna().unique().tolist(), reverse=True)
         years_ot = [int(y) for y in years_ot]
@@ -155,10 +157,11 @@ def render_dashboard():
         st.info(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"))
     else:
         df_inc = pd.DataFrame(inc_history)
-        df_inc['date_obj'] = pd.to_datetime(df_inc['date'], format='%d/%m/%Y', errors='coerce')
-        df_inc['incentive'] = pd.to_numeric(df_inc.get('incentive', 0), errors='coerce').fillna(0)
-        df_inc['target_hours'] = pd.to_numeric(df_inc.get('target_hours', 0), errors='coerce').fillna(0)
-        df_inc['actual_hours'] = pd.to_numeric(df_inc.get('actual_hours', 0), errors='coerce').fillna(0)
+        df_inc['date_obj'] = pd.to_datetime(df_inc.get('date'), format='%d/%m/%Y', errors='coerce')
+        for col in ['incentive', 'target_hours', 'actual_hours']:
+            if col not in df_inc.columns:
+                df_inc[col] = 0
+            df_inc[col] = pd.to_numeric(df_inc[col], errors='coerce').fillna(0)
         
         years_inc = sorted(df_inc['date_obj'].dt.year.dropna().unique().tolist(), reverse=True)
         years_inc = [int(y) for y in years_inc]
