@@ -151,6 +151,8 @@ def render_ot_excel():
                 
                 results = []
                 from logic.ot_calculator import breakdown_ot_hours
+                from logic.project_data import get_projects_df
+                projects_df = get_projects_df()
                 
                 for index, row in df.iterrows():
                     ot_val = row.get(col_map["ot"], 0) if col_map["ot"] else 0
@@ -192,11 +194,29 @@ def render_ot_excel():
                             emp_row = emp_df[emp_df['Tên NV'].astype(str).str.lower().str.contains(emp_name_clean, na=False)]
                               
                         if not emp_row.empty:
+                            emp_name = str(emp_row.iloc[0]['Tên NV'])
                             raw_gross = str(emp_row.iloc[0].get('Lương Gross', '0')).replace(',', '')
                             try:
                                 emp_gross = float(raw_gross)
                             except ValueError:
                                 emp_gross = 0.0
+                    
+                    manager_name = str(row.get(col_map["quan_ly"], "")) if col_map["quan_ly"] and pd.notna(row.get(col_map["quan_ly"])) else ""
+                    if manager_name and not projects_df.empty:
+                        manager_name_clean = str(manager_name).strip().lower()
+                        pm_row = projects_df[projects_df['Tên PM'].astype(str).str.strip().str.lower() == manager_name_clean]
+                        if pm_row.empty:
+                            pm_row = projects_df[projects_df['Tên PM'].astype(str).str.lower().str.contains(manager_name_clean, na=False, regex=False)]
+                        if pm_row.empty:
+                            import re
+                            parts = [p.strip() for p in re.split(r'[/,&]+', manager_name_clean) if p.strip()]
+                            if parts:
+                                def match_all_parts(pm_val):
+                                    pm_val_clean = str(pm_val).lower()
+                                    return all(part in pm_val_clean for part in parts)
+                                pm_row = projects_df[projects_df['Tên PM'].apply(match_all_parts)]
+                        if not pm_row.empty:
+                            manager_name = str(pm_row.iloc[0]['Tên PM'])
                     
                     std_days = float(base.get('standard_days', 22.0))
                     
@@ -206,7 +226,7 @@ def render_ot_excel():
                         "client_order_id": str(row.get(col_map["ma_dh_kh"], "")) if col_map["ma_dh_kh"] and pd.notna(row.get(col_map["ma_dh_kh"])) else "",
                         "order_id": str(row.get(col_map["ma_dh"], "")) if col_map["ma_dh"] and pd.notna(row.get(col_map["ma_dh"])) else "",
                         "order_name": str(row.get(col_map["ten_dh"], "")) if col_map["ten_dh"] and pd.notna(row.get(col_map["ten_dh"])) else "",
-                        "manager_name": str(row.get(col_map["quan_ly"], "")) if col_map["quan_ly"] and pd.notna(row.get(col_map["quan_ly"])) else "",
+                        "manager_name": manager_name,
                         "employee_name": emp_name,
                         "ot_reason": str(row.get(col_map["lydo"], "")) if col_map["lydo"] and pd.notna(row.get(col_map["lydo"])) else "",
                         "ot_date": ot_date_str,
@@ -216,13 +236,24 @@ def render_ot_excel():
                     
                     # Look up project info
                     matched_project = {}
-                    if 'projects' in base and isinstance(base['projects'], list):
-                        for p in base['projects']:
-                            if p.get('employee_name') == entry['employee_name']:
-                                matched_project = p
+                    order_n = entry["order_name"]
+                    order_i = entry["order_id"]
+                    
+                    if not projects_df.empty:
+                        # Try to match by order_id or order_name
+                        for _, p in projects_df.iterrows():
+                            if (order_i and str(p.get("Mã đơn hàng", "")) == order_i) or \
+                               (order_n and str(p.get("Tên dự án", "")) == order_n):
+                                matched_project = {
+                                    "project_type": str(p.get("Loại dự án", "")),
+                                    "client_order_id": str(p.get("Mã KH", "")),
+                                    "order_id": str(p.get("Mã đơn hàng", "")),
+                                    "order_name": str(p.get("Tên dự án", "")),
+                                    "manager_name": str(p.get("Tên PM", ""))
+                                }
                                 break
                     
-                    # Override with base data project info if the Excel file didn't provide it
+                    # Override with master data project info if the Excel file didn't provide it
                     entry["project_type"] = entry["project_type"] or matched_project.get("project_type", "")
                     entry["client_order_id"] = entry["client_order_id"] or matched_project.get("client_order_id", "")
                     entry["order_id"] = entry["order_id"] or matched_project.get("order_id", "")
