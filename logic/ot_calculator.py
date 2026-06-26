@@ -231,10 +231,10 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
             'valign': 'vcenter',
             'font_name': 'Times New Roman'
         })
-        if filename:
+        if is_template:
+            title_text = t("BẢNG TỔNG HỢP TĂNG CA (OT)", "残業・費用集計表 (OT)")
+        elif filename:
             title_text = filename.replace(".xlsx", "").upper()
-            if is_template:
-                title_text = title_text.replace("_MẪU", "")
         else:
             title_text = t("BẢNG TỔNG HỢP TĂNG CA (OT) & CHI PHÍ", "残業・費用集計表 (OT)")
         worksheet.merge_range(0, 0, 0, len(all_columns) - 1, title_text, title_format)
