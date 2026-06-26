@@ -142,20 +142,20 @@ def render_dashboard():
                 col_cfg_ot = {
                     "ot_date": st.column_config.TextColumn(t("Ngày OT", "残業日")),
                     "employee_name": st.column_config.TextColumn(t("Nhân sự", "担当者")),
-                    "ot_hours": st.column_config.NumberColumn(t("Giờ OT", "残業時間"), format="0,0.0"),
+                    "ot_hours": st.column_config.NumberColumn(t("Giờ OT", "残業時間")),
                     "ot_reason": st.column_config.TextColumn(t("Lý do", "残業理由")),
                     "manager_name": st.column_config.TextColumn(t("Quản lý", "PM")),
                     "project_type": st.column_config.TextColumn(t("Loại dự án", "プロジェクト種別")),
                     "order_id": st.column_config.TextColumn(t("Mã dự án", "注文番号")),
                     "order_name": st.column_config.TextColumn(t("Tên dự án", "注文名")),
                     "client_order_id": st.column_config.TextColumn(t("Mã đơn khách", "客先注文番号")),
-                    "hourly_rate": st.column_config.NumberColumn(t("Lương/h", "時給"), format="0,0"),
+                    "hourly_rate": st.column_config.NumberColumn(t("Lương/h", "時給"), format="%,.0f"),
                     "payment_period": st.column_config.TextColumn(t("Kỳ thanh toán", "支払期間"))
                 }
                 
                 for c in df_ot_edit.columns:
                     if str(c).endswith("%"):
-                        col_cfg_ot[c] = st.column_config.NumberColumn(c, format="0,0")
+                        col_cfg_ot[c] = st.column_config.NumberColumn(c, format="%,.0f")
                 
                 with st.form("form_edit_ot"):
                     edited_df_ot = st.data_editor(
@@ -298,9 +298,9 @@ def render_dashboard():
                 
                 col_cfg_inc = {
                     "employee_name": st.column_config.TextColumn(t("Nhân sự", "担当者")),
-                    "total_incentive": st.column_config.NumberColumn(t("Incentive (VND)", "インセンティブ (VND)"), format="0,0"),
-                    "efficiency_pct": st.column_config.NumberColumn(t("Hiệu suất (%)", "効率 (%)"), format="0,0.0"),
-                    "base_amount": st.column_config.NumberColumn(t("Tổng phân bổ", "配分総額"), format="0,0"),
+                    "total_incentive": st.column_config.NumberColumn(t("Incentive (VND)", "インセンティブ (VND)"), format="%,.0f"),
+                    "efficiency_pct": st.column_config.NumberColumn(t("Hiệu suất (%)", "効率 (%)")),
+                    "base_amount": st.column_config.NumberColumn(t("Tổng phân bổ", "配分総額"), format="%,.0f"),
                     "manager_name": st.column_config.TextColumn(t("Quản lý", "PM")),
                     "project_type": st.column_config.TextColumn(t("Loại dự án", "プロジェクト種別")),
                     "order_id": st.column_config.TextColumn(t("Mã dự án", "注文番号")),
