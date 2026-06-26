@@ -293,7 +293,7 @@ def render_dashboard():
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_inc_edit = pd.DataFrame(inc_history)
                 
-                col_order_inc = ["employee_name", "total_incentive", "efficiency_pct", "base_amount", "manager_name", "order_name", "project_type", "order_id", "client_order_id", "payment_period"]
+                col_order_inc = ["employee_name", "efficiency_pct", "manager_name", "order_name", "project_type", "order_id", "client_order_id", "base_amount", "total_incentive", "payment_period"]
                 col_order_inc = [c for c in col_order_inc if c in df_inc_edit.columns] + [c for c in df_inc_edit.columns if c not in col_order_inc]
                 
                 col_cfg_inc = {
