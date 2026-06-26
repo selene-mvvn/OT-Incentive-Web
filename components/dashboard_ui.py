@@ -293,20 +293,21 @@ def render_dashboard():
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_inc_edit = pd.DataFrame(inc_history)
                 
-                col_order_inc = ["employee_name", "efficiency_pct", "manager_name", "order_name", "project_type", "order_id", "client_order_id", "base_amount", "total_incentive", "payment_period"]
+                col_order_inc = ["date", "employee_name", "project_name", "target_hours", "actual_hours", "unit_price", "company_charge", "profit", "standard_incentive", "final_incentive", "notes"]
                 col_order_inc = [c for c in col_order_inc if c in df_inc_edit.columns] + [c for c in df_inc_edit.columns if c not in col_order_inc]
                 
                 col_cfg_inc = {
+                    "date": st.column_config.TextColumn(t("Ngày ghi nhận", "記録日")),
                     "employee_name": st.column_config.TextColumn(t("Nhân sự", "担当者")),
-                    "total_incentive": st.column_config.NumberColumn(t("Incentive (VND)", "インセンティブ (VND)"), format="%,.0f"),
-                    "efficiency_pct": st.column_config.NumberColumn(t("Hiệu suất (%)", "効率 (%)")),
-                    "base_amount": st.column_config.NumberColumn(t("Tổng phân bổ", "配分総額"), format="%,.0f"),
-                    "manager_name": st.column_config.TextColumn(t("Quản lý", "PM")),
-                    "project_type": st.column_config.TextColumn(t("Loại dự án", "プロジェクト種別")),
-                    "order_id": st.column_config.TextColumn(t("Mã dự án", "注文番号")),
-                    "order_name": st.column_config.TextColumn(t("Tên dự án", "注文名")),
-                    "client_order_id": st.column_config.TextColumn(t("Mã đơn khách", "客先注文番号")),
-                    "payment_period": st.column_config.TextColumn(t("Kỳ thanh toán", "支払期間"))
+                    "project_name": st.column_config.TextColumn(t("Tên dự án", "案件名")),
+                    "target_hours": st.column_config.NumberColumn(t("Giờ công KH", "目標工数")),
+                    "actual_hours": st.column_config.NumberColumn(t("Giờ công TT", "実工数")),
+                    "unit_price": st.column_config.NumberColumn(t("Đơn giá", "単価"), format="%,.0f"),
+                    "company_charge": st.column_config.NumberColumn(t("Company Charge", "会社運用ﾁｬｰｼﾞ"), format="%,.0f"),
+                    "profit": st.column_config.NumberColumn(t("Lợi nhuận", "利益"), format="%,.0f"),
+                    "standard_incentive": st.column_config.NumberColumn(t("Incentive TC", "基準金額"), format="%,.0f"),
+                    "final_incentive": st.column_config.NumberColumn(t("Nhận được", "受取額"), format="%,.0f"),
+                    "notes": st.column_config.TextColumn(t("Ghi chú", "備考"))
                 }
                 
                 with st.form("form_edit_inc"):
