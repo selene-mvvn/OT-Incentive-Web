@@ -158,7 +158,7 @@ def render_dashboard():
     else:
         df_inc = pd.DataFrame(inc_history)
         df_inc['date_obj'] = pd.to_datetime(df_inc.get('date'), format='%d/%m/%Y', errors='coerce')
-        for col in ['incentive', 'target_hours', 'actual_hours']:
+        for col in ['final_incentive', 'target_hours', 'actual_hours']:
             if col not in df_inc.columns:
                 df_inc[col] = 0
             df_inc[col] = pd.to_numeric(df_inc[col], errors='coerce').fillna(0)
@@ -181,7 +181,7 @@ def render_dashboard():
             st.warning("Không có dữ liệu cho năm này.")
         else:
             agg_inc = df_inc_filtered.groupby('employee_name').agg(
-                total_incentive=('incentive', 'sum'),
+                total_incentive=('final_incentive', 'sum'),
                 total_target=('target_hours', 'sum'),
                 total_actual=('actual_hours', 'sum'),
                 projects_count=('project_name', 'count')
