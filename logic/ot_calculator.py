@@ -111,7 +111,11 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
     if is_template and not data:
         # Generate 4 empty rows for the template
         for _ in range(4):
-            data.append({})
+            data.append({
+                "project_type": "",
+                "ot_hours": "",
+                "hourly_rate": ""
+            })
             
     col_tinh_ot = t("Thời gian Tính OT", "OT計算期間")
     col_chi_tra = t("Thời gian Chi trả", "支払期間")
