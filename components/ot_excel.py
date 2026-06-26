@@ -206,8 +206,6 @@ def render_ot_excel():
                         manager_name_clean = str(manager_name).strip().lower()
                         pm_row = projects_df[projects_df['Tên PM'].astype(str).str.strip().str.lower() == manager_name_clean]
                         if pm_row.empty:
-                            pm_row = projects_df[projects_df['Tên PM'].astype(str).str.lower().str.contains(manager_name_clean, na=False, regex=False)]
-                        if pm_row.empty:
                             import re
                             parts = [p.strip() for p in re.split(r'[/,&]+', manager_name_clean) if p.strip()]
                             if parts:
@@ -222,7 +220,7 @@ def render_ot_excel():
                                     )
                                     pm_row = projects_df[projects_df['Tên PM'] == best_match]
                         if not pm_row.empty:
-                            manager_name = str(pm_row.iloc[0]['Tên PM'])
+                            manager_name = str(pm_row.iloc[0]['Tên PM']) if isinstance(pm_row, pd.DataFrame) else str(pm_row.iloc[0])
                     
                     std_days = float(base.get('standard_days', 22.0))
                     
