@@ -32,6 +32,11 @@ st.markdown("""
     div[data-testid="metric-container"] > div {
         justify-content: center;
     }
+
+    /* Main App Background */
+    .stApp {
+        background-color: #f4f7f9;
+    }
     
     /* Headers and Titles */
     h1, h2, h3 {
@@ -284,6 +289,12 @@ st.markdown("""
         border: 1px solid rgba(0,0,0,0.05);
         padding: 5px;
         transition: box-shadow 0.3s ease;
+    }
+    [data-testid="stDataFrame"] th, [data-testid="stDataEditor"] th {
+        background-color: #00a8e8 !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
+        font-size: 14px !important;
     }
     [data-testid="stDataFrame"]:hover, [data-testid="stDataEditor"]:hover {
         box-shadow: 0 6px 20px rgba(0,0,0,0.1);
