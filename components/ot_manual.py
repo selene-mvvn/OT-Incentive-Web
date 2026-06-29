@@ -250,350 +250,355 @@ def render_base_data():
             st.success(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"))
 
 def render_project_data():
-    init_session_state()
-    st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{t('DỮ LIỆU DỰ ÁN VÀ TÍNH TĂNG CA', 'プロジェクトデータと残業計算')}</h2>", unsafe_allow_html=True)
+    col_main, col_rank = st.columns([7.5, 2.5])
+    with col_rank:
+        from components.mini_leaderboard import render_mini_leaderboard
+        render_mini_leaderboard("ot")
+    with col_main:
+        init_session_state()
+        st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{t('DỮ LIỆU DỰ ÁN VÀ TÍNH TĂNG CA', 'プロジェクトデータと残業計算')}</h2>", unsafe_allow_html=True)
     
-    from logic.employee_data import get_employees_df
-    emp_df = get_employees_df()
-    base = st.session_state['ot_base_data']
+        from logic.employee_data import get_employees_df
+        emp_df = get_employees_df()
+        base = st.session_state['ot_base_data']
     
-    if emp_df.empty:
-        st.warning("⚠️ " + t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước.", "一般設定でスタッフを1名以上追加してください。"))
-        return
+        if emp_df.empty:
+            st.warning("⚠️ " + t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước.", "一般設定でスタッフを1名以上追加してください。"))
+            return
         
-    with st.container():
-        import datetime
-        try:
-            fd_str = st.session_state['ot_base_data'].get('from_date', '')
-            if fd_str:
-                from_date = datetime.datetime.strptime(fd_str, "%Y-%m-%d").date()
-            else:
-                from_date = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
-        except:
-            from_date = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
-            
-        try:
-            td_str = st.session_state['ot_base_data'].get('to_date', '')
-            if td_str:
-                to_date = datetime.datetime.strptime(td_str, "%Y-%m-%d").date()
-            else:
-                to_date = datetime.date.today().replace(day=20)
-        except:
-            to_date = datetime.date.today().replace(day=20)
-            
-        calculated_period = f"{from_date.strftime('%d/%m/%Y')} - {to_date.strftime('%d/%m/%Y')}"
-        
-        from logic.project_data import get_projects_df, save_projects_df
-        projects_df = get_projects_df()
-        
-        with st.expander(t("📂 Quản lý Danh mục Dự án (Master Data)", "📂 プロジェクトリスト管理 (マスターデータ)")):
-            st.caption(t("Thêm, sửa, xóa các dự án tại đây để tự động điền thông tin khi tính OT.", "ここでプロジェクトを追加・編集・削除すると、OT計算時に自動入力されます。"))
-            
-            column_config = {
-                "Tên dự án": st.column_config.TextColumn(t("Tên dự án", "プロジェクト名"), required=True),
-                "Mã đơn hàng": st.column_config.TextColumn(t("Mã đơn hàng", "注文番号")),
-                "Mã KH": st.column_config.TextColumn(t("Mã KH", "客先コード")),
-                "Loại dự án": st.column_config.TextColumn(t("Loại dự án", "種別")),
-                "Tên PM": st.column_config.TextColumn(t("Tên PM", "PM名"))
-            }
-            
-            edited_projects = st.data_editor(
-                projects_df,
-                num_rows="dynamic",
-                use_container_width=True,
-                column_config=column_config,
-                column_order=["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"],
-                key="projects_editor"
-            )
-            
-            if st.button(t("💾 Lưu danh mục Dự án", "💾 プロジェクトリストを保存"), key="save_projects"):
-                save_projects_df(edited_projects)
-                st.success(t("Đã lưu danh mục dự án!", "プロジェクトリストを保存しました！"))
-                st.rerun()
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        
-        master_names = []
-        for _, r in projects_df.iterrows():
-            n = str(r.get("Tên dự án", ""))
-            c = str(r.get("Mã đơn hàng", ""))
-            if n and n != "nan":
-                if c and c != "nan" and c.strip():
-                    master_names.append(f"[{c.strip()}] {n.strip()}")
-                else:
-                    master_names.append(n.strip())
-        master_names = list(dict.fromkeys(master_names))
-        
-        col3, col4 = st.columns(2)
-        with col3:
-            order_opts = [t("--- Chọn đơn hàng ---", "--- 注文名を選択 ---")] + master_names
-            sel_order_name = st.selectbox(t("TÊN ĐƠN HÀNG (DỰ ÁN)", "注文名 (プロジェクト)"), order_opts, key="sel_order_name_main")
-            
-            order_name = "" if sel_order_name == t("--- Chọn đơn hàng ---", "--- 注文名を選択 ---") else sel_order_name
-            
-            pure_name = order_name
-            pure_code = None
-            if isinstance(order_name, str) and order_name.startswith("[") and "] " in order_name:
-                split_idx = order_name.index("] ")
-                pure_code = order_name[1:split_idx]
-                pure_name = order_name[split_idx+2:]
-                
-            last_autofill = st.session_state.get('last_order_name_autofill', None)
-            if order_name != last_autofill:
-                st.session_state['last_order_name_autofill'] = order_name
-                if pure_name and not projects_df.empty:
-                    if pure_code:
-                        match = projects_df[(projects_df["Tên dự án"].astype(str).str.strip() == pure_name) & (projects_df["Mã đơn hàng"].astype(str).str.strip() == pure_code)]
-                    else:
-                        match = projects_df[projects_df["Tên dự án"].astype(str).str.strip() == pure_name]
-                        
-                    if not match.empty:
-                        row = match.iloc[0]
-                        st.session_state['txt_proj_type_manual'] = str(row.get("Loại dự án", "N")) if pd.notna(row.get("Loại dự án")) else "N"
-                        st.session_state['txt_client_order_manual'] = str(row.get("Mã KH", "")) if pd.notna(row.get("Mã KH")) else ""
-                        st.session_state['txt_order_manual'] = str(row.get("Mã đơn hàng", "")) if pd.notna(row.get("Mã đơn hàng")) else ""
-                        st.session_state['txt_pm_manual'] = str(row.get("Tên PM", "")) if pd.notna(row.get("Tên PM")) else ""
-                        st.rerun()
-                        
-            project_type = st.text_input(t("LOẠI DỰ ÁN", "プロジェクト種別"), key="txt_proj_type_manual")
-            client_order_id = st.text_input(t("MÃ ĐƠN HÀNG KHÁCH", "客先注文番号"), key="txt_client_order_manual")
-            order_id = st.text_input(t("MÃ ĐƠN HÀNG", "注文番号"), key="txt_order_manual")
-            
-        with col4:
-            manager_name = st.text_input(t("TÊN NGƯỜI QUẢN LÝ - PM", "プロジェクトマネージャー"), key="txt_pm_manual")
-            
-            emp_names = sorted(emp_df['Tên NV'].tolist()) if not emp_df.empty else []
-            opt_emp = t("--- Chọn nhân viên ---", "--- スタッフを選択 ---")
-            employee_name_proj = st.selectbox(t("TÊN NHÂN SỰ LÀM VIỆC", "担当スタッフ"), [opt_emp] + emp_names, key="sel_emp_proj_manual")
-            
-            emp_gross = 0.0
-            if employee_name_proj and employee_name_proj != opt_emp:
-                emp_row = emp_df[emp_df['Tên NV'] == employee_name_proj]
-                if not emp_row.empty:
-                    emp_gross = float(emp_row.iloc[0].get('Lương Gross', 0.0))
-            
-            ot_reason = text_input_with_history(t("LÝ DO TĂNG CA", "残業理由"), "reason", "reasons", "")
-            
-        clean_order_name = pure_name if 'pure_name' in locals() else order_name
-        
-        st.divider()
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CHI TIẾT TĂNG CA', '残業詳細')}</h3>", unsafe_allow_html=True)
-        
-        if employee_name_proj and employee_name_proj != opt_emp:
-            st.success(f"{t('Đang tính cho nhân sự', '対象者')}: **{employee_name_proj}** | {t('Lương Gross', '総支給額')}: **{emp_gross:,.0f} VND** | {t('Ngày chuẩn', '所定労働日数')}: **{base.get('standard_days', 22.0)}**")
-        else:
-            st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
-            
-        ot_date = st.date_input(t("NGÀY THÁNG TĂNG CA", "残業日"))
-        st.caption(f"{t('Thuộc kỳ lương', '給与計算期間')}: **{calculated_period}**")
-        
-        is_holiday = False
-        holiday_reason = ""
-        if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
+        with st.container():
+            import datetime
             try:
-                holidays_list = pd.to_datetime(base['holidays_df']["Ngày nghỉ"]).dt.date.tolist()
-                if ot_date in holidays_list:
-                    is_holiday = True
-                    reason_row = base['holidays_df'][pd.to_datetime(base['holidays_df']["Ngày nghỉ"]).dt.date == ot_date]
-                    if not reason_row.empty:
-                        holiday_reason = str(reason_row.iloc[0].get("Lý do", ""))
+                fd_str = st.session_state['ot_base_data'].get('from_date', '')
+                if fd_str:
+                    from_date = datetime.datetime.strptime(fd_str, "%Y-%m-%d").date()
+                else:
+                    from_date = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
             except:
-                pass
-                
-        is_weekend = ot_date.weekday() >= 5
-        if ot_date.weekday() == 5:
-            next_week = ot_date + datetime.timedelta(days=7)
-            if next_week.month != ot_date.month:
-                is_weekend = False
-
-        if is_holiday:
-            st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🏖️ {t('Ngày lễ', '祭日')} ({holiday_reason}) (3.0x - 4.0x)</span></div>", unsafe_allow_html=True)
-        elif is_weekend:
-            st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span></div>", unsafe_allow_html=True)
-        else:
-            if ot_date.weekday() == 5:
-                label = t('Ngày đi làm hành chính (Thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')
-            else:
-                label = t('Ngày đi làm hành chính', '平日')
-            st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {label} (1.5x - 2.0x)</span></div>", unsafe_allow_html=True)
-        
-        tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
-        
-        with tab_auto:
-            st.info(t("Hệ thống sẽ tự động phân bổ số giờ vào các mức hệ số dựa trên loại ngày (Ngày đi làm hành chính, Cuối tuần, Ngày lễ).", "システムは日種（平日・週末・祭日）に基づいて自動配分します。"))
-            total_hours_auto = st.number_input(t("TỔNG SỐ GIỜ TĂNG CA", "残業時間合計"), min_value=0.0, step=0.1, value=1.0, format="%.1f")
-                
-            auto_buckets = {150: 0.0, 200: 0.0, 270: 0.0, 300: 0.0, 400: 0.0}
+                from_date = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
             
-            if total_hours_auto > 0:
-                holidays = []
-                if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
-                    holidays = base['holidays_df']['Ngày nghỉ'].tolist()
-                    
-                auto_buckets = breakdown_ot_hours(ot_date, total_hours_auto, holidays)
-                
-                b_col1, b_col2, b_col3, b_col4, b_col5 = st.columns(5)
-                nt = t("Ngày đi làm hành chính", "平日")
-                ct = t("Cuối tuần", "週末")
-                nl = t("Ngày lễ", "祭日")
-                with b_col1: st.metric("150%", f"{auto_buckets[150]:.1f} h", help=f"{nt}: 17h-22h")
-                with b_col2: st.metric("200%", f"{auto_buckets[200]:.1f} h", help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
-                with b_col3: st.metric("270%", f"{auto_buckets[270]:.1f} h", help=f"{ct}: 22h-24h")
-                with b_col4: st.metric("300%", f"{auto_buckets[300]:.1f} h", help=f"{nl}: 17h-22h")
-                with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h & 22h-24h")
-                
-            if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
-                if employee_name_proj == opt_emp:
-                    st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
-                elif total_hours_auto <= 0:
-                    st.error(t("Vui lòng nhập Tổng số giờ tăng ca!", "残業時間を入力してください！"))
+            try:
+                td_str = st.session_state['ot_base_data'].get('to_date', '')
+                if td_str:
+                    to_date = datetime.datetime.strptime(td_str, "%Y-%m-%d").date()
                 else:
-                    add_to_history("reasons", ot_reason)
-                    std_days = float(base.get('standard_days', 22.0))
-                    hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
-                    
-                    entry = {
-                        "payment_period": calculated_period,
-                        "project_type": project_type,
-                        "order_id": order_id,
-                        "client_order_id": client_order_id,
-                        "order_name": clean_order_name,
-                        "manager_name": manager_name,
-                        "employee_name": employee_name_proj,
-                        "ot_reason": ot_reason,
-                        "ot_date": ot_date.strftime("%d/%m/%Y"),
-                        "ot_hours": total_hours_auto,
-                        "hourly_rate": hourly_rate,
-                    }
-                    
-                    for mult, hrs in auto_buckets.items():
-                        if hrs > 0:
-                            res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
-                            k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
-                            entry[k_name] = int(res["ot_pay"])
-                            
-                    st.session_state['ot_records'].append(entry)
-                    st.success(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})")
-                    
-        with tab_manual:
-            st.warning(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0または空白で。"))
-            m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
-            with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f")
-            with m_col2: h_200 = st.number_input(t("Số giờ 200%", "200% 時間"), min_value=0.0, step=0.1, format="%.1f")
-            with m_col3: h_270 = st.number_input(t("Số giờ 270%", "270% 時間"), min_value=0.0, step=0.1, format="%.1f")
-            with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f")
-            with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f")
+                    to_date = datetime.date.today().replace(day=20)
+            except:
+                to_date = datetime.date.today().replace(day=20)
             
-            st.markdown(f"##### {t('Hệ số Khác (Tuỳ chỉnh)', 'その他係数（カスタム）')}")
-            c_col1, c_col2 = st.columns(2)
-            with c_col1: c_mult = st.number_input(t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"), min_value=0.0, step=10.0)
-            with c_col2: c_hrs = st.number_input(t("Số giờ cho hệ số này", "時間数"), min_value=0.0, step=0.1, format="%.1f")
+            calculated_period = f"{from_date.strftime('%d/%m/%Y')} - {to_date.strftime('%d/%m/%Y')}"
+        
+            from logic.project_data import get_projects_df, save_projects_df
+            projects_df = get_projects_df()
+        
+            with st.expander(t("📂 Quản lý Danh mục Dự án (Master Data)", "📂 プロジェクトリスト管理 (マスターデータ)")):
+                st.caption(t("Thêm, sửa, xóa các dự án tại đây để tự động điền thông tin khi tính OT.", "ここでプロジェクトを追加・編集・削除すると、OT計算時に自動入力されます。"))
             
-            if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
-                manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
-                if employee_name_proj == opt_emp:
-                    st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
-                elif manual_total <= 0:
-                    st.error(t("Vui lòng nhập ít nhất một trường thời gian lớn hơn 0!", "1つ以上の時間を入力してください！"))
-                else:
-                    add_to_history("reasons", ot_reason)
-                    std_days = float(base.get('standard_days', 22.0))
-                    hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
-                    
-                    entry = {
-                        "payment_period": calculated_period,
-                        "project_type": project_type,
-                        "order_id": order_id,
-                        "client_order_id": client_order_id,
-                        "order_name": clean_order_name,
-                        "manager_name": manager_name,
-                        "employee_name": employee_name_proj,
-                        "ot_reason": ot_reason,
-                        "ot_date": ot_date.strftime("%d/%m/%Y"),
-                        "ot_hours": manual_total,
-                        "hourly_rate": hourly_rate,
-                    }
-                    
-                    bucket_inputs = {150: h_150, 200: h_200, 270: h_270, 300: h_300, 400: h_400}
-                    if c_hrs > 0 and c_mult > 0:
-                        bucket_inputs[c_mult] = c_hrs
-                        
-                    for mult, hrs in bucket_inputs.items():
-                        if hrs > 0:
-                            res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
-                            k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
-                            entry[k_name] = int(res["ot_pay"])
-                            
-                    st.session_state['ot_records'].append(entry)
-                    st.success(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"))
-
-        if len(st.session_state['ot_records']) > 0:
-            st.markdown("---")
-            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>", unsafe_allow_html=True)
-            st.caption(t("Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.", "セルをクリックして編集。行を選択してDeleteで削除。"))
+                column_config = {
+                    "Tên dự án": st.column_config.TextColumn(t("Tên dự án", "プロジェクト名"), required=True),
+                    "Mã đơn hàng": st.column_config.TextColumn(t("Mã đơn hàng", "注文番号")),
+                    "Mã KH": st.column_config.TextColumn(t("Mã KH", "客先コード")),
+                    "Loại dự án": st.column_config.TextColumn(t("Loại dự án", "種別")),
+                    "Tên PM": st.column_config.TextColumn(t("Tên PM", "PM名"))
+                }
             
-            df = pd.DataFrame(st.session_state['ot_records'])
-            
-            col_cfg = {
-                "payment_period": t("Kỳ Tính Lương", "給与計算期間"),
-                "project_type": t("Loại Dự Án", "プロジェクト種別"),
-                "order_id": t("Mã Đơn Hàng", "注文番号"),
-                "client_order_id": t("Mã ĐH Khách", "客先注文番号"),
-                "order_name": t("Tên Đơn Hàng", "注文名"),
-                "manager_name": t("Tên Quản Lý", "PM名"),
-                "employee_name": t("Người Thực Hiện", "社員名"),
-                "ot_reason": t("Lý Do OT", "残業理由"),
-                "ot_date": t("Ngày OT", "残業日"),
-                "ot_hours": t("Tổng Giờ OT", "総残業時間"),
-                "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format="%,.0f"),
-            }
-            
-            for key in df.columns:
-                if key.endswith("%"):
-                    col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="%,.0f")
-                        
-            edited_df = st.data_editor(
-                st.session_state['ot_records'],
-                num_rows="dynamic",
-                use_container_width=True,
-                key="ot_records_editor",
-                column_config=col_cfg
-            )
-            st.session_state['ot_records'] = edited_df
-            
-            st.markdown("---")
-            c_name, c_dl, c_del = st.columns([5, 3, 2])
-            with c_name:
-                default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
-                export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="ot_manual_filename")
-                if not export_name.endswith(".xlsx"):
-                    export_name += ".xlsx"
-                    
-            excel_data = export_ot_to_excel(st.session_state['ot_records'], filename=export_name)
-            with c_dl:
-                st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                
-                def download_and_save_ot(*args):
-                    save_action_log(*args)
-                    from logic.history_records import add_records
-                    add_records("ot", st.session_state['ot_records'])
-                    
-                st.download_button(
-                    label=t("TẢI FILE EXCEL", "Excelダウンロード"),
-                    data=excel_data,
-                    file_name=export_name,
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    type="primary",
+                edited_projects = st.data_editor(
+                    projects_df,
+                    num_rows="dynamic",
                     use_container_width=True,
-                    on_click=download_and_save_ot,
-                    args=("OT Manual (Thủ công)", "残業代計算 (手入力)", f"Tính OT thủ công ({len(st.session_state['ot_records'])} bản ghi)", f"残業手入力 ({len(st.session_state['ot_records'])} レコード)", excel_data, export_name)
+                    column_config=column_config,
+                    column_order=["Tên dự án", "Mã đơn hàng", "Mã KH", "Loại dự án", "Tên PM"],
+                    key="projects_editor"
                 )
-            with c_del:
-                st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                if st.button(t("XÓA TOÀN BỘ BẢNG", "全データクリア"), use_container_width=True):
-                    st.session_state['ot_records'] = []
-                    st.success(t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！"))
+            
+                if st.button(t("💾 Lưu danh mục Dự án", "💾 プロジェクトリストを保存"), key="save_projects"):
+                    save_projects_df(edited_projects)
+                    st.success(t("Đã lưu danh mục dự án!", "プロジェクトリストを保存しました！"))
                     st.rerun()
-        else:
-            st.info(t("Chưa có bản ghi nào. Vui lòng nhập thông tin ở trên và nhấn 'THÊM VÀO BẢNG CHỜ XUẤT'.", "レコードがありません。上記に情報を入力して「追加」を押してください。"))
+
+            st.markdown("<br>", unsafe_allow_html=True)
+        
+            master_names = []
+            for _, r in projects_df.iterrows():
+                n = str(r.get("Tên dự án", ""))
+                c = str(r.get("Mã đơn hàng", ""))
+                if n and n != "nan":
+                    if c and c != "nan" and c.strip():
+                        master_names.append(f"[{c.strip()}] {n.strip()}")
+                    else:
+                        master_names.append(n.strip())
+            master_names = list(dict.fromkeys(master_names))
+        
+            col3, col4 = st.columns(2)
+            with col3:
+                order_opts = [t("--- Chọn đơn hàng ---", "--- 注文名を選択 ---")] + master_names
+                sel_order_name = st.selectbox(t("TÊN ĐƠN HÀNG (DỰ ÁN)", "注文名 (プロジェクト)"), order_opts, key="sel_order_name_main")
+            
+                order_name = "" if sel_order_name == t("--- Chọn đơn hàng ---", "--- 注文名を選択 ---") else sel_order_name
+            
+                pure_name = order_name
+                pure_code = None
+                if isinstance(order_name, str) and order_name.startswith("[") and "] " in order_name:
+                    split_idx = order_name.index("] ")
+                    pure_code = order_name[1:split_idx]
+                    pure_name = order_name[split_idx+2:]
+                
+                last_autofill = st.session_state.get('last_order_name_autofill', None)
+                if order_name != last_autofill:
+                    st.session_state['last_order_name_autofill'] = order_name
+                    if pure_name and not projects_df.empty:
+                        if pure_code:
+                            match = projects_df[(projects_df["Tên dự án"].astype(str).str.strip() == pure_name) & (projects_df["Mã đơn hàng"].astype(str).str.strip() == pure_code)]
+                        else:
+                            match = projects_df[projects_df["Tên dự án"].astype(str).str.strip() == pure_name]
+                        
+                        if not match.empty:
+                            row = match.iloc[0]
+                            st.session_state['txt_proj_type_manual'] = str(row.get("Loại dự án", "N")) if pd.notna(row.get("Loại dự án")) else "N"
+                            st.session_state['txt_client_order_manual'] = str(row.get("Mã KH", "")) if pd.notna(row.get("Mã KH")) else ""
+                            st.session_state['txt_order_manual'] = str(row.get("Mã đơn hàng", "")) if pd.notna(row.get("Mã đơn hàng")) else ""
+                            st.session_state['txt_pm_manual'] = str(row.get("Tên PM", "")) if pd.notna(row.get("Tên PM")) else ""
+                            st.rerun()
+                        
+                project_type = st.text_input(t("LOẠI DỰ ÁN", "プロジェクト種別"), key="txt_proj_type_manual")
+                client_order_id = st.text_input(t("MÃ ĐƠN HÀNG KHÁCH", "客先注文番号"), key="txt_client_order_manual")
+                order_id = st.text_input(t("MÃ ĐƠN HÀNG", "注文番号"), key="txt_order_manual")
+            
+            with col4:
+                manager_name = st.text_input(t("TÊN NGƯỜI QUẢN LÝ - PM", "プロジェクトマネージャー"), key="txt_pm_manual")
+            
+                emp_names = sorted(emp_df['Tên NV'].tolist()) if not emp_df.empty else []
+                opt_emp = t("--- Chọn nhân viên ---", "--- スタッフを選択 ---")
+                employee_name_proj = st.selectbox(t("TÊN NHÂN SỰ LÀM VIỆC", "担当スタッフ"), [opt_emp] + emp_names, key="sel_emp_proj_manual")
+            
+                emp_gross = 0.0
+                if employee_name_proj and employee_name_proj != opt_emp:
+                    emp_row = emp_df[emp_df['Tên NV'] == employee_name_proj]
+                    if not emp_row.empty:
+                        emp_gross = float(emp_row.iloc[0].get('Lương Gross', 0.0))
+            
+                ot_reason = text_input_with_history(t("LÝ DO TĂNG CA", "残業理由"), "reason", "reasons", "")
+            
+            clean_order_name = pure_name if 'pure_name' in locals() else order_name
+        
+            st.divider()
+            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CHI TIẾT TĂNG CA', '残業詳細')}</h3>", unsafe_allow_html=True)
+        
+            if employee_name_proj and employee_name_proj != opt_emp:
+                st.success(f"{t('Đang tính cho nhân sự', '対象者')}: **{employee_name_proj}** | {t('Lương Gross', '総支給額')}: **{emp_gross:,.0f} VND** | {t('Ngày chuẩn', '所定労働日数')}: **{base.get('standard_days', 22.0)}**")
+            else:
+                st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
+            
+            ot_date = st.date_input(t("NGÀY THÁNG TĂNG CA", "残業日"))
+            st.caption(f"{t('Thuộc kỳ lương', '給与計算期間')}: **{calculated_period}**")
+        
+            is_holiday = False
+            holiday_reason = ""
+            if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
+                try:
+                    holidays_list = pd.to_datetime(base['holidays_df']["Ngày nghỉ"]).dt.date.tolist()
+                    if ot_date in holidays_list:
+                        is_holiday = True
+                        reason_row = base['holidays_df'][pd.to_datetime(base['holidays_df']["Ngày nghỉ"]).dt.date == ot_date]
+                        if not reason_row.empty:
+                            holiday_reason = str(reason_row.iloc[0].get("Lý do", ""))
+                except:
+                    pass
+                
+            is_weekend = ot_date.weekday() >= 5
+            if ot_date.weekday() == 5:
+                next_week = ot_date + datetime.timedelta(days=7)
+                if next_week.month != ot_date.month:
+                    is_weekend = False
+
+            if is_holiday:
+                st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🏖️ {t('Ngày lễ', '祭日')} ({holiday_reason}) (3.0x - 4.0x)</span></div>", unsafe_allow_html=True)
+            elif is_weekend:
+                st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span></div>", unsafe_allow_html=True)
+            else:
+                if ot_date.weekday() == 5:
+                    label = t('Ngày đi làm hành chính (Thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')
+                else:
+                    label = t('Ngày đi làm hành chính', '平日')
+                st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {label} (1.5x - 2.0x)</span></div>", unsafe_allow_html=True)
+        
+            tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
+        
+            with tab_auto:
+                st.info(t("Hệ thống sẽ tự động phân bổ số giờ vào các mức hệ số dựa trên loại ngày (Ngày đi làm hành chính, Cuối tuần, Ngày lễ).", "システムは日種（平日・週末・祭日）に基づいて自動配分します。"))
+                total_hours_auto = st.number_input(t("TỔNG SỐ GIỜ TĂNG CA", "残業時間合計"), min_value=0.0, step=0.1, value=1.0, format="%.1f")
+                
+                auto_buckets = {150: 0.0, 200: 0.0, 270: 0.0, 300: 0.0, 400: 0.0}
+            
+                if total_hours_auto > 0:
+                    holidays = []
+                    if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
+                        holidays = base['holidays_df']['Ngày nghỉ'].tolist()
+                    
+                    auto_buckets = breakdown_ot_hours(ot_date, total_hours_auto, holidays)
+                
+                    b_col1, b_col2, b_col3, b_col4, b_col5 = st.columns(5)
+                    nt = t("Ngày đi làm hành chính", "平日")
+                    ct = t("Cuối tuần", "週末")
+                    nl = t("Ngày lễ", "祭日")
+                    with b_col1: st.metric("150%", f"{auto_buckets[150]:.1f} h", help=f"{nt}: 17h-22h")
+                    with b_col2: st.metric("200%", f"{auto_buckets[200]:.1f} h", help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
+                    with b_col3: st.metric("270%", f"{auto_buckets[270]:.1f} h", help=f"{ct}: 22h-24h")
+                    with b_col4: st.metric("300%", f"{auto_buckets[300]:.1f} h", help=f"{nl}: 17h-22h")
+                    with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h & 22h-24h")
+                
+                if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
+                    if employee_name_proj == opt_emp:
+                        st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
+                    elif total_hours_auto <= 0:
+                        st.error(t("Vui lòng nhập Tổng số giờ tăng ca!", "残業時間を入力してください！"))
+                    else:
+                        add_to_history("reasons", ot_reason)
+                        std_days = float(base.get('standard_days', 22.0))
+                        hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
+                    
+                        entry = {
+                            "payment_period": calculated_period,
+                            "project_type": project_type,
+                            "order_id": order_id,
+                            "client_order_id": client_order_id,
+                            "order_name": clean_order_name,
+                            "manager_name": manager_name,
+                            "employee_name": employee_name_proj,
+                            "ot_reason": ot_reason,
+                            "ot_date": ot_date.strftime("%d/%m/%Y"),
+                            "ot_hours": total_hours_auto,
+                            "hourly_rate": hourly_rate,
+                        }
+                    
+                        for mult, hrs in auto_buckets.items():
+                            if hrs > 0:
+                                res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
+                                k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
+                                entry[k_name] = int(res["ot_pay"])
+                            
+                        st.session_state['ot_records'].append(entry)
+                        st.success(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})")
+                    
+            with tab_manual:
+                st.warning(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0または空白で。"))
+                m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
+                with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f")
+                with m_col2: h_200 = st.number_input(t("Số giờ 200%", "200% 時間"), min_value=0.0, step=0.1, format="%.1f")
+                with m_col3: h_270 = st.number_input(t("Số giờ 270%", "270% 時間"), min_value=0.0, step=0.1, format="%.1f")
+                with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f")
+                with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f")
+            
+                st.markdown(f"##### {t('Hệ số Khác (Tuỳ chỉnh)', 'その他係数（カスタム）')}")
+                c_col1, c_col2 = st.columns(2)
+                with c_col1: c_mult = st.number_input(t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"), min_value=0.0, step=10.0)
+                with c_col2: c_hrs = st.number_input(t("Số giờ cho hệ số này", "時間数"), min_value=0.0, step=0.1, format="%.1f")
+            
+                if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
+                    manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
+                    if employee_name_proj == opt_emp:
+                        st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
+                    elif manual_total <= 0:
+                        st.error(t("Vui lòng nhập ít nhất một trường thời gian lớn hơn 0!", "1つ以上の時間を入力してください！"))
+                    else:
+                        add_to_history("reasons", ot_reason)
+                        std_days = float(base.get('standard_days', 22.0))
+                        hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
+                    
+                        entry = {
+                            "payment_period": calculated_period,
+                            "project_type": project_type,
+                            "order_id": order_id,
+                            "client_order_id": client_order_id,
+                            "order_name": clean_order_name,
+                            "manager_name": manager_name,
+                            "employee_name": employee_name_proj,
+                            "ot_reason": ot_reason,
+                            "ot_date": ot_date.strftime("%d/%m/%Y"),
+                            "ot_hours": manual_total,
+                            "hourly_rate": hourly_rate,
+                        }
+                    
+                        bucket_inputs = {150: h_150, 200: h_200, 270: h_270, 300: h_300, 400: h_400}
+                        if c_hrs > 0 and c_mult > 0:
+                            bucket_inputs[c_mult] = c_hrs
+                        
+                        for mult, hrs in bucket_inputs.items():
+                            if hrs > 0:
+                                res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
+                                k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
+                                entry[k_name] = int(res["ot_pay"])
+                            
+                        st.session_state['ot_records'].append(entry)
+                        st.success(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"))
+
+            if len(st.session_state['ot_records']) > 0:
+                st.markdown("---")
+                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>", unsafe_allow_html=True)
+                st.caption(t("Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.", "セルをクリックして編集。行を選択してDeleteで削除。"))
+            
+                df = pd.DataFrame(st.session_state['ot_records'])
+            
+                col_cfg = {
+                    "payment_period": t("Kỳ Tính Lương", "給与計算期間"),
+                    "project_type": t("Loại Dự Án", "プロジェクト種別"),
+                    "order_id": t("Mã Đơn Hàng", "注文番号"),
+                    "client_order_id": t("Mã ĐH Khách", "客先注文番号"),
+                    "order_name": t("Tên Đơn Hàng", "注文名"),
+                    "manager_name": t("Tên Quản Lý", "PM名"),
+                    "employee_name": t("Người Thực Hiện", "社員名"),
+                    "ot_reason": t("Lý Do OT", "残業理由"),
+                    "ot_date": t("Ngày OT", "残業日"),
+                    "ot_hours": t("Tổng Giờ OT", "総残業時間"),
+                    "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format="%,.0f"),
+                }
+            
+                for key in df.columns:
+                    if key.endswith("%"):
+                        col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="%,.0f")
+                        
+                edited_df = st.data_editor(
+                    st.session_state['ot_records'],
+                    num_rows="dynamic",
+                    use_container_width=True,
+                    key="ot_records_editor",
+                    column_config=col_cfg
+                )
+                st.session_state['ot_records'] = edited_df
+            
+                st.markdown("---")
+                c_name, c_dl, c_del = st.columns([5, 3, 2])
+                with c_name:
+                    default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
+                    export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="ot_manual_filename")
+                    if not export_name.endswith(".xlsx"):
+                        export_name += ".xlsx"
+                    
+                excel_data = export_ot_to_excel(st.session_state['ot_records'], filename=export_name)
+                with c_dl:
+                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                
+                    def download_and_save_ot(*args):
+                        save_action_log(*args)
+                        from logic.history_records import add_records
+                        add_records("ot", st.session_state['ot_records'])
+                    
+                    st.download_button(
+                        label=t("TẢI FILE EXCEL", "Excelダウンロード"),
+                        data=excel_data,
+                        file_name=export_name,
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                        type="primary",
+                        use_container_width=True,
+                        on_click=download_and_save_ot,
+                        args=("OT Manual (Thủ công)", "残業代計算 (手入力)", f"Tính OT thủ công ({len(st.session_state['ot_records'])} bản ghi)", f"残業手入力 ({len(st.session_state['ot_records'])} レコード)", excel_data, export_name)
+                    )
+                with c_del:
+                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                    if st.button(t("XÓA TOÀN BỘ BẢNG", "全データクリア"), use_container_width=True):
+                        st.session_state['ot_records'] = []
+                        st.success(t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！"))
+                        st.rerun()
+            else:
+                st.info(t("Chưa có bản ghi nào. Vui lòng nhập thông tin ở trên và nhấn 'THÊM VÀO BẢNG CHỜ XUẤT'.", "レコードがありません。上記に情報を入力して「追加」を押してください。"))
 
