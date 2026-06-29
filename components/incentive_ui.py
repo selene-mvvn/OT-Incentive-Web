@@ -38,8 +38,7 @@ def render_incentive():
     emp_df = get_employees_df()
     master_employees = emp_df['Tên NV'].tolist() if not emp_df.empty else []
     
-    known_employees = get_history("employees")
-    combined_employees = list(dict.fromkeys(master_employees + known_employees))
+    combined_employees = list(dict.fromkeys(master_employees))
     
     if True:
         st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
