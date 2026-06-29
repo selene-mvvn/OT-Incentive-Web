@@ -22,11 +22,11 @@ def render_mini_leaderboard(data_type="ot"):
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             margin-top: 50px;
             margin-bottom: 20px;
-            border-top: 4px solid {"#00a8e8" if data_type == "ot" else "#ff9f43"};
+            border-top: 4px solid {"#ff9f43" if data_type == "ot" else "#00a8e8"};
         '>
-            <h4 style='text-align: center; color: #2c3e50; font-size: 16px; margin-bottom: 15px; text-transform: uppercase;'>
-                {"⏱️ TOP 5 OT" if data_type == "ot" else "💰 TOP 5 INCENTIVE"}
-            </h4>
+            <div style='text-align: center; color: #2c3e50; font-size: 16px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase;'>
+                {"⏱️ TOP OVERTIME" if data_type == "ot" else "💰 TOP INCENTIVE"}
+            </div>
     """, unsafe_allow_html=True)
 
     records = get_records(data_type)
@@ -110,7 +110,7 @@ def render_mini_leaderboard(data_type="ot"):
             orientation='h',
             marker=dict(
                 color=top_5[val_col][::-1],
-                colorscale=[[0, '#ffebee'], [1, '#d32f2f']] if data_type == "ot" else [[0, '#e0f7fa'], [1, '#0097a7']],
+                colorscale=[[0, '#ffebee'], [1, '#e65100']] if data_type == "ot" else [[0, '#e1f5fe'], [1, '#00a8e8']],
             ),
             text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
             textposition='inside',
