@@ -104,7 +104,7 @@ def render_base_data():
             
         allowance_cols = [c for c in emp_df.columns if c not in standard_cols]
         # Reorder columns logically to fix Firebase's alphabetical sorting
-        ordered_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản"] + allowance_cols + ["Lương Gross"]
+        ordered_cols = ["Mã NV", "Tên NV", "Tên tiếng Nhật", "Phòng ban", "Chức vụ", "Lương cơ bản"] + allowance_cols + ["Lương Gross"]
         emp_df = emp_df[ordered_cols]
         
         for c in allowance_cols:
