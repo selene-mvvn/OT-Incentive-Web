@@ -512,31 +512,11 @@ else:
     st.markdown("""
     <style>
         .stApp {
-            background-color: #f4f8fb !important;
-            background-image: radial-gradient(#d0e3ef 1.5px, transparent 1.5px), linear-gradient(135deg, #f4f8fb 0%, #e1eff6 100%) !important;
-            background-size: 25px 25px, 100% 100% !important;
+            background: #f4f7f9 !important;
+            background-color: #f4f7f9 !important;
         }
-        
-        /* Glassmorphism & Hover Lift for DataFrames */
-        [data-testid="stDataEditor"], [data-testid="stDataFrame"] {
-            background-color: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(10px) !important;
-            -webkit-backdrop-filter: blur(10px) !important;
-            border-radius: 12px !important;
-            padding: 10px !important;
-            box-shadow: 0 8px 32px rgba(0, 176, 240, 0.08) !important;
-            transition: all 0.3s ease !important;
-            border: 1px solid rgba(255, 255, 255, 0.5) !important;
-        }
-        
-        [data-testid="stDataEditor"]:hover, [data-testid="stDataFrame"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(0, 176, 240, 0.15) !important;
-        }
-
         .stButton>button {
-            background-color: rgba(255, 255, 255, 0.9) !important;
-            backdrop-filter: blur(4px) !important;
+            background-color: #ffffff !important;
         }
     </style>
     """, unsafe_allow_html=True)

@@ -32,23 +32,7 @@ def make_history_cards_white():
         markers.forEach(marker => {
             let container = marker.closest('[data-testid="stVerticalBlock"]');
             if (container) {
-                container.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
-                container.style.backdropFilter = 'blur(10px)';
-                container.style.WebkitBackdropFilter = 'blur(10px)';
-                container.style.boxShadow = '0 8px 32px rgba(0, 176, 240, 0.08)';
-                container.style.borderRadius = '12px';
-                container.style.padding = '15px';
-                container.style.border = '1px solid rgba(255, 255, 255, 0.5)';
-                container.style.transition = 'all 0.3s ease';
-                
-                container.onmouseenter = function() {
-                    this.style.transform = 'translateY(-2px)';
-                    this.style.boxShadow = '0 12px 40px rgba(0, 176, 240, 0.15)';
-                };
-                container.onmouseleave = function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = '0 8px 32px rgba(0, 176, 240, 0.08)';
-                };
+                container.style.backgroundColor = '#ffffff';
             }
         });
     </script>
