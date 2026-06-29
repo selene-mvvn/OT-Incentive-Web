@@ -197,13 +197,15 @@ st.markdown("""
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] {
         margin-top: -30px !important;
+        width: 100px !important;
+        margin-left: -1rem !important; /* override Streamlit sidebar padding */
         display: flex !important;
         flex-direction: column !important;
         align-items: center !important;
     }
 
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label {
-        margin: 5px 0 !important;
+        margin: 5px 15px !important;
         width: 70px !important;
         padding: 10px 0 !important;
         border-left: none !important;
