@@ -23,6 +23,32 @@ def make_container_white():
     </script>
     """, height=0)
 
+def make_expander_blue():
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+        const parent = window.parent.document;
+        const frames = parent.querySelectorAll('iframe');
+        frames.forEach(frame => {
+            if (frame.contentWindow === window) {
+                let expander = frame.closest('[data-testid="stExpander"]');
+                if (expander) {
+                    expander.style.backgroundColor = '#f0f9ff';
+                    expander.style.border = '1px solid #00a8e8';
+                    expander.style.borderRadius = '8px';
+                    let summary = expander.querySelector('summary');
+                    if (summary) {
+                        summary.style.backgroundColor = '#e1f5fe';
+                        summary.style.color = '#0277bd';
+                        summary.style.fontWeight = 'bold';
+                        summary.style.borderRadius = '8px 8px 0 0';
+                    }
+                }
+            }
+        });
+    </script>
+    """, height=0)
+
 def _switch_to_select(mode_key, sel_key):
     """Callback to switch back to select mode."""
     st.session_state[mode_key] = "select"

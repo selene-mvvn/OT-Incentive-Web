@@ -294,6 +294,8 @@ def render_project_data():
             projects_df = get_projects_df()
         
             with st.expander(t("📂 Quản lý Danh mục Dự án (Master Data)", "📂 プロジェクトリスト管理 (マスターデータ)")):
+                from components.ui_utils import make_expander_blue
+                make_expander_blue()
                 st.caption(t("Thêm, sửa, xóa các dự án tại đây để tự động điền thông tin khi tính OT.", "ここでプロジェクトを追加・編集・削除すると、OT計算時に自動入力されます。"))
             
                 column_config = {
