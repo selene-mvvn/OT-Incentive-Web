@@ -77,7 +77,7 @@ st.markdown("""
         border-radius: 8px;
         border: 1px solid #e0e6ed;
         padding: 10px;
-        background-color: #f8fafc;
+        background-color: #ffffff;
         transition: all 0.3s ease;
     }
     .stTextInput>div>div>input:focus, .stNumberInput>div>div>input:focus {
@@ -278,6 +278,10 @@ st.markdown("""
     }
     
     /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS & CONTAINERS */
+    [data-testid="stVerticalBlockBorderWrapper"] > div {
+        background-color: #ffffff !important;
+    }
+    
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: #ffffff !important;
         background-color: #ffffff !important;
