@@ -137,7 +137,7 @@ def render_mini_leaderboard(data_type="ot"):
         '>
             <div style='display: flex; align-items: center; gap: 8px;'>
                 <span style='font-size: 16px;'>{medal}</span>
-                <span style='font-weight: 600; color: #34495e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 90px;' title='{emp_name}'>{emp_name}</span>
+                <span style='font-weight: 600; color: #34495e;' title='{emp_name}'>{emp_name}</span>
             </div>
             <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
         </div>
