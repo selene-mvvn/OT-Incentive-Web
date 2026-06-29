@@ -172,15 +172,15 @@ st.markdown("""
     /* Flamingo-style collapsible sidebar */
     [data-testid="stSidebar"][aria-expanded="false"] {
         transform: translateX(0px) !important;
-        width: 80px !important;
-        min-width: 80px !important;
-        max-width: 80px !important;
+        width: 100px !important;
+        min-width: 100px !important;
+        max-width: 100px !important;
         overflow-x: hidden !important;
         transition: all 0.3s ease !important;
     }
     
     [data-testid="stApp"]:has([data-testid="stSidebar"][aria-expanded="false"]) [data-testid="stMain"] {
-        padding-left: 80px !important;
+        padding-left: 100px !important;
         box-sizing: border-box !important;
     }
     
@@ -200,12 +200,19 @@ st.markdown("""
     }
 
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label {
-        padding: 5px !important;
-        margin-left: -10px !important;
+        margin: 5px 10px !important;
+        width: calc(100% - 20px) !important;
+        padding: 10px 0 !important;
         border-left: none !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
+        transform: none !important;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:hover,
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:has(input:checked) {
+        transform: none !important;
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] {
@@ -215,6 +222,7 @@ st.markdown("""
 
     [data-testid="stSidebar"][aria-expanded="false"] img,
     [data-testid="stSidebar"][aria-expanded="false"] h2,
+    [data-testid="stSidebar"][aria-expanded="false"] .sidebar-footer-text,
     [data-testid="stSidebar"][aria-expanded="false"] .stButton {
         display: none !important;
     }
@@ -584,7 +592,7 @@ else:
         menu_selection = st.session_state['menu_selection']
         
         st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-        st.markdown("<div style='text-align: center; opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px;'>VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0</div>", unsafe_allow_html=True)
+        st.markdown("<div class='sidebar-footer-text' style='text-align: center; opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px;'>VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0</div>", unsafe_allow_html=True)
 
     # Main Content Area
     st.markdown("""
