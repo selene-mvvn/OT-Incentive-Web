@@ -250,7 +250,7 @@ def render_base_data():
             st.success(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"))
 
 def render_project_data():
-    col_main, col_rank = st.columns([7.5, 2.5])
+    col_main, col_rank = st.columns([7.5, 2.5], gap="large")
     with col_rank:
         from components.mini_leaderboard import render_mini_leaderboard
         render_mini_leaderboard("ot")
