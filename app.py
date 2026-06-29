@@ -75,9 +75,9 @@ st.markdown("""
     /* Input Fields */
     .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div {
         border-radius: 8px;
-        border: 1px solid #e0e6ed;
+        border: 1px solid #cbd5e1;
         padding: 10px;
-        background-color: #ffffff;
+        background-color: #f8fafc;
         transition: all 0.3s ease;
     }
     .stTextInput>div>div>input:focus, .stNumberInput>div>div>input:focus {
