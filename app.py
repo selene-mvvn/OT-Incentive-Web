@@ -32,11 +32,6 @@ st.markdown("""
     div[data-testid="metric-container"] > div {
         justify-content: center;
     }
-
-    /* Main App Background */
-    .stApp {
-        background-color: #f4f7f9;
-    }
     
     /* Headers and Titles */
     h1, h2, h3 {
@@ -282,20 +277,6 @@ st.markdown("""
     }
     
     /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS & CONTAINERS */
-    [data-testid="stVerticalBlockBorderWrapper"] {
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-        border-radius: 12px !important;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
-        border: 1px solid rgba(0,0,0,0.05) !important;
-        overflow: hidden !important;
-    }
-    
-    [data-testid="stVerticalBlockBorderWrapper"] > div {
-        background: #ffffff !important;
-        background-color: #ffffff !important;
-    }
-    
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: #ffffff;
         border-radius: 12px;
