@@ -72,6 +72,24 @@ st.markdown("""
         color: white !important;
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3);
     }
+
+    /* Download Buttons */
+    [data-testid="stDownloadButton"] > button {
+        border-radius: 30px !important;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 30px;
+        font-size: 13px !important;
+        border: 2px solid #00B0F0 !important;
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        transition: all 0.3s ease !important;
+    }
+    [data-testid="stDownloadButton"] > button:hover {
+        background-color: #008CBA !important;
+        border-color: #008CBA !important;
+        box-shadow: 0 5px 15px rgba(0, 176, 240, 0.4);
+    }
     
     /* Input Fields */
     div[data-baseweb="input"],

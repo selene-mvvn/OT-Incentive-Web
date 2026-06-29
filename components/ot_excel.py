@@ -27,11 +27,10 @@ def render_ot_excel():
             template_filename = t("Bảng tổng hợp tăng ca (OT)_Mẫu.xlsx", "残業・費用集計表(OT)_テンプレート.xlsx")
             template_buffer = export_ot_to_excel([], allow_merge=False, filename=template_filename, is_template=True)
             st.download_button(
-                label="📥 " + t("Tải file Excel mẫu", "テンプレートをダウンロード"),
+                label=t("Tải file Excel mẫu", "テンプレートをダウンロード"),
                 data=template_buffer,
                 file_name=template_filename,
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                use_container_width=True
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
             )
     
         # Placeholder for stepper UI
