@@ -16,14 +16,18 @@ st.markdown("""
     
     /* Metric cards styling - matching the clean soft shadow design */
     div[data-testid="metric-container"] {
-        background-color: #ffffff;
+        background-color: #00B0F0;
+        color: #ffffff !important;
         border: none;
         border-radius: 12px;
         padding: 25px 20px;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        box-shadow: 0 10px 40px rgba(0, 176, 240, 0.2);
         text-align: center;
         transition: transform 0.3s ease;
         margin-bottom: 15px;
+    }
+    div[data-testid="metric-container"] * {
+        color: #ffffff !important;
     }
     div[data-testid="metric-container"]:hover {
         transform: translateY(-5px);
