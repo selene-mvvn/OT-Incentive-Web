@@ -34,11 +34,7 @@ st.markdown("""
     }
 
 
-        /* Main App Background */
-    .stApp {
-        background: #f4f7f9 !important;
-        background-color: #f4f7f9 !important;
-    }
+
     h1, h2, h3 {
         color: #2c3e50;
         text-transform: uppercase;
@@ -66,7 +62,7 @@ st.markdown("""
         text-transform: uppercase;
         padding: 10px 30px;
         border: 2px solid #00B0F0 !important;
-        background-color: #ffffff !important;
+        background-color: transparent !important;
         color: #00B0F0 !important;
         transition: all 0.3s ease !important;
     }
@@ -489,6 +485,18 @@ if 'current_page' not in st.session_state:
 if st.session_state['current_page'] == 'welcome':
     render_welcome()
 else:
+    # Main App specific CSS
+    st.markdown("""
+    <style>
+        .stApp {
+            background: #f4f7f9 !important;
+            background-color: #f4f7f9 !important;
+        }
+        .stButton>button {
+            background-color: #ffffff !important;
+        }
+    </style>
+    """, unsafe_allow_html=True)
     # Sidebar Menu
     with st.sidebar:
         import os
