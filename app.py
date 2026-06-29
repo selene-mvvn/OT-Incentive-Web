@@ -33,11 +33,7 @@ st.markdown("""
         justify-content: center;
     }
 
-    /* Main App Background */
-    .stApp {
-        background-color: #f4f7f9;
-        --secondary-background-color: #ffffff !important;
-    }
+
     
     /* Headers and Titles */
     h1, h2, h3 {
