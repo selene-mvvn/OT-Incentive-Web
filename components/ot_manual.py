@@ -78,12 +78,15 @@ def render_base_data():
         emp_df = get_employees_df()
         if "Ngày vào làm" in emp_df.columns:
             emp_df = emp_df.drop(columns=["Ngày vào làm"])
+        if "Tên tiếng Nhật" not in emp_df.columns:
+            emp_df.insert(2, "Tên tiếng Nhật", "")
         
         st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu (Lương cơ bản + PC ăn trưa + PC khác).", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
         
         col_cfg = {
             "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=False),
             "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
+            "Tên tiếng Nhật": st.column_config.TextColumn(t("Tên tiếng Nhật", "日本語名 (任意)"), required=False),
             "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
             "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
             "Lương cơ bản": st.column_config.TextColumn(t("Lương cơ bản", "基本給")),
@@ -91,13 +94,13 @@ def render_base_data():
         }
         
         # Determine allowance columns (columns that are not standard)
-        standard_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "Lương Gross"]
+        standard_cols = ["Mã NV", "Tên NV", "Tên tiếng Nhật", "Phòng ban", "Chức vụ", "Lương cơ bản", "Lương Gross"]
         
         # Ensure default allowances exist if not present initially
         if "PC ăn trưa" not in emp_df.columns:
-            emp_df.insert(5, "PC ăn trưa", 0)
+            emp_df.insert(6, "PC ăn trưa", 0)
         if "PC khác" not in emp_df.columns:
-            emp_df.insert(6, "PC khác", 0)
+            emp_df.insert(7, "PC khác", 0)
             
         allowance_cols = [c for c in emp_df.columns if c not in standard_cols]
         # Reorder columns logically to fix Firebase's alphabetical sorting

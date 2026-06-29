@@ -55,6 +55,17 @@ def render_gamified_cards(agg_df, metric_col, title_col, unit, theme="ot"):
     with c3:
         st.markdown(card_html("🥉", "TOP 3", t3_bg, t3_border, t3_color, top_3[2][title_col], top_3[2][metric_col]), unsafe_allow_html=True)
 
+def translate_names_in_df(df, name_col):
+    lang = st.session_state.get('language', 'vi')
+    if lang == 'jp':
+        from logic.employee_data import get_employees_df
+        emp_df = get_employees_df()
+        if not emp_df.empty and 'Tên NV' in emp_df.columns and 'Tên tiếng Nhật' in emp_df.columns:
+            emp_map = emp_df[emp_df['Tên tiếng Nhật'].astype(str).str.strip() != ''].set_index('Tên NV')['Tên tiếng Nhật'].to_dict()
+            if emp_map:
+                df[name_col] = df[name_col].map(lambda x: emp_map.get(x, x))
+    return df
+
 def render_dashboard():
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{t('XẾP HẠNG CHUNG', '総合ランキング')}</h2>", unsafe_allow_html=True)
     
@@ -65,6 +76,7 @@ def render_dashboard():
         st.info(t("Chưa có dữ liệu OT nào được lưu.", "保存されたデータがありません。"))
     else:
         df_ot = pd.DataFrame(ot_history).drop_duplicates()
+        df_ot = translate_names_in_df(df_ot, 'employee_name')
         df_ot['date_obj'] = pd.to_datetime(df_ot.get('ot_date'), format='%d/%m/%Y', errors='coerce')
         if 'ot_hours' not in df_ot.columns:
             df_ot['ot_hours'] = 0
@@ -202,6 +214,7 @@ def render_dashboard():
         st.info(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"))
     else:
         df_inc = pd.DataFrame(inc_history).drop_duplicates()
+        df_inc = translate_names_in_df(df_inc, 'employee_name')
         df_inc['date_obj'] = pd.to_datetime(df_inc.get('date'), format='%d/%m/%Y', errors='coerce')
         for col in ['final_incentive', 'target_hours', 'actual_hours']:
             if col not in df_inc.columns:
