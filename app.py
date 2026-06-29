@@ -234,6 +234,10 @@ st.markdown("""
     [data-testid="stSidebar"][aria-expanded="false"] .stButton {
         display: none !important;
     }
+
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:nth-child(1) p::after {
+        display: none !important;
+    }
     
     /* Main category styling for the first item (now clickable) */
     [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):not(:has(input:checked)) {
@@ -592,7 +596,9 @@ else:
                 }
                 /* Hide sub-items when collapsed */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
+                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:nth-child(2),
+                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:nth-child(3) {
                     display: none !important;
                 }
                 
