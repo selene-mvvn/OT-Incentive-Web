@@ -144,14 +144,16 @@ st.markdown("""
     
     /* Selected Menu Item */
     [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-        border: 1px solid rgba(255, 255, 255, 0.4) !important;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.25) !important;
-        transform: translateX(3px);
+        background-color: #FFFFFF !important;
+        border: none !important;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        transform: translateX(5px);
     }
-    
+
     [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] p {
-        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
+        color: #00B0F0 !important;
+        text-shadow: none !important;
+        font-weight: 900 !important;
     }
     
     /* Hide radio button circles */
