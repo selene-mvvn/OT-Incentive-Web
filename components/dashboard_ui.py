@@ -59,7 +59,7 @@ def render_dashboard():
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{t('XẾP HẠNG CHUNG', '総合ランキング')}</h2>", unsafe_allow_html=True)
     
     # === OT RANKING ===
-    st.markdown(f"<h3 style='font-size: 22px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>1. {t('XẾP HẠNG THỜI GIAN OT', '残業時間ランキング')}</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>1. {t('XẾP HẠNG THỜI GIAN OT', '残業時間ランキング')}</h3>", unsafe_allow_html=True)
     ot_history = get_records("ot")
     if not ot_history:
         st.info(t("Chưa có dữ liệu OT nào được lưu.", "保存されたデータがありません。"))
@@ -196,7 +196,7 @@ def render_dashboard():
 
     # === INCENTIVE RANKING ===
     st.markdown("<br><br>", unsafe_allow_html=True)
-    st.markdown(f"<h3 style='font-size: 22px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>2. {t('XẾP HẠNG INCENTIVE', 'インセンティブランキング')}</h3>", unsafe_allow_html=True)
+    st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>2. {t('XẾP HẠNG INCENTIVE', 'インセンティブランキング')}</h3>", unsafe_allow_html=True)
     inc_history = get_records("incentive")
     if not inc_history:
         st.info(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"))
