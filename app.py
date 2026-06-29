@@ -73,17 +73,25 @@ st.markdown("""
     }
     
     /* Input Fields */
-    .stTextInput>div>div>input, .stNumberInput>div>div>input, .stSelectbox>div>div>div {
-        border-radius: 8px;
-        border: 1px solid #cbd5e1;
-        padding: 10px;
-        background-color: #f8fafc;
-        transition: all 0.3s ease;
+    .stTextInput > div[data-baseweb="input"],
+    .stNumberInput > div[data-baseweb="input"],
+    .stDateInput > div[data-baseweb="input"],
+    .stTimeInput > div[data-baseweb="input"],
+    .stSelectbox div[data-baseweb="select"] > div {
+        border-radius: 8px !important;
+        border: 1px solid #cbd5e1 !important;
+        background-color: #f8fafc !important;
+        transition: all 0.3s ease !important;
     }
-    .stTextInput>div>div>input:focus, .stNumberInput>div>div>input:focus {
-        border-color: #00B0F0;
-        box-shadow: 0 0 0 2px rgba(0, 176, 240, 0.2);
-        background-color: #ffffff;
+    
+    .stTextInput > div[data-baseweb="input"]:focus-within,
+    .stNumberInput > div[data-baseweb="input"]:focus-within,
+    .stDateInput > div[data-baseweb="input"]:focus-within,
+    .stTimeInput > div[data-baseweb="input"]:focus-within,
+    .stSelectbox div[data-baseweb="select"] > div:focus-within {
+        border-color: #00B0F0 !important;
+        box-shadow: 0 0 0 2px rgba(0, 176, 240, 0.2) !important;
+        background-color: #ffffff !important;
     }
     
     /* Highlight Data Editor Delete Button (Trash Can) */
