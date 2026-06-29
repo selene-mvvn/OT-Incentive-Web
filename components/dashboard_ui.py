@@ -133,6 +133,8 @@ def render_dashboard():
                 st.session_state['show_success_ot'] = False
                 
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
+                from components.ui_utils import make_expander_blue
+                make_expander_blue()
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_ot_edit = pd.DataFrame(ot_history).drop_duplicates()
                 
@@ -290,6 +292,8 @@ def render_dashboard():
                 st.session_state['show_success_inc'] = False
                 
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
+                from components.ui_utils import make_expander_blue
+                make_expander_blue()
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
                 df_inc_edit = pd.DataFrame(inc_history).drop_duplicates()
                 

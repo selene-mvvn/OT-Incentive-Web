@@ -307,7 +307,7 @@ def render_ot_excel():
         # Show Data Editor if there are records
         if st.session_state.get('ot_excel_records') and len(st.session_state['ot_excel_records']) > 0:
             st.markdown("---")
-            col_title, col_clear = st.columns([8, 2])
+            col_title, col_clear = st.columns([7.5, 2.5])
             with col_title:
                 st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 0;'>{t('BẢNG DỮ LIỆU KẾT QUẢ', '処理結果データ')}</h3>", unsafe_allow_html=True)
             with col_clear:
@@ -360,6 +360,8 @@ def render_ot_excel():
             st.dataframe(styled_df, use_container_width=True)
         
             with st.expander("✏️ " + t("Sửa dữ liệu thủ công (Nếu cần)", "手動でデータ編集（必要に応じて）")):
+                from components.ui_utils import make_expander_blue
+                make_expander_blue()
                 col_cfg = {
                     "payment_period": t("Kỳ Tính Lương", "給与計算期間"),
                     "project_type": t("Loại Dự Án", "プロジェクト種別"),

@@ -61,6 +61,7 @@ st.markdown("""
         font-weight: bold;
         text-transform: uppercase;
         padding: 10px 30px;
+        font-size: 13px !important;
         border: 2px solid #00B0F0 !important;
         background-color: transparent !important;
         color: #00B0F0 !important;

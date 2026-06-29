@@ -109,7 +109,7 @@ def render_incentive():
             result = st.session_state['last_incentive_calc']
             inputs = st.session_state['last_incentive_inputs']
         
-            col_title, col_clear = st.columns([8, 2])
+            col_title, col_clear = st.columns([7.5, 2.5])
             with col_title:
                 st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 0;'>{t('3. Kết quả & Phân tích', '3. 結果と分析')}</h3>", unsafe_allow_html=True)
             with col_clear:
