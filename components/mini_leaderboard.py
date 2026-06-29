@@ -67,7 +67,7 @@ def render_mini_leaderboard(data_type="ot"):
     
     date_col = 'ot_date' if data_type == 'ot' else 'date'
     if date_col in df.columns:
-        df['date_obj'] = pd.to_datetime(df[date_col], format='%Y-%m-%d', errors='coerce')
+        df['date_obj'] = pd.to_datetime(df[date_col], errors='coerce', dayfirst=True)
         years = sorted(df['date_obj'].dt.year.dropna().astype(int).unique().tolist(), reverse=True)
     else:
         years = []
@@ -78,44 +78,30 @@ def render_mini_leaderboard(data_type="ot"):
     st.markdown(f"""
         <style>
         @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0');
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) {{
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border: none !important;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border-top: 4px solid {border_color} !important;
-            padding: 15px 15px 0px 15px !important;
-            margin-top: 10px;
-            margin-bottom: 20px;
-        }}
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) > div > div {{
-            gap: 0.5rem;
-        }}
-        /* Tweak selectbox to make it small and fit the design */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
-            background-color: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0,0,0,0.05);
-            border-radius: 8px;
-            min-height: 32px;
-        }}
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
-            font-size: 13px;
-        }}
         </style>
     """, unsafe_allow_html=True)
     
     with st.container(border=True):
-        st.markdown(f"<span id='marker-{data_type}' style='display:none;'></span>", unsafe_allow_html=True)
-        
         icon = "timer" if data_type == "ot" else "payments"
         title_text = "TOP OVERTIME" if data_type == "ot" else "TOP INCENTIVE"
+        
+        # Gradient Title Block
         st.markdown(f"""
-            <div style='text-align: center; color: #2c3e50; font-size: 16px; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;'>
+            <div style='
+                background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                border-radius: 8px;
+                border-top: 4px solid {border_color};
+                padding: 10px;
+                margin-bottom: 15px;
+                text-align: center; color: #2c3e50; font-size: 16px; font-weight: bold; text-transform: uppercase;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            '>
                 <span class="material-symbols-rounded" style="vertical-align: middle; color: #00a8e8; margin-right: 5px; font-size: 20px;">{icon}</span>
                 <span style="vertical-align: middle;">{title_text}</span>
             </div>
         """, unsafe_allow_html=True)
         
+        # Selectbox (Small and centered)
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             sel_year = st.selectbox(
@@ -124,6 +110,9 @@ def render_mini_leaderboard(data_type="ot"):
                 key=f"mini_year_{data_type}", 
                 label_visibility="collapsed"
             )
+            
+        # Spacing
+        st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
             
         if sel_year not in ["Tất cả", "すべて"]:
             df_filtered = df[df['date_obj'].dt.year == sel_year].copy()
