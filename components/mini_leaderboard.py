@@ -4,27 +4,17 @@ import plotly.graph_objects as go
 from logic.history_records import get_records, save_all_records
 from logic.i18n import t
 
-@st.dialog("MINI_EDIT_DIALOG_TITLE", width="large")
+@st.dialog(" ", width="large")
 def show_mini_edit_dialog(data_type, df):
-    dialog_title = t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集")
     st.markdown(f"""
         <style>
             div[role="dialog"] {{
                 transform: translateY(8vh);
             }}
-            div[role="dialog"] h2 {{
-                visibility: hidden;
-                position: relative;
-            }}
-            div[role="dialog"] h2::after {{
-                content: "{dialog_title}";
-                visibility: visible;
-                position: absolute;
-                left: 0;
-                top: 0;
-                color: inherit;
-            }}
         </style>
+        <h3 style='margin-top: -50px; font-size: 1.25rem; font-weight: 600; padding-bottom: 15px; color: inherit;'>
+            {t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集")}
+        </h3>
     """, unsafe_allow_html=True)
     st.caption(t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。"))
     
