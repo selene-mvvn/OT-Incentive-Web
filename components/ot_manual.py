@@ -162,8 +162,15 @@ def render_base_data():
             st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
             st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
             save_base_data(st.session_state['ot_base_data'])
-            
-            # Tự động tính Lương Gross
+
+            # Auto-translate Vietnamese names to Japanese if empty
+            from logic.name_translator import translate_vn_name_to_kana
+            if "Tên tiếng Nhật" in edited_emp.columns and "Tên NV" in edited_emp.columns:
+                edited_emp["Tên tiếng Nhật"] = edited_emp.apply(
+                    lambda row: translate_vn_name_to_kana(row.get("Tên NV", "")) if not str(row.get("Tên tiếng Nhật", "")).strip() else row.get("Tên tiếng Nhật", ""),
+                    axis=1
+                )
+
             # Convert strings back to numeric for calculation and saving
             for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
                 edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
