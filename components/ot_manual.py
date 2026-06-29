@@ -128,6 +128,8 @@ def render_base_data():
         )
         
         with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
+            from components.ui_utils import make_expander_blue
+            make_expander_blue()
             add_c1, add_c2 = st.columns([3, 1])
             with add_c1:
                 new_pc_name = st.text_input(t("Nhập tên Phụ cấp mới:", "新しい手当名:"), key="new_pc_input")
