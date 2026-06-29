@@ -4,8 +4,15 @@ import plotly.graph_objects as go
 from logic.history_records import get_records, save_all_records
 from logic.i18n import t
 
-@st.dialog(t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集"))
+@st.dialog(t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集"), width="large")
 def show_mini_edit_dialog(data_type, df):
+    st.markdown("""
+        <style>
+            div[data-testid="stModal"] > div[role="dialog"] {
+                transform: translateY(8vh);
+            }
+        </style>
+    """, unsafe_allow_html=True)
     st.caption(t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。"))
     edited_df = st.data_editor(df, use_container_width=True, num_rows="dynamic", key=f"dialog_edit_{data_type}")
     if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
