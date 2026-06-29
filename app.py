@@ -283,10 +283,10 @@ st.markdown("""
     
     /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS & CONTAINERS */
     [data-testid="stVerticalBlockBorderWrapper"] {
-        background-color: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-        border: 1px solid rgba(0,0,0,0.05);
+        background-color: #ffffff !important;
+        border-radius: 12px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
     }
     
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
