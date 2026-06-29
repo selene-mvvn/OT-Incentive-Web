@@ -154,6 +154,11 @@ st.markdown("""
         text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
     }
     
+    /* Hide radio button circles */
+    [data-testid="stSidebar"] div[role="radiogroup"] > label > div:not(:has(p)):not([data-testid="stMarkdownContainer"]) {
+        display: none !important;
+    }
+    
     [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p {
         font-weight: bold;
         font-size: 15px;
@@ -433,27 +438,27 @@ else:
         st.markdown(f"<h2 style='text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
         options = [
-            t("OVERTIME", "残業代計算"),
-            t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"),
-            t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"),
-            t("INCENTIVE", "インセンティブ"),
-            t("LỊCH SỬ THAO TÁC", "操作履歴"),
-            t("CÀI ĐẶT CHUNG", "一般設定")
+            t("⏱️ OVERTIME", "⏱️ 残業代計算"),
+            t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"),
+            t("📝 NHẬP HÀNG LOẠT (EXCEL)", "📝 一括入力"),
+            t("💰 INCENTIVE", "💰 インセンティブ"),
+            t("🕒 LỊCH SỬ THAO TÁC", "🕒 操作履歴"),
+            t("⚙️ CÀI ĐẶT CHUNG", "⚙️ 一般設定")
         ]
         
         if 'ot_menu_expanded' not in st.session_state:
             st.session_state['ot_menu_expanded'] = True
             
-        header_text = t("OVERTIME ▼", "残業代計算 ▼") if st.session_state['ot_menu_expanded'] else t("OVERTIME ▶", "残業代計算 ▶")
+        header_text = t("⏱️ OVERTIME ▼", "⏱️ 残業代計算 ▼") if st.session_state['ot_menu_expanded'] else t("⏱️ OVERTIME ▶", "⏱️ 残業代計算 ▶")
         
         options = [
             header_text,
-            t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"),
-            t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"),
-            t("INCENTIVE", "インセンティブ"),
+            t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"),
+            t("📝 NHẬP HÀNG LOẠT (EXCEL)", "📝 一括入力"),
+            t("💰 INCENTIVE", "💰 インセンティブ"),
             t("🏆 XẾP HẠNG CHUNG", "🏆 総合ランキング"),
-            t("LỊCH SỬ THAO TÁC", "操作履歴"),
-            t("CÀI ĐẶT CHUNG", "一般設定")
+            t("🕒 LỊCH SỬ THAO TÁC", "🕒 操作履歴"),
+            t("⚙️ CÀI ĐẶT CHUNG", "⚙️ 一般設定")
         ]
         
         if st.session_state['ot_menu_expanded']:
@@ -506,13 +511,13 @@ else:
         # We need to map English internal keys to options to persist selection across language changes
         # Or just reset it if not found
         if 'menu_selection' not in st.session_state or st.session_state['menu_selection'] not in options:
-            st.session_state['menu_selection'] = t("— DỮ LIỆU DỰ ÁN", "— プロジェクト")
+            st.session_state['menu_selection'] = t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト")
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
             if "▼" in sel or "▶" in sel:
                 st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
-                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"))
+                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"))
             else:
                 st.session_state['prev_ot_selection'] = sel
             
@@ -586,13 +591,13 @@ else:
     if menu_selection == t("🏆 XẾP HẠNG CHUNG", "🏆 総合ランキング"):
         from components.dashboard_ui import render_dashboard
         render_dashboard()
-    elif "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("— DỮ LIỆU DỰ ÁN", "— プロジェクト"):
+    elif "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"):
         render_project_data()
-    elif menu_selection == t("— NHẬP HÀNG LOẠT (EXCEL)", "— 一括入力"):
+    elif menu_selection == t("📝 NHẬP HÀNG LOẠT (EXCEL)", "📝 一括入力"):
         render_ot_excel()
-    elif menu_selection == t("INCENTIVE", "インセンティブ"):
+    elif menu_selection == t("💰 INCENTIVE", "💰 インセンティブ"):
         render_incentive()
-    elif menu_selection == t("LỊCH SỬ THAO TÁC", "操作履歴"):
+    elif menu_selection == t("🕒 LỊCH SỬ THAO TÁC", "🕒 操作履歴"):
         render_action_history()
-    elif menu_selection == t("CÀI ĐẶT CHUNG", "一般設定"):
+    elif menu_selection == t("⚙️ CÀI ĐẶT CHUNG", "⚙️ 一般設定"):
         render_base_data()
