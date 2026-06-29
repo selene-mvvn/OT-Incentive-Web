@@ -267,7 +267,8 @@ st.markdown("""
     /* Make the title area cleaner */
     .block-container {
         animation: fadeIn 0.4s ease-out;
-        padding-top: 3rem;
+        padding-top: 1rem !important;
+        margin-top: -1.5rem;
         padding-bottom: 5rem;
     }
     
@@ -636,7 +637,7 @@ else:
     <div style="text-align: center; color: #00a8e8; font-family: 'Times New Roman', serif !important; font-size: 2.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px; line-height: 1.2;">
         OVERTIME & INCENTIVE MANAGEMENT SYSTEM
     </div>
-    <div style='text-align: center; color: #00a8e8; font-family: "Times New Roman", serif; font-size: 1.2rem; margin-top: 10px; margin-bottom: 50px; font-weight: bold; font-style: italic; letter-spacing: 2px;'>
+    <div style='text-align: center; color: #00a8e8; font-family: "Times New Roman", serif; font-size: 1.2rem; margin-top: 10px; margin-bottom: 30px; font-weight: bold; font-style: italic; letter-spacing: 2px;'>
         VIET.MOS COMPANY LIMITED
     </div>
     """, unsafe_allow_html=True)
