@@ -106,20 +106,20 @@ st.markdown("""
     
     /* === SIDEBAR STYLING === */
     [data-testid="stSidebar"] {
-        background-color: #00B0F0 !important;
-        box-shadow: 5px 0 20px rgba(0,0,0,0.1);
+        background-color: #FFFFFF !important;
+        box-shadow: 2px 0 15px rgba(0,0,0,0.05);
     }
-    
-    [data-testid="stSidebar"] .stMarkdown, 
-    [data-testid="stSidebar"] p, 
-    [data-testid="stSidebar"] h1, 
-    [data-testid="stSidebar"] h2, 
-    [data-testid="stSidebar"] h3, 
+
+    [data-testid="stSidebar"] .stMarkdown,
+    [data-testid="stSidebar"] p,
+    [data-testid="stSidebar"] h1,
+    [data-testid="stSidebar"] h2,
+    [data-testid="stSidebar"] h3,
     [data-testid="stSidebar"] label {
-        color: #FFFFFF !important;
+        color: #2c3e50 !important;
         font-family: 'Times New Roman', serif !important;
     }
-    
+
     /* Radio buttons in sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] > label {
         background-color: transparent;
@@ -130,37 +130,34 @@ st.markdown("""
         transition: all 0.3s ease;
         cursor: pointer;
     }
-    
+
     [data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
-        background-color: rgba(255, 255, 255, 0.1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.2) !important;
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.15) !important;
+        background-color: #f8f9fa !important;
         transform: translateX(3px);
     }
-    
+
     [data-testid="stSidebar"] div[role="radiogroup"] > label:hover p {
-        text-shadow: 0 0 5px rgba(255, 255, 255, 0.4) !important;
+        color: #0090d0 !important;
     }
-    
+
     /* Selected Menu Item */
     [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-        background-color: #FFFFFF !important;
+        background: linear-gradient(to right, #eb3b8d 0%, #eb3b8d 8px, #00a8e8 8px, #00a8e8 100%) !important;
         border: none !important;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+        box-shadow: 0 4px 12px rgba(0, 168, 232, 0.3) !important;
         transform: translateX(5px);
     }
 
     [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) p {
-        color: #00B0F0 !important;
-        text-shadow: none !important;
+        color: #FFFFFF !important;
         font-weight: 900 !important;
     }
-    
+
     /* Hide radio button circles */
     [data-testid="stSidebar"] div[role="radiogroup"] > label > div:not(:has(p)):not([data-testid="stMarkdownContainer"]) {
         display: none !important;
     }
-    
+
     [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p {
         font-weight: bold;
         font-size: 15px;
@@ -539,16 +536,16 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
                     margin-left: 30px;
                     padding-left: 10px;
-                    border-left: 2px solid rgba(255, 255, 255, 0.2) !important;
+                    border-left: 2px solid rgba(0, 0, 0, 0.1) !important;
                     border-radius: 0 8px 8px 0;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):hover,
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover {
-                    border-left: 2px solid #ffffff !important;
+                    border-left: 2px solid #00a8e8 !important;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):has(input:checked),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):has(input:checked) {
-                    border-left: 2px solid #ffffff !important;
+                    border-left: none !important;
                 }
                 /* Main items 4, 5, 6, 7 styling */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4),
