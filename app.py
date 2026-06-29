@@ -178,7 +178,8 @@ st.markdown("""
     }
     
     [data-testid="stApp"]:has([data-testid="stSidebar"][aria-expanded="false"]) [data-testid="stMain"] {
-        margin-left: 80px !important;
+        padding-left: 80px !important;
+        box-sizing: border-box !important;
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] p strong {
