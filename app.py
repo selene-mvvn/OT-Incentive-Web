@@ -189,14 +189,17 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] p {
-        font-size: 32px !important;
+        font-size: 26px !important;
         text-align: center;
         margin: 0 !important;
-        padding: 5px 0 !important;
+        padding: 0 !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
     }
 
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] span {
-        font-size: 32px !important;
+        font-size: 26px !important;
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] {
