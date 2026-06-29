@@ -63,7 +63,7 @@ st.markdown("""
         text-transform: uppercase;
         padding: 10px 30px;
         border: 2px solid #00B0F0 !important;
-        background-color: transparent !important;
+        background-color: #ffffff !important;
         color: #00B0F0 !important;
         transition: all 0.3s ease !important;
     }
@@ -280,7 +280,8 @@ st.markdown("""
     
     /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS & CONTAINERS */
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
-        background: #ffffff;
+        background: #ffffff !important;
+        background-color: #ffffff !important;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.06);
         border: 1px solid rgba(0,0,0,0.05);
