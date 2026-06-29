@@ -48,15 +48,20 @@ def make_expander_blue():
             if (frame.contentWindow === window) {
                 let expander = frame.closest('[data-testid="stExpander"]');
                 if (expander) {
-                    expander.style.backgroundColor = 'rgba(0, 176, 240, 0.03)';
-                    expander.style.border = '1px solid #00B0F0';
+                    expander.style.backgroundColor = '#ffffff';
+                    expander.style.border = '2px solid #00B0F0';
                     expander.style.borderRadius = '8px';
                     let summary = expander.querySelector('summary');
                     if (summary) {
-                        summary.style.backgroundColor = 'rgba(0, 176, 240, 0.1)';
-                        summary.style.color = '#00B0F0';
+                        summary.style.backgroundColor = '#00B0F0';
+                        summary.style.color = '#ffffff';
                         summary.style.fontWeight = 'bold';
-                        summary.style.borderRadius = '8px 8px 0 0';
+                        summary.style.borderRadius = '5px 5px 0 0';
+                        let svg = summary.querySelector('svg');
+                        if (svg) {
+                            svg.style.fill = '#ffffff';
+                            svg.style.color = '#ffffff';
+                        }
                     }
                 }
             }
