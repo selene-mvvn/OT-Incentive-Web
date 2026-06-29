@@ -19,7 +19,7 @@ def render_ot_excel():
         title = t("TÍNH TIỀN TĂNG CA HÀNG LOẠT (File Excel)", "残業代一括計算（Excelファイル）")
         st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
     
-        c_inst1, c_space, c_inst2 = st.columns([7.5, 0.2, 2.3])
+        c_inst1, c_space, c_inst2 = st.columns([6.8, 0.2, 3.0])
         with c_inst1:
             st.markdown(t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: **Ngày**, **Tên nhân viên**, **OT**, **Lý do tăng ca**.", "システムからExcelファイルをアップロードしてください。必要な列：日付、社員名、OT、残業理由"), unsafe_allow_html=True)
         with c_inst2:
