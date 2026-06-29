@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from logic.history import get_records
+from logic.history_records import get_records
 from logic.i18n import t
 
 def render_mini_leaderboard(data_type="ot"):
