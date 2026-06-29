@@ -107,7 +107,7 @@ st.markdown("""
     /* === SIDEBAR STYLING === */
     [data-testid="stSidebar"] {
         background-color: #FFFFFF !important;
-        box-shadow: 2px 0 15px rgba(0,0,0,0.05);
+        box-shadow: 4px 0 25px rgba(0,0,0,0.12);
     }
 
     [data-testid="stSidebar"] .stMarkdown,
@@ -142,7 +142,7 @@ st.markdown("""
 
     /* Selected Menu Item */
     [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
-        background: linear-gradient(to right, #eb3b8d 0%, #eb3b8d 8px, #00a8e8 8px, #00a8e8 100%) !important;
+        background: #00a8e8 !important;
         border: none !important;
         box-shadow: 0 4px 12px rgba(0, 168, 232, 0.3) !important;
         transform: translateX(5px);
@@ -235,22 +235,9 @@ st.markdown("""
         display: none !important;
     }
     
-    /* Sidebar buttons (Quay lại trang chủ) */
-    [data-testid="stSidebar"] .stButton>button {
-        border-color: rgba(255, 255, 255, 0.4) !important;
-        color: #ffffff !important;
-    }
-    [data-testid="stSidebar"] .stButton>button:hover {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-        border-color: #ffffff !important;
-        box-shadow: 0 0 15px rgba(255, 255, 255, 0.4), inset 0 0 10px rgba(255, 255, 255, 0.2) !important;
-        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
-        transform: translateY(-2px);
-    }
-    
     /* Main category styling for the first item (now clickable) */
     [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) {
-        border-bottom: 2px solid rgba(255,255,255,0.3) !important;
+        border-bottom: 1px solid rgba(0,0,0,0.1) !important;
         padding-bottom: 10px;
         margin-bottom: 10px;
         border-radius: 0;
@@ -262,12 +249,13 @@ st.markdown("""
     [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p {
         text-shadow: none !important;
         font-size: 16px;
-        color: #e0f7ff !important;
+        color: #00a8e8 !important;
+        font-weight: bold;
         transition: all 0.3s;
     }
     [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):hover p {
-        color: #ffffff !important;
-        text-shadow: 0 0 8px rgba(255, 255, 255, 0.6) !important;
+        color: #007bb5 !important;
+        text-shadow: none !important;
     }
     
     /* 5. PAGE FADE-IN TRANSITION */
@@ -486,21 +474,48 @@ if st.session_state['current_page'] == 'welcome':
 else:
     # Sidebar Menu
     with st.sidebar:
-        if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
-            st.session_state['current_page'] = 'welcome'
-            st.rerun()
-            
-        st.markdown("<br>", unsafe_allow_html=True)
         import os
-        if os.path.exists("logo.png"):
-            # Create columns to center the logo and make it not too large
-            col1, col2, col3 = st.columns([1, 2, 1])
+        logo_path = "logo.png" if os.path.exists("logo.png") else ("logo.jpg" if os.path.exists("logo.jpg") else None)
+        if logo_path:
+            import base64
+            with open(logo_path, "rb") as f:
+                encoded = base64.b64encode(f.read()).decode()
+            ext = "png" if logo_path.endswith(".png") else "jpeg"
+            st.markdown(f"""
+            <style>
+            [data-testid="stSidebar"] .stButton:first-of-type button {{
+                background-image: url("data:image/{ext};base64,{encoded}");
+                background-size: contain;
+                background-repeat: no-repeat;
+                background-position: center;
+                height: 80px;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }}
+            [data-testid="stSidebar"] .stButton:first-of-type button p {{
+                visibility: hidden;
+            }}
+            [data-testid="stSidebar"] .stButton:first-of-type button:hover {{
+                transform: scale(1.05);
+                transition: transform 0.3s;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }}
+            </style>
+            """, unsafe_allow_html=True)
+            col1, col2, col3 = st.columns([1, 4, 1])
             with col2:
-                st.image("logo.png", use_container_width=True)
-        elif os.path.exists("logo.jpg"):
-            col1, col2, col3 = st.columns([1, 2, 1])
-            with col2:
-                st.image("logo.jpg", use_container_width=True)
+                if st.button("HOME", use_container_width=True):
+                    st.session_state['current_page'] = 'welcome'
+                    st.rerun()
+            st.markdown("<br>", unsafe_allow_html=True)
+        else:
+            if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
+                st.session_state['current_page'] = 'welcome'
+                st.rerun()
+            st.markdown("<br>", unsafe_allow_html=True)
         
         menu_title = t("MENU", "管理メニュー")
         st.markdown(f"<h2 style='text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
