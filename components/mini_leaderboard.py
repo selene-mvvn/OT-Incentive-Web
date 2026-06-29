@@ -110,7 +110,7 @@ def render_mini_leaderboard(data_type="ot"):
             orientation='h',
             marker=dict(
                 color=top_5[val_col][::-1],
-                colorscale=[[0, '#e0f7fa'], [1, '#00aced']] if data_type == "ot" else [[0, '#fff3e0'], [1, '#f57c00']],
+                colorscale=[[0, '#ffebee'], [1, '#d32f2f']] if data_type == "ot" else [[0, '#e0f7fa'], [1, '#0097a7']],
             ),
             text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
             textposition='inside',
