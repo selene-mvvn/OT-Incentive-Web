@@ -266,7 +266,9 @@ def render_project_data():
             st.warning("⚠️ " + t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước.", "一般設定でスタッフを1名以上追加してください。"))
             return
         
-        with st.container(border=True):
+        with st.container():
+            from components.ui_utils import make_container_white
+            make_container_white()
             import datetime
             try:
                 fd_str = st.session_state['ot_base_data'].get('from_date', '')

@@ -45,7 +45,9 @@ def render_incentive():
     
         combined_employees = list(dict.fromkeys(master_employees))
     
-        with st.container(border=True):
+        with st.container():
+            from components.ui_utils import make_container_white
+            make_container_white()
             st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 5px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
             col_info1, col_info2, col_info3 = st.columns(3)
         

@@ -2,6 +2,27 @@ import streamlit as st
 from logic.history import get_history, remove_from_history
 from logic.i18n import t
 
+def make_container_white():
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+        const parent = window.parent.document;
+        const frames = parent.querySelectorAll('iframe');
+        frames.forEach(frame => {
+            if (frame.contentWindow === window) {
+                let container = frame.closest('[data-testid="stVerticalBlock"]');
+                if (container) {
+                    container.style.backgroundColor = '#ffffff';
+                    container.style.borderRadius = '12px';
+                    container.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+                    container.style.padding = '20px';
+                    container.style.border = '1px solid rgba(0,0,0,0.05)';
+                }
+            }
+        });
+    </script>
+    """, height=0)
+
 def _switch_to_select(mode_key, sel_key):
     """Callback to switch back to select mode."""
     st.session_state[mode_key] = "select"

@@ -84,7 +84,9 @@ def render_mini_leaderboard(data_type="ot"):
         </style>
     """, unsafe_allow_html=True)
     
-    with st.container(border=True):
+    with st.container():
+        from components.ui_utils import make_container_white
+        make_container_white()
         icon = "timer" if data_type == "ot" else "payments"
         title_text = "TOP OVERTIME" if data_type == "ot" else "TOP INCENTIVE"
         
