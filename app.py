@@ -180,8 +180,7 @@ st.markdown("""
     }
     
     [data-testid="stApp"]:has([data-testid="stSidebar"][aria-expanded="false"]) [data-testid="stMain"] {
-        padding-left: 100px !important;
-        box-sizing: border-box !important;
+        /* Removed padding-left to prevent shifting */
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] p strong {
