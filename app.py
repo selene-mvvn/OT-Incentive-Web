@@ -352,37 +352,45 @@ from logic.i18n import t
 @st.dialog(t("📖 HƯỚNG DẪN SỬ DỤNG", "📖 使い方ガイド"))
 def show_user_guide():
     st.markdown(t("""
-### 1. Dữ liệu nền
-- Nhập thông tin nhân sự và thiết lập mức lương cơ bản (Gross).
-- Dữ liệu này **bắt buộc** phải có để hệ thống tính toán chính xác.
+### 1. OVERTIME
+- **Dữ liệu dự án**: Nhập thủ công thời gian tăng ca cho từng dự án. Dữ liệu nhân sự và lương được tự động đồng bộ từ Cài đặt chung.
+- **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu để hệ thống tự động nhận diện và tính toán thời gian tăng ca hàng loạt cực kỳ nhanh chóng.
 
-### 2. Tính tiền tăng ca
-- **Dữ liệu dự án**: Nhập thủ công số giờ làm việc cho từng dự án.
-- **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu Excel của bạn. Hệ thống thông minh sẽ tự động nhận diện các cột (Ngày, Tên nhân viên, OT, Lý do...) và tính toán hàng loạt nhanh chóng.
+### 2. INCENTIVE
+- Tự động trích xuất và gợi ý dữ liệu từ các dự án đã thực hiện.
+- Đánh giá hiệu suất làm việc dựa trên số giờ làm việc thực tế so với kế hoạch, từ đó quy đổi chính xác ra mức tiền thưởng (Incentive).
 
-### 3. Tính Incentive
-- Tự động gợi ý thông minh các Dữ liệu Dự án và Nhân sự từ kho lịch sử.
-- Đánh giá hiệu suất làm việc dựa trên số giờ tiết kiệm được (Kế hoạch - Thực tế), từ đó quy đổi chính xác ra mức tiền thưởng (Incentive).
+### 3. XẾP HẠNG CHUNG
+- Bảng xếp hạng vinh danh thành tích của toàn bộ nhân viên.
+- Trực quan hóa dữ liệu qua biểu đồ cho cả thời gian tăng ca (OT) và tiền thưởng (Incentive).
 
-### 4. Lịch sử thao tác
-- Các file Excel bạn xuất ra sẽ được tự động lưu lại.
-- Bạn có thể xem lại lịch sử, tải lại file cũ, hoặc xóa dữ liệu thừa.
+### 4. LỊCH SỬ THAO TÁC
+- Các file Excel dữ liệu đã xuất ra sẽ được tự động lưu trữ an toàn.
+- Dễ dàng xem lại, tải xuống file cũ hoặc xóa bỏ dữ liệu thừa.
+
+### 5. CÀI ĐẶT CHUNG
+- Thiết lập thông tin nhân sự, mức lương cơ bản (Gross) và các cấu hình hệ thống.
+- **Lưu ý**: Vui lòng thiết lập dữ liệu tại đây trước để hệ thống có cơ sở tính toán chính xác nhất.
     """, """
-### 1. 基本データ
-- スタッフ情報の入力および基本給（Gross）の設定を行います。
-- このデータは計算のための**必須項目**です。
+### 1. 残業代計算 (OVERTIME)
+- **プロジェクト**: 各プロジェクトの残業時間を手動で入力します。スタッフデータや給与情報は一般設定から自動的に同期されます。
+- **一括入力 (Excel)**: Excelデータをアップロードするだけで、システムが自動的に認識し、スマートかつ迅速に一括計算します。
 
-### 2. 残業代計算
-- **プロジェクト**: プロジェクトごとに手動で残業時間を入力します。
-- **一括入力 (Excel)**: お持ちのExcelデータを直接アップロードするだけで、システムが自動的に列（日付、名前、OT、理由など）を認識し、スマートに一括計算します。
+### 2. インセンティブ (INCENTIVE)
+- 実行済みのプロジェクトからデータを自動的に抽出・提案します。
+- 計画工数と実績工数の差に基づいてパフォーマンスを評価し、獲得インセンティブを正確に算出します。
 
-### 3. インセンティブ計算
-- 履歴からプロジェクトとスタッフのデータを自動提案します。
-- 節約された時間（計画工数 - 実績工数）に基づいてパフォーマンスを評価し、獲得インセンティブを正確に算出します。
+### 3. 総合ランキング
+- 全スタッフの成績ランキングを表示し、優秀な個人を称えます。
+- 残業時間（OT）とインセンティブの両方のデータをグラフでわかりやすく視覚化します。
 
 ### 4. 操作履歴
-- ダウンロードしたExcelファイルは自動保存されます。
-- いつでも履歴の確認、ファイルの再ダウンロード、削除が可能です。
+- 出力されたすべてのExcelファイルは自動的かつ安全に保存されます。
+- いつでも過去のファイルの確認、再ダウンロード、不要なファイルの削除が可能です。
+
+### 5. 一般設定
+- スタッフ情報、基本給（Gross）、およびシステムの基本構成を設定します。
+- **注意**: 他のセクションで正確な計算を行うために、まずここで初期データを設定してください。
     """))
 
 # --- Creative Language Switcher (Always visible) ---
