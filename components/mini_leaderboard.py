@@ -202,7 +202,7 @@ def render_mini_leaderboard(data_type="ot"):
                     text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
                     textposition='inside',
                     insidetextanchor='end',
-                    textfont=dict(color='white', size=10)
+                    textfont=dict(color='#2c3e50', size=11)
                 ))
                 fig.update_layout(
                     margin=dict(l=0, r=0, t=5, b=5),
