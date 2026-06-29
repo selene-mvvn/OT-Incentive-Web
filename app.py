@@ -89,6 +89,13 @@ st.markdown("""
         box-shadow: 0 0 0 2px rgba(0, 176, 240, 0.2) !important;
         background-color: #ffffff !important;
     }
+
+    /* Dropdown Hover Effects */
+    ul[role="listbox"] li[role="option"]:hover,
+    ul[role="listbox"] li[role="option"][aria-selected="true"] {
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+    }
     
     /* Highlight Data Editor Delete Button (Trash Can) */
     [data-testid="stDataEditor"] button[aria-label*="delete" i],
