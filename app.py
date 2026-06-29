@@ -167,6 +167,43 @@ st.markdown("""
         transition: all 0.3s ease;
     }
     
+    /* Flamingo-style collapsible sidebar */
+    [data-testid="stSidebar"][aria-expanded="false"] {
+        transform: translateX(0px) !important;
+        width: 80px !important;
+        min-width: 80px !important;
+        max-width: 80px !important;
+        overflow-x: hidden !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    [data-testid="stApp"]:has([data-testid="stSidebar"][aria-expanded="false"]) [data-testid="stMain"] {
+        margin-left: 80px !important;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] p strong {
+        display: none !important;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] p {
+        font-size: 24px !important;
+        text-align: center;
+        margin: 0 !important;
+        padding: 5px 0 !important;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label {
+        padding: 5px !important;
+        margin-left: 0 !important;
+        border-left: none !important;
+        display: flex;
+        justify-content: center;
+    }
+    
+    [data-testid="stSidebar"][aria-expanded="false"] img {
+        display: none !important;
+    }
+    
     /* Sidebar buttons (Quay lại trang chủ) */
     [data-testid="stSidebar"] .stButton>button {
         border-color: rgba(255, 255, 255, 0.4) !important;
@@ -438,27 +475,27 @@ else:
         st.markdown(f"<h2 style='text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
         options = [
-            t("⏱️ OVERTIME", "⏱️ 残業代計算"),
-            t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"),
-            t("📝 NHẬP HÀNG LOẠT (EXCEL)", "📝 一括入力"),
-            t("💰 INCENTIVE", "💰 インセンティブ"),
-            t("🕒 LỊCH SỬ THAO TÁC", "🕒 操作履歴"),
-            t("⚙️ CÀI ĐẶT CHUNG", "⚙️ 一般設定")
+            t("⏱️ **OVERTIME**", "⏱️ **残業代計算**"),
+            t("📂 **DỮ LIỆU DỰ ÁN**", "📂 **プロジェクト**"),
+            t("📝 **NHẬP HÀNG LOẠT (EXCEL)**", "📝 **一括入力**"),
+            t("💰 **INCENTIVE**", "💰 **インセンティブ**"),
+            t("🕒 **LỊCH SỬ THAO TÁC**", "🕒 **操作履歴**"),
+            t("⚙️ **CÀI ĐẶT CHUNG**", "⚙️ **一般設定**")
         ]
         
         if 'ot_menu_expanded' not in st.session_state:
             st.session_state['ot_menu_expanded'] = True
             
-        header_text = t("⏱️ OVERTIME ▼", "⏱️ 残業代計算 ▼") if st.session_state['ot_menu_expanded'] else t("⏱️ OVERTIME ▶", "⏱️ 残業代計算 ▶")
+        header_text = t("⏱️ **OVERTIME ▼**", "⏱️ **残業代計算 ▼**") if st.session_state['ot_menu_expanded'] else t("⏱️ **OVERTIME ▶**", "⏱️ **残業代計算 ▶**")
         
         options = [
             header_text,
-            t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"),
-            t("📝 NHẬP HÀNG LOẠT (EXCEL)", "📝 一括入力"),
-            t("💰 INCENTIVE", "💰 インセンティブ"),
-            t("🏆 XẾP HẠNG CHUNG", "🏆 総合ランキング"),
-            t("🕒 LỊCH SỬ THAO TÁC", "🕒 操作履歴"),
-            t("⚙️ CÀI ĐẶT CHUNG", "⚙️ 一般設定")
+            t("📂 **DỮ LIỆU DỰ ÁN**", "📂 **プロジェクト**"),
+            t("📝 **NHẬP HÀNG LOẠT (EXCEL)**", "📝 **一括入力**"),
+            t("💰 **INCENTIVE**", "💰 **インセンティブ**"),
+            t("🏆 **XẾP HẠNG CHUNG**", "🏆 **総合ランキング**"),
+            t("🕒 **LỊCH SỬ THAO TÁC**", "🕒 **操作履歴**"),
+            t("⚙️ **CÀI ĐẶT CHUNG**", "⚙️ **一般設定**")
         ]
         
         if st.session_state['ot_menu_expanded']:
@@ -511,13 +548,13 @@ else:
         # We need to map English internal keys to options to persist selection across language changes
         # Or just reset it if not found
         if 'menu_selection' not in st.session_state or st.session_state['menu_selection'] not in options:
-            st.session_state['menu_selection'] = t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト")
+            st.session_state['menu_selection'] = t("📂 **DỮ LIỆU DỰ ÁN**", "📂 **プロジェクト**")
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
             if "▼" in sel or "▶" in sel:
                 st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
-                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"))
+                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t("📂 **DỮ LIỆU DỰ ÁN**", "📂 **プロジェクト**"))
             else:
                 st.session_state['prev_ot_selection'] = sel
             
@@ -588,16 +625,16 @@ else:
     if st.button("?", key="floating_guide_btn", help=t("Hướng dẫn sử dụng", "使い方ガイド")):
         show_user_guide()
     
-    if menu_selection == t("🏆 XẾP HẠNG CHUNG", "🏆 総合ランキング"):
+    if menu_selection == t("🏆 **XẾP HẠNG CHUNG**", "🏆 **総合ランキング**"):
         from components.dashboard_ui import render_dashboard
         render_dashboard()
-    elif "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("📂 DỮ LIỆU DỰ ÁN", "📂 プロジェクト"):
+    elif "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t("📂 **DỮ LIỆU DỰ ÁN**", "📂 **プロジェクト**"):
         render_project_data()
-    elif menu_selection == t("📝 NHẬP HÀNG LOẠT (EXCEL)", "📝 一括入力"):
+    elif menu_selection == t("📝 **NHẬP HÀNG LOẠT (EXCEL)**", "📝 **一括入力**"):
         render_ot_excel()
-    elif menu_selection == t("💰 INCENTIVE", "💰 インセンティブ"):
+    elif menu_selection == t("💰 **INCENTIVE**", "💰 **インセンティブ**"):
         render_incentive()
-    elif menu_selection == t("🕒 LỊCH SỬ THAO TÁC", "🕒 操作履歴"):
+    elif menu_selection == t("🕒 **LỊCH SỬ THAO TÁC**", "🕒 **操作履歴**"):
         render_action_history()
-    elif menu_selection == t("⚙️ CÀI ĐẶT CHUNG", "⚙️ 一般設定"):
+    elif menu_selection == t("⚙️ **CÀI ĐẶT CHUNG**", "⚙️ **一般設定**"):
         render_base_data()
