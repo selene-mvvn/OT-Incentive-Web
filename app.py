@@ -34,8 +34,11 @@ st.markdown("""
     }
 
 
-    
-    /* Headers and Titles */
+        /* Main App Background */
+    .stApp {
+        background: #f4f7f9 !important;
+        background-color: #f4f7f9 !important;
+    }
     h1, h2, h3 {
         color: #2c3e50;
         text-transform: uppercase;
