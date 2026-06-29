@@ -73,7 +73,7 @@ def render_mini_leaderboard(data_type="ot"):
         years = []
         
     year_options = [t("Tất cả", "すべて")] + years
-    border_color = "#ff9f43" if data_type == "ot" else "#00a8e8"
+    border_color = "#00a8e8"
     
     st.markdown(f"""
         <style>
@@ -194,7 +194,7 @@ def render_mini_leaderboard(data_type="ot"):
                     orientation='h',
                     marker=dict(
                         color=top_5[val_col][::-1],
-                        colorscale=[[0, '#ffebee'], [1, '#e65100']] if data_type == "ot" else [[0, '#e1f5fe'], [1, '#00a8e8']],
+                        colorscale=[[0, '#e1f5fe'], [1, '#00a8e8']],
                     ),
                     text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
                     textposition='inside',
