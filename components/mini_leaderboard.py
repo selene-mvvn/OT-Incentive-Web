@@ -73,130 +73,155 @@ def render_mini_leaderboard(data_type="ot"):
         years = []
         
     year_options = [t("Tất cả", "すべて")] + years
-    sel_year = st.selectbox(
-        t("Chọn năm", "年を選択"), 
-        options=year_options, 
-        key=f"mini_year_{data_type}", 
-        label_visibility="collapsed"
-    )
-    
-    if sel_year not in ["Tất cả", "すべて"]:
-        df_filtered = df[df['date_obj'].dt.year == sel_year].copy()
-    else:
-        df_filtered = df.copy()
-
-    icon = "timer" if data_type == "ot" else "payments"
-    title_text = "TOP OVERTIME" if data_type == "ot" else "TOP INCENTIVE"
+    border_color = "#ff9f43" if data_type == "ot" else "#00a8e8"
     
     st.markdown(f"""
-        <div style='
+        <style>
+        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0');
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) {{
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border: none !important;
             border-radius: 12px;
-            padding: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid {border_color} !important;
+            padding: 15px 15px 0px 15px !important;
             margin-top: 10px;
             margin-bottom: 20px;
-            border-top: 4px solid {"#ff9f43" if data_type == "ot" else "#00a8e8"};
-        '>
-            <div style='text-align: center; color: #2c3e50; font-size: 16px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase;'>
+        }}
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) > div > div {{
+            gap: 0.5rem;
+        }}
+        /* Tweak selectbox to make it small and fit the design */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
+            background-color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0,0,0,0.05);
+            border-radius: 8px;
+            min-height: 32px;
+        }}
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(span#marker-{data_type}) div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
+            font-size: 13px;
+        }}
+        </style>
+    """, unsafe_allow_html=True)
+    
+    with st.container(border=True):
+        st.markdown(f"<span id='marker-{data_type}' style='display:none;'></span>", unsafe_allow_html=True)
+        
+        icon = "timer" if data_type == "ot" else "payments"
+        title_text = "TOP OVERTIME" if data_type == "ot" else "TOP INCENTIVE"
+        st.markdown(f"""
+            <div style='text-align: center; color: #2c3e50; font-size: 16px; font-weight: bold; margin-bottom: 5px; text-transform: uppercase;'>
                 <span class="material-symbols-rounded" style="vertical-align: middle; color: #00a8e8; margin-right: 5px; font-size: 20px;">{icon}</span>
                 <span style="vertical-align: middle;">{title_text}</span>
             </div>
-    """, unsafe_allow_html=True)
-    
-    if df_filtered.empty:
-        st.markdown(f"<div style='text-align:center; font-size:13px; color:#7f8c8d;'>{t('Không có dữ liệu cho năm này', 'データなし')}</div></div>", unsafe_allow_html=True)
-    else:
-        if data_type == "ot":
-            if 'ot_hours' not in df_filtered.columns: df_filtered['ot_hours'] = 0
-            df_filtered['ot_hours'] = pd.to_numeric(df_filtered['ot_hours'], errors='coerce').fillna(0)
-            agg_df = df_filtered.groupby('employee_name')['ot_hours'].sum().reset_index()
-            agg_df = agg_df.sort_values(by='ot_hours', ascending=False).reset_index(drop=True)
-            val_col = 'ot_hours'
-            val_suffix = "h"
-            colors = [
-                ("linear-gradient(135deg, #ffcdd2 0%, #ffebee 100%)", "#c62828"),
-                ("linear-gradient(135deg, #ffe0b2 0%, #fff3e0 100%)", "#ef6c00"),
-                ("linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)", "#f57f17")
-            ]
-        else:
-            if 'final_incentive' not in df_filtered.columns: df_filtered['final_incentive'] = 0
-            df_filtered['final_incentive'] = pd.to_numeric(df_filtered['final_incentive'], errors='coerce').fillna(0)
-            agg_df = df_filtered.groupby('employee_name')['final_incentive'].sum().reset_index()
-            agg_df = agg_df.sort_values(by='final_incentive', ascending=False).reset_index(drop=True)
-            val_col = 'final_incentive'
-            val_suffix = "¥"
-            colors = [
-                ("linear-gradient(135deg, #b2ebf2 0%, #e0f7fa 100%)", "#00838f"),
-                ("linear-gradient(135deg, #e0f7fa 0%, #e0f7fa 100%)", "#00bcd4"),
-                ("linear-gradient(135deg, #e0f7fa 0%, #f1fbfc 100%)", "#00acc1")
-            ]
-
-        top_5 = agg_df.head(5)
-        medals = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"]
+        """, unsafe_allow_html=True)
         
-        html_content = ""
-        for i, row in top_5.iterrows():
-            emp_name = row['employee_name']
-            val = row[val_col]
-            medal = medals[i] if i < len(medals) else "🏅"
-            
-            bg_color = "rgba(255,255,255,0.7)"
-            text_color = "#e67e22" if data_type != "ot" else "#00a8e8"
-            if i < 3:
-                bg_color = colors[i][0]
-                text_color = colors[i][1]
-            
-            formatted_val = f"{val:,.1f}" if data_type == "ot" else f"{int(val):,}"
-            
-            html_content += f"""
-            <div style='
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                background: {bg_color};
-                padding: 8px 10px;
-                border-radius: 8px;
-                margin-bottom: 8px;
-                font-size: 13px;
-                box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-                border-left: 3px solid {text_color};
-            '>
-                <div style='display: flex; align-items: center; gap: 8px;'>
-                    <span style='font-size: 16px;'>{medal}</span>
-                    <span style='font-weight: 600; color: #34495e;' title='{emp_name}'>{emp_name}</span>
-                </div>
-                <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
-            </div>
-            """
-            
-        html_content += "</div>"
-        st.markdown(html_content, unsafe_allow_html=True)
-        
-        if len(top_5) > 0:
-            fig = go.Figure(go.Bar(
-                x=top_5[val_col][::-1],
-                y=top_5['employee_name'][::-1],
-                orientation='h',
-                marker=dict(
-                    color=top_5[val_col][::-1],
-                    colorscale=[[0, '#ffebee'], [1, '#e65100']] if data_type == "ot" else [[0, '#e1f5fe'], [1, '#00a8e8']],
-                ),
-                text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
-                textposition='inside',
-                insidetextanchor='end',
-                textfont=dict(color='white', size=10)
-            ))
-            fig.update_layout(
-                margin=dict(l=0, r=0, t=5, b=5),
-                height=160,
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
-                xaxis=dict(visible=False),
-                yaxis=dict(tickfont=dict(size=11, color='#2c3e50')),
-                showlegend=False
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            sel_year = st.selectbox(
+                t("Chọn năm", "年を選択"), 
+                options=year_options, 
+                key=f"mini_year_{data_type}", 
+                label_visibility="collapsed"
             )
-            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+            
+        if sel_year not in ["Tất cả", "すべて"]:
+            df_filtered = df[df['date_obj'].dt.year == sel_year].copy()
+        else:
+            df_filtered = df.copy()
+
+        if df_filtered.empty:
+            st.markdown(f"<div style='text-align:center; font-size:13px; color:#7f8c8d; padding-bottom: 15px;'>{t('Không có dữ liệu cho năm này', 'データなし')}</div>", unsafe_allow_html=True)
+        else:
+            if data_type == "ot":
+                if 'ot_hours' not in df_filtered.columns: df_filtered['ot_hours'] = 0
+                df_filtered['ot_hours'] = pd.to_numeric(df_filtered['ot_hours'], errors='coerce').fillna(0)
+                agg_df = df_filtered.groupby('employee_name')['ot_hours'].sum().reset_index()
+                agg_df = agg_df.sort_values(by='ot_hours', ascending=False).reset_index(drop=True)
+                val_col = 'ot_hours'
+                val_suffix = "h"
+                colors = [
+                    ("linear-gradient(135deg, #ffcdd2 0%, #ffebee 100%)", "#c62828"),
+                    ("linear-gradient(135deg, #ffe0b2 0%, #fff3e0 100%)", "#ef6c00"),
+                    ("linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)", "#f57f17")
+                ]
+            else:
+                if 'final_incentive' not in df_filtered.columns: df_filtered['final_incentive'] = 0
+                df_filtered['final_incentive'] = pd.to_numeric(df_filtered['final_incentive'], errors='coerce').fillna(0)
+                agg_df = df_filtered.groupby('employee_name')['final_incentive'].sum().reset_index()
+                agg_df = agg_df.sort_values(by='final_incentive', ascending=False).reset_index(drop=True)
+                val_col = 'final_incentive'
+                val_suffix = "¥"
+                colors = [
+                    ("linear-gradient(135deg, #b2ebf2 0%, #e0f7fa 100%)", "#00838f"),
+                    ("linear-gradient(135deg, #e0f7fa 0%, #e0f7fa 100%)", "#00bcd4"),
+                    ("linear-gradient(135deg, #e0f7fa 0%, #f1fbfc 100%)", "#00acc1")
+                ]
+
+            top_5 = agg_df.head(5)
+            medals = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"]
+            
+            html_content = ""
+            for i, row in top_5.iterrows():
+                emp_name = row['employee_name']
+                val = row[val_col]
+                medal = medals[i] if i < len(medals) else "🏅"
+                
+                bg_color = "rgba(255,255,255,0.7)"
+                text_color = "#e67e22" if data_type != "ot" else "#00a8e8"
+                if i < 3:
+                    bg_color = colors[i][0]
+                    text_color = colors[i][1]
+                
+                formatted_val = f"{val:,.1f}" if data_type == "ot" else f"{int(val):,}"
+                
+                html_content += f"""
+                <div style='
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background: {bg_color};
+                    padding: 8px 10px;
+                    border-radius: 8px;
+                    margin-bottom: 8px;
+                    font-size: 13px;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+                    border-left: 3px solid {text_color};
+                '>
+                    <div style='display: flex; align-items: center; gap: 8px;'>
+                        <span style='font-size: 16px;'>{medal}</span>
+                        <span style='font-weight: 600; color: #34495e;' title='{emp_name}'>{emp_name}</span>
+                    </div>
+                    <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
+                </div>
+                """
+                
+            st.markdown(html_content, unsafe_allow_html=True)
+            
+            if len(top_5) > 0:
+                fig = go.Figure(go.Bar(
+                    x=top_5[val_col][::-1],
+                    y=top_5['employee_name'][::-1],
+                    orientation='h',
+                    marker=dict(
+                        color=top_5[val_col][::-1],
+                        colorscale=[[0, '#ffebee'], [1, '#e65100']] if data_type == "ot" else [[0, '#e1f5fe'], [1, '#00a8e8']],
+                    ),
+                    text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
+                    textposition='inside',
+                    insidetextanchor='end',
+                    textfont=dict(color='white', size=10)
+                ))
+                fig.update_layout(
+                    margin=dict(l=0, r=0, t=5, b=5),
+                    height=160,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    xaxis=dict(visible=False),
+                    yaxis=dict(tickfont=dict(size=11, color='#2c3e50')),
+                    showlegend=False
+                )
+                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
     st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
     if st.button(t("✏️ Sửa dữ liệu (Nhanh)", "✏️ 簡易編集"), use_container_width=True, key=f"btn_edit_mini_{data_type}"):
