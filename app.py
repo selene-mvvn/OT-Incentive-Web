@@ -512,8 +512,12 @@ else:
     st.markdown("""
     <style>
         .stApp {
-            background: #f4f7f9 !important;
             background-color: #f4f7f9 !important;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 176, 240, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(0, 176, 240, 0.04) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(0, 176, 240, 0.06) 0px, transparent 50%) !important;
+            background-attachment: fixed !important;
         }
         .stButton>button {
             background-color: #ffffff !important;
