@@ -236,7 +236,7 @@ st.markdown("""
     }
     
     /* Main category styling for the first item (now clickable) */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) {
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):not(:has(input:checked)) {
         border-bottom: 1px solid rgba(0,0,0,0.1) !important;
         padding-bottom: 10px;
         margin-bottom: 10px;
@@ -246,14 +246,14 @@ st.markdown("""
         transform: none !important;
         cursor: pointer;
     }
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p {
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):not(:has(input:checked)) p {
         text-shadow: none !important;
         font-size: 16px;
         color: #2c3e50 !important;
         font-weight: bold;
         transition: all 0.3s;
     }
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):hover p {
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):not(:has(input:checked)):hover p {
         color: #00a8e8 !important;
         text-shadow: none !important;
     }
@@ -550,6 +550,9 @@ else:
                     content: " ▼";
                     color: #00a8e8 !important;
                 }
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):has(input:checked) p::after {
+                    color: #FFFFFF !important;
+                }
                 /* Sub-menu items (2, 3) */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
@@ -582,6 +585,9 @@ else:
                     content: " ▶";
                     color: #00a8e8 !important;
                 }
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):has(input:checked) p::after {
+                    color: #FFFFFF !important;
+                }
                 /* Hide sub-items when collapsed */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
@@ -605,7 +611,7 @@ else:
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
-            if "▼" in sel or "▶" in sel:
+            if sel == t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"):
                 st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
                 st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"))
             else:
