@@ -14,7 +14,44 @@ def show_mini_edit_dialog(data_type, df):
         </style>
     """, unsafe_allow_html=True)
     st.caption(t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。"))
-    edited_df = st.data_editor(df, use_container_width=True, num_rows="dynamic", key=f"dialog_edit_{data_type}")
+    
+    if data_type == "ot":
+        col_order = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df.columns if str(c).endswith("%")]
+        col_order = [c for c in col_order if c in df.columns] + [c for c in df.columns if c not in col_order]
+        col_cfg = {
+            "ot_date": st.column_config.TextColumn(t("Ngày OT", "残業日")),
+            "employee_name": st.column_config.TextColumn(t("Nhân sự", "担当者")),
+            "ot_hours": st.column_config.NumberColumn(t("Giờ OT", "残業時間")),
+            "ot_reason": st.column_config.TextColumn(t("Lý do", "残業理由")),
+            "manager_name": st.column_config.TextColumn(t("Quản lý", "PM")),
+            "project_type": st.column_config.TextColumn(t("Loại dự án", "プロジェクト種別")),
+            "order_id": st.column_config.TextColumn(t("Mã dự án", "注文番号")),
+            "order_name": st.column_config.TextColumn(t("Tên dự án", "注文名")),
+            "client_order_id": st.column_config.TextColumn(t("Mã đơn khách", "客先注文番号")),
+            "hourly_rate": st.column_config.NumberColumn(t("Lương/h", "時給"), format="%,.0f"),
+            "payment_period": st.column_config.TextColumn(t("Kỳ thanh toán", "支払期間"))
+        }
+        for c in df.columns:
+            if str(c).endswith("%"):
+                col_cfg[c] = st.column_config.NumberColumn(c, format="%,.0f")
+    else:
+        col_order = ["date", "employee_name", "project_name", "target_hours", "actual_hours", "unit_price", "company_charge", "profit", "standard_incentive", "final_incentive", "notes"]
+        col_order = [c for c in col_order if c in df.columns] + [c for c in df.columns if c not in col_order]
+        col_cfg = {
+            "date": st.column_config.TextColumn(t("Ngày ghi nhận", "記録日")),
+            "employee_name": st.column_config.TextColumn(t("Nhân sự", "担当者")),
+            "project_name": st.column_config.TextColumn(t("Tên dự án", "案件名")),
+            "target_hours": st.column_config.NumberColumn(t("Giờ công KH", "目標工数")),
+            "actual_hours": st.column_config.NumberColumn(t("Giờ công TT", "実工数")),
+            "unit_price": st.column_config.NumberColumn(t("Đơn giá", "単価"), format="%,.0f"),
+            "company_charge": st.column_config.NumberColumn(t("Company Charge", "会社運用ﾁｬｰｼﾞ"), format="%,.0f"),
+            "profit": st.column_config.NumberColumn(t("Lợi nhuận", "利益"), format="%,.0f"),
+            "standard_incentive": st.column_config.NumberColumn(t("Incentive TC", "基準金額"), format="%,.0f"),
+            "final_incentive": st.column_config.NumberColumn(t("Nhận được", "受取額"), format="%,.0f"),
+            "notes": st.column_config.TextColumn(t("Ghi chú", "備考"))
+        }
+
+    edited_df = st.data_editor(df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
     if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
         if save_all_records(data_type, edited_df.to_dict('records')):
             st.success(t("Đã lưu thành công!", "保存しました！"))
