@@ -91,9 +91,17 @@ st.markdown("""
     }
 
     /* Dropdown Hover Effects */
-    ul[role="listbox"] li[role="option"]:hover,
-    ul[role="listbox"] li[role="option"][aria-selected="true"] {
+    [role="option"]:hover,
+    [role="option"][aria-selected="true"],
+    [data-baseweb="popover"] li:hover,
+    [data-baseweb="menu"] li:hover {
         background-color: #00B0F0 !important;
+        color: #ffffff !important;
+    }
+    [role="option"]:hover *,
+    [role="option"][aria-selected="true"] *,
+    [data-baseweb="popover"] li:hover *,
+    [data-baseweb="menu"] li:hover * {
         color: #ffffff !important;
     }
     
