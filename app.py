@@ -249,12 +249,12 @@ st.markdown("""
     [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p {
         text-shadow: none !important;
         font-size: 16px;
-        color: #00a8e8 !important;
+        color: #2c3e50 !important;
         font-weight: bold;
         transition: all 0.3s;
     }
     [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):hover p {
-        color: #007bb5 !important;
+        color: #00a8e8 !important;
         text-shadow: none !important;
     }
     
@@ -532,7 +532,7 @@ else:
         if 'ot_menu_expanded' not in st.session_state:
             st.session_state['ot_menu_expanded'] = True
             
-        header_text = t(":material/timer: **OVERTIME ▼**", ":material/timer: **残業代計算 ▼**") if st.session_state['ot_menu_expanded'] else t(":material/timer: **OVERTIME ▶**", ":material/timer: **残業代計算 ▶**")
+        header_text = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**")
         
         options = [
             header_text,
@@ -546,6 +546,10 @@ else:
         if st.session_state['ot_menu_expanded']:
             st.markdown("""
             <style>
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p::after {
+                    content: " ▼";
+                    color: #00a8e8 !important;
+                }
                 /* Sub-menu items (2, 3) */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
@@ -574,6 +578,10 @@ else:
         else:
             st.markdown("""
             <style>
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p::after {
+                    content: " ▶";
+                    color: #00a8e8 !important;
+                }
                 /* Hide sub-items when collapsed */
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
