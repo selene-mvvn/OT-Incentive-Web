@@ -15,7 +15,7 @@ st.markdown("""
     footer {visibility: hidden;}
     
     /* Metric cards styling - matching the clean soft shadow design */
-    div[data-testid="metric-container"] {
+    [data-testid="stMetric"] {
         background-color: #00B0F0;
         color: #ffffff !important;
         border: none;
@@ -26,14 +26,14 @@ st.markdown("""
         transition: transform 0.3s ease;
         margin-bottom: 15px;
     }
-    div[data-testid="metric-container"] * {
+    [data-testid="stMetric"] * {
         color: #ffffff !important;
     }
-    div[data-testid="metric-container"]:hover {
+    [data-testid="stMetric"]:hover {
         transform: translateY(-5px);
     }
-    
-    div[data-testid="metric-container"] > div {
+
+    [data-testid="stMetric"] > div {
         justify-content: center;
     }
 
