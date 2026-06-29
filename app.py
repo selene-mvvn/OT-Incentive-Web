@@ -200,8 +200,8 @@ st.markdown("""
     }
 
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label {
-        margin: 5px -8px !important;
-        width: 84px !important;
+        margin: 5px 0 !important;
+        width: 100% !important;
         padding: 10px 0 !important;
         border-left: none !important;
         display: flex !important;
