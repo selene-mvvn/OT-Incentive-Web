@@ -23,6 +23,21 @@ def make_container_white():
     </script>
     """, height=0)
 
+def make_history_cards_white():
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+        const parent = window.parent.document;
+        const markers = parent.querySelectorAll('.white-card-bg');
+        markers.forEach(marker => {
+            let container = marker.closest('[data-testid="stVerticalBlock"]');
+            if (container) {
+                container.style.backgroundColor = '#ffffff';
+            }
+        });
+    </script>
+    """, height=0)
+
 def make_expander_blue():
     import streamlit.components.v1 as components
     components.html("""

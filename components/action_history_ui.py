@@ -210,3 +210,6 @@ def render_action_history():
             if st.button(t("Trang sau", "次へ") + " ➡️", disabled=(current_page == total_pages), use_container_width=True):
                 st.session_state['history_page'] += 1
                 st.rerun()
+
+    from components.ui_utils import make_history_cards_white
+    make_history_cards_white()
