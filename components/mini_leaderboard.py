@@ -9,14 +9,14 @@ def show_mini_edit_dialog(data_type, df):
     dialog_title = t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集")
     st.markdown(f"""
         <style>
-            div[data-testid="stModal"] > div[role="dialog"] {{
+            div[role="dialog"] {{
                 transform: translateY(8vh);
             }}
-            div[data-testid="stModal"] h2 {{
+            div[role="dialog"] h2 {{
                 visibility: hidden;
                 position: relative;
             }}
-            div[data-testid="stModal"] h2::after {{
+            div[role="dialog"] h2::after {{
                 content: "{dialog_title}";
                 visibility: visible;
                 position: absolute;
