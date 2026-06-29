@@ -343,18 +343,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
     
-    [data-testid="stMetric"] {
-        background: linear-gradient(145deg, #ffffff, #f5f7fa);
-        border-radius: 12px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        border: 1px solid rgba(0,0,0,0.03);
-        padding: 15px !important;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    [data-testid="stMetric"]:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
-    }
+
     
     /* Compact popover for history delete */
     [data-testid="stPopoverBody"] {
