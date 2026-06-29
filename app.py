@@ -143,14 +143,14 @@ st.markdown("""
     }
     
     /* Selected Menu Item */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] {
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
         background-color: #FFFFFF !important;
         border: none !important;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
         transform: translateX(5px);
     }
 
-    [data-testid="stSidebar"] div[role="radiogroup"] > label[data-checked="true"] p {
+    [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) p {
         color: #00B0F0 !important;
         text-shadow: none !important;
         font-weight: 900 !important;
@@ -528,8 +528,8 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover {
                     border-left: 2px solid #ffffff !important;
                 }
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2)[data-checked="true"],
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3)[data-checked="true"] {
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):has(input:checked),
+                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):has(input:checked) {
                     border-left: 2px solid #ffffff !important;
                 }
                 /* Main items 4, 5, 6, 7 styling */
