@@ -475,7 +475,8 @@ else:
     # Sidebar Menu
     with st.sidebar:
         import os
-        logo_path = "logo.png" if os.path.exists("logo.png") else ("logo.jpg" if os.path.exists("logo.jpg") else None)
+        logo_menu_path = "logo_menu.png" if os.path.exists("logo_menu.png") else ("logo_menu.jpg" if os.path.exists("logo_menu.jpg") else None)
+        logo_path = logo_menu_path or ("logo.png" if os.path.exists("logo.png") else ("logo.jpg" if os.path.exists("logo.jpg") else None))
         if logo_path:
             import base64
             with open(logo_path, "rb") as f:
