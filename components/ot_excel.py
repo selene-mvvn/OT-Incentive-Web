@@ -442,7 +442,7 @@ def render_ot_excel():
             current_step = 3
         
         stepper_placeholder.markdown(f"""
-            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0 20px 0; background: rgba(0, 176, 240, 0.03); padding: 12px 15px; border-radius: 10px; border: 1px solid rgba(0, 176, 240, 0.1);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0 20px 0; background: #ffffff; padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
                 <div style="text-align: center; flex: 1; opacity: {'1' if current_step >= 1 else '0.4'};">
                     <div style="width: 24px; height: 24px; border-radius: 50%; background: {'#00B0F0' if current_step >= 1 else '#ccc'}; color: white; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.8rem; margin-bottom: 3px;">1</div>
                     <div style="font-size: 0.75rem; font-weight: bold; color: {'#00B0F0' if current_step >= 1 else '#777'};">{t("Tải File", "ファイルUP")}</div>
