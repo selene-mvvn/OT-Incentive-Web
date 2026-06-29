@@ -281,6 +281,9 @@ st.markdown("""
     [data-testid="stVerticalBlockBorderWrapper"] > div {
         background-color: #ffffff !important;
     }
+    div[data-testid="stVerticalBlock"]:has(.white-card-bg) {
+        background-color: #ffffff !important;
+    }
     
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: #ffffff !important;

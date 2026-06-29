@@ -168,7 +168,7 @@ def render_action_history():
         
         with st.container(border=True):
             marker_class = "missing-marker" if is_missing else "timeline-marker"
-            st.markdown(f"<div class='{marker_class}'></div>", unsafe_allow_html=True)
+            st.markdown(f"<div class='white-card-bg'></div><div class='{marker_class}'></div>", unsafe_allow_html=True)
             
             c_head, c_dl, c_del = st.columns([7, 2, 1])
             with c_head:
