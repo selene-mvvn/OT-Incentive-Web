@@ -41,16 +41,16 @@ def render_welcome():
             align-items: center;
             justify-content: center;
             width: 100%;
-            margin-top: -12vh !important;
+            margin-top: -4vh !important;
         }
         
         .logo-container {
             text-align: center;
             margin-top: -20px;
-            margin-bottom: -5px;
+            margin-bottom: 30px;
         }
         .logo-container img {
-            max-width: 160px;
+            max-width: 240px;
         }
         
         .title {
