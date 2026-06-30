@@ -43,7 +43,11 @@ def render_base_data():
     from logic.employee_data import get_employees_df
     
     emp_df = get_employees_df()
-    emp_count = len(emp_df)
+    if 'Chức vụ' in emp_df.columns:
+        active_emp_df = emp_df[~emp_df['Chức vụ'].astype(str).str.contains("Nhân viên cũ", case=False, na=False)]
+        emp_count = len(active_emp_df)
+    else:
+        emp_count = len(emp_df)
     
     holidays_df = st.session_state['ot_base_data'].get('holidays_df')
     holiday_count = len(holidays_df) if hasattr(holidays_df, '__len__') else 0
