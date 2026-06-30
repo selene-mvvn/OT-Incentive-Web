@@ -52,8 +52,50 @@ st.markdown("""
         width: 16px !important;
         height: 16px !important;
     }
+    
+    /* -----------------------------------------
+       SEGMENTED CONTROL TABS (iOS Style)
+       ----------------------------------------- */
+    [data-testid="stTabs"] {
+        margin-bottom: 20px;
+    }
+    [data-testid="stTabs"] div[role="tablist"] {
+        background-color: rgba(0, 176, 240, 0.08) !important;
+        border-radius: 15px !important;
+        padding: 5px !important;
+        gap: 5px !important;
+        border-bottom: none !important;
+        display: inline-flex !important;
+        flex-wrap: wrap !important;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.03) !important;
+    }
+    
+    [data-testid="stTabs"] button[data-baseweb="tab"] {
+        background-color: transparent !important;
+        border: none !important;
+        border-radius: 10px !important;
+        padding: 8px 24px !important;
+        margin: 0 !important;
+        color: #64748b !important;
+        font-weight: 600 !important;
+        transition: all 0.2s ease !important;
+    }
+    
+    [data-testid="stTabs"] button[data-baseweb="tab"]:hover {
+        color: #1e293b !important;
+        background-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    
+    [data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"] {
+        background-color: #ffffff !important;
+        color: #00B0F0 !important;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.08) !important;
+    }
 
-
+    [data-testid="stTabs"] div[data-baseweb="tab-highlight"],
+    [data-testid="stTabs"] div[data-baseweb="tab-border"] {
+        display: none !important;
+    }
 
     h1, h2, h3 {
         color: #2c3e50;
