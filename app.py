@@ -16,25 +16,20 @@ st.markdown("""
     
     /* Metric cards styling - matching the clean soft shadow design */
     [data-testid="stMetric"] {
-        background-color: #00B0F0;
-        color: #ffffff !important;
-        border: none;
+        background: #00B0F0 !important;
         border-radius: 12px;
-        padding: 25px 20px;
-        box-shadow: 0 10px 40px rgba(0, 176, 240, 0.2);
-        text-align: center;
-        transition: transform 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.03);
+        padding: 15px !important;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
         margin-bottom: 15px;
     }
     [data-testid="stMetric"] * {
         color: #ffffff !important;
     }
     [data-testid="stMetric"]:hover {
-        transform: translateY(-5px);
-    }
-
-    [data-testid="stMetric"] > div {
-        justify-content: center;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     }
 
 
