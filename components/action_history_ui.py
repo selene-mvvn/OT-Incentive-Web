@@ -208,20 +208,21 @@ def render_action_history():
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stButton"] button {
                 min-height: 32px !important;
                 height: 32px !important;
-                padding: 0px 10px !important;
-                font-size: 13px !important;
+                padding: 0px 15px !important;
+                font-size: 14px !important;
                 border-radius: 6px !important;
                 line-height: 1 !important;
+                width: 100% !important;
             }
             </style>
             """, unsafe_allow_html=True)
             
             with st.container(border=True):
                 st.markdown("<span class='bulk-marker'></span>", unsafe_allow_html=True)
-                c_text, c_dl, c_del = st.columns([6.5, 2, 1.5], vertical_alignment="center")
-
+                c_text, c_blank, c_dl, c_del = st.columns([6, 1, 1.5, 1.5], vertical_alignment="center")
+                
                 with c_text:
-                    st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:15px; margin-top:2px; margin-left:5px;'><span style='color:#00B0F0; font-size:18px;'>{len(selected_ids)}</span> {t('mục đã chọn', '件選択中')}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:16px; margin-top:2px; margin-left:5px;'><span style='color:#00B0F0; font-size:22px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
                 
                 with c_dl:
                     valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
