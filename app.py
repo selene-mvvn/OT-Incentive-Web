@@ -573,6 +573,11 @@ else:
         .stButton>button {
             background-color: #ffffff !important;
         }
+        /* Make Lang toggle background white in main app */
+        div[role="radiogroup"][aria-label="LangToggle_123"] {
+            background-color: #ffffff !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+        }
     </style>
     """, unsafe_allow_html=True)
     # Sidebar Menu
