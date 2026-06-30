@@ -35,18 +35,22 @@ st.markdown("""
     [data-testid="stMetricDelta"] {
         margin-top: 8px !important;
     }
-    [data-testid="stMetricDelta"] * {
+    [data-testid="stMetricDelta"] > div {
+        background: transparent !important;
         background-color: transparent !important;
-        color: #FFE600 !important;
+    }
+    [data-testid="stMetricDelta"] * {
+        background: transparent !important;
+        background-color: transparent !important;
+        color: #ffffff !important;
         border: none !important;
-        font-weight: 700 !important;
+        font-weight: 500 !important;
         font-size: 15px !important;
     }
     [data-testid="stMetricDelta"] svg {
-        fill: #FFE600 !important;
-        stroke: #FFE600 !important;
-        width: 18px !important;
-        height: 18px !important;
+        fill: #ffffff !important;
+        width: 16px !important;
+        height: 16px !important;
     }
 
 
