@@ -82,7 +82,7 @@ def render_action_history():
     st.markdown("""
     <style>
     /* CSS hack to turn st.container(border=True) into a timeline node */
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker) {
+    .custom-history-card.has-timeline-marker {
         position: relative;
         margin-left: 25px !important;
         margin-bottom: 25px !important;
@@ -92,7 +92,8 @@ def render_action_history():
         border: 1px solid rgba(0, 176, 240, 0.2) !important;
     }
     
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker)::before {
+    .custom-history-card.has-timeline-marker::before,
+    .custom-history-card.has-missing-marker::before {
         content: '';
         position: absolute;
         top: -20px;
@@ -104,11 +105,13 @@ def render_action_history():
         z-index: 0;
     }
     
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker):last-child::before {
+    .custom-history-card.has-timeline-marker:last-child::before,
+    .custom-history-card.has-missing-marker:last-child::before {
         bottom: 0; /* Stop line at the last item */
     }
     
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker)::after {
+    .custom-history-card.has-timeline-marker::after,
+    .custom-history-card.has-missing-marker::after {
         content: '';
         position: absolute;
         top: 25px;
@@ -123,18 +126,20 @@ def render_action_history():
         transition: transform 0.3s ease;
     }
     
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker):hover {
+    .custom-history-card.has-timeline-marker:hover,
+    .custom-history-card.has-missing-marker:hover {
         transform: translateY(-3px);
         box-shadow: 0 8px 25px rgba(0, 176, 240, 0.12) !important;
         border-color: rgba(0, 176, 240, 0.5) !important;
     }
     
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker):hover::after {
+    .custom-history-card.has-timeline-marker:hover::after,
+    .custom-history-card.has-missing-marker:hover::after {
         transform: scale(1.2);
     }
     
     /* Missing file styling */
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker) {
+    .custom-history-card.has-missing-marker {
         opacity: 0.7;
         background-color: #ffffff !important;
         border-radius: 12px !important;
@@ -142,7 +147,7 @@ def render_action_history():
         margin-bottom: 25px !important;
         border: 1px solid rgba(231, 76, 60, 0.3) !important;
     }
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker)::after {
+    .custom-history-card.has-missing-marker::after {
         border-color: #e74c3c;
         box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
     }

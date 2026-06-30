@@ -30,16 +30,33 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
+            let current = marker.parentElement;
             let outerContainer = null;
-            let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
-            if (horizontal) {
-                outerContainer = horizontal.closest('[data-testid="stVerticalBlockBorderWrapper"]');
-            } else {
-                outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+            while (current && current.tagName !== 'BODY' && current.tagName !== 'HTML') {
+                if (current.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
+                    outerContainer = current;
+                    break;
+                }
+                let style = window.getComputedStyle(current);
+                let hasBorder = (style.borderTopWidth && style.borderTopWidth !== '0px' && style.borderTopStyle !== 'none') || 
+                                (style.borderWidth && style.borderWidth !== '0px' && style.borderStyle !== 'none');
+                
+                if (hasBorder && current.tagName === 'DIV' && current.getAttribute('data-testid') !== 'stMarkdownContainer') {
+                    outerContainer = current;
+                    break;
+                }
+                current = current.parentElement;
             }
             if (outerContainer) {
                 outerContainer.style.backgroundColor = '#ffffff';
                 outerContainer.style.setProperty('background-color', '#ffffff', 'important');
+                outerContainer.classList.add('custom-history-card');
+                if (outerContainer.querySelector('.timeline-marker')) {
+                    outerContainer.classList.add('has-timeline-marker');
+                }
+                if (outerContainer.querySelector('.missing-marker')) {
+                    outerContainer.classList.add('has-missing-marker');
+                }
             }
         });
     </script>
