@@ -235,6 +235,7 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
             'border': 1,
             'align': 'center',
             'valign': 'vcenter',
+            'text_wrap': True,
             'font_name': 'Times New Roman'
         })
         
@@ -308,11 +309,12 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
             start_col = len(base_columns)
             end_col = start_col + len(mult_columns) - 1
             if start_col == end_col:
-                worksheet.merge_range(3, start_col, 4, start_col, t("Số tiền tăng ca (VND)\n", "残業代 (VND)\n") + mult_columns[0], header_format)
+                worksheet.write(3, start_col, t("Số tiền tăng ca (VND)", "残業代 (VND)"), header_format)
             else:
                 worksheet.merge_range(3, start_col, 3, end_col, t("Số tiền tăng ca (VND)", "残業代 (VND)"), header_format)
-                for i, col_name in enumerate(mult_columns):
-                    worksheet.write(4, start_col + i, col_name, header_format)
+            
+            for i, col_name in enumerate(mult_columns):
+                worksheet.write(4, start_col + i, col_name, header_format)
                     
         # Write "Trạng thái" header
         status_col = len(base_columns) + len(mult_columns)
