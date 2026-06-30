@@ -238,6 +238,7 @@ def render_base_data():
         holidays_df = st.data_editor(
             current_df,
             num_rows="dynamic",
+            column_order=["Ngày nghỉ", "Lý do"],
             column_config={
                 "Ngày nghỉ": st.column_config.DatetimeColumn(t("Ngày nghỉ (Chọn lịch)", "休日 (カレンダー選択)"), format="YYYY-MM-DD", required=True),
                 "Lý do": st.column_config.TextColumn(t("Lý do / Tên ngày lễ", "理由・祭日名"), required=True)
