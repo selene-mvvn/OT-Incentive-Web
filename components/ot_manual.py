@@ -453,6 +453,8 @@ def render_base_data():
                                 st.session_state['ot_base_data']['holidays_df'] = current_df
                                 save_base_data(st.session_state['ot_base_data'])
                                 st.rerun()
+                        else:
+                            st.markdown("<div style='height: 90px; width: 100%;'></div>", unsafe_allow_html=True)
 
         st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
         st.markdown(f"<h4 style='font-size: 16px; font-weight: 600;'>{t('Danh sách chi tiết:', '詳細一覧:')}</h4>", unsafe_allow_html=True)
