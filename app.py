@@ -212,6 +212,11 @@ st.markdown("""
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.4);
     }
     
+    /* Material Icons in Labels */
+    label .material-symbols-rounded {
+        color: #00B0F0 !important;
+    }
+
     /* Input Fields */
     div[data-baseweb="input"],
     div[data-baseweb="base-input"],
