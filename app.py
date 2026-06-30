@@ -64,33 +64,36 @@ st.markdown("""
         border-radius: 0 !important;
         padding: 0 !important;
         gap: 8px !important;
-        border-bottom: 2px solid #e2e8f0 !important;
-        display: inline-flex !important;
+        border-bottom: 3px solid #00B0F0 !important;
+        display: flex !important;
+        width: 100% !important;
         flex-wrap: wrap !important;
         box-shadow: none !important;
     }
     
     [data-testid="stTabs"] button[data-baseweb="tab"] {
-        background-color: #f1f5f9 !important;
-        border: 1px solid #e2e8f0 !important;
+        background-color: #ffffff !important;
+        border: 1px solid #cbd5e1 !important;
         border-bottom: none !important;
         border-radius: 8px 8px 0 0 !important;
-        padding: 10px 24px !important;
+        padding: 10px 28px !important;
         margin: 0 !important;
-        color: #64748b !important;
+        color: #475569 !important;
         font-weight: 600 !important;
         transition: all 0.2s ease !important;
+        margin-bottom: -3px !important;
     }
     
     [data-testid="stTabs"] button[data-baseweb="tab"]:hover {
-        color: #1e293b !important;
-        background-color: #e2e8f0 !important;
+        color: #00B0F0 !important;
+        background-color: #f1f5f9 !important;
     }
     
     [data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"] {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
-        border-color: #00B0F0 !important;
+        border: 1px solid #00B0F0 !important;
+        border-bottom: 3px solid #00B0F0 !important;
         box-shadow: none !important;
     }
 
