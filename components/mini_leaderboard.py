@@ -152,20 +152,25 @@ def render_mini_leaderboard(data_type="ot"):
                     ("linear-gradient(135deg, #e0f7fa 0%, #f1fbfc 100%)", "#00acc1")
                 ]
 
+            # Calculate standard competition ranking
+            agg_df['rank'] = agg_df[val_col].rank(method='min', ascending=False).astype(int)
             top_5 = agg_df.head(5)
-            medals = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"]
             
+            medals_dict = {1: "🥇", 2: "🥈", 3: "🥉", 4: "4️⃣", 5: "5️⃣"}
+
             html_content = ""
             for i, row in top_5.iterrows():
                 emp_name = row['employee_name']
                 val = row[val_col]
-                medal = medals[i] if i < len(medals) else "🏅"
-                
+                rank = row['rank']
+                medal = medals_dict.get(rank, "🏅")
+
                 bg_color = "rgba(255,255,255,0.7)"
-                text_color = "#e67e22" if data_type != "ot" else "#00a8e8"
-                if i < 3:
-                    bg_color = colors[i][0]
-                    text_color = colors[i][1]
+                text_color = "#00a8e8" # Always blue for rank 4+ in both tables
+                
+                if rank <= 3:
+                    bg_color = colors[rank - 1][0]
+                    text_color = colors[rank - 1][1]
                 
                 formatted_val = f"{val:,.1f}" if data_type == "ot" else f"{int(val):,}"
                 
