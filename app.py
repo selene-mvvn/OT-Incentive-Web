@@ -3,7 +3,7 @@ import streamlit as st
 st.set_page_config(page_title="OT & Incentive Calculator", layout="wide", initial_sidebar_state="expanded")
 
 if 'pending_toast' in st.session_state:
-    st.toast(st.session_state['pending_toast'], icon="✅")
+    st.toast(st.session_state['pending_toast'], icon=":material/check_circle:")
     del st.session_state['pending_toast']
 
 # Custom CSS for a beautiful corporate look (White & Blue)
@@ -18,6 +18,21 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
+    /* Custom CSS for Toast notifications */
+    [data-testid="stToast"] {
+        background-color: #00B0F0 !important;
+        border-radius: 12px !important;
+        border: none !important;
+        box-shadow: 0 5px 20px rgba(0, 176, 240, 0.4) !important;
+        padding: 15px 20px !important;
+    }
+    [data-testid="stToast"] * {
+        color: white !important;
+    }
+    [data-testid="stToast"] svg {
+        fill: white !important;
+    }
+
     /* Metric cards styling - matching the clean soft shadow design */
     [data-testid="stMetric"] {
         background: #00B0F0 !important;

@@ -129,7 +129,7 @@ def render_dashboard():
                 st.plotly_chart(fig, use_container_width=True)
 
             if st.session_state.get('show_success_ot'):
-                st.toast(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"), icon="✅")
+                st.toast(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"), icon=":material/check_circle:")
                 st.session_state['show_success_ot'] = False
                 
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
@@ -288,7 +288,7 @@ def render_dashboard():
                 st.dataframe(agg_display2.style.apply(highlight_top3_inc, axis=1).format({col_inc: "{:,.0f}", col_eff: "{:,.1f}%"}), use_container_width=True, height=400)
                 
             if st.session_state.get('show_success_inc'):
-                st.toast(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"), icon="✅")
+                st.toast(t("Đã cập nhật dữ liệu thành công!", "データを正常に更新しました！"), icon=":material/check_circle:")
                 st.session_state['show_success_inc'] = False
                 
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):

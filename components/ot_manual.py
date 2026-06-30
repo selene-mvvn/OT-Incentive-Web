@@ -250,7 +250,7 @@ def render_base_data():
         if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
             st.session_state['ot_base_data']['holidays_df'] = holidays_df
             save_base_data(st.session_state['ot_base_data'])
-            st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon="✅")
+            st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon=":material/check_circle:")
 
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
@@ -487,7 +487,7 @@ def render_project_data():
                                 entry[k_name] = int(res["ot_pay"])
                             
                         st.session_state['ot_records'].append(entry)
-                        st.toast(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})", icon="✅")
+                        st.toast(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})", icon=":material/check_circle:")
                     
             with tab_manual:
                 st.warning(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0または空白で。"))
@@ -539,7 +539,7 @@ def render_project_data():
                                 entry[k_name] = int(res["ot_pay"])
                             
                         st.session_state['ot_records'].append(entry)
-                        st.toast(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"), icon="✅")
+                        st.toast(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"), icon=":material/check_circle:")
 
             if len(st.session_state['ot_records']) > 0:
                 st.markdown("---")

@@ -208,12 +208,12 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
                     if st.button(t("Xóa đã chọn", "選択項目を削除"), key=f"del_sel_{key}", use_container_width=True):
                         if items_to_delete:
                             remove_from_history(category, items_to_delete)
-                            st.toast(t("Đã xóa các mục đã chọn ✅", "選択した項目を削除しました ✅"))
+                            st.session_state['pending_toast'] = t("Đã xóa các mục đã chọn", "選択した項目を削除しました")
                             st.rerun()
                 with b2:
                     if st.button(t("Xóa tất cả", "すべて削除"), key=f"del_all_{key}", type="primary", use_container_width=True):
                         remove_from_history(category, options)
-                        st.toast(t("Đã xóa toàn bộ lịch sử ✅", "すべての履歴を削除しました ✅"))
+                        st.session_state['pending_toast'] = t("Đã xóa toàn bộ lịch sử", "すべての履歴を削除しました")
                         st.rerun()
         
         # Return the selected value

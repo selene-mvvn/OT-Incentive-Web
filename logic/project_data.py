@@ -70,9 +70,9 @@ def save_projects_df(df):
             try:
                 resp = requests.put(firebase_url, json=data, timeout=5)
                 if resp.status_code != 200:
-                    st.toast(f"⚠️ Lỗi Firebase: {resp.text}", icon="🚨")
+                    st.toast(f"⚠️ Lỗi Firebase: {resp.text}", icon=":material/error:")
             except Exception as e:
-                st.toast(f"⚠️ Lỗi kết nối Firebase: {e}", icon="🚨")
+                st.toast(f"⚠️ Lỗi kết nối Firebase: {e}", icon=":material/error:")
                 
         init_project_data()
         with open(PROJECT_FILE, "w", encoding="utf-8") as f:
