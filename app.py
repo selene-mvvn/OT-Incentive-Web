@@ -32,20 +32,21 @@ st.markdown("""
     }
     
     /* Metric Delta (e.g. Thưởng) */
-    [data-testid="stMetricDelta"] > div {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-        padding: 4px 12px !important;
-        border-radius: 20px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    [data-testid="stMetricDelta"] {
         margin-top: 8px !important;
-        color: #ffffff !important;
+    }
+    [data-testid="stMetricDelta"] * {
+        background-color: transparent !important;
+        color: #FFE600 !important;
+        border: none !important;
+        font-weight: 700 !important;
+        font-size: 15px !important;
     }
     [data-testid="stMetricDelta"] svg {
-        fill: #ffffff !important;
-        stroke: #ffffff !important;
+        fill: #FFE600 !important;
+        stroke: #FFE600 !important;
+        width: 18px !important;
+        height: 18px !important;
     }
 
 
