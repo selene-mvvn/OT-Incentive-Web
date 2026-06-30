@@ -356,35 +356,31 @@ def render_base_data():
         with st.container():
             import calendar
             calendar.setfirstweekday(calendar.SUNDAY)
-            st.markdown("<div id='holiday-calendar-wrapper'></div>", unsafe_allow_html=True)
+            st.markdown("<div id='calendar-start'></div>", unsafe_allow_html=True)
             st.markdown("""
                 <style>
-                /* Target exactly the innermost vertical block containing the calendar */
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) {
-                    border: 1px solid #e0e0e0;
-                    background-color: #ffffff;
-                }
-                /* Remove padding/gap inside the calendar container */
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) > div > div[data-testid="stHorizontalBlock"] {
+                /* We target the element-container of calendar-start, and select all subsequent element-containers */
+                
+                #calendar-start { display: none; }
+                #calendar-end { display: none; }
+
+                /* Target columns: remove gap and add borders */
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="stHorizontalBlock"] {
                     gap: 0 !important;
                 }
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"] {
+                
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"] {
                     padding: 0 !important;
                     border-right: 1px solid #e0e0e0;
                     border-bottom: 1px solid #e0e0e0;
                 }
-                /* Remove right border from the last column (Saturday) */
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"]:nth-child(7n) {
+                
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"]:nth-child(7n) {
                     border-right: none;
                 }
-                /* Highlight weekend columns (Saturday and Sunday, i.e., col 1 and 7) */
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"]:nth-child(7n),
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"]:nth-child(7n+1) {
-                    background-color: #ffe6e6 !important; /* Light pink background */
-                }
-
-                /* Style the buttons to look like calendar cells */
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button {
+                
+                /* Target buttons */
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button {
                     width: 100% !important;
                     height: 80px !important;
                     border-radius: 0 !important;
@@ -394,35 +390,31 @@ def render_base_data():
                     padding: 5px !important;
                     box-shadow: none !important;
                 }
-                
-                /* Align text to top-center like a real calendar */
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button div[data-testid="stMarkdownContainer"] {
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: center;
-                }
-                
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button p {
+
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button p {
                     font-size: 14px;
                     font-weight: bold;
                     color: #333;
                     margin: 0;
                 }
 
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button:hover {
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button:hover {
                     background-color: rgba(0, 176, 240, 0.1) !important;
                 }
 
-                /* Highlighted Holiday styling (Yellow banner feel) */
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button[kind="primary"] {
-                    background-color: #ffefc2 !important; 
+                /* Primary button (Holiday) */
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button[kind="primary"] {
+                    background-color: #ffefc2 !important;
                     border: 1px solid #ffa500 !important;
                 }
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button[kind="primary"] p {
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button[kind="primary"] p {
                     color: #d35400 !important;
+                }
+                
+                /* Weekend backgrounds */
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"]:nth-child(7n),
+                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"]:nth-child(7n+1) {
+                    background-color: #ffe6e6 !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
