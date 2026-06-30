@@ -30,18 +30,27 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
-            let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
+            let current = marker.parentElement;
             let outerContainer = null;
-            if (horizontal) {
-                outerContainer = horizontal.closest('[data-testid="stVerticalBlockBorderWrapper"]');
-                if (!outerContainer && horizontal.parentElement && horizontal.parentElement.parentElement) {
-                    let parent = horizontal.parentElement.parentElement;
-                    if (!parent.getAttribute('data-testid') && parent.className.includes('st-emotion-cache')) {
-                        outerContainer = parent;
+            while (current && current.tagName !== 'BODY' && current.tagName !== 'HTML') {
+                if (current.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
+                    outerContainer = current;
+                    break;
+                }
+                
+                // Fallback for newer Streamlit versions: the border wrapper has no data-testid
+                // but it's an st-emotion-cache div whose direct child is stVerticalBlock
+                if (!current.getAttribute('data-testid') && 
+                    current.className && current.className.includes('st-emotion-cache')) {
+                    
+                    let firstChild = current.firstElementChild;
+                    if (firstChild && firstChild.getAttribute('data-testid') === 'stVerticalBlock') {
+                        // We found the anonymous border wrapper!
+                        outerContainer = current;
+                        break;
                     }
                 }
-            } else {
-                outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+                current = current.parentElement;
             }
             
             if (outerContainer) {
