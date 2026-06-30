@@ -190,36 +190,65 @@ def render_action_history():
 
         selected_ids = [k for k, v in st.session_state.get('selected_logs', {}).items() if v]
         if selected_ids:
-            st.markdown(f"<div style='background-color:#e8f4f8; padding:10px 15px; border-radius:8px; border:1px solid #b3e0f2; margin-bottom:15px; display:flex; align-items:center;'><b style='color:#00B0F0; font-size:16px;'>{len(selected_ids)}</b>&nbsp;<span style='color:#34495e;'>{t('mục đã chọn', '件選択中')}</span></div>", unsafe_allow_html=True)
-            c_bulk1, c_bulk2, c_bulk3 = st.columns([2.5, 2.5, 5])
-            with c_bulk1:
-                if st.button("🗑️ " + t("Xóa các mục đã chọn", "選択項目を削除"), key="bulk_delete", type="primary", use_container_width=True):
-                    for lid in selected_ids:
-                        delete_action_log(lid)
-                    st.session_state['selected_logs'] = {}
-                    st.rerun()
-            with c_bulk2:
-                valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
-                if valid_logs:
-                    import zipfile
-                    import io
-                    zip_buffer = io.BytesIO()
-                    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-                        for idx, l in enumerate(valid_logs):
-                            file_bytes = base64.b64decode(l.get('file_b64'))
-                            safe_name = l.get('original_filename', f'file_{l.get("id")}.xlsx')
-                            if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
-                                safe_name = f"{idx+1}_{safe_name}"
-                            zip_file.writestr(safe_name, file_bytes)
-                    
-                    st.download_button(
-                        label="⬇️ " + t("Tải về (ZIP)", "ZIPでダウンロード"),
-                        data=zip_buffer.getvalue(),
-                        file_name="LichSu_DaChon.zip",
-                        mime="application/zip",
-                        key="bulk_download",
-                        use_container_width=True
-                    )
+            st.markdown("""
+            <style>
+            @keyframes slideDownFade {
+                from { opacity: 0; transform: translateY(-10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) {
+                animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                background-color: #f4fafe !important;
+                border-color: #b3e0f2 !important;
+                padding: 10px 15px !important;
+                margin-bottom: 20px !important;
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) button {
+                min-height: 32px !important;
+                padding: 2px 10px !important;
+                font-size: 13px !important;
+                border-radius: 6px !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            with st.container(border=True):
+                st.markdown("<span class='bulk-marker'></span>", unsafe_allow_html=True)
+                c_text, c_dl, c_del = st.columns([5.5, 2.5, 2], vertical_alignment="center")
+                
+                with c_text:
+                    st.markdown(f"<div style='display:flex; align-items:center;'><span style='background:#00B0F0; color:white; border-radius:12px; padding:2px 10px; font-weight:bold; font-size:13px; margin-right:8px; box-shadow: 0 2px 4px rgba(0,176,240,0.3);'>{len(selected_ids)}</span><span style='color:#34495e; font-weight:600; font-size: 14px;'>{t('mục đã chọn', '件選択中')}</span></div>", unsafe_allow_html=True)
+                
+                with c_dl:
+                    valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
+                    if valid_logs:
+                        import zipfile
+                        import io
+                        zip_buffer = io.BytesIO()
+                        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+                            for idx, l in enumerate(valid_logs):
+                                file_bytes = base64.b64decode(l.get('file_b64'))
+                                safe_name = l.get('original_filename', f'file_{l.get("id")}.xlsx')
+                                if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
+                                    safe_name = f"{idx+1}_{safe_name}"
+                                zip_file.writestr(safe_name, file_bytes)
+                        
+                        st.download_button(
+                            label="⬇️ " + t("Tải về (ZIP)", "ZIPでダウンロード"),
+                            data=zip_buffer.getvalue(),
+                            file_name="LichSu_DaChon.zip",
+                            mime="application/zip",
+                            key="bulk_download",
+                            use_container_width=True,
+                            type="primary"
+                        )
+
+                with c_del:
+                    if st.button("🗑️ " + t("Xóa các mục", "選択項目を削除"), key="bulk_delete", use_container_width=True):
+                        for lid in selected_ids:
+                            delete_action_log(lid)
+                        st.session_state['selected_logs'] = {}
+                        st.rerun()
 
         # 4. Render Logs
         for i, log in enumerate(paginated_logs):
