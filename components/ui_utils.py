@@ -31,12 +31,14 @@ def make_history_cards_white():
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
             let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
-            if (horizontal && horizontal.parentElement) {
-                let outerContainer = horizontal.parentElement;
-                if (outerContainer.parentElement && outerContainer.parentElement.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
-                    outerContainer = outerContainer.parentElement;
-                }
-                
+            let outerContainer = null;
+            if (horizontal) {
+                outerContainer = horizontal.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+            } else {
+                outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+            }
+            
+            if (outerContainer) {
                 outerContainer.style.backgroundColor = '#ffffff';
                 outerContainer.style.setProperty('background-color', '#ffffff', 'important');
                 outerContainer.classList.add('custom-history-card');
