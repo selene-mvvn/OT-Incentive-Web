@@ -60,7 +60,7 @@ def render_incentive():
                 </style>
             """, unsafe_allow_html=True)
             
-            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 5px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 5px; margin-bottom: 25px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
             col_info1, col_info2, col_info3 = st.columns(3)
         
             with col_info1:
@@ -91,7 +91,7 @@ def render_incentive():
                 else:
                     employee_name = sel_emp
         
-            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 25px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
             col1, col2 = st.columns(2)
             with col1:
                 target_hours = st.number_input(t(":material/track_changes: Giờ công kế hoạch", ":material/track_changes: 目標工数"), min_value=0.0, step=1.0, format="%f")
