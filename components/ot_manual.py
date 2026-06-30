@@ -573,7 +573,7 @@ def render_project_data():
                 st.session_state['ot_records'] = edited_df
             
                 st.markdown("---")
-                c_name, c_dl, c_del = st.columns([5, 3, 2])
+                c_name, c_dl, c_del = st.columns([4.8, 2.5, 2.7])
                 with c_name:
                     default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
                     export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="ot_manual_filename")
