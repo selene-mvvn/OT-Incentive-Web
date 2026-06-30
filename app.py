@@ -30,6 +30,23 @@ st.markdown("""
         transform: translateY(-2px);
         box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     }
+    
+    /* Metric Delta (e.g. Thưởng) */
+    [data-testid="stMetricDelta"] > div {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        padding: 4px 12px !important;
+        border-radius: 20px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        margin-top: 8px !important;
+        color: #ffffff !important;
+    }
+    [data-testid="stMetricDelta"] svg {
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+    }
 
 
 
