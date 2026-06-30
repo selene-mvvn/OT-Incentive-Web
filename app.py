@@ -420,8 +420,10 @@ st.markdown("""
         border-radius: 8px !important;
         box-shadow: 0 4px 15px rgba(0, 176, 240, 0.1) !important;
         border: 2px solid #00B0F0 !important;
-        padding: 4px 10px 4px 4px !important; /* Tăng padding bên phải */
+        padding: 0 !important;
         box-sizing: border-box !important;
+        width: calc(100% - 6px) !important;
+        overflow: hidden !important;
         transition: all 0.3s ease !important;
     }
     
