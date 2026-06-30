@@ -34,11 +34,8 @@ def make_history_cards_white():
             let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
             if (horizontal) {
                 outerContainer = horizontal.closest('[data-testid="stVerticalBlockBorderWrapper"]');
-                if (!outerContainer) {
-                    outerContainer = horizontal.closest('[data-testid="stVerticalBlock"]');
-                }
             } else {
-                outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]') || marker.closest('[data-testid="stVerticalBlock"]');
+                outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
             }
             if (outerContainer) {
                 outerContainer.style.backgroundColor = '#ffffff';
