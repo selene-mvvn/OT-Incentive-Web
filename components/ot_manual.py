@@ -356,31 +356,31 @@ def render_base_data():
         with st.container():
             import calendar
             calendar.setfirstweekday(calendar.SUNDAY)
-            st.markdown("<div id='calendar-start'></div>", unsafe_allow_html=True)
             st.markdown("""
                 <style>
-                /* We target the element-container of calendar-start, and select all subsequent element-containers */
-                
-                #calendar-start { display: none; }
-                #calendar-end { display: none; }
-
-                /* Target columns: remove gap and add borders */
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="stHorizontalBlock"] {
-                    gap: 0 !important;
-                }
-                
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"] {
+                /* Target columns in 7-column blocks (the calendar grid) */
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7),
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"] {
                     padding: 0 !important;
                     border-right: 1px solid #e0e0e0;
                     border-bottom: 1px solid #e0e0e0;
+                    background-color: #ffffff;
                 }
                 
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"]:nth-child(7n) {
+                /* Remove right border from last column */
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"]:nth-child(7) {
                     border-right: none;
                 }
                 
-                /* Target buttons */
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button {
+                /* Weekend backgrounds (Sunday is 1st column, Saturday is 7th column) */
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7),
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"]:nth-child(7n) {
+                    background-color: #ffe6e6 !important;
+                }
+
+                /* Target buttons in these 7-column blocks */
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) button,
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"] button {
                     width: 100% !important;
                     height: 80px !important;
                     border-radius: 0 !important;
@@ -391,33 +391,51 @@ def render_base_data():
                     box-shadow: none !important;
                 }
 
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button p {
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) button p,
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"] button p {
                     font-size: 14px;
                     font-weight: bold;
                     color: #333;
                     margin: 0;
                 }
 
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button:hover {
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) button:hover,
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"] button:hover {
                     background-color: rgba(0, 176, 240, 0.1) !important;
                 }
 
                 /* Primary button (Holiday) */
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button[kind="primary"] {
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) button[kind="primary"],
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"] button[kind="primary"] {
                     background-color: #ffefc2 !important;
                     border: 1px solid #ffa500 !important;
                 }
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) button[kind="primary"] p {
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) button[kind="primary"] p,
+                div[data-testid="stHorizontalBlock"] > div[data-testid="column"]:first-child:nth-last-child(7) ~ div[data-testid="column"] button[kind="primary"] p {
                     color: #d35400 !important;
-                }
-                
-                /* Weekend backgrounds */
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"]:nth-child(7n),
-                div.element-container:has(#calendar-start) ~ div.element-container:not(:has(#calendar-end) ~ div.element-container) div[data-testid="column"]:nth-child(7n+1) {
-                    background-color: #ffe6e6 !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
+            import streamlit.components.v1 as components
+            components.html("""
+            <script>
+                // Remove gap dynamically for 7-column rows to ensure compatibility across all browsers
+                setTimeout(() => {
+                    const blocks = window.parent.document.querySelectorAll('div[data-testid="stHorizontalBlock"]');
+                    blocks.forEach(b => {
+                        if (b.children.length === 7) {
+                            b.style.setProperty('gap', '0', 'important');
+                            // Also add a border to the whole block so the grid has an outer box
+                            b.style.borderLeft = '1px solid #e0e0e0';
+                            b.style.borderRight = '1px solid #e0e0e0';
+                            b.style.borderTop = '1px solid #e0e0e0';
+                            // Remove bottom border to prevent double borders
+                            b.style.borderBottom = 'none';
+                        }
+                    });
+                }, 100);
+            </script>
+            """, height=0, width=0)
 
             days = [t("CN", "日"), t("T2", "月"), t("T3", "火"), t("T4", "水"), t("T5", "木"), t("T6", "金"), t("T7", "土")]
             cols = st.columns(7)
