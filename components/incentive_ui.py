@@ -48,6 +48,18 @@ def render_incentive():
         with st.container():
             from components.ui_utils import make_container_white
             make_container_white()
+            
+            st.markdown("""
+                <style>
+                /* Force all Material icons inside widget labels to be UI blue */
+                [data-testid="stWidgetLabel"] p span.material-symbols-rounded,
+                [data-testid="stWidgetLabel"] p span.st-icon,
+                [data-testid="stWidgetLabel"] p span[translate="no"] {
+                    color: #00B0F0 !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+            
             st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 5px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
             col_info1, col_info2, col_info3 = st.columns(3)
         
@@ -95,7 +107,7 @@ def render_incentive():
             # Ước tính nhanh (What-if)
             c_title, c_sl, c_res = st.columns([1.5, 3.5, 1.5], vertical_alignment="center")
             with c_title:
-                st.markdown(f"<div style='display: flex; align-items: center; color: #5f6368; font-weight: 600; font-size: 15px;'><span class='material-symbols-rounded' style='margin-right: 5px; font-size: 18px;'>lightbulb</span> {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='color: #5f6368; font-weight: 600; font-size: 15px;'><span class='material-symbols-rounded' style='vertical-align: -4px; margin-right: 5px; font-size: 18px;'>lightbulb</span> {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
             with c_sl:
                 max_slider = float(target_hours * 1.5) if target_hours > 0 else 100.0
                 if actual_hours > max_slider: max_slider = float(actual_hours * 1.5)
