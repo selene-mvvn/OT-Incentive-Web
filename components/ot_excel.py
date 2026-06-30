@@ -75,7 +75,7 @@ def render_ot_excel():
                 st.write(t(f"Dữ liệu đã tải lên (Bắt đầu từ dòng {header_idx + 1}):", f"アップロードされたデータ (行 {header_idx + 1} から開始):"))
                 st.dataframe(df, height=150)
             
-                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 15px;'>{t('BƯỚC 1: CHẾ ĐỘ GHÉP CỘT DỮ LIỆU', 'ステップ 1: 列マッピングモード')}</h4>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 5px;'>{t('BƯỚC 1: CHẾ ĐỘ GHÉP CỘT DỮ LIỆU', 'ステップ 1: 列マッピングモード')}</h4>", unsafe_allow_html=True)
             
                 mapping_mode = st.radio(
                     t("Tùy chọn ghép cột:", "マッピングオプション:"),
@@ -134,8 +134,8 @@ def render_ot_excel():
                     with m_col4:
                         sel_lydo = st.selectbox(t("Cột Lý do OT", "理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
             
-                st.divider()
-                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 15px;'>{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>", unsafe_allow_html=True)
+                st.markdown("<hr style='margin: 10px 0 5px 0;'>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 5px;'>{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>", unsafe_allow_html=True)
             
                 if st.button(t("Xử Lý Dữ Liệu Tăng Ca", "データ処理"), type="primary"):
                     if mapping_mode == t("Ghép cột thủ công", "手動マッピング"):
@@ -306,7 +306,7 @@ def render_ot_excel():
             
         # Show Data Editor if there are records
         if st.session_state.get('ot_excel_records') and len(st.session_state['ot_excel_records']) > 0:
-            st.markdown("---")
+            st.markdown("<hr style='margin: 15px 0 5px 0;'>", unsafe_allow_html=True)
             col_title, col_clear = st.columns([7.5, 2.5])
             with col_title:
                 st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 0;'>{t('BẢNG DỮ LIỆU KẾT QUẢ', '処理結果データ')}</h3>", unsafe_allow_html=True)
