@@ -28,6 +28,14 @@ def make_history_cards_white():
     components.html("""
     <script>
         const parent = window.parent.document;
+        
+        // Clean up previously added classes to avoid duplication on hot-reload or Streamlit DOM reuse
+        parent.querySelectorAll('.custom-history-card').forEach(el => {
+            el.classList.remove('custom-history-card', 'has-timeline-marker', 'has-missing-marker');
+            el.style.backgroundColor = '';
+            el.style.removeProperty('background-color');
+        });
+
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
             let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
@@ -62,10 +70,9 @@ def make_history_cards_white():
         });
 
         // Hide the iframe containing this script and its Streamlit containers to prevent the white bar at the bottom
-        try {
-            const parent = window.parent.document;
-            const frames = parent.querySelectorAll('iframe');
-            frames.forEach(frame => {
+        const frames = parent.querySelectorAll('iframe');
+        frames.forEach(frame => {
+            try {
                 if (frame.contentWindow === window) {
                     let p = frame;
                     while (p && p.tagName !== 'BODY') {
@@ -77,8 +84,10 @@ def make_history_cards_white():
                         p = p.parentElement;
                     }
                 }
-            });
-        } catch (e) {}
+            } catch (e) {
+                // Ignore cross-origin errors for other iframes
+            }
+        });
     </script>
     """, height=0)
 
