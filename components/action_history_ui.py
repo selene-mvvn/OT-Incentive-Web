@@ -98,7 +98,8 @@ def render_action_history():
 
         .custom-history-card.has-timeline-marker,
         .custom-history-card.has-missing-marker {
-            margin-left: 25px !important;
+            margin-left: 40px !important;
+            width: calc(100% - 40px) !important;
         }
 
         .custom-history-card:hover {
@@ -111,9 +112,9 @@ def render_action_history():
         .custom-history-card.has-missing-marker::before {
             content: '';
             position: absolute;
-            top: -20px;
-            bottom: -45px;
-            left: -25px;
+            top: -10px;
+            bottom: -30px;
+            left: -27px;
             width: 2px;
             background-color: #00B0F0;
             opacity: 0.3;
@@ -122,17 +123,19 @@ def render_action_history():
 
         .custom-history-card.has-timeline-marker:last-child::before,
         .custom-history-card.has-missing-marker:last-child::before {
-            bottom: 0; /* Stop line at the last item */
+            bottom: 50%; /* Stop line at the last dot */
         }
 
         .custom-history-card.has-timeline-marker::after,
         .custom-history-card.has-missing-marker::after {
             content: '';
             position: absolute;
-            top: 25px;
-            left: -33px;
+            top: 50%;
+            margin-top: -9px;
+            left: -35px;
             width: 18px;
             height: 18px;
+            box-sizing: border-box;
             border-radius: 50%;
             background-color: #ffffff;
             border: 4px solid #00B0F0;
