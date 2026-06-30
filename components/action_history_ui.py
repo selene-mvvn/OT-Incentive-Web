@@ -88,7 +88,7 @@ def render_action_history():
         margin-bottom: 25px !important;
         transition: transform 0.3s ease, box-shadow 0.3s ease;
         border-radius: 12px !important;
-        background-color: #ffffff;
+        background-color: #ffffff !important;
         border: 1px solid rgba(0, 176, 240, 0.2) !important;
     }
     
@@ -136,6 +136,10 @@ def render_action_history():
     /* Missing file styling */
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker) {
         opacity: 0.7;
+        background-color: #ffffff !important;
+        border-radius: 12px !important;
+        margin-left: 25px !important;
+        margin-bottom: 25px !important;
         border: 1px solid rgba(231, 76, 60, 0.3) !important;
     }
     div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker)::after {
@@ -207,6 +211,3 @@ def render_action_history():
             if st.button(t("Trang sau", "次へ") + " ➡️", disabled=(current_page == total_pages), use_container_width=True):
                 st.session_state['history_page'] += 1
                 st.rerun()
-
-    from components.ui_utils import make_history_cards_white
-    make_history_cards_white()
