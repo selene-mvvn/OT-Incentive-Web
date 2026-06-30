@@ -218,10 +218,10 @@ def render_action_history():
             
             with st.container(border=True):
                 st.markdown("<span class='bulk-marker'></span>", unsafe_allow_html=True)
-                c_text, c_dl, c_del = st.columns([5.5, 2.5, 2], vertical_alignment="center")
-                
+                c_text, c_dl, c_del = st.columns([6.5, 2, 1.5], vertical_alignment="center")
+
                 with c_text:
-                    st.markdown(f"<div style='display:flex; align-items:center;'><span style='background:#00B0F0; color:white; border-radius:12px; padding:2px 10px; font-weight:bold; font-size:13px; margin-right:8px; box-shadow: 0 2px 4px rgba(0,176,240,0.3);'>{len(selected_ids)}</span><span style='color:#34495e; font-weight:600; font-size: 14px;'>{t('mục đã chọn', '件選択中')}</span></div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:15px; margin-top:2px; margin-left:5px;'><span style='color:#00B0F0; font-size:18px;'>{len(selected_ids)}</span> {t('mục đã chọn', '件選択中')}</div>", unsafe_allow_html=True)
                 
                 with c_dl:
                     valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
