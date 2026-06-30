@@ -142,7 +142,7 @@ def render_incentive():
                     st.error(t("Vui lòng nhập Tên dự án và Người thực hiện!", "案件名と担当者を入力してください！"))
                 else:
                     st.session_state['incentive_records'].append({**inputs, **result})
-                    st.toast(t("Đã thêm vào danh sách!", "リストに追加しました！"), icon="✅")
+                    st.session_state['pending_toast'] = t("Đã thêm vào danh sách!", "リストに追加しました！")
                     st.rerun()
                 
         if st.session_state.get('incentive_records') and len(st.session_state['incentive_records']) > 0:

@@ -176,7 +176,7 @@ def render_base_data():
             edited_emp['Lương Gross'] = gross
             
             save_employees_df(edited_emp)
-            st.toast(t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！"), icon="✅")
+            st.session_state['pending_toast'] = t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！")
             st.rerun()
             
     with tab2:
@@ -320,7 +320,7 @@ def render_project_data():
             
                 if st.button(t("💾 Lưu danh mục Dự án", "💾 プロジェクトリストを保存"), key="save_projects"):
                     save_projects_df(edited_projects)
-                    st.toast(t("Đã lưu danh mục dự án!", "プロジェクトリストを保存しました！"), icon="✅")
+                    st.session_state['pending_toast'] = t("Đã lưu danh mục dự án!", "プロジェクトリストを保存しました！")
                     st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
@@ -612,7 +612,7 @@ def render_project_data():
                     st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                     if st.button(t("XÓA TOÀN BỘ BẢNG", "全データクリア"), use_container_width=True):
                         st.session_state['ot_records'] = []
-                        st.toast(t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！"), icon="✅")
+                        st.session_state['pending_toast'] = t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！")
                         st.rerun()
             else:
                 st.info(t("Chưa có bản ghi nào. Vui lòng nhập thông tin ở trên và nhấn 'THÊM VÀO BẢNG CHỜ XUẤT'.", "レコードがありません。上記に情報を入力して「追加」を押してください。"))

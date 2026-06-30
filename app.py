@@ -2,6 +2,10 @@ import streamlit as st
 
 st.set_page_config(page_title="OT & Incentive Calculator", layout="wide", initial_sidebar_state="expanded")
 
+if 'pending_toast' in st.session_state:
+    st.toast(st.session_state['pending_toast'], icon="✅")
+    del st.session_state['pending_toast']
+
 # Custom CSS for a beautiful corporate look (White & Blue)
 st.markdown("""
 <style>
