@@ -210,13 +210,13 @@ def render_action_history():
             st.markdown("<br><hr>", unsafe_allow_html=True)
             pc1, pc2, pc3 = st.columns([1, 2, 1])
             with pc1:
-                if st.button("⬅️ " + t("Trang trước", "前へ"), disabled=(current_page == 1), use_container_width=True):
+                if st.button("◀ " + t("Trang trước", "前へ"), disabled=(current_page == 1), use_container_width=True):
                     st.session_state['history_page'] -= 1
                     st.rerun()
             with pc2:
                 st.markdown(f"<div style='text-align: center; margin-top: 10px; font-size: 16px;'><b>{t('Trang', 'ページ')} {current_page} / {total_pages}</b></div>", unsafe_allow_html=True)
             with pc3:
-                if st.button(t("Trang sau", "次へ") + " ➡️", disabled=(current_page == total_pages), use_container_width=True):
+                if st.button(t("Trang sau", "次へ") + " ▶", disabled=(current_page == total_pages), use_container_width=True):
                     st.session_state['history_page'] += 1
                     st.rerun()
 
