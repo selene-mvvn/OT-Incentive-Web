@@ -173,6 +173,7 @@ def render_action_history():
                 filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
                 st.markdown(f"<div class='white-card-bg'></div><div class='{marker_class}'></div><h3 style='margin:0; padding:0; color:#2c3e50; font-size:18px;'>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
                 st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
+                st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
             with c_dl:
                 if not is_missing:
                     file_bytes = base64.b64decode(file_b64)
@@ -191,8 +192,6 @@ def render_action_history():
                 if st.button(t("XÓA", "削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
                     delete_action_log(log_id)
                     st.rerun()
-                    
-            st.markdown(f"<p style='margin-top:5px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
                 
     # 5. Pagination Controls
     if total_pages > 1:
