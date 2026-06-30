@@ -307,10 +307,11 @@ def render_ot_excel():
         # Show Data Editor if there are records
         if st.session_state.get('ot_excel_records') and len(st.session_state['ot_excel_records']) > 0:
             st.markdown("<hr style='margin: 15px 0 5px 0;'>", unsafe_allow_html=True)
-            col_title, col_clear = st.columns([7.5, 2.5], vertical_alignment="bottom")
+            col_title, col_clear = st.columns([7.5, 2.5])
             with col_title:
                 st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 0;'>{t('BẢNG DỮ LIỆU KẾT QUẢ', '処理結果データ')}</h3>", unsafe_allow_html=True)
             with col_clear:
+                st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
                 if st.button("🗑️ " + t("Xóa kết quả này", "結果をクリア"), use_container_width=True):
                     st.session_state['ot_excel_records'] = []
                     st.rerun()
