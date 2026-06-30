@@ -31,23 +31,22 @@ def render_ot_excel():
         st.markdown(f"""
             <style>
             .custom-dl-btn {{
-                background-color: #00B0F0;
-                color: white;
+                background-color: #00B0F0 !important;
+                color: white !important;
                 padding: 10px 20px;
                 border-radius: 8px;
-                text-decoration: none;
+                text-decoration: none !important;
                 font-size: 14px;
                 font-weight: 500;
                 display: inline-block;
                 transition: all 0.2s ease;
                 white-space: nowrap;
-                box-shadow: 0 4px 10px rgba(0, 176, 240, 0.3);
+                box-shadow: 0 4px 10px rgba(0, 176, 240, 0.3) !important;
             }}
             .custom-dl-btn:hover {{
-                background-color: #0099D6;
-                color: white;
-                box-shadow: 0 6px 14px rgba(0, 176, 240, 0.4);
-                text-decoration: none;
+                background-color: #0099D6 !important;
+                color: white !important;
+                box-shadow: 0 6px 14px rgba(0, 176, 240, 0.4) !important;
             }}
             </style>
             <div style='background-color: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 15px 20px; border: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; gap: 20px;'>
