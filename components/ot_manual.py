@@ -354,49 +354,88 @@ def render_base_data():
                 
         # Draw calendar grid
         with st.container():
+            import calendar
+            calendar.setfirstweekday(calendar.SUNDAY)
             st.markdown("<div id='holiday-calendar-wrapper'></div>", unsafe_allow_html=True)
             st.markdown("""
                 <style>
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="secondary"],
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="primary"] {
-                    width: 100%;
-                    border-radius: 20px;
-                    padding: 8px 0;
-                    margin: 0;
-                    font-size: 15px;
-                    font-weight: 500;
-                    transition: all 0.2s ease;
+                /* Target exactly the innermost vertical block containing the calendar */
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) {
+                    border: 1px solid #e0e0e0;
+                    background-color: #ffffff;
                 }
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="secondary"] {
-                    background-color: transparent;
-                    border: 1px solid #00B0F0;
-                    color: #00B0F0;
+                /* Remove padding/gap inside the calendar container */
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) > div > div[data-testid="stHorizontalBlock"] {
+                    gap: 0 !important;
                 }
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="secondary"]:hover {
-                    background-color: rgba(0, 176, 240, 0.1);
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"] {
+                    padding: 0 !important;
+                    border-right: 1px solid #e0e0e0;
+                    border-bottom: 1px solid #e0e0e0;
                 }
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="primary"] {
-                    background-color: #00B0F0 !important;
-                    color: white !important;
+                /* Remove right border from the last column (Saturday) */
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"]:nth-child(7n) {
+                    border-right: none;
+                }
+                /* Highlight weekend columns (Saturday and Sunday, i.e., col 1 and 7) */
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"]:nth-child(7n),
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) div[data-testid="column"]:nth-child(7n+1) {
+                    background-color: #ffe6e6 !important; /* Light pink background */
+                }
+
+                /* Style the buttons to look like calendar cells */
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button {
+                    width: 100% !important;
+                    height: 80px !important;
+                    border-radius: 0 !important;
                     border: none !important;
-                    box-shadow: 0 4px 10px rgba(0, 176, 240, 0.4) !important;
+                    background-color: transparent !important;
+                    margin: 0 !important;
+                    padding: 5px !important;
+                    box-shadow: none !important;
                 }
-                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) div[data-testid="column"] {
-                    padding: 0 3px !important;
-                    gap: 3px !important;
+                
+                /* Align text to top-center like a real calendar */
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button div[data-testid="stMarkdownContainer"] {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+                }
+                
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button p {
+                    font-size: 14px;
+                    font-weight: bold;
+                    color: #333;
+                    margin: 0;
+                }
+
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button:hover {
+                    background-color: rgba(0, 176, 240, 0.1) !important;
+                }
+
+                /* Highlighted Holiday styling (Yellow banner feel) */
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button[kind="primary"] {
+                    background-color: #ffefc2 !important; 
+                    border: 1px solid #ffa500 !important;
+                }
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper):not(:has(div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper))) button[kind="primary"] p {
+                    color: #d35400 !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
-            
-            days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+            days = [t("CN", "日"), t("T2", "月"), t("T3", "火"), t("T4", "水"), t("T5", "木"), t("T6", "金"), t("T7", "土")]
             cols = st.columns(7)
             for i, day in enumerate(days):
                 with cols[i]:
-                    st.markdown(f"<div style='text-align: center; font-weight: bold; padding-bottom: 5px; color: #5f6368;'>{day}</div>", unsafe_allow_html=True)
-                    
+                    st.markdown(f"<div style='text-align: center; font-weight: bold; padding: 10px 0; color: #5f6368; background-color: #f8f9fa; border-bottom: 1px solid #e0e0e0;'>{day}</div>", unsafe_allow_html=True)
+
             cal = calendar.monthcalendar(st.session_state['cal_year'], st.session_state['cal_month'])
             holiday_dates = current_df["Ngày nghỉ"].dt.date.tolist() if not current_df.empty else []
-            
+
             for week in cal:
                 cols = st.columns(7)
                 for i, day in enumerate(week):
