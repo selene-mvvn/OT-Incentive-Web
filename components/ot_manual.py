@@ -65,6 +65,7 @@ def render_mini_dashboard():
     
     st.markdown("""
         <style>
+        @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0');
         .mini-dashboard-card {
             background-color: #ffffff;
             border: 1px solid #e0e0e0;
@@ -352,32 +353,67 @@ def render_base_data():
                 st.rerun()
                 
         # Draw calendar grid
-        days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        cols = st.columns(7)
-        for i, day in enumerate(days):
-            with cols[i]:
-                st.markdown(f"<div style='text-align: center; font-weight: bold; padding-bottom: 5px; color: #5f6368;'>{day}</div>", unsafe_allow_html=True)
-                
-        cal = calendar.monthcalendar(st.session_state['cal_year'], st.session_state['cal_month'])
-        holiday_dates = current_df["Ngày nghỉ"].dt.date.tolist() if not current_df.empty else []
-        
-        for week in cal:
+        with st.container():
+            st.markdown("<div id='holiday-calendar-wrapper'></div>", unsafe_allow_html=True)
+            st.markdown("""
+                <style>
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="secondary"],
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="primary"] {
+                    width: 100%;
+                    border-radius: 20px;
+                    padding: 8px 0;
+                    margin: 0;
+                    font-size: 15px;
+                    font-weight: 500;
+                    transition: all 0.2s ease;
+                }
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="secondary"] {
+                    background-color: transparent;
+                    border: 1px solid #00B0F0;
+                    color: #00B0F0;
+                }
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="secondary"]:hover {
+                    background-color: rgba(0, 176, 240, 0.1);
+                }
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) button[kind="primary"] {
+                    background-color: #00B0F0 !important;
+                    color: white !important;
+                    border: none !important;
+                    box-shadow: 0 4px 10px rgba(0, 176, 240, 0.4) !important;
+                }
+                div[data-testid="stVerticalBlock"]:has(#holiday-calendar-wrapper) div[data-testid="column"] {
+                    padding: 0 3px !important;
+                    gap: 3px !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+            
+            days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
             cols = st.columns(7)
-            for i, day in enumerate(week):
+            for i, day in enumerate(days):
                 with cols[i]:
-                    if day != 0:
-                        current_date = datetime.date(st.session_state['cal_year'], st.session_state['cal_month'], day)
-                        is_holiday = current_date in holiday_dates
-                        btn_type = "primary" if is_holiday else "secondary"
-                        if st.button(str(day), key=f"cal_{current_date}", type=btn_type, use_container_width=True):
-                            if is_holiday:
-                                current_df = current_df[current_df["Ngày nghỉ"].dt.date != current_date]
-                            else:
-                                new_row = {"Ngày nghỉ": pd.Timestamp(current_date), "Lý do": t("Nghỉ lễ / Cuối tuần", "休日・祭日")}
-                                current_df = pd.concat([current_df, pd.DataFrame([new_row])], ignore_index=True)
-                            st.session_state['ot_base_data']['holidays_df'] = current_df
-                            save_base_data(st.session_state['ot_base_data'])
-                            st.rerun()
+                    st.markdown(f"<div style='text-align: center; font-weight: bold; padding-bottom: 5px; color: #5f6368;'>{day}</div>", unsafe_allow_html=True)
+                    
+            cal = calendar.monthcalendar(st.session_state['cal_year'], st.session_state['cal_month'])
+            holiday_dates = current_df["Ngày nghỉ"].dt.date.tolist() if not current_df.empty else []
+            
+            for week in cal:
+                cols = st.columns(7)
+                for i, day in enumerate(week):
+                    with cols[i]:
+                        if day != 0:
+                            current_date = datetime.date(st.session_state['cal_year'], st.session_state['cal_month'], day)
+                            is_holiday = current_date in holiday_dates
+                            btn_type = "primary" if is_holiday else "secondary"
+                            if st.button(str(day), key=f"cal_{current_date}", type=btn_type, use_container_width=True):
+                                if is_holiday:
+                                    current_df = current_df[current_df["Ngày nghỉ"].dt.date != current_date]
+                                else:
+                                    new_row = {"Ngày nghỉ": pd.Timestamp(current_date), "Lý do": t("Nghỉ lễ / Cuối tuần", "休日・祭日")}
+                                    current_df = pd.concat([current_df, pd.DataFrame([new_row])], ignore_index=True)
+                                st.session_state['ot_base_data']['holidays_df'] = current_df
+                                save_base_data(st.session_state['ot_base_data'])
+                                st.rerun()
 
         st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
         st.markdown(f"<h4 style='font-size: 16px; font-weight: 600;'>{t('Danh sách chi tiết:', '詳細一覧:')}</h4>", unsafe_allow_html=True)
