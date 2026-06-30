@@ -162,8 +162,20 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
     df_list = []
     for row in data:
         row_dict = {col: "" for col in all_columns}
-        row_dict[col_tinh_ot] = row.get("payment_period", "")
-        row_dict[col_chi_tra] = row.get("payment_period", "")
+        
+        period = row.get("payment_period", "")
+        short_period = period
+        if isinstance(period, str) and " - " in period:
+            try:
+                end_date_str = period.split(" - ")[1].strip()
+                import datetime
+                dt = datetime.datetime.strptime(end_date_str, "%d/%m/%Y")
+                short_period = dt.strftime("%m/%y")
+            except Exception:
+                pass
+                
+        row_dict[col_tinh_ot] = short_period
+        row_dict[col_chi_tra] = short_period
         row_dict[col_loai_da] = row.get("project_type", "N")
         row_dict[col_ma_dh] = row.get("order_id", "")
         row_dict[col_ma_dh_kh] = row.get("client_order_id", "")
@@ -239,6 +251,22 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
             title_text = t("BẢNG TỔNG HỢP TĂNG CA (OT) & CHI PHÍ", "残業・費用集計表 (OT)")
         worksheet.merge_range(0, 0, 0, len(all_columns) - 1, title_text, title_format)
         worksheet.set_row(0, 30)  # Make title row taller
+        
+        # Add payroll period as subtitle
+        full_period = ""
+        if data and "payment_period" in data[0]:
+            full_period = data[0]["payment_period"]
+            
+        if full_period:
+            subtitle_format = workbook.add_format({
+                'align': 'center',
+                'valign': 'vcenter',
+                'italic': True,
+                'font_size': 11,
+                'font_name': 'Times New Roman'
+            })
+            worksheet.merge_range(1, 0, 1, len(all_columns) - 1, f"{t('Kỳ tính lương', '給与計算期間')}: {full_period}", subtitle_format)
+            worksheet.set_row(1, 20)
         
         # Write headers
         try:
