@@ -427,8 +427,10 @@ st.markdown("""
     }
 
     /* Bo góc ruột bảng để không đâm ra ngoài viền */
-    [data-testid="stDataFrame"] iframe, [data-testid="stDataEditor"] iframe {
+    [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]), 
+    [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
         border-radius: 6px !important;
+        overflow: hidden !important;
     }
     
     /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
