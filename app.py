@@ -119,7 +119,7 @@ st.markdown("""
         left: 0;
         bottom: 0;
         height: 3px;
-        width: 100%;
+        width: calc(100% - 15px);
         background-color: #00B0F0;
     }
     
