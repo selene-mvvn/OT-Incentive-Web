@@ -52,12 +52,12 @@ def render_incentive():
             col_info1, col_info2, col_info3 = st.columns(3)
         
             with col_info1:
-                record_date = st.date_input(t(":blue[:material/calendar_today:] Ngày ghi nhận", ":blue[:material/calendar_today:] 記録日"), value=datetime.date.today(), format="DD/MM/YYYY")
+                record_date = st.date_input(t(":material/calendar_today: Ngày ghi nhận", ":material/calendar_today: 記録日"), value=datetime.date.today(), format="DD/MM/YYYY")
             
             with col_info2:
                 opt_choose_proj = t("--- Chọn dự án ---", "--- 案件名を選択 ---")
                 proj_opts = [opt_choose_proj] + combined_projects
-                sel_proj = st.selectbox(t(":blue[:material/work:] Tên dự án", ":blue[:material/work:] 案件名"), proj_opts)
+                sel_proj = st.selectbox(t(":material/work: Tên dự án", ":material/work: 案件名"), proj_opts)
             
                 if sel_proj == opt_choose_proj:
                     project_name = ""
@@ -72,7 +72,7 @@ def render_incentive():
             with col_info3:
                 opt_choose_emp = t("--- Chọn nhân viên ---", "--- 担当者を選択 ---")
                 emp_opts = [opt_choose_emp] + combined_employees
-                sel_emp = st.selectbox(t(":blue[:material/person:] Người thực hiện", ":blue[:material/person:] 担当者"), emp_opts)
+                sel_emp = st.selectbox(t(":material/person: Người thực hiện", ":material/person: 担当者"), emp_opts)
             
                 if sel_emp == opt_choose_emp:
                     employee_name = ""
@@ -82,12 +82,12 @@ def render_incentive():
             st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
             col1, col2 = st.columns(2)
             with col1:
-                target_hours = st.number_input(t(":blue[:material/track_changes:] Giờ công kế hoạch", ":blue[:material/track_changes:] 目標工数"), min_value=0.0, step=1.0, format="%f")
-                actual_hours = st.number_input(t(":blue[:material/timer:] Giờ công thực tế", ":blue[:material/timer:] 実工数"), min_value=0.0, step=1.0, format="%f")
+                target_hours = st.number_input(t(":material/track_changes: Giờ công kế hoạch", ":material/track_changes: 目標工数"), min_value=0.0, step=1.0, format="%f")
+                actual_hours = st.number_input(t(":material/timer: Giờ công thực tế", ":material/timer: 実工数"), min_value=0.0, step=1.0, format="%f")
         
             with col2:
-                unit_price = st.number_input(t(":blue[:material/payments:] Đơn giá", ":blue[:material/payments:] 単価"), min_value=0.0, step=1000.0, format="%f")
-                company_charge = st.number_input(t(":blue[:material/domain:] Company Charge", ":blue[:material/domain:] 会社運用チャージ"), min_value=0.0, step=100.0, format="%f")
+                unit_price = st.number_input(t(":material/payments: Đơn giá", ":material/payments: 単価"), min_value=0.0, step=1000.0, format="%f")
+                company_charge = st.number_input(t(":material/domain: Company Charge", ":material/domain: 会社運用チャージ"), min_value=0.0, step=100.0, format="%f")
 
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             st.divider()
@@ -95,7 +95,7 @@ def render_incentive():
             # Ước tính nhanh (What-if)
             c_title, c_sl, c_res = st.columns([1.5, 3.5, 1.5], vertical_alignment="center")
             with c_title:
-                st.markdown(f"<div style='color: #5f6368; font-weight: 600; font-size: 15px;'><span class='material-symbols-rounded' style='vertical-align: middle; margin-right: 5px; font-size: 18px;'>lightbulb</span> {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='display: flex; align-items: center; color: #5f6368; font-weight: 600; font-size: 15px;'><span class='material-symbols-rounded' style='margin-right: 5px; font-size: 18px;'>lightbulb</span> {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
             with c_sl:
                 max_slider = float(target_hours * 1.5) if target_hours > 0 else 100.0
                 if actual_hours > max_slider: max_slider = float(actual_hours * 1.5)

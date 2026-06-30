@@ -213,7 +213,10 @@ st.markdown("""
     }
     
     /* Material Icons in Main Body */
-    [data-testid="stMainBlockContainer"] .material-symbols-rounded {
+    [data-testid="stMainBlockContainer"] .material-symbols-rounded,
+    [data-testid="stMainBlockContainer"] label[data-testid="stWidgetLabel"] .st-icon,
+    [data-testid="stMainBlockContainer"] label[data-testid="stWidgetLabel"] span[translate="no"],
+    [data-testid="stMainBlockContainer"] label[data-testid="stWidgetLabel"] i {
         color: #00B0F0 !important;
     }
 
