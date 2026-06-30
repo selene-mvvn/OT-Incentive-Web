@@ -37,6 +37,49 @@ def render_base_data():
     title = t("CÀI ĐẶT CHUNG", "一般設定")
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
     st.info(t("Cài đặt thông tin hệ thống, nhân sự và ngày nghỉ lễ tại đây.", "システム情報、スタッフ、休日を設定します。"))
+
+    # --- MINI DASHBOARD ---
+    import datetime
+    from logic.employee_data import get_employees_df
+    
+    emp_df = get_employees_df()
+    emp_count = len(emp_df)
+    
+    holidays_df = st.session_state['ot_base_data'].get('holidays_df')
+    holiday_count = len(holidays_df) if hasattr(holidays_df, '__len__') else 0
+    
+    try:
+        fd_str = st.session_state['ot_base_data'].get('from_date', '')
+        fd_val = datetime.datetime.strptime(fd_str, "%Y-%m-%d") if fd_str else datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
+        fd_disp = fd_val.strftime("%d/%m")
+    except:
+        fd_disp = "21/05"
+        
+    try:
+        td_str = st.session_state['ot_base_data'].get('to_date', '')
+        td_val = datetime.datetime.strptime(td_str, "%Y-%m-%d") if td_str else datetime.date.today().replace(day=20)
+        td_disp = td_val.strftime("%d/%m")
+    except:
+        td_disp = "20/06"
+
+    def make_card(icon, title, value):
+        return f"""
+        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 20px;">
+            <div style="color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; letter-spacing: 0.5px;">
+                <span class='material-symbols-rounded' style='color: #00B0F0; margin-right: 8px; font-size: 20px;'>{icon}</span> {title}
+            </div>
+            <div style="color: #0f172a; font-size: 24px; font-weight: 700;">{value}</div>
+        </div>
+        """
+
+    c_dash1, c_dash2, c_dash3 = st.columns(3)
+    with c_dash1:
+        st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), f"{emp_count} <span style='font-size: 15px; color: #64748b; font-weight: normal;'>{t('người', '人')}</span>"), unsafe_allow_html=True)
+    with c_dash2:
+        st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"{holiday_count} <span style='font-size: 15px; color: #64748b; font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
+    with c_dash3:
+        st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 20px;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
+    # ----------------------
     
     tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG & NHÂN SỰ", "1. 一般情報・スタッフ"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
     
