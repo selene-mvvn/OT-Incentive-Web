@@ -18,6 +18,13 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
+    /* Adjust spacing for horizontal rules */
+    hr {
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+        border-top: 1px solid rgba(0, 176, 240, 0.2) !important;
+    }
+    
     /* Custom CSS for Toast notifications */
     [data-testid="stToast"] {
         background-color: #00B0F0 !important;
