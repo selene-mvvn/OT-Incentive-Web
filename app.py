@@ -417,11 +417,11 @@ st.markdown("""
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: #ffffff !important;
         background-color: #ffffff !important;
-        border-radius: 12px;
-        box-shadow: 0 4px 15px rgba(0,0,0,0.06);
-        border: 1px solid rgba(0,0,0,0.05);
-        padding: 5px;
-        transition: box-shadow 0.3s ease;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 15px rgba(0, 176, 240, 0.1) !important;
+        border: 2px solid #00B0F0 !important;
+        padding: 4px !important;
+        transition: all 0.3s ease !important;
     }
     [data-testid="stDataFrame"] th, [data-testid="stDataEditor"] th {
         background-color: #00a8e8 !important;
