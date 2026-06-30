@@ -109,6 +109,7 @@ st.markdown("""
         position: relative;
         padding-bottom: 12px;
         margin-bottom: 25px;
+        width: fit-content;
     }
     
     /* Add a custom blue line under h2 and h3 like the reference image */
@@ -118,7 +119,7 @@ st.markdown("""
         left: 0;
         bottom: 0;
         height: 3px;
-        width: 60px;
+        width: 100%;
         background-color: #00B0F0;
     }
     
@@ -693,7 +694,7 @@ else:
             st.markdown("<br>", unsafe_allow_html=True)
         
         menu_title = t("MENU", "管理メニュー")
-        st.markdown(f"<h2 style='text-align: center; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
         options = [
             t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"),
