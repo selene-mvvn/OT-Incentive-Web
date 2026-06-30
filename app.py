@@ -413,8 +413,7 @@ st.markdown("""
     [data-testid="stVerticalBlockBorderWrapper"] > div {
         background-color: #ffffff !important;
     }
-    
-    [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
+       [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: #ffffff !important;
         background-color: #ffffff !important;
         border-radius: 8px !important;
@@ -423,14 +422,18 @@ st.markdown("""
         padding: 0 !important;
         box-sizing: border-box !important;
         width: calc(100% - 6px) !important;
+        overflow: hidden !important;
+        position: relative !important;
         transition: all 0.3s ease !important;
     }
 
-    /* Bo góc ruột bảng để không đâm ra ngoài viền */
-    [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]), 
-    [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
-        border-radius: 6px !important;
-        overflow: hidden !important;
+    /* Kéo thanh công cụ (chứa nút Xóa) lùi vào trong một chút để không bị lệnh overflow: hidden phía trên chém mất */
+    [data-testid="stDataEditor"] [data-testid="stElementToolbar"],
+    [data-testid="stDataFrame"] [data-testid="stElementToolbar"] {
+        right: 4px !important;
+        top: 4px !important;
+        position: absolute !important;
+        z-index: 9999 !important;
     }
     
     /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
