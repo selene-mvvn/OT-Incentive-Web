@@ -100,7 +100,8 @@ def render_incentive():
                 whatif_hours = st.slider(t("Kéo thử Giờ công thực tế để xem trước Incentive", "実工数をスライドしてインセンティブをプレビュー"), min_value=0.0, max_value=max_slider, value=float(actual_hours), step=0.5, format="%f", key="whatif_slider")
             
             with c_res:
-                preview_val = calculate_incentive(target_hours, whatif_hours, unit_price, company_charge)
+                preview_dict = calculate_incentive(target_hours, whatif_hours, unit_price, company_charge)
+                preview_val = preview_dict.get("final_incentive", 0)
                 color = "#00B0F0" if preview_val > 0 else "#95a5a6"
                 st.markdown(f"<div style='text-align: center; margin-top: 10px;'><span style='font-size: 13px; color: #7f8c8d; font-weight: 500;'>{t('Dự kiến Incentive', '予想インセンティブ')}</span><br><b style='font-size: 26px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 14px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
             st.markdown("</div>", unsafe_allow_html=True)
