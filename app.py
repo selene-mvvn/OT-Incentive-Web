@@ -535,6 +535,7 @@ def show_user_guide():
 ### 2. INCENTIVE
 - Tự động trích xuất và gợi ý dữ liệu từ các dự án đã thực hiện.
 - Đánh giá hiệu suất làm việc dựa trên số giờ làm việc thực tế so với kế hoạch, từ đó quy đổi chính xác ra mức tiền thưởng (Incentive).
+- **Ước tính Incentive**: Kéo thanh trượt để giả lập và xem trước mức tiền thưởng thay đổi thế nào khi Giờ công thực tế thay đổi.
 
 ### 3. LỊCH SỬ THAO TÁC
 - Các file Excel dữ liệu đã xuất ra sẽ được tự động lưu trữ an toàn.
@@ -551,6 +552,7 @@ def show_user_guide():
 ### 2. インセンティブ (INCENTIVE)
 - 実行済みのプロジェクトからデータを自動的に抽出・提案します。
 - 計画工数と実績工数の差に基づいてパフォーマンスを評価し、獲得インセンティブを正確に算出します。
+- **予想インセンティブ**: スライダーを動かして、実工数の変化に伴う獲得インセンティブの変動をシミュレーションできます。
 
 ### 3. 操作履歴
 - 出力されたすべてのExcelファイルは自動的かつ安全に保存されます。

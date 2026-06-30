@@ -106,7 +106,8 @@ def render_incentive():
             # Ước tính nhanh (What-if)
             c_title, c_sl, c_res = st.columns([1.5, 3.5, 1.5], vertical_alignment="center")
             with c_title:
-                st.markdown(f"<div style='color: #5f6368; font-weight: 600; font-size: 15px;'><span class='material-symbols-rounded' style='vertical-align: -4px; margin-right: 5px; font-size: 18px;'>lightbulb</span> {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
+                help_text = t("Kéo thanh trượt bên cạnh để mô phỏng và xem trước số tiền Incentive nhận được khi thay đổi Giờ công thực tế.", "スライダーを動かして、実工数の変化に伴う獲得インセンティブの変動をシミュレーションします。")
+                st.markdown(f"<div style='color: #5f6368; font-weight: 600; font-size: 15px;'><span class='material-symbols-rounded' style='vertical-align: -4px; margin-right: 5px; font-size: 18px;'>lightbulb</span> {t('Ước tính Incentive', '予想インセンティブ')} <span class='material-symbols-rounded' title='{help_text}' style='cursor: help; color: #adb5bd; font-size: 16px; vertical-align: -3px; margin-left: 2px;'>help</span></div>", unsafe_allow_html=True)
             with c_sl:
                 max_slider = float(target_hours * 1.5) if target_hours > 0 else 100.0
                 if actual_hours > max_slider: max_slider = float(actual_hours * 1.5)
