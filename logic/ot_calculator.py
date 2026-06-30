@@ -4,24 +4,41 @@ from logic.i18n import t
 
 def get_payroll_period(date_obj) -> str:
     """
-    Calculates payroll period based on date. 
+    Calculates payroll period based on date.
     Period is from 21st of previous month to 20th of current month.
     """
     if pd.isna(date_obj):
         return ""
     try:
+        import datetime
         if isinstance(date_obj, str):
-            date_obj = pd.to_datetime(date_obj).date()
-            
+            if "/" in date_obj:
+                date_obj = datetime.datetime.strptime(date_obj, "%d/%m/%Y").date()
+            elif "-" in date_obj:
+                date_obj = pd.to_datetime(date_obj).date()
+
         month = date_obj.month
         year = date_obj.year
+        
         if date_obj.day >= 21:
-            month += 1
-            if month > 12:
-                month = 1
-                year += 1
-        return f"{month:02d}/{year}"
-    except:
+            from_date = datetime.date(year, month, 21)
+            next_month = month + 1
+            next_year = year
+            if next_month > 12:
+                next_month = 1
+                next_year += 1
+            to_date = datetime.date(next_year, next_month, 20)
+        else:
+            to_date = datetime.date(year, month, 20)
+            prev_month = month - 1
+            prev_year = year
+            if prev_month < 1:
+                prev_month = 12
+                prev_year -= 1
+            from_date = datetime.date(prev_year, prev_month, 21)
+            
+        return f"{from_date.strftime('%d/%m/%Y')} - {to_date.strftime('%d/%m/%Y')}"
+    except Exception:
         return ""
 
 def breakdown_ot_hours(date_obj, total_hours: float, holidays_list: list) -> dict:
@@ -102,7 +119,7 @@ def calculate_ot_pay(gross_salary: float, standard_days: float, ot_hours: float,
         "ot_pay": ot_pay
     }
 
-def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "", is_template: bool = False) -> io.BytesIO:
+def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "", is_template: bool = False, general_period: str = "") -> io.BytesIO:
     """
     Generates an Excel file matching the requested columns exactly.
     data is a list of dictionaries with the required fields.
@@ -163,16 +180,21 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
     for row in data:
         row_dict = {col: "" for col in all_columns}
         
-        period = row.get("payment_period", "")
+        period = str(row.get("payment_period", ""))
         short_period = period
-        if isinstance(period, str) and " - " in period:
-            try:
+        try:
+            if " - " in period:
+                # Dạng "21/05/2026 - 20/06/2026"
                 end_date_str = period.split(" - ")[1].strip()
                 import datetime
                 dt = datetime.datetime.strptime(end_date_str, "%d/%m/%Y")
                 short_period = dt.strftime("%m/%y")
-            except Exception:
-                pass
+            elif "/" in period and len(period.split("/")) == 2:
+                # Dạng "06/2026"
+                m, y = period.split("/")
+                short_period = f"{m}/{y[-2:]}"
+        except Exception:
+            pass
                 
         row_dict[col_tinh_ot] = short_period
         row_dict[col_chi_tra] = short_period
@@ -253,11 +275,7 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
         worksheet.set_row(0, 30)  # Make title row taller
         
         # Add payroll period as subtitle
-        full_period = ""
-        if data and "payment_period" in data[0]:
-            full_period = data[0]["payment_period"]
-            
-        if full_period:
+        if general_period:
             subtitle_format = workbook.add_format({
                 'align': 'center',
                 'valign': 'vcenter',
@@ -265,7 +283,7 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
                 'font_size': 11,
                 'font_name': 'Times New Roman'
             })
-            worksheet.merge_range(1, 0, 1, len(all_columns) - 1, f"{t('Kỳ tính lương', '給与計算期間')}: {full_period}", subtitle_format)
+            worksheet.merge_range(1, 0, 1, len(all_columns) - 1, f"{t('Kỳ tính lương', '給与計算期間')}: {general_period}", subtitle_format)
             worksheet.set_row(1, 20)
         
         # Write headers

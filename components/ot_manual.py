@@ -397,6 +397,8 @@ def render_project_data():
                 st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
             
             ot_date = st.date_input(t("NGÀY THÁNG TĂNG CA", "残業日"))
+            # Auto-calculate the period based on OT date
+            calculated_period = get_payroll_period(ot_date)
             st.caption(f"{t('Thuộc kỳ lương', '給与計算期間')}: **{calculated_period}**")
         
             is_holiday = False
@@ -581,7 +583,13 @@ def render_project_data():
                     if not export_name.endswith(".xlsx"):
                         export_name += ".xlsx"
                     
-                excel_data = export_ot_to_excel(st.session_state['ot_records'], filename=export_name)
+                # Extract general period for excel export
+                try:
+                    gp = f"{from_date.strftime('%d/%m/%Y')} - {to_date.strftime('%d/%m/%Y')}"
+                except Exception:
+                    gp = ""
+
+                excel_data = export_ot_to_excel(st.session_state['ot_records'], filename=export_name, general_period=gp)
                 with c_dl:
                     st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                 

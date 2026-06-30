@@ -415,7 +415,21 @@ def render_ot_excel():
                 if not export_name.endswith(".xlsx"):
                     export_name += ".xlsx"
                 
-            excel_buffer = export_ot_to_excel(st.session_state['ot_excel_records'], allow_merge=True, filename=export_name)
+            # Extract general period for excel export
+            try:
+                fd = st.session_state['ot_base_data'].get('from_date', '')
+                td = st.session_state['ot_base_data'].get('to_date', '')
+                if fd and td:
+                    import datetime
+                    fd_val = datetime.datetime.strptime(fd, "%Y-%m-%d")
+                    td_val = datetime.datetime.strptime(td, "%Y-%m-%d")
+                    gp = f"{fd_val.strftime('%d/%m/%Y')} - {td_val.strftime('%d/%m/%Y')}"
+                else:
+                    gp = ""
+            except Exception:
+                gp = ""
+
+            excel_buffer = export_ot_to_excel(st.session_state['ot_excel_records'], allow_merge=True, filename=export_name, general_period=gp)
         
             with c_btn:
                 st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
