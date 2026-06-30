@@ -420,8 +420,16 @@ st.markdown("""
         border-radius: 8px !important;
         box-shadow: 0 4px 15px rgba(0, 176, 240, 0.1) !important;
         border: 2px solid #00B0F0 !important;
-        padding: 4px !important;
+        padding: 4px 10px 4px 4px !important; /* Tăng padding bên phải */
+        box-sizing: border-box !important;
         transition: all 0.3s ease !important;
+    }
+    
+    /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
+    [data-testid="stExpander"] [data-testid="stDataFrame"],
+    [data-testid="stExpander"] [data-testid="stDataEditor"] {
+        border: 1px solid rgba(0,0,0,0.1) !important;
+        box-shadow: none !important;
     }
     [data-testid="stDataFrame"] th, [data-testid="stDataEditor"] th {
         background-color: #00a8e8 !important;
