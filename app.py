@@ -423,7 +423,6 @@ st.markdown("""
         padding: 0 !important;
         box-sizing: border-box !important;
         width: calc(100% - 6px) !important;
-        overflow: hidden !important;
         transition: all 0.3s ease !important;
     }
     
