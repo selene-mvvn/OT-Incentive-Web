@@ -21,7 +21,12 @@ def render_ot_excel():
     
         c_inst1, c_space, c_inst2 = st.columns([6.8, 0.2, 3.0])
         with c_inst1:
-            st.markdown(t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: **Ngày**, **Tên nhân viên**, **OT**, **Lý do tăng ca**.", "システムからExcelファイルをアップロードしてください。必要な列：日付、社員名、OT、残業理由"), unsafe_allow_html=True)
+            desc_text = t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: <b>Ngày</b>, <b>Tên nhân viên</b>, <b>OT</b>, <b>Lý do tăng ca</b>.", "システムからExcelファイルをアップロードしてください。必要な列：<b>日付</b>、<b>社員名</b>、<b>OT</b>、<b>残業理由</b>")
+            st.markdown(f"""
+                <div style='background-color: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 15px 20px; border: 1px solid rgba(0,0,0,0.05); font-size: 14.5px;'>
+                    {desc_text}
+                </div>
+            """, unsafe_allow_html=True)
         with c_inst2:
             from logic.ot_calculator import export_ot_to_excel
             template_filename = t("Bảng tổng hợp tăng ca (OT)_Mẫu.xlsx", "残業・費用集計表(OT)_テンプレート.xlsx")
