@@ -195,7 +195,7 @@ def render_action_history():
                 with c_head:
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
-                    st.markdown(f"<h3 style='margin:0; padding:0; color:#2c3e50; font-size:18px;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</div>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_dl:
