@@ -34,6 +34,12 @@ def make_history_cards_white():
             let outerContainer = null;
             if (horizontal) {
                 outerContainer = horizontal.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+                if (!outerContainer && horizontal.parentElement && horizontal.parentElement.parentElement) {
+                    let parent = horizontal.parentElement.parentElement;
+                    if (!parent.getAttribute('data-testid') && parent.className.includes('st-emotion-cache')) {
+                        outerContainer = parent;
+                    }
+                }
             } else {
                 outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
             }

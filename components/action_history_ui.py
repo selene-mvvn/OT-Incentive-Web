@@ -85,14 +85,26 @@ def render_action_history():
         st.markdown("""
         <style>
         /* CSS hack to turn st.container(border=True) into a timeline node */
-        .custom-history-card.has-timeline-marker {
+        .custom-history-card {
             position: relative;
-            margin-left: 25px !important;
-            margin-bottom: 25px !important;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 20px !important;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
             border-radius: 12px !important;
             background-color: #ffffff !important;
-            border: 1px solid rgba(0, 176, 240, 0.2) !important;
+            border: 2px solid transparent !important;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+            padding: 5px !important;
+        }
+
+        .custom-history-card.has-timeline-marker,
+        .custom-history-card.has-missing-marker {
+            margin-left: 25px !important;
+        }
+
+        .custom-history-card:hover {
+            transform: translateY(-3px) !important;
+            box-shadow: 0 8px 25px rgba(0, 176, 240, 0.15) !important;
+            border-color: rgba(0, 176, 240, 0.5) !important;
         }
 
         .custom-history-card.has-timeline-marker::before,
@@ -127,13 +139,6 @@ def render_action_history():
             box-shadow: 0 0 0 4px rgba(0, 176, 240, 0.15);
             z-index: 1;
             transition: transform 0.3s ease;
-        }
-
-        .custom-history-card.has-timeline-marker:hover,
-        .custom-history-card.has-missing-marker:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0, 176, 240, 0.12) !important;
-            border-color: rgba(0, 176, 240, 0.5) !important;
         }
 
         .custom-history-card.has-timeline-marker:hover::after,
