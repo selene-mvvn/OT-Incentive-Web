@@ -180,8 +180,7 @@ def render_action_history():
         </style>
         """, unsafe_allow_html=True)
 
-        st.markdown("<br>", unsafe_allow_html=True)
-
+        # Removed redundant <br> to reduce gap
         if 'selected_logs' not in st.session_state:
             st.session_state['selected_logs'] = {}
 
@@ -200,14 +199,19 @@ def render_action_history():
                 animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                 background-color: #f4fafe !important;
                 border-color: #b3e0f2 !important;
-                padding: 10px 15px !important;
+                margin-top: -15px !important;
                 margin-bottom: 20px !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) button {
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) > div {
+                padding: 8px 15px !important;
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stButton"] button {
                 min-height: 32px !important;
-                padding: 2px 10px !important;
+                height: 32px !important;
+                padding: 0px 10px !important;
                 font-size: 13px !important;
                 border-radius: 6px !important;
+                line-height: 1 !important;
             }
             </style>
             """, unsafe_allow_html=True)
