@@ -296,7 +296,7 @@ def render_ot_excel():
                 
                     if len(results) > 0:
                         st.session_state['ot_excel_records'] = results
-                        st.success(t("Xử lý thành công! Dữ liệu đã được chia tách hệ số tự động. Vui lòng kiểm tra và bổ sung thông tin ở bảng bên dưới trước khi tải xuống.", "処理完了！係数自動分割済み。ダウンロード前に以下の表を確認・修正してください。"))
+                        st.toast(t("Xử lý thành công! Dữ liệu đã được chia tách hệ số tự động. Vui lòng kiểm tra và bổ sung thông tin ở bảng bên dưới trước khi tải xuống.", "処理完了！係数自動分割済み。ダウンロード前に以下の表を確認・修正してください。"), icon="✅")
                     else:
                         st.warning(t("Không tìm thấy dữ liệu OT hợp lệ (giờ OT > 0 và Ngày đúng định dạng) để xử lý.", "有効なOTデータが見つかりませんでした（OT時間 > 0 かつ正しい日付形式）。"))
                         st.session_state['ot_excel_records'] = []

@@ -176,7 +176,7 @@ def render_base_data():
             edited_emp['Lương Gross'] = gross
             
             save_employees_df(edited_emp)
-            st.success(t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！"))
+            st.toast(t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！"), icon="✅")
             st.rerun()
             
     with tab2:
@@ -250,7 +250,7 @@ def render_base_data():
         if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
             st.session_state['ot_base_data']['holidays_df'] = holidays_df
             save_base_data(st.session_state['ot_base_data'])
-            st.success(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"))
+            st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon="✅")
 
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
@@ -320,7 +320,7 @@ def render_project_data():
             
                 if st.button(t("💾 Lưu danh mục Dự án", "💾 プロジェクトリストを保存"), key="save_projects"):
                     save_projects_df(edited_projects)
-                    st.success(t("Đã lưu danh mục dự án!", "プロジェクトリストを保存しました！"))
+                    st.toast(t("Đã lưu danh mục dự án!", "プロジェクトリストを保存しました！"), icon="✅")
                     st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
@@ -392,7 +392,7 @@ def render_project_data():
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CHI TIẾT TĂNG CA', '残業詳細')}</h3>", unsafe_allow_html=True)
         
             if employee_name_proj and employee_name_proj != opt_emp:
-                st.success(f"{t('Đang tính cho nhân sự', '対象者')}: **{employee_name_proj}** | {t('Lương Gross', '総支給額')}: **{emp_gross:,.0f} VND** | {t('Ngày chuẩn', '所定労働日数')}: **{base.get('standard_days', 22.0)}**")
+                st.info(f"{t('Đang tính cho nhân sự', '対象者')}: **{employee_name_proj}** | {t('Lương Gross', '総支給額')}: **{emp_gross:,.0f} VND** | {t('Ngày chuẩn', '所定労働日数')}: **{base.get('standard_days', 22.0)}**")
             else:
                 st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
             
@@ -487,7 +487,7 @@ def render_project_data():
                                 entry[k_name] = int(res["ot_pay"])
                             
                         st.session_state['ot_records'].append(entry)
-                        st.success(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})")
+                        st.toast(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})", icon="✅")
                     
             with tab_manual:
                 st.warning(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0または空白で。"))
@@ -539,7 +539,7 @@ def render_project_data():
                                 entry[k_name] = int(res["ot_pay"])
                             
                         st.session_state['ot_records'].append(entry)
-                        st.success(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"))
+                        st.toast(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"), icon="✅")
 
             if len(st.session_state['ot_records']) > 0:
                 st.markdown("---")
@@ -612,7 +612,7 @@ def render_project_data():
                     st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                     if st.button(t("XÓA TOÀN BỘ BẢNG", "全データクリア"), use_container_width=True):
                         st.session_state['ot_records'] = []
-                        st.success(t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！"))
+                        st.toast(t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！"), icon="✅")
                         st.rerun()
             else:
                 st.info(t("Chưa có bản ghi nào. Vui lòng nhập thông tin ở trên và nhấn 'THÊM VÀO BẢNG CHỜ XUẤT'.", "レコードがありません。上記に情報を入力して「追加」を押してください。"))
