@@ -819,9 +819,37 @@ else:
             """, unsafe_allow_html=True)
             
         # We need to map English internal keys to options to persist selection across language changes
-        # Or just reset it if not found
-        if 'menu_selection' not in st.session_state or st.session_state['menu_selection'] not in options:
+        if 'menu_selection' not in st.session_state:
             st.session_state['menu_selection'] = t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**")
+        elif st.session_state['menu_selection'] not in options:
+            old_sel = st.session_state['menu_selection']
+            vn_opts = [
+                ":material/timer: **OVERTIME**",
+                ":material/folder: **DỮ LIỆU DỰ ÁN**",
+                ":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**",
+                ":material/payments: **INCENTIVE**",
+                ":material/history: **LỊCH SỬ THAO TÁC**",
+                ":material/settings: **CÀI ĐẶT CHUNG**"
+            ]
+            jp_opts = [
+                ":material/timer: **残業代計算**",
+                ":material/folder: **プロジェクト**",
+                ":material/edit_document: **一括入力**",
+                ":material/payments: **インセンティブ**",
+                ":material/history: **操作履歴**",
+                ":material/settings: **一般設定**"
+            ]
+            try:
+                if old_sel in vn_opts:
+                    idx = vn_opts.index(old_sel)
+                    st.session_state['menu_selection'] = jp_opts[idx] if st.session_state.get('lang', 'VN') == 'JP' else vn_opts[idx]
+                elif old_sel in jp_opts:
+                    idx = jp_opts.index(old_sel)
+                    st.session_state['menu_selection'] = vn_opts[idx] if st.session_state.get('lang', 'VN') == 'VN' else jp_opts[idx]
+                else:
+                    st.session_state['menu_selection'] = options[1]
+            except Exception:
+                st.session_state['menu_selection'] = options[1]
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
