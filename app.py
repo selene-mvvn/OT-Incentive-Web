@@ -422,24 +422,13 @@ st.markdown("""
         border: 1px solid rgba(0,0,0,0.05);
         padding: 5px;
         transition: box-shadow 0.3s ease;
-        position: relative;
     }
-    
-    /* CSS Hack: Overlay a light blue layer over the canvas header */
-    [data-testid="stDataFrame"]::after, [data-testid="stDataEditor"]::after {
-        content: "";
-        position: absolute;
-        top: 5px;
-        left: 5px;
-        right: 5px;
-        height: 35px; /* Chiều cao xấp xỉ của hàng tiêu đề mặc định */
-        background-color: rgba(0, 176, 240, 0.12); /* Màu xanh dương nhạt */
-        border-bottom: 2px solid rgba(0, 176, 240, 0.2);
-        border-radius: 7px 7px 0 0;
-        pointer-events: none; /* Cho phép click xuyên qua lớp màu này */
-        z-index: 50;
+    [data-testid="stDataFrame"] th, [data-testid="stDataEditor"] th {
+        background-color: #00a8e8 !important;
+        color: #ffffff !important;
+        font-weight: bold !important;
+        font-size: 14px !important;
     }
-
     [data-testid="stDataFrame"]:hover, [data-testid="stDataEditor"]:hover {
         box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     }
