@@ -210,6 +210,8 @@ st.markdown("""
         background-color: #008CBA !important;
         border-color: #008CBA !important;
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.4);
+    }
+    
     /* Material Icons in Main Body */
     [data-testid="stMainBlockContainer"] .material-symbols-rounded {
         color: #00B0F0 !important;
