@@ -28,6 +28,16 @@ def make_history_cards_white():
     components.html("""
     <script>
         const parent = window.parent.document;
+        
+        // --- React DOM Recycling Fix ---
+        // Streamlit reuses DOM elements when navigating pages. We must strip our custom classes 
+        // from recycled nodes so that random elements (like Pagination) don't inherit the card styles!
+        const oldCards = parent.querySelectorAll('.custom-history-card');
+        oldCards.forEach(card => {
+            card.classList.remove('custom-history-card', 'has-timeline-marker', 'has-missing-marker');
+            card.style.backgroundColor = '';
+        });
+
         const markers = parent.querySelectorAll('.action-card-marker');
         markers.forEach(marker => {
             // Because .action-card-marker is now inside the column,
