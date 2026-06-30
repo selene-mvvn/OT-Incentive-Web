@@ -19,25 +19,25 @@ def render_ot_excel():
         title = t("TÍNH TIỀN TĂNG CA HÀNG LOẠT (File Excel)", "残業代一括計算（Excelファイル）")
         st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
     
-        c_inst1, c_space, c_inst2 = st.columns([6.8, 0.2, 3.0])
-        with c_inst1:
-            desc_text = t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: <b>Ngày</b>, <b>Tên nhân viên</b>, <b>OT</b>, <b>Lý do tăng ca</b>.", "システムからExcelファイルをアップロードしてください。必要な列：<b>日付</b>、<b>社員名</b>、<b>OT</b>、<b>残業理由</b>")
-            st.markdown(f"""
-                <div style='background-color: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 15px 20px; border: 1px solid rgba(0,0,0,0.05); font-size: 14.5px;'>
+        from logic.ot_calculator import export_ot_to_excel
+        import base64
+        
+        desc_text = t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: <b>Ngày</b>, <b>Tên nhân viên</b>, <b>OT</b>, <b>Lý do tăng ca</b>.", "システムからExcelファイルをアップロードしてください。必要な列：<b>日付</b>、<b>社員名</b>、<b>OT</b>、<b>残業理由</b>")
+        template_filename = t("Bảng tổng hợp tăng ca (OT)_Mẫu.xlsx", "残業・費用集計表(OT)_テンプレート.xlsx")
+        template_buffer = export_ot_to_excel([], allow_merge=False, filename=template_filename, is_template=True)
+        b64 = base64.b64encode(template_buffer.getvalue()).decode()
+        href = f"data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}"
+        
+        st.markdown(f"""
+            <div style='background-color: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 15px 20px; border: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; gap: 20px;'>
+                <div style='font-size: 14.5px; flex: 1;'>
                     {desc_text}
                 </div>
-            """, unsafe_allow_html=True)
-        with c_inst2:
-            from logic.ot_calculator import export_ot_to_excel
-            template_filename = t("Bảng tổng hợp tăng ca (OT)_Mẫu.xlsx", "残業・費用集計表(OT)_テンプレート.xlsx")
-            template_buffer = export_ot_to_excel([], allow_merge=False, filename=template_filename, is_template=True)
-            st.download_button(
-                label=t("Tải file Excel mẫu", "テンプレートをダウンロード"),
-                data=template_buffer,
-                file_name=template_filename,
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                use_container_width=True
-            )
+                <div>
+                    <a href="{href}" download="{template_filename}" style='background-color: #00B0F0; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block; transition: all 0.2s ease; white-space: nowrap; box-shadow: 0 4px 10px rgba(0, 176, 240, 0.3);'>{t("TẢI FILE EXCEL MẪU", "テンプレートをダウンロード")}</a>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
     
         # Placeholder for stepper UI
         stepper_placeholder = st.empty()
