@@ -29,12 +29,33 @@ def render_ot_excel():
         href = f"data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}"
         
         st.markdown(f"""
+            <style>
+            .custom-dl-btn {{
+                background-color: #00B0F0;
+                color: white;
+                padding: 10px 20px;
+                border-radius: 8px;
+                text-decoration: none;
+                font-size: 14px;
+                font-weight: 500;
+                display: inline-block;
+                transition: all 0.2s ease;
+                white-space: nowrap;
+                box-shadow: 0 4px 10px rgba(0, 176, 240, 0.3);
+            }}
+            .custom-dl-btn:hover {{
+                background-color: #0099D6;
+                color: white;
+                box-shadow: 0 6px 14px rgba(0, 176, 240, 0.4);
+                text-decoration: none;
+            }}
+            </style>
             <div style='background-color: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); padding: 15px 20px; border: 1px solid rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center; gap: 20px;'>
                 <div style='font-size: 14.5px; flex: 1;'>
                     {desc_text}
                 </div>
                 <div>
-                    <a href="{href}" download="{template_filename}" style='background-color: #00B0F0; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-size: 14px; font-weight: 500; display: inline-block; transition: all 0.2s ease; white-space: nowrap; box-shadow: 0 4px 10px rgba(0, 176, 240, 0.3);'>{t("TẢI FILE EXCEL MẪU", "テンプレートをダウンロード")}</a>
+                    <a href="{href}" download="{template_filename}" class="custom-dl-btn">{t("TẢI FILE EXCEL MẪU", "テンプレートをダウンロード")}</a>
                 </div>
             </div>
         """, unsafe_allow_html=True)
