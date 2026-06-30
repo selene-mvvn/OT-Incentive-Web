@@ -54,27 +54,28 @@ st.markdown("""
     }
     
     /* -----------------------------------------
-       SEGMENTED CONTROL TABS (iOS Style)
+       SOLID BLOCK TABS
        ----------------------------------------- */
     [data-testid="stTabs"] {
         margin-bottom: 20px;
     }
     [data-testid="stTabs"] div[role="tablist"] {
-        background-color: rgba(0, 176, 240, 0.08) !important;
-        border-radius: 15px !important;
-        padding: 5px !important;
-        gap: 5px !important;
-        border-bottom: none !important;
+        background-color: transparent !important;
+        border-radius: 0 !important;
+        padding: 0 !important;
+        gap: 8px !important;
+        border-bottom: 2px solid #e2e8f0 !important;
         display: inline-flex !important;
         flex-wrap: wrap !important;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.03) !important;
+        box-shadow: none !important;
     }
     
     [data-testid="stTabs"] button[data-baseweb="tab"] {
-        background-color: transparent !important;
-        border: none !important;
-        border-radius: 10px !important;
-        padding: 8px 24px !important;
+        background-color: #f1f5f9 !important;
+        border: 1px solid #e2e8f0 !important;
+        border-bottom: none !important;
+        border-radius: 8px 8px 0 0 !important;
+        padding: 10px 24px !important;
         margin: 0 !important;
         color: #64748b !important;
         font-weight: 600 !important;
@@ -83,13 +84,14 @@ st.markdown("""
     
     [data-testid="stTabs"] button[data-baseweb="tab"]:hover {
         color: #1e293b !important;
-        background-color: rgba(255, 255, 255, 0.3) !important;
+        background-color: #e2e8f0 !important;
     }
     
     [data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"] {
-        background-color: #ffffff !important;
-        color: #00B0F0 !important;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.08) !important;
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        border-color: #00B0F0 !important;
+        box-shadow: none !important;
     }
 
     [data-testid="stTabs"] div[data-baseweb="tab-highlight"],
