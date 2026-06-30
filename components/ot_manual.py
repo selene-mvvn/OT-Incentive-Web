@@ -66,7 +66,7 @@ def render_base_data():
         return f"""
         <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 20px;">
             <div style="color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; letter-spacing: 0.5px;">
-                <span class='material-symbols-rounded' style='color: #00B0F0; margin-right: 8px; font-size: 20px; text-transform: none;'>{icon}</span> {title}
+                <span class='material-symbols-rounded' style='font-family: "Material Symbols Rounded" !important; color: #00B0F0; margin-right: 8px; font-size: 20px; text-transform: none;'>{icon}</span> {title}
             </div>
             <div style="color: #0f172a; font-size: 24px; font-weight: 700;">{value}</div>
         </div>
