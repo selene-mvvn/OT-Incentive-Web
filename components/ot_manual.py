@@ -31,12 +31,102 @@ def init_session_state():
     if 'ot_records' not in st.session_state:
         st.session_state['ot_records'] = []
 
+def render_mini_dashboard():
+    import datetime
+    from logic.employee_data import get_employees_df
+    emp_df = get_employees_df()
+    total_emp = len(emp_df)
+    
+    holidays_df = st.session_state['ot_base_data'].get('holidays_df')
+    if holidays_df is not None and isinstance(holidays_df, pd.DataFrame):
+        total_hol = len(holidays_df)
+    else:
+        total_hol = 0
+        
+    try:
+        fd_str = st.session_state['ot_base_data'].get('from_date', '')
+        if fd_str:
+            fd_val = datetime.datetime.strptime(fd_str, "%Y-%m-%d").date()
+        else:
+            fd_val = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
+    except:
+        fd_val = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
+        
+    try:
+        td_str = st.session_state['ot_base_data'].get('to_date', '')
+        if td_str:
+            td_val = datetime.datetime.strptime(td_str, "%Y-%m-%d").date()
+        else:
+            td_val = datetime.date.today().replace(day=20)
+    except:
+        td_val = datetime.date.today().replace(day=20)
+        
+    period_str = f"{fd_val.strftime('%d/%m/%Y')} - {td_val.strftime('%d/%m/%Y')}"
+    
+    st.markdown("""
+        <style>
+        .mini-dashboard-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        .mini-dashboard-icon {
+            font-size: 28px;
+            color: #00B0F0;
+            margin-bottom: 5px;
+        }
+        .mini-dashboard-value {
+            font-size: 22px;
+            font-weight: bold;
+            color: #31333f;
+            margin: 5px 0;
+        }
+        .mini-dashboard-label {
+            font-size: 13px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        </style>
+    """, unsafe_allow_html=True)
+    
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.markdown(f"""
+            <div class="mini-dashboard-card">
+                <div class="material-symbols-rounded mini-dashboard-icon">group</div>
+                <div class="mini-dashboard-value">{total_emp}</div>
+                <div class="mini-dashboard-label">{t("Nhân viên", "従業員")}</div>
+            </div>
+        """, unsafe_allow_html=True)
+    with col2:
+        st.markdown(f"""
+            <div class="mini-dashboard-card">
+                <div class="material-symbols-rounded mini-dashboard-icon">event_busy</div>
+                <div class="mini-dashboard-value">{total_hol}</div>
+                <div class="mini-dashboard-label">{t("Ngày nghỉ lễ", "休日・祭日")}</div>
+            </div>
+        """, unsafe_allow_html=True)
+    with col3:
+        st.markdown(f"""
+            <div class="mini-dashboard-card">
+                <div class="material-symbols-rounded mini-dashboard-icon">date_range</div>
+                <div class="mini-dashboard-value" style="font-size: 16px; margin: 10px 0;">{period_str}</div>
+                <div class="mini-dashboard-label">{t("Kỳ tính lương", "給与計算期間")}</div>
+            </div>
+        """, unsafe_allow_html=True)
+
 def render_base_data():
     init_session_state()
     
     title = t("CÀI ĐẶT CHUNG", "一般設定")
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
     st.info(t("Cài đặt thông tin hệ thống, nhân sự và ngày nghỉ lễ tại đây.", "システム情報、スタッフ、休日を設定します。"))
+    render_mini_dashboard()
     
     tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG & NHÂN SỰ", "1. 一般情報・スタッフ"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
     
@@ -235,6 +325,62 @@ def render_base_data():
                 del st.session_state["holidays_editor"]
             st.rerun()
             
+        import calendar
+        if 'cal_year' not in st.session_state:
+            st.session_state['cal_year'] = datetime.datetime.now().year
+        if 'cal_month' not in st.session_state:
+            st.session_state['cal_month'] = datetime.datetime.now().month
+            
+        st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+        col_prev, col_month, col_next = st.columns([1, 4, 1], vertical_alignment="center")
+        with col_prev:
+            if st.button("◀", use_container_width=True, key="prev_month"):
+                st.session_state['cal_month'] -= 1
+                if st.session_state['cal_month'] < 1:
+                    st.session_state['cal_month'] = 12
+                    st.session_state['cal_year'] -= 1
+                st.rerun()
+        with col_month:
+            month_name = calendar.month_name[st.session_state['cal_month']]
+            st.markdown(f"<h3 style='text-align: center; margin: 0; color: #00B0F0;'>{month_name} {st.session_state['cal_year']}</h3>", unsafe_allow_html=True)
+        with col_next:
+            if st.button("▶", use_container_width=True, key="next_month"):
+                st.session_state['cal_month'] += 1
+                if st.session_state['cal_month'] > 12:
+                    st.session_state['cal_month'] = 1
+                    st.session_state['cal_year'] += 1
+                st.rerun()
+                
+        # Draw calendar grid
+        days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        cols = st.columns(7)
+        for i, day in enumerate(days):
+            with cols[i]:
+                st.markdown(f"<div style='text-align: center; font-weight: bold; padding-bottom: 5px; color: #5f6368;'>{day}</div>", unsafe_allow_html=True)
+                
+        cal = calendar.monthcalendar(st.session_state['cal_year'], st.session_state['cal_month'])
+        holiday_dates = current_df["Ngày nghỉ"].dt.date.tolist() if not current_df.empty else []
+        
+        for week in cal:
+            cols = st.columns(7)
+            for i, day in enumerate(week):
+                with cols[i]:
+                    if day != 0:
+                        current_date = datetime.date(st.session_state['cal_year'], st.session_state['cal_month'], day)
+                        is_holiday = current_date in holiday_dates
+                        btn_type = "primary" if is_holiday else "secondary"
+                        if st.button(str(day), key=f"cal_{current_date}", type=btn_type, use_container_width=True):
+                            if is_holiday:
+                                current_df = current_df[current_df["Ngày nghỉ"].dt.date != current_date]
+                            else:
+                                new_row = {"Ngày nghỉ": pd.Timestamp(current_date), "Lý do": t("Nghỉ lễ / Cuối tuần", "休日・祭日")}
+                                current_df = pd.concat([current_df, pd.DataFrame([new_row])], ignore_index=True)
+                            st.session_state['ot_base_data']['holidays_df'] = current_df
+                            save_base_data(st.session_state['ot_base_data'])
+                            st.rerun()
+
+        st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+        st.markdown(f"<h4 style='font-size: 16px; font-weight: 600;'>{t('Danh sách chi tiết:', '詳細一覧:')}</h4>", unsafe_allow_html=True)
         holidays_df = st.data_editor(
             current_df,
             num_rows="dynamic",
