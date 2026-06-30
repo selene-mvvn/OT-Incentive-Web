@@ -90,21 +90,24 @@ def render_incentive():
                 company_charge = st.number_input(t("🏢 Company Charge", "🏢 会社運用チャージ"), min_value=0.0, step=100.0, format="%f")
 
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            st.markdown(f"<div style='background: #f8f9fa; padding: 20px; border-radius: 12px; border: 1px dashed #cbd5e1; margin-bottom: 5px;'><h4 style='margin-top:0; margin-bottom: 15px; color: #8e44ad; font-size: 16px;'>💡 {t('Phân tích tiên đoán (What-if Analysis)', 'What-if分析 (予測)')}</h4>", unsafe_allow_html=True)
+            st.divider()
             
-            c_sl, c_res = st.columns([2.5, 1])
+            # Ước tính nhanh (What-if)
+            c_title, c_sl, c_res = st.columns([1.5, 3.5, 1.5])
+            with c_title:
+                st.markdown(f"<div style='margin-top: 12px; color: #5f6368; font-weight: 600; font-size: 15px;'>💡 {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
             with c_sl:
                 max_slider = float(target_hours * 1.5) if target_hours > 0 else 100.0
                 if actual_hours > max_slider: max_slider = float(actual_hours * 1.5)
                 max_slider = max(max_slider, 10.0) # Ensure max > min
-                whatif_hours = st.slider(t("Kéo thử Giờ công thực tế để xem trước Incentive", "実工数をスライドしてインセンティブをプレビュー"), min_value=0.0, max_value=max_slider, value=float(actual_hours), step=0.5, format="%f", key="whatif_slider")
-            
+                whatif_hours = st.slider("Slider", min_value=0.0, max_value=max_slider, value=float(actual_hours), step=0.5, format="%f", key="whatif_slider", label_visibility="collapsed")
             with c_res:
                 preview_dict = calculate_incentive(target_hours, whatif_hours, unit_price, company_charge)
                 preview_val = preview_dict.get("final_incentive", 0)
                 color = "#00B0F0" if preview_val > 0 else "#95a5a6"
-                st.markdown(f"<div style='text-align: center; margin-top: 10px;'><span style='font-size: 13px; color: #7f8c8d; font-weight: 500;'>{t('Dự kiến Incentive', '予想インセンティブ')}</span><br><b style='font-size: 26px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 14px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
-            st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='text-align: right; margin-top: 5px;'><b style='font-size: 22px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 13px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
+            
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
     
         if st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True):
             result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
