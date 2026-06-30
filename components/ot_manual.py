@@ -51,22 +51,22 @@ def render_base_data():
     try:
         fd_str = st.session_state['ot_base_data'].get('from_date', '')
         fd_val = datetime.datetime.strptime(fd_str, "%Y-%m-%d") if fd_str else datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
-        fd_disp = fd_val.strftime("%d/%m")
+        fd_disp = fd_val.strftime("%m/%Y")
     except:
-        fd_disp = "21/05"
+        fd_disp = "05/2026"
         
     try:
         td_str = st.session_state['ot_base_data'].get('to_date', '')
         td_val = datetime.datetime.strptime(td_str, "%Y-%m-%d") if td_str else datetime.date.today().replace(day=20)
-        td_disp = td_val.strftime("%d/%m")
+        td_disp = td_val.strftime("%m/%Y")
     except:
-        td_disp = "20/06"
+        td_disp = "06/2026"
 
     def make_card(icon, title, value):
         return f"""
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
-        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 20px;">
-            <div style="color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; letter-spacing: 0.5px;">
+        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; text-align: center;">
+            <div style="color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.5px;">
                 <span class='material-symbols-rounded' style='font-family: "Material Symbols Rounded", sans-serif !important; color: #00B0F0; margin-right: 8px; font-size: 20px; text-transform: none;'>{icon}</span> {title}
             </div>
             <div style="color: #0f172a; font-size: 24px; font-weight: 700;">{value}</div>
@@ -295,6 +295,9 @@ def render_base_data():
             st.session_state['ot_base_data']['holidays_df'] = holidays_df
             save_base_data(st.session_state['ot_base_data'])
             st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon=":material/check_circle:")
+            import time
+            time.sleep(0.5)
+            st.rerun()
 
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
