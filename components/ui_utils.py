@@ -30,22 +30,22 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
-            let current = marker.parentElement;
+            let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
             let outerContainer = null;
-            while (current && current.tagName !== 'BODY' && current.tagName !== 'HTML') {
-                if (current.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
-                    outerContainer = current;
-                    break;
+            if (horizontal) {
+                let p = horizontal.parentElement;
+                while (p && p.tagName !== 'BODY' && p.tagName !== 'HTML') {
+                    let tid = p.getAttribute('data-testid');
+                    if (tid === 'stVerticalBlockBorderWrapper') {
+                        outerContainer = p;
+                        break;
+                    }
+                    if (!tid && p.className.includes('st-emotion-cache')) {
+                        outerContainer = p;
+                        break;
+                    }
+                    p = p.parentElement;
                 }
-                let style = window.getComputedStyle(current);
-                let hasBorder = (style.borderTopWidth && style.borderTopWidth !== '0px' && style.borderTopStyle !== 'none') || 
-                                (style.borderWidth && style.borderWidth !== '0px' && style.borderStyle !== 'none');
-                
-                if (hasBorder && current.tagName === 'DIV' && current.getAttribute('data-testid') !== 'stMarkdownContainer') {
-                    outerContainer = current;
-                    break;
-                }
-                current = current.parentElement;
             }
             if (outerContainer) {
                 outerContainer.style.backgroundColor = '#ffffff';
@@ -59,6 +59,17 @@ def make_history_cards_white():
                 }
             }
         });
+
+        // Hide the iframe containing this script to prevent the white bar at the bottom
+        if (window.frameElement) {
+            window.frameElement.style.display = 'none';
+            if (window.frameElement.parentElement) {
+                window.frameElement.parentElement.style.display = 'none';
+                window.frameElement.parentElement.style.height = '0px';
+                window.frameElement.parentElement.style.margin = '0px';
+                window.frameElement.parentElement.style.padding = '0px';
+            }
+        }
     </script>
     """, height=0)
 
