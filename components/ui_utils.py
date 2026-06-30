@@ -30,11 +30,16 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.action-card-marker');
         markers.forEach(marker => {
-            // Because .action-card-marker is at the root of st.container(border=True),
-            // its closest stVerticalBlock is the container's inner block.
-            // The parent of that block is the actual border wrapper (emotion-cache or BorderWrapper).
-            let verticalBlock = marker.closest('[data-testid="stVerticalBlock"]');
-            let outerContainer = verticalBlock ? verticalBlock.parentElement : null;
+            // Because .action-card-marker is now inside the column,
+            // we first find the horizontal block (st.columns).
+            // Its parent is element-container, whose closest stVerticalBlock is the container's inner body.
+            // The parent of the inner body is the border wrapper.
+            let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
+            let outerContainer = null;
+            if (horizontal && horizontal.parentElement) {
+                let innerBlock = horizontal.parentElement.closest('[data-testid="stVerticalBlock"]');
+                outerContainer = innerBlock ? innerBlock.parentElement : null;
+            }
             
             if (outerContainer) {
                 outerContainer.style.backgroundColor = '#ffffff';

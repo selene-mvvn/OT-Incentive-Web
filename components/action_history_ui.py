@@ -187,12 +187,11 @@ def render_action_history():
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
 
             with st.container(border=True):
-                st.markdown("<div class='action-card-marker'></div>", unsafe_allow_html=True)
                 c_head, c_dl, c_del = st.columns([7, 2, 1])
                 with c_head:
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
-                    st.markdown(f"<div class='white-card-bg'></div><div class='{marker_class}'></div><h3 style='margin:0; padding:0; color:#2c3e50; font-size:18px;'>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"<div class='action-card-marker'></div><div class='white-card-bg'></div><div class='{marker_class}'></div><h3 style='margin:0; padding:0; color:#2c3e50; font-size:18px;'>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_dl:
