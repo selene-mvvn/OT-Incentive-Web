@@ -203,7 +203,6 @@ def render_action_history():
                 if valid_logs:
                     import zipfile
                     import io
-                    import base64
                     zip_buffer = io.BytesIO()
                     with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
                         for idx, l in enumerate(valid_logs):
