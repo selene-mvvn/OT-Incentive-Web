@@ -310,13 +310,15 @@ def render_welcome():
     with col1:
         if st.button(t("TÍNH LƯƠNG TĂNG CA", "残業代計算"), key="btn_ot"):
             st.session_state['current_page'] = 'ot_calc'
-            st.session_state['menu_selection'] = t("TÍNH TIỀN TĂNG CA", "残業代計算")
+            st.session_state['menu_selection'] = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**")
+            st.session_state['ot_menu_expanded'] = True
             st.rerun()
             
     with col2:
         if st.button(t("TÍNH LƯƠNG INCENTIVE", "インセンティブ計算"), key="btn_inc"):
             st.session_state['current_page'] = 'incentive_calc'
-            st.session_state['menu_selection'] = t("TÍNH INCENTIVE (JPY)", "インセンティブ")
+            st.session_state['menu_selection'] = t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**")
+            st.session_state['ot_menu_expanded'] = False
             st.rerun()
 
     # 5. Instructional Text
