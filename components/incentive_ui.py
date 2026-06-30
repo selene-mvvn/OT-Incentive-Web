@@ -95,7 +95,7 @@ def render_incentive():
             # Ước tính nhanh (What-if)
             c_title, c_sl, c_res = st.columns([1.5, 3.5, 1.5])
             with c_title:
-                st.markdown(f"<div style='margin-top: 12px; color: #5f6368; font-weight: 600; font-size: 15px;'>💡 {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='margin-top: 12px; color: #5f6368; font-weight: 600; font-size: 15px;'><span class='material-symbols-rounded' style='vertical-align: middle; margin-right: 5px; font-size: 18px;'>lightbulb</span> {t('Ước tính Incentive', '予想インセンティブ')}</div>", unsafe_allow_html=True)
             with c_sl:
                 max_slider = float(target_hours * 1.5) if target_hours > 0 else 100.0
                 if actual_hours > max_slider: max_slider = float(actual_hours * 1.5)
