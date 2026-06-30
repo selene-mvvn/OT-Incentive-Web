@@ -182,6 +182,46 @@ def render_action_history():
 
         st.markdown("<br>", unsafe_allow_html=True)
 
+        if 'selected_logs' not in st.session_state:
+            st.session_state['selected_logs'] = {}
+
+        def toggle_log(log_id):
+            st.session_state['selected_logs'][log_id] = not st.session_state['selected_logs'].get(log_id, False)
+
+        selected_ids = [k for k, v in st.session_state.get('selected_logs', {}).items() if v]
+        if selected_ids:
+            st.markdown(f"<div style='background-color:#e8f4f8; padding:10px 15px; border-radius:8px; border:1px solid #b3e0f2; margin-bottom:15px; display:flex; align-items:center;'><b style='color:#00B0F0; font-size:16px;'>{len(selected_ids)}</b>&nbsp;<span style='color:#34495e;'>{t('mục đã chọn', '件選択中')}</span></div>", unsafe_allow_html=True)
+            c_bulk1, c_bulk2, c_bulk3 = st.columns([2.5, 2.5, 5])
+            with c_bulk1:
+                if st.button("🗑️ " + t("Xóa các mục đã chọn", "選択項目を削除"), key="bulk_delete", type="primary", use_container_width=True):
+                    for lid in selected_ids:
+                        delete_action_log(lid)
+                    st.session_state['selected_logs'] = {}
+                    st.rerun()
+            with c_bulk2:
+                valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
+                if valid_logs:
+                    import zipfile
+                    import io
+                    import base64
+                    zip_buffer = io.BytesIO()
+                    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+                        for idx, l in enumerate(valid_logs):
+                            file_bytes = base64.b64decode(l.get('file_b64'))
+                            safe_name = l.get('original_filename', f'file_{l.get("id")}.xlsx')
+                            if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
+                                safe_name = f"{idx+1}_{safe_name}"
+                            zip_file.writestr(safe_name, file_bytes)
+                    
+                    st.download_button(
+                        label="⬇️ " + t("Tải về (ZIP)", "ZIPでダウンロード"),
+                        data=zip_buffer.getvalue(),
+                        file_name="LichSu_DaChon.zip",
+                        mime="application/zip",
+                        key="bulk_download",
+                        use_container_width=True
+                    )
+
         # 4. Render Logs
         for i, log in enumerate(paginated_logs):
             log_id = log.get("id")
@@ -195,7 +235,10 @@ def render_action_history():
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
 
             with st.container(border=True):
-                c_head, c_dl, c_del = st.columns([7, 2, 1])
+                c_chk, c_head, c_dl, c_del = st.columns([0.5, 6.5, 2, 1])
+                with c_chk:
+                    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
+                    st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
                 with c_head:
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
