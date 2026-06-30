@@ -413,32 +413,32 @@ st.markdown("""
     [data-testid="stVerticalBlockBorderWrapper"] > div {
         background-color: #ffffff !important;
     }
-       [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
+    [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        overflow: visible !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+
+    /* Đưa toàn bộ viền xanh và bo góc vào div chứa bảng thực sự bên trong (trừ Toolbar) */
+    [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]),
+    [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
         background: #ffffff !important;
-        background-color: #ffffff !important;
         border-radius: 8px !important;
         box-shadow: 0 4px 15px rgba(0, 176, 240, 0.1) !important;
         border: 2px solid #00B0F0 !important;
-        padding: 0 !important;
         box-sizing: border-box !important;
         width: calc(100% - 6px) !important;
         overflow: hidden !important;
-        position: relative !important;
         transition: all 0.3s ease !important;
     }
 
-    /* Kéo thanh công cụ (chứa nút Xóa) lùi vào trong một chút để không bị lệnh overflow: hidden phía trên chém mất */
-    [data-testid="stDataEditor"] [data-testid="stElementToolbar"],
-    [data-testid="stDataFrame"] [data-testid="stElementToolbar"] {
-        right: 4px !important;
-        top: 4px !important;
-        position: absolute !important;
-        z-index: 9999 !important;
-    }
-    
     /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
-    [data-testid="stExpander"] [data-testid="stDataFrame"],
-    [data-testid="stExpander"] [data-testid="stDataEditor"] {
+    [data-testid="stExpander"] [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]),
+    [data-testid="stExpander"] [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
         border: 1px solid rgba(0,0,0,0.1) !important;
         box-shadow: none !important;
     }
