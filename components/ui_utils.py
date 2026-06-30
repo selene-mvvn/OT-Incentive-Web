@@ -30,12 +30,19 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
-            let container = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
-            if (!container) {
-                container = marker.closest('[data-testid="stVerticalBlock"]');
+            let outerContainer = null;
+            let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
+            if (horizontal) {
+                outerContainer = horizontal.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+                if (!outerContainer) {
+                    outerContainer = horizontal.closest('[data-testid="stVerticalBlock"]');
+                }
+            } else {
+                outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]') || marker.closest('[data-testid="stVerticalBlock"]');
             }
-            if (container) {
-                container.style.backgroundColor = '#ffffff';
+            if (outerContainer) {
+                outerContainer.style.backgroundColor = '#ffffff';
+                outerContainer.style.setProperty('background-color', '#ffffff', 'important');
             }
         });
     </script>
