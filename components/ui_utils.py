@@ -28,30 +28,13 @@ def make_history_cards_white():
     components.html("""
     <script>
         const parent = window.parent.document;
-        const markers = parent.querySelectorAll('.white-card-bg');
+        const markers = parent.querySelectorAll('.action-card-marker');
         markers.forEach(marker => {
-            let current = marker.parentElement;
-            let outerContainer = null;
-            while (current && current.tagName !== 'BODY' && current.tagName !== 'HTML') {
-                if (current.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
-                    outerContainer = current;
-                    break;
-                }
-                
-                // Fallback for newer Streamlit versions: the border wrapper has no data-testid
-                // but it's an st-emotion-cache div whose direct child is stVerticalBlock
-                if (!current.getAttribute('data-testid') && 
-                    current.className && current.className.includes('st-emotion-cache')) {
-                    
-                    let firstChild = current.firstElementChild;
-                    if (firstChild && firstChild.getAttribute('data-testid') === 'stVerticalBlock') {
-                        // We found the anonymous border wrapper!
-                        outerContainer = current;
-                        break;
-                    }
-                }
-                current = current.parentElement;
-            }
+            // Because .action-card-marker is at the root of st.container(border=True),
+            // its closest stVerticalBlock is the container's inner block.
+            // The parent of that block is the actual border wrapper (emotion-cache or BorderWrapper).
+            let verticalBlock = marker.closest('[data-testid="stVerticalBlock"]');
+            let outerContainer = verticalBlock ? verticalBlock.parentElement : null;
             
             if (outerContainer) {
                 outerContainer.style.backgroundColor = '#ffffff';

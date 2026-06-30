@@ -184,6 +184,7 @@ def render_action_history():
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
 
             with st.container(border=True):
+                st.markdown("<div class='action-card-marker'></div>", unsafe_allow_html=True)
                 c_head, c_dl, c_del = st.columns([7, 2, 1])
                 with c_head:
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
