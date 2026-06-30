@@ -425,6 +425,11 @@ st.markdown("""
         width: calc(100% - 6px) !important;
         transition: all 0.3s ease !important;
     }
+
+    /* Bo góc ruột bảng để không đâm ra ngoài viền */
+    [data-testid="stDataFrame"] iframe, [data-testid="stDataEditor"] iframe {
+        border-radius: 6px !important;
+    }
     
     /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
     [data-testid="stExpander"] [data-testid="stDataFrame"],
