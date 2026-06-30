@@ -30,7 +30,10 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
-            let container = marker.closest('[data-testid="stVerticalBlock"]');
+            let container = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+            if (!container) {
+                container = marker.closest('[data-testid="stVerticalBlock"]');
+            }
             if (container) {
                 container.style.backgroundColor = '#ffffff';
             }
