@@ -19,7 +19,7 @@ def render_incentive():
         
         title = t("Tính Incentive (JPY)", "インセンティブ計算")
         st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
-        st.markdown(t("Nhập các thông số dự án bên dưới để tính toán và lưu vào bảng chờ xuất.", "以下にプロジェクトのパラメータを入力して計算し、出力待ちリストに保存してください。"), unsafe_allow_html=True)
+        st.info(t("Nhập các thông số dự án bên dưới để tính toán và lưu vào bảng chờ xuất.", "以下にプロジェクトのパラメータを入力して計算し、出力待ちリストに保存してください。"))
     
         # Collect data for dropdowns
         from logic.project_data import get_projects_df
