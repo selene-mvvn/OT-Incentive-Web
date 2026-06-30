@@ -30,14 +30,24 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
-            let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
+            let current = marker.parentElement;
             let outerContainer = null;
-            if (horizontal) {
-                outerContainer = horizontal.closest('[data-testid="stVerticalBlockBorderWrapper"]');
-            } else {
-                outerContainer = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+            while (current && current.tagName !== 'BODY' && current.tagName !== 'HTML') {
+                if (current.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
+                    outerContainer = current;
+                    break;
+                }
+                let style = window.getComputedStyle(current);
+                let hasBorder = (style.borderTopWidth && style.borderTopWidth !== '0px' && style.borderTopStyle !== 'none') || 
+                                (style.borderWidth && style.borderWidth !== '0px' && style.borderStyle !== 'none');
+                
+                if (hasBorder && current.tagName === 'DIV' && current.getAttribute('data-testid') !== 'stMarkdownContainer') {
+                    outerContainer = current;
+                    break;
+                }
+                current = current.parentElement;
             }
-            
+
             if (outerContainer) {
                 outerContainer.style.backgroundColor = '#ffffff';
                 outerContainer.style.setProperty('background-color', '#ffffff', 'important');
@@ -51,16 +61,18 @@ def make_history_cards_white():
             }
         });
 
-        // Hide the iframe containing this script to prevent the white bar at the bottom
-        if (window.frameElement) {
-            window.frameElement.style.display = 'none';
-            if (window.frameElement.parentElement) {
-                window.frameElement.parentElement.style.display = 'none';
-                window.frameElement.parentElement.style.height = '0px';
-                window.frameElement.parentElement.style.margin = '0px';
-                window.frameElement.parentElement.style.padding = '0px';
+        // Hide the iframe containing this script and its Streamlit containers to prevent the white bar at the bottom
+        try {
+            let p = window.frameElement;
+            while (p && p.tagName !== 'BODY') {
+                p.style.display = 'none';
+                p.style.height = '0px';
+                p.style.margin = '0px';
+                p.style.padding = '0px';
+                if (p.getAttribute('data-testid') === 'stElementContainer') break;
+                p = p.parentElement;
             }
-        }
+        } catch (e) {}
     </script>
     """, height=0)
 
