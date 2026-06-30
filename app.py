@@ -88,6 +88,33 @@ st.markdown("""
         border-color: #008CBA !important;
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.4);
     }
+
+    /* File Uploader */
+    [data-testid="stFileUploaderDropzone"] {
+        background-color: #ffffff !important;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        border: 1px dashed rgba(0, 176, 240, 0.5) !important;
+        padding: 20px !important;
+    }
+    
+    [data-testid="stFileUploaderDropzone"] button {
+        border-radius: 30px !important;
+        font-weight: bold;
+        text-transform: uppercase;
+        padding: 10px 30px !important;
+        font-size: 13px !important;
+        border: 2px solid #00B0F0 !important;
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    [data-testid="stFileUploaderDropzone"] button:hover {
+        background-color: #008CBA !important;
+        border-color: #008CBA !important;
+        box-shadow: 0 5px 15px rgba(0, 176, 240, 0.4);
+    }
     
     /* Input Fields */
     div[data-baseweb="input"],
