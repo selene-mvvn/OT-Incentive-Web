@@ -30,48 +30,54 @@ def make_history_cards_white():
         const parent = window.parent.document;
         const markers = parent.querySelectorAll('.white-card-bg');
         markers.forEach(marker => {
-            let current = marker.parentElement;
-            let outerContainer = null;
-            while (current && current.tagName !== 'BODY' && current.tagName !== 'HTML') {
-                if (current.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
-                    outerContainer = current;
-                    break;
+            let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
+            if (horizontal) {
+                let outerContainer = horizontal; 
+                if (horizontal.parentElement) {
+                    let parent = horizontal.parentElement;
+                    let grandParent = parent.parentElement;
+                    
+                    if (grandParent && !grandParent.className.includes('block-container')) {
+                        outerContainer = parent;
+                        if (grandParent.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
+                            outerContainer = grandParent;
+                        } else if (grandParent.className.includes('st-emotion-cache') && !grandParent.getAttribute('data-testid')) {
+                            outerContainer = grandParent;
+                        }
+                    }
                 }
-                let style = window.getComputedStyle(current);
-                let hasBorder = (style.borderTopWidth && style.borderTopWidth !== '0px' && style.borderTopStyle !== 'none') || 
-                                (style.borderWidth && style.borderWidth !== '0px' && style.borderStyle !== 'none');
-                
-                if (hasBorder && current.tagName === 'DIV' && current.getAttribute('data-testid') !== 'stMarkdownContainer') {
-                    outerContainer = current;
-                    break;
-                }
-                current = current.parentElement;
-            }
 
-            if (outerContainer) {
-                outerContainer.style.backgroundColor = '#ffffff';
-                outerContainer.style.setProperty('background-color', '#ffffff', 'important');
-                outerContainer.classList.add('custom-history-card');
-                if (outerContainer.querySelector('.timeline-marker')) {
-                    outerContainer.classList.add('has-timeline-marker');
-                }
-                if (outerContainer.querySelector('.missing-marker')) {
-                    outerContainer.classList.add('has-missing-marker');
+                if (outerContainer) {
+                    outerContainer.style.backgroundColor = '#ffffff';
+                    outerContainer.style.setProperty('background-color', '#ffffff', 'important');
+                    outerContainer.classList.add('custom-history-card');
+                    if (outerContainer.querySelector('.timeline-marker')) {
+                        outerContainer.classList.add('has-timeline-marker');
+                    }
+                    if (outerContainer.querySelector('.missing-marker')) {
+                        outerContainer.classList.add('has-missing-marker');
+                    }
                 }
             }
         });
 
         // Hide the iframe containing this script and its Streamlit containers to prevent the white bar at the bottom
         try {
-            let p = window.frameElement;
-            while (p && p.tagName !== 'BODY') {
-                p.style.display = 'none';
-                p.style.height = '0px';
-                p.style.margin = '0px';
-                p.style.padding = '0px';
-                if (p.getAttribute('data-testid') === 'stElementContainer') break;
-                p = p.parentElement;
-            }
+            const parent = window.parent.document;
+            const frames = parent.querySelectorAll('iframe');
+            frames.forEach(frame => {
+                if (frame.contentWindow === window) {
+                    let p = frame;
+                    while (p && p.tagName !== 'BODY') {
+                        p.style.display = 'none';
+                        p.style.height = '0px';
+                        p.style.margin = '0px';
+                        p.style.padding = '0px';
+                        if (p.getAttribute('data-testid') === 'stElementContainer') break;
+                        p = p.parentElement;
+                    }
+                }
+            });
         } catch (e) {}
     </script>
     """, height=0)
