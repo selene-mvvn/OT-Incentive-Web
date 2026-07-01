@@ -221,9 +221,16 @@ def render_action_history():
                             div.style.setProperty('height', '100%', 'important');
                         });
 
+                        // Trích xuất mã màu trực tiếp từ hộp st.info
+                        let infoBg = '#e8f4fa';
+                        const stAlert = window.parent.document.querySelector('[data-testid="stAlert"]');
+                        if (stAlert) {
+                            infoBg = window.parent.getComputedStyle(stAlert).backgroundColor;
+                        }
+
                         // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
                         const count = marker.getAttribute('data-count') || '0';
-                        wrapper.style.setProperty('background-color', 'rgba(0, 176, 240, 0.1)', 'important');
+                        wrapper.style.setProperty('background-color', infoBg, 'important');
                         wrapper.style.setProperty('border-radius', '50px', 'important');
                         wrapper.style.setProperty('padding', '6px 8px', 'important');
                         wrapper.style.setProperty('margin-top', '-10px', 'important');
@@ -234,7 +241,9 @@ def render_action_history():
                         wrapper.style.setProperty('align-items', 'center', 'important');
                         wrapper.style.setProperty('gap', '6px', 'important');
                         wrapper.style.setProperty('width', 'max-content', 'important');
-                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0, 176, 240, 0.15)', 'important');
+                        wrapper.style.setProperty('height', '44px', 'important'); // Khóa cứng chiều cao
+                        wrapper.style.setProperty('box-sizing', 'border-box', 'important');
+                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.05)', 'important');
 
                         // Tạo huy hiệu số trực tiếp để không bị Streamlit bao bọc thẻ p
                         let badge = wrapper.querySelector('.selection-badge');
@@ -256,6 +265,7 @@ def render_action_history():
                         badge.style.setProperty('align-items', 'center', 'important');
                         badge.style.setProperty('box-shadow', '0 2px 5px rgba(0,0,0,0.05)', 'important');
                         badge.style.setProperty('flex-shrink', '0', 'important');
+                        badge.style.setProperty('margin', '0', 'important'); // Chống mọi margin
 
                         // Co gọn các thành phần bên trong (div.element-container)
                         const children = Array.from(wrapper.children);
@@ -265,8 +275,22 @@ def render_action_history():
                                 child.style.setProperty('flex', '0 1 auto', 'important');
                                 child.style.setProperty('min-width', '0', 'important');
                                 child.style.setProperty('margin', '0', 'important');
+                                child.style.setProperty('padding', '0', 'important');
                                 child.style.setProperty('display', 'flex', 'important');
                                 child.style.setProperty('align-items', 'center', 'important');
+                                child.style.setProperty('justify-content', 'center', 'important');
+                                child.style.setProperty('height', '32px', 'important');
+
+                                // Chống lệch từ Streamlit Button Wrapper
+                                const stBtn = child.querySelector('div.stButton, div[data-testid="stButton"]');
+                                if (stBtn) {
+                                    stBtn.style.setProperty('margin', '0', 'important');
+                                    stBtn.style.setProperty('padding', '0', 'important');
+                                    stBtn.style.setProperty('height', '32px', 'important');
+                                    stBtn.style.setProperty('display', 'flex', 'important');
+                                    stBtn.style.setProperty('align-items', 'center', 'important');
+                                    stBtn.style.setProperty('justify-content', 'center', 'important');
+                                }
                             }
                         });
 
@@ -281,6 +305,7 @@ def render_action_history():
                             btn.style.setProperty('width', '32px', 'important');
                             btn.style.setProperty('height', '32px', 'important');
                             btn.style.setProperty('min-height', '32px', 'important');
+                            btn.style.setProperty('margin', '0', 'important'); // Tuyệt đối không margin
                             btn.style.setProperty('padding', '0', 'important');
                             btn.style.setProperty('display', 'flex', 'important');
                             btn.style.setProperty('justify-content', 'center', 'important');
