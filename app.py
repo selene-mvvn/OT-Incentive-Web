@@ -11,6 +11,8 @@ if 'pending_toast' in st.session_state:
 # Custom CSS for a beautiful corporate look (White & Blue)
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0');
+
     /* Global Font */
     html, body, [class*="css"]  {
         font-family: 'Times New Roman', serif !important;
