@@ -305,7 +305,15 @@ def render_base_data():
                     regular_days = 0
                     curr_date = new_start_date
                     while curr_date <= today:
-                        if curr_date.weekday() < 5 and curr_date not in holidays_list:
+                        is_working_day = False
+                        if curr_date.weekday() < 5:
+                            is_working_day = True
+                        elif curr_date.weekday() == 5:
+                            next_week = curr_date + datetime.timedelta(days=7)
+                            if next_week.month != curr_date.month:
+                                is_working_day = True
+                                
+                        if is_working_day and curr_date not in holidays_list:
                             regular_days += 1
                         curr_date += datetime.timedelta(days=1)
 
