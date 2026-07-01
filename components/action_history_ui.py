@@ -222,7 +222,8 @@ def render_action_history():
                         });
 
                         // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
-                        wrapper.style.setProperty('background-color', '#e8f4fa', 'important');
+                        const count = marker.getAttribute('data-count') || '0';
+                        wrapper.style.setProperty('background-color', 'rgba(0, 176, 240, 0.1)', 'important');
                         wrapper.style.setProperty('border-radius', '50px', 'important');
                         wrapper.style.setProperty('padding', '6px 8px', 'important');
                         wrapper.style.setProperty('margin-top', '-10px', 'important');
@@ -233,7 +234,28 @@ def render_action_history():
                         wrapper.style.setProperty('align-items', 'center', 'important');
                         wrapper.style.setProperty('gap', '6px', 'important');
                         wrapper.style.setProperty('width', 'max-content', 'important');
-                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.06)', 'important');
+                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0, 176, 240, 0.15)', 'important');
+
+                        // Tạo huy hiệu số trực tiếp để không bị Streamlit bao bọc thẻ p
+                        let badge = wrapper.querySelector('.selection-badge');
+                        if (!badge) {
+                            badge = window.parent.document.createElement('div');
+                            badge.className = 'selection-badge';
+                            wrapper.insertBefore(badge, wrapper.firstChild);
+                        }
+                        badge.innerText = count;
+                        badge.style.setProperty('background-color', '#ffffff', 'important');
+                        badge.style.setProperty('color', '#0284c7', 'important');
+                        badge.style.setProperty('font-weight', 'bold', 'important');
+                        badge.style.setProperty('font-size', '14px', 'important');
+                        badge.style.setProperty('width', '32px', 'important');
+                        badge.style.setProperty('height', '32px', 'important');
+                        badge.style.setProperty('border-radius', '50%', 'important');
+                        badge.style.setProperty('display', 'flex', 'important');
+                        badge.style.setProperty('justify-content', 'center', 'important');
+                        badge.style.setProperty('align-items', 'center', 'important');
+                        badge.style.setProperty('box-shadow', '0 2px 5px rgba(0,0,0,0.05)', 'important');
+                        badge.style.setProperty('flex-shrink', '0', 'important');
 
                         // Co gọn các thành phần bên trong (div.element-container)
                         const children = Array.from(wrapper.children);
@@ -291,8 +313,7 @@ def render_action_history():
             """, height=0, width=0)
 
             with st.container():
-                st.markdown("<span class='bulk-marker' style='display:none'></span>", unsafe_allow_html=True)
-                st.markdown(f"<div style='background-color:#ffffff; color:#0284c7; font-weight:bold; font-size:14px; width:32px; height:32px; border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0;'>{len(selected_ids)}</div>", unsafe_allow_html=True)
+                st.markdown(f"<span class='bulk-marker' style='display:none' data-count='{len(selected_ids)}'></span>", unsafe_allow_html=True)
 
                 valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
                 if valid_logs:
