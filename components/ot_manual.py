@@ -471,6 +471,7 @@ def render_base_data():
                 st.rerun()
 
         with c2:
+            st.markdown("<div style='margin-top: 45px;'></div>", unsafe_allow_html=True)
             import json
             import streamlit.components.v1 as components
             holidays_list = []
