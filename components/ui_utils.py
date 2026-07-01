@@ -4,29 +4,32 @@ from logic.i18n import t
 
 def make_container_white():
     import streamlit.components.v1 as components
-    components.html("""
+    import time
+    components.html(f"""
     <script>
         const parent = window.parent.document;
         const frames = parent.querySelectorAll('iframe');
-        frames.forEach(frame => {
-            if (frame.contentWindow === window) {
+        frames.forEach(frame => {{
+            if (frame.contentWindow === window) {{
                 let container = frame.closest('[data-testid="stVerticalBlock"]');
-                if (container) {
+                if (container) {{
                     container.classList.add('custom-white-container');
                     container.style.backgroundColor = '#ffffff';
                     container.style.borderRadius = '12px';
                     container.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
                     container.style.padding = '20px';
                     container.style.border = '1px solid rgba(0,0,0,0.05)';
-                }
-            }
-        });
+                }}
+            }}
+        }});
     </script>
+    <!-- {time.time()} -->
     """, height=0)
 
 def make_history_cards_white():
     import streamlit.components.v1 as components
-    components.html("""
+    import time
+    components.html(f"""
     <script>
         const parent = window.parent.document;
         
