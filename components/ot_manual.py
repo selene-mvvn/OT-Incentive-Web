@@ -322,6 +322,7 @@ def render_base_data():
             html_code = f"""
             <style>
             body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; color: #334155; }}
+            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: white; margin-top: 20px; box-shadow: 0 4px 6px rgba(0, 176, 240, 0.1); }}
             .cal-header {{ display: flex; justify-content: space-between; align-items: center; padding: 5px 0 15px 0; }}
             .cal-header button {{ background: none; border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 12px; cursor: pointer; color: #475569; font-weight: bold; background: white; }}
             .cal-header button:hover {{ background: #f1f5f9; }}
@@ -337,12 +338,14 @@ def render_base_data():
             .today .day-number {{ color: #2563eb; font-weight: bold; }}
             </style>
 
-            <div class="cal-header">
-                <button onclick="changeMonth(-1)">&lt;</button>
-                <h3 id="monthYear"></h3>
-                <button onclick="changeMonth(1)">&gt;</button>
+            <div class="calendar-container">
+                <div class="cal-header">
+                    <button onclick="changeMonth(-1)">&lt;</button>
+                    <h3 id="monthYear"></h3>
+                    <button onclick="changeMonth(1)">&gt;</button>
+                </div>
+                <div class="cal-grid" id="calGrid"></div>
             </div>
-            <div class="cal-grid" id="calGrid"></div>
 
             <script>
             const holidays = {holidays_json};
