@@ -322,12 +322,12 @@ def render_base_data():
             html_code = f"""
             <style>
             body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; color: #334155; }}
-            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: white; margin-top: 20px; box-shadow: 0 4px 6px rgba(0, 176, 240, 0.1); }}
+            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 20px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
             .cal-header {{ display: flex; justify-content: space-between; align-items: center; padding: 5px 0 15px 0; }}
-            .cal-header button {{ background: none; border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 12px; cursor: pointer; color: #475569; font-weight: bold; background: white; }}
-            .cal-header button:hover {{ background: #f1f5f9; }}
-            .cal-header h3 {{ margin: 0; font-size: 18px; font-weight: 600; color: #0f172a; }}
-            .cal-grid {{ display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: #e2e8f0; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
+            .cal-header button {{ background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 4px 12px; cursor: pointer; color: white; font-weight: bold; transition: all 0.2s; }}
+            .cal-header button:hover {{ background: rgba(255,255,255,0.3); }}
+            .cal-header h3 {{ margin: 0; font-size: 18px; font-weight: 600; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }}
+            .cal-grid {{ display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: #0098d0; border: 1px solid #0098d0; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }}
             .cal-grid > div {{ background: #fff; min-height: 85px; padding: 4px; box-sizing: border-box; min-width: 0; }}
             .day-name {{ min-height: 30px !important; text-align: center; font-weight: bold; background: #f8fafc !important; font-size: 13px; padding-top: 8px !important; color: #64748b; }}
             .day-number {{ font-weight: 500; font-size: 13px; margin-bottom: 4px; text-align: right; color: #475569; }}
