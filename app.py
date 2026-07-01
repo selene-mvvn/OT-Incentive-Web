@@ -138,7 +138,7 @@ st.markdown("""
         font-weight: bold !important;
         position: relative;
         padding-bottom: 12px;
-        margin-bottom: 25px;
+        margin-bottom: 40px;
         width: fit-content;
     }
     
