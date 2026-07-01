@@ -45,7 +45,7 @@ def render_incentive():
     
         combined_employees = list(dict.fromkeys(master_employees))
     
-        with st.container(border=True):
+        with st.container():
             
             st.markdown(f"""
                 <style>

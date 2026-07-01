@@ -2,6 +2,83 @@ import streamlit as st
 from logic.history import get_history, remove_from_history
 from logic.i18n import t
 
+def make_container_white():
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+        const parent = window.parent.document;
+        const frames = parent.querySelectorAll('iframe');
+        frames.forEach(frame => {
+            if (frame.contentWindow === window) {
+                let container = frame.closest('[data-testid="stVerticalBlock"]');
+                if (container) {
+                    container.classList.add('custom-white-container');
+                    container.style.backgroundColor = '#ffffff';
+                    container.style.borderRadius = '12px';
+                    container.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
+                    container.style.padding = '20px';
+                    container.style.border = '1px solid rgba(0,0,0,0.05)';
+                }
+            }
+        });
+        
+        if (window.frameElement) {
+            window.frameElement.style.display = 'none';
+            if (window.frameElement.parentElement) {
+                window.frameElement.parentElement.style.display = 'none';
+                window.frameElement.parentElement.style.height = '0px';
+                window.frameElement.parentElement.style.margin = '0px';
+                window.frameElement.parentElement.style.padding = '0px';
+            }
+        }
+    </script>
+    """, height=0)
+
+def make_history_cards_white():
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+        const parent = window.parent.document;
+        
+        function styleCards(container) {
+            let cards = container.querySelectorAll('[data-testid="stVerticalBlockBorderWrapper"]');
+            cards.forEach(card => {
+                if (!card.classList.contains('custom-history-card')) {
+                    card.classList.add('custom-history-card');
+                    card.style.backgroundColor = '#ffffff';
+                    card.style.border = '1px solid #e2e8f0';
+                    card.style.borderRadius = '10px';
+                    card.style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)';
+                }
+            });
+        }
+
+        const frames = parent.querySelectorAll('iframe');
+        frames.forEach(frame => {
+            if (frame.contentWindow === window) {
+                let container = frame.closest('[data-testid="stVerticalBlock"]');
+                if (container) {
+                    styleCards(container);
+                    const observer = new parent.MutationObserver((mutations) => {
+                        styleCards(container);
+                    });
+                    observer.observe(container, { childList: true, subtree: true });
+                }
+            }
+        });
+
+        if (window.frameElement) {
+            window.frameElement.style.display = 'none';
+            if (window.frameElement.parentElement) {
+                window.frameElement.parentElement.style.display = 'none';
+                window.frameElement.parentElement.style.height = '0px';
+                window.frameElement.parentElement.style.margin = '0px';
+                window.frameElement.parentElement.style.padding = '0px';
+            }
+        }
+    </script>
+    """, height=0)
+
 def make_expander_blue():
     import streamlit.components.v1 as components
     components.html("""
