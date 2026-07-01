@@ -208,22 +208,19 @@ def render_action_history():
                         pTags.forEach(p => {
                             p.style.setProperty('margin', '0', 'important');
                             p.style.setProperty('padding', '0', 'important');
-                            p.style.setProperty('display', 'flex', 'important');
-                            p.style.setProperty('align-items', 'center', 'important');
-                            p.style.setProperty('line-height', '1', 'important');
                         });
 
                         // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
                         wrapper.style.setProperty('background-color', '#ede9fe', 'important');
                         wrapper.style.setProperty('border-radius', '50px', 'important');
-                        wrapper.style.setProperty('padding', '6px 20px', 'important');
+                        wrapper.style.setProperty('padding', '4px 8px', 'important');
                         wrapper.style.setProperty('margin-top', '-10px', 'important');
                         wrapper.style.setProperty('margin-bottom', '20px', 'important');
                         wrapper.style.setProperty('display', 'flex', 'important');
                         wrapper.style.setProperty('flex-direction', 'row', 'important');
                         wrapper.style.setProperty('justify-content', 'center', 'important');
                         wrapper.style.setProperty('align-items', 'center', 'important');
-                        wrapper.style.setProperty('gap', '15px', 'important');
+                        wrapper.style.setProperty('gap', '4px', 'important');
                         wrapper.style.setProperty('width', 'max-content', 'important');
                         wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.06)', 'important');
 
@@ -238,26 +235,42 @@ def render_action_history():
                             }
                         });
 
-                        // Định dạng nút bấm (Thiết kế dạng icon text mềm mại)
+                        // Định dạng nút bấm (Thiết kế dạng icon tròn)
                         const btns = wrapper.querySelectorAll('button');
-                        btns.forEach(btn => {
+                        btns.forEach((btn, index) => {
                             btn.style.setProperty('background-color', 'transparent', 'important');
                             btn.style.setProperty('color', '#4c1d95', 'important');
                             btn.style.setProperty('border', 'none', 'important');
                             btn.style.setProperty('box-shadow', 'none', 'important');
-                            btn.style.setProperty('border-radius', '50px', 'important');
-                            btn.style.setProperty('font-weight', '600', 'important');
-                            btn.style.setProperty('padding', '6px 16px', 'important');
-                            btn.style.setProperty('min-height', '32px', 'important');
-                            btn.style.setProperty('height', '32px', 'important');
+                            btn.style.setProperty('border-radius', '50%', 'important');
+                            btn.style.setProperty('width', '36px', 'important');
+                            btn.style.setProperty('height', '36px', 'important');
+                            btn.style.setProperty('min-height', '36px', 'important');
+                            btn.style.setProperty('padding', '0', 'important');
+                            btn.style.setProperty('display', 'flex', 'important');
+                            btn.style.setProperty('justify-content', 'center', 'important');
+                            btn.style.setProperty('align-items', 'center', 'important');
                             btn.style.setProperty('transition', 'all 0.2s', 'important');
-                            
-                            const pText = btn.querySelector('p, span');
-                            if (pText) pText.style.setProperty('color', '#4c1d95', 'important');
-                            
+
+                            // Ẩn chữ mặc định
+                            const textElements = btn.querySelectorAll('p, span, div');
+                            textElements.forEach(el => {
+                                if (el.tagName !== 'svg' && el.tagName !== 'path' && el.tagName !== 'polyline' && el.tagName !== 'line') {
+                                    el.style.setProperty('display', 'none', 'important');
+                                }
+                            });
+
                             btn.addEventListener('mouseenter', () => btn.style.setProperty('background-color', '#ffffff', 'important'));
                             btn.addEventListener('mouseleave', () => btn.style.setProperty('background-color', 'transparent', 'important'));
                         });
+
+                        // Chèn icon SVG cho 2 nút
+                        if (btns.length >= 1 && !btns[0].querySelector('svg')) {
+                            btns[0].insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`);
+                        }
+                        if (btns.length >= 2 && !btns[1].querySelector('svg')) {
+                            btns[1].insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`);
+                        }
                     }
                 });
             }, 50);
@@ -266,7 +279,7 @@ def render_action_history():
 
             with st.container():
                 st.markdown("<span class='bulk-marker' style='display:none'></span>", unsafe_allow_html=True)
-                st.markdown(f"<div style='color:#4c1d95; font-weight:600; font-size:14px; margin:0; padding:0; display:flex; align-items:center;'><span style='font-size:16px; margin-right:4px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='background-color:#ffffff; color:#4c1d95; font-weight:bold; font-size:15px; width:36px; height:36px; border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0;'>{len(selected_ids)}</div>", unsafe_allow_html=True)
 
                 valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
                 if valid_logs:
