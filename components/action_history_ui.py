@@ -203,6 +203,7 @@ def render_action_history():
 
                     const wrapper = markerContainer.parentNode;
                     if (wrapper) {
+                        wrapper.classList.add('custom-toolbar-wrapper');
                         // Căn chỉnh dòng Text (xóa margin của thẻ p và div do Streamlit tạo ra)
                         const pTags = wrapper.querySelectorAll('p');
                         pTags.forEach(p => {
@@ -406,6 +407,30 @@ def render_action_history():
                         delete_action_log(lid)
                     st.session_state['selected_logs'] = {}
                     st.rerun()
+
+        else:
+            # CLEANUP SCRIPT: Khắc phục lỗi DOM Recycling của Streamlit.
+            # Khi bỏ chọn toàn bộ, Streamlit xóa thanh công cụ nhưng TÁI SỬ DỤNG (recycle) chính thẻ div đó 
+            # để vẽ History Card đầu tiên, khiến card bị biến dạng. Ta phải xóa sạch CSS rác!
+            import streamlit.components.v1 as components
+            components.html("""
+            <script>
+            setTimeout(() => {
+                const oldToolbars = window.parent.document.querySelectorAll('.custom-toolbar-wrapper');
+                oldToolbars.forEach(tb => {
+                    tb.classList.remove('custom-toolbar-wrapper');
+                    tb.removeAttribute('style'); // Xóa toàn bộ CSS Fixed, Width, Height...
+                    const badge = tb.querySelector('.selection-badge');
+                    if (badge) badge.remove();
+                    
+                    // Phục hồi lại con cái bên trong
+                    Array.from(tb.children).forEach(child => {
+                        child.removeAttribute('style');
+                    });
+                });
+            }, 50);
+            </script>
+            """, height=0, width=0)
 
         # 4. Render Logs
         for i, log in enumerate(paginated_logs):
