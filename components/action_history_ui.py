@@ -251,20 +251,25 @@ def render_action_history():
                         wrapper.style.setProperty('transform', 'translateY(-50%)', 'important');
                         wrapper.style.setProperty('z-index', '999999', 'important');
 
-                        // Tính toán lề trái (left) thông minh
-                        const mainContainer = window.parent.document.querySelector('div[data-testid="stAppViewBlockContainer"]');
-                        if (mainContainer) {
-                            const rect = mainContainer.getBoundingClientRect();
-                            // rect.left chính là mép phải của Sidebar (nếu có mở).
-                            // Nội dung chính có padding trái ~16px, thẻ timeline thụt vào thêm 40px -> Tổng khoảng trống là ~56px.
-                            // Đặt thanh công cụ (rộng 44px) ở vị trí rect.left + 10px sẽ lọt thỏm hoàn hảo vào khoảng trống này!
-                            let leftPos = rect.left + 10; 
-                            wrapper.style.setProperty('left', `${leftPos}px`, 'important');
-                            wrapper.style.removeProperty('right');
-                        } else {
-                            wrapper.style.setProperty('left', '10px', 'important');
-                            wrapper.style.removeProperty('right');
+                        // Tính toán lề trái (left) siêu chuẩn dựa trên khung trắng (white card)
+                        let leftPos = 10;
+                        const blockContainer = window.parent.document.querySelector('.block-container') || window.parent.document.querySelector('div[data-testid="stAppViewBlockContainer"]');
+                        const minLeft = blockContainer ? blockContainer.getBoundingClientRect().left + 5 : 5; // An toàn tuyệt đối không đè Sidebar
+
+                        if (wrapper && wrapper.parentElement) {
+                            // Lấy container cha chứa toàn bộ nội dung (chính là khung màu trắng)
+                            const whiteCard = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
+                            if (whiteCard) {
+                                // Đặt ở mép trái của white card (thụt ra ngoài 5px) để nằm gọn gàng bên lề
+                                leftPos = whiteCard.getBoundingClientRect().left - 5;
+                            }
                         }
+                        
+                        // Chốt chặn cuối cùng để không bao giờ lọt ra ngoài Sidebar
+                        if (leftPos < minLeft) leftPos = minLeft; 
+
+                        wrapper.style.setProperty('left', `${leftPos}px`, 'important');
+                        wrapper.style.removeProperty('right');
 
                         // Tạo huy hiệu số trực tiếp để không bị Streamlit bao bọc thẻ p
                         let badge = wrapper.querySelector('.selection-badge');
