@@ -354,7 +354,7 @@ def render_action_history():
                 with c_preview:
                     if not is_missing:
                         preview_key = f"preview_{log_id}"
-                        if st.button("👁️ " + t("XEM TRƯỚC", "プレビュー"), key=preview_key, use_container_width=True):
+                        if st.button(":material/visibility: " + t("XEM TRƯỚC", "プレビュー"), key=preview_key, use_container_width=True):
                             st.session_state[f'show_preview_{log_id}'] = not st.session_state.get(f'show_preview_{log_id}', False)
                             st.rerun()
                     else:
