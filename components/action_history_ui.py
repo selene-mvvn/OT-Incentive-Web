@@ -203,24 +203,35 @@ def render_action_history():
 
                     const wrapper = markerContainer.parentNode;
                     if (wrapper) {
-                        // Căn chỉnh dòng Text (xóa margin của thẻ p do Streamlit tạo ra)
+                        // Căn chỉnh dòng Text (xóa margin của thẻ p và div do Streamlit tạo ra)
                         const pTags = wrapper.querySelectorAll('p');
                         pTags.forEach(p => {
                             p.style.setProperty('margin', '0', 'important');
                             p.style.setProperty('padding', '0', 'important');
+                            p.style.setProperty('display', 'flex', 'important');
+                            p.style.setProperty('align-items', 'center', 'important');
+                            p.style.setProperty('justify-content', 'center', 'important');
+                            p.style.setProperty('height', '100%', 'important');
+                        });
+                        const mdDivs = wrapper.querySelectorAll('div[data-testid="stMarkdownContainer"]');
+                        mdDivs.forEach(div => {
+                            div.style.setProperty('display', 'flex', 'important');
+                            div.style.setProperty('align-items', 'center', 'important');
+                            div.style.setProperty('justify-content', 'center', 'important');
+                            div.style.setProperty('height', '100%', 'important');
                         });
 
                         // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
-                        wrapper.style.setProperty('background-color', '#ede9fe', 'important');
+                        wrapper.style.setProperty('background-color', '#e8f4fa', 'important');
                         wrapper.style.setProperty('border-radius', '50px', 'important');
-                        wrapper.style.setProperty('padding', '4px 8px', 'important');
+                        wrapper.style.setProperty('padding', '6px 8px', 'important');
                         wrapper.style.setProperty('margin-top', '-10px', 'important');
                         wrapper.style.setProperty('margin-bottom', '20px', 'important');
                         wrapper.style.setProperty('display', 'flex', 'important');
                         wrapper.style.setProperty('flex-direction', 'row', 'important');
                         wrapper.style.setProperty('justify-content', 'center', 'important');
                         wrapper.style.setProperty('align-items', 'center', 'important');
-                        wrapper.style.setProperty('gap', '4px', 'important');
+                        wrapper.style.setProperty('gap', '6px', 'important');
                         wrapper.style.setProperty('width', 'max-content', 'important');
                         wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.06)', 'important');
 
@@ -232,6 +243,8 @@ def render_action_history():
                                 child.style.setProperty('flex', '0 1 auto', 'important');
                                 child.style.setProperty('min-width', '0', 'important');
                                 child.style.setProperty('margin', '0', 'important');
+                                child.style.setProperty('display', 'flex', 'important');
+                                child.style.setProperty('align-items', 'center', 'important');
                             }
                         });
 
@@ -239,13 +252,13 @@ def render_action_history():
                         const btns = wrapper.querySelectorAll('button');
                         btns.forEach((btn, index) => {
                             btn.style.setProperty('background-color', 'transparent', 'important');
-                            btn.style.setProperty('color', '#4c1d95', 'important');
+                            btn.style.setProperty('color', '#0284c7', 'important');
                             btn.style.setProperty('border', 'none', 'important');
                             btn.style.setProperty('box-shadow', 'none', 'important');
                             btn.style.setProperty('border-radius', '50%', 'important');
-                            btn.style.setProperty('width', '36px', 'important');
-                            btn.style.setProperty('height', '36px', 'important');
-                            btn.style.setProperty('min-height', '36px', 'important');
+                            btn.style.setProperty('width', '32px', 'important');
+                            btn.style.setProperty('height', '32px', 'important');
+                            btn.style.setProperty('min-height', '32px', 'important');
                             btn.style.setProperty('padding', '0', 'important');
                             btn.style.setProperty('display', 'flex', 'important');
                             btn.style.setProperty('justify-content', 'center', 'important');
@@ -279,7 +292,7 @@ def render_action_history():
 
             with st.container():
                 st.markdown("<span class='bulk-marker' style='display:none'></span>", unsafe_allow_html=True)
-                st.markdown(f"<div style='background-color:#ffffff; color:#4c1d95; font-weight:bold; font-size:15px; width:36px; height:36px; border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0;'>{len(selected_ids)}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='background-color:#ffffff; color:#0284c7; font-weight:bold; font-size:14px; width:32px; height:32px; border-radius:50%; display:flex; justify-content:center; align-items:center; margin:0;'>{len(selected_ids)}</div>", unsafe_allow_html=True)
 
                 valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
                 if valid_logs:
