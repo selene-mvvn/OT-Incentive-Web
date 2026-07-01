@@ -341,7 +341,7 @@ def render_action_history():
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
 
             with st.container(border=True):
-                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 4.5, 2, 2, 1])
+                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1])
                 with c_chk:
                     st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
                     st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
