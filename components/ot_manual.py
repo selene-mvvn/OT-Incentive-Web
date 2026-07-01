@@ -228,81 +228,88 @@ def render_base_data():
             st.rerun()
             
     with tab2:
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
-        
-        guide_text = t(
-            "✨ **HƯỚNG DẪN:**<br>- **Thêm mới:** Bấm vào dấu **+** mờ mờ ở góc dưới cùng bên trái của bảng.<br>- **Chọn ngày/Sửa:** Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- **Xóa:** Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím **Delete** trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).",
-            "✨ **操作ガイド:**<br>- **新規追加:** 表の左下にある **+** ボタンを押してください。<br>- **日付選択・編集:** セルをダブルクリックして編集またはカレンダーから選択。<br>- **削除:** 左端のチェックボックスを選択し、**Delete**キーまたはゴミ箱アイコンで削除。"
-        )
-        st.caption(guide_text, unsafe_allow_html=True)
-        
-        current_df = st.session_state['ot_base_data'].get('holidays_df')
-        if current_df is None or not isinstance(current_df, pd.DataFrame):
-            current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
-        
-        # Ensure correct columns exist
-        if "Ngày nghỉ" not in current_df.columns or "Lý do" not in current_df.columns:
-            current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
-            
-        # Fix StreamlitAPIException: Ensure the column is a datetime64 dtype so Streamlit doesn't think it's a string
-        current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce")
-            
-        import datetime
-        # Extract year from selected period to make it dynamic
-        selected_year = datetime.datetime.now().year
-        
-        if st.button(t(f"Tự động điền Ngày Lễ VN {selected_year}", f"{selected_year}年ベトナム祝日を自動入力")):
-            # Standard Solar Holidays
-            solar_holidays = [
-                {"Ngày nghỉ": f"{selected_year}-01-01", "Lý do": "Tết Dương lịch"},
-                {"Ngày nghỉ": f"{selected_year}-04-30", "Lý do": "Giải phóng Miền Nam"},
-                {"Ngày nghỉ": f"{selected_year}-05-01", "Lý do": "Quốc tế Lao động"},
-                {"Ngày nghỉ": f"{selected_year}-09-02", "Lý do": "Lễ Quốc khánh"}
-            ]
-            
-            # Mapping of Lunar Holidays (Tết + Giỗ Tổ) for 2025-2028
-            lunar_map = {
-                2025: [("2025-01-27", "Nghỉ Tết Nguyên Đán"), ("2025-01-28", "Nghỉ Tết Nguyên Đán"), ("2025-01-29", "Nghỉ Tết Nguyên Đán"), ("2025-01-30", "Nghỉ Tết Nguyên Đán"), ("2025-01-31", "Nghỉ Tết Nguyên Đán"), ("2025-04-07", "Giỗ Tổ Hùng Vương")],
-                2026: [("2026-02-16", "Nghỉ Tết Nguyên Đán"), ("2026-02-17", "Nghỉ Tết Nguyên Đán"), ("2026-02-18", "Nghỉ Tết Nguyên Đán"), ("2026-02-19", "Nghỉ Tết Nguyên Đán"), ("2026-02-20", "Nghỉ Tết Nguyên Đán"), ("2026-04-26", "Giỗ Tổ Hùng Vương")],
-                2027: [("2027-02-05", "Nghỉ Tết Nguyên Đán"), ("2027-02-08", "Nghỉ Tết Nguyên Đán"), ("2027-02-09", "Nghỉ Tết Nguyên Đán"), ("2027-02-10", "Nghỉ Tết Nguyên Đán"), ("2027-02-11", "Nghỉ Tết Nguyên Đán"), ("2027-04-16", "Giỗ Tổ Hùng Vương")],
-                2028: [("2028-01-25", "Nghỉ Tết Nguyên Đán"), ("2028-01-26", "Nghỉ Tết Nguyên Đán"), ("2028-01-27", "Nghỉ Tết Nguyên Đán"), ("2028-01-28", "Nghỉ Tết Nguyên Đán"), ("2028-01-31", "Nghỉ Tết Nguyên Đán"), ("2028-04-04", "Giỗ Tổ Hùng Vương")]
-            }
-            
-            holidays_data = solar_holidays
-            if selected_year in lunar_map:
-                for date_str, reason in lunar_map[selected_year]:
-                    holidays_data.append({"Ngày nghỉ": date_str, "Lý do": reason})
-            else:
-                st.warning(t(f"Lưu ý: Hệ thống chỉ có sẵn dữ liệu Dương lịch cho năm {selected_year}, các ngày Lễ Âm lịch (Tết, Giỗ tổ) bạn vui lòng bổ sung thêm thủ công nhé.", f"注意：{selected_year}年の太陽暦の祝日のみ自動入力されました。旧正月などは手動で追加してください。"))
-            
-            vn_holidays = pd.DataFrame(holidays_data)
-            vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"])
-            combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="first").reset_index(drop=True)
-            st.session_state['ot_base_data']['holidays_df'] = combined
-            if "holidays_editor" in st.session_state:
-                del st.session_state["holidays_editor"]
-            st.rerun()
-            
-        holidays_df = st.data_editor(
-            current_df,
-            num_rows="dynamic",
-            column_order=["Ngày nghỉ", "Lý do"],
-            column_config={
-                "Ngày nghỉ": st.column_config.DatetimeColumn(t("Ngày nghỉ (Chọn lịch)", "休日 (カレンダー選択)"), format="YYYY-MM-DD", required=True),
-                "Lý do": st.column_config.TextColumn(t("Lý do / Tên ngày lễ", "理由・祭日名"), required=True)
-            },
-            use_container_width=True,
-            key="holidays_editor"
-        )
-        
-        if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
-            st.session_state['ot_base_data']['holidays_df'] = holidays_df
-            save_base_data(st.session_state['ot_base_data'])
-            st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon=":material/check_circle:")
-            import time
-            time.sleep(0.5)
-            st.rerun()
+        c1, c2 = st.columns([1.2, 1], gap="large")
+        with c1:
+            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
 
+            guide_text = t(
+                "✨ **HƯỚNG DẪN:**<br>- **Thêm mới:** Bấm vào dấu **+** mờ mờ ở góc dưới cùng bên trái của bảng.<br>- **Chọn ngày/Sửa:** Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- **Xóa:** Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím **Delete** trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).",
+                "✨ **操作ガイド:**<br>- **新規追加:** 表の左下にある **+** ボタンを押してください。<br>- **日付選択・編集:** セルをダブルクリックして編集またはカレンダーから選択。<br>- **削除:** 左端のチェックボックスを選択し、**Delete**キーまたはゴミ箱アイコンで削除。"
+            )
+            st.caption(guide_text, unsafe_allow_html=True)
+
+            current_df = st.session_state['ot_base_data'].get('holidays_df')
+            if current_df is None or not isinstance(current_df, pd.DataFrame):
+                current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
+
+            # Ensure correct columns exist
+            if "Ngày nghỉ" not in current_df.columns or "Lý do" not in current_df.columns:
+                current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
+
+            # Fix StreamlitAPIException: Ensure the column is a datetime64 dtype so Streamlit doesn't think it's a string
+            current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce")
+
+            import datetime
+            # Extract year from selected period to make it dynamic
+            selected_year = datetime.datetime.now().year
+
+            if st.button(t(f"Tự động điền Ngày Lễ VN {selected_year}", f"{selected_year}年ベトナム祝日を自動入力")):
+                # Standard Solar Holidays
+                solar_holidays = [
+                    {"Ngày nghỉ": f"{selected_year}-01-01", "Lý do": "Tết Dương lịch"},
+                    {"Ngày nghỉ": f"{selected_year}-04-30", "Lý do": "Giải phóng Miền Nam"},
+                    {"Ngày nghỉ": f"{selected_year}-05-01", "Lý do": "Quốc tế Lao động"},
+                    {"Ngày nghỉ": f"{selected_year}-09-02", "Lý do": "Lễ Quốc khánh"}
+                ]
+
+                # Mapping of Lunar Holidays (Tết + Giỗ Tổ) for 2025-2028
+                lunar_map = {
+                    2025: [("2025-01-27", "Nghỉ Tết Nguyên Đán"), ("2025-01-28", "Nghỉ Tết Nguyên Đán"), ("2025-01-29", "Nghỉ Tết Nguyên Đán"), ("2025-01-30", "Nghỉ Tết Nguyên Đán"), ("2025-01-31", "Nghỉ Tết Nguyên Đán"), ("2025-04-07", "Giỗ Tổ Hùng Vương")],
+                    2026: [("2026-02-16", "Nghỉ Tết Nguyên Đán"), ("2026-02-17", "Nghỉ Tết Nguyên Đán"), ("2026-02-18", "Nghỉ Tết Nguyên Đán"), ("2026-02-19", "Nghỉ Tết Nguyên Đán"), ("2026-02-20", "Nghỉ Tết Nguyên Đán"), ("2026-04-26", "Giỗ Tổ Hùng Vương")],
+                    2027: [("2027-02-05", "Nghỉ Tết Nguyên Đán"), ("2027-02-08", "Nghỉ Tết Nguyên Đán"), ("2027-02-09", "Nghỉ Tết Nguyên Đán"), ("2027-02-10", "Nghỉ Tết Nguyên Đán"), ("2027-02-11", "Nghỉ Tết Nguyên Đán"), ("2027-04-16", "Giỗ Tổ Hùng Vương")],
+                    2028: [("2028-01-25", "Nghỉ Tết Nguyên Đán"), ("2028-01-26", "Nghỉ Tết Nguyên Đán"), ("2028-01-27", "Nghỉ Tết Nguyên Đán"), ("2028-01-28", "Nghỉ Tết Nguyên Đán"), ("2028-01-31", "Nghỉ Tết Nguyên Đán"), ("2028-04-04", "Giỗ Tổ Hùng Vương")]
+                }
+
+                holidays_data = solar_holidays
+                if selected_year in lunar_map:
+                    for date_str, reason in lunar_map[selected_year]:
+                        holidays_data.append({"Ngày nghỉ": date_str, "Lý do": reason})
+                else:
+                    st.warning(t(f"Lưu ý: Hệ thống chỉ có sẵn dữ liệu Dương lịch cho năm {selected_year}, các ngày Lễ Âm lịch (Tết, Giỗ tổ) bạn vui lòng bổ sung thêm thủ công nhé.", f"注意：{selected_year}年の太陽暦の祝日のみ自動入力されました。旧正月などは手動で追加してください。"))
+
+                vn_holidays = pd.DataFrame(holidays_data)
+                vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"])
+                combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="first").reset_index(drop=True)
+                st.session_state['ot_base_data']['holidays_df'] = combined
+                if "holidays_editor" in st.session_state:
+                    del st.session_state["holidays_editor"]
+                st.rerun()
+
+            holidays_df = st.data_editor(
+                current_df,
+                num_rows="dynamic",
+                column_order=["Ngày nghỉ", "Lý do"],
+                column_config={
+                    "Ngày nghỉ": st.column_config.DatetimeColumn(t("Ngày nghỉ (Chọn lịch)", "休日 (カレンダー選択)"), format="YYYY-MM-DD", required=True),
+                    "Lý do": st.column_config.TextColumn(t("Lý do / Tên ngày lễ", "理由・祭日名"), required=True)
+                },
+                use_container_width=True,
+                key="holidays_editor"
+            )
+
+            if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
+                st.session_state['ot_base_data']['holidays_df'] = holidays_df
+                save_base_data(st.session_state['ot_base_data'])
+                st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon=":material/check_circle:")
+                import time
+                time.sleep(0.5)
+                st.rerun()
+
+        with c2:
+            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('LỊCH ONLINE', 'オンラインカレンダー')}</h3>", unsafe_allow_html=True)
+            st.caption(t("Xem lịch để đối chiếu ngày tháng (Lịch Lễ VN)", "日付を確認するためのカレンダー（ベトナムの祝日）"))
+            import streamlit.components.v1 as components
+            components.iframe("https://calendar.google.com/calendar/embed?height=500&wkst=2&bgcolor=%23ffffff&ctz=Asia%2FHo_Chi_Minh&showTitle=0&showPrint=0&showTabs=1&showCalendars=0&showTz=0&src=dmkudmlldG5hbWVzZSNob2xpZGF5QGdyb3VwLnYuY2FsZW5kYXIuZ29vZ2xlLmNvbQ&color=%230B8043", height=550, scrolling=True)
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
     with col_rank:
