@@ -99,7 +99,7 @@ def render_base_data():
     tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG & NHÂN SỰ", "1. 一般情報・スタッフ"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
 
     with tab1:
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN CHUNG', '一般情報')}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN CHUNG', '一般情報')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
     
         c1, c2, c3 = st.columns(3)
         with c1:
@@ -131,7 +131,7 @@ def render_base_data():
             std_days_mo = st.number_input(t("SỐ NGÀY LÀM VIỆC CHUẨN / THÁNG", "月の標準労働日数"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_days', 22.0)), step=0.5)
 
         st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ', 'スタッフ情報')}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ', 'スタッフ情報')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
         from logic.employee_data import get_employees_df, save_employees_df
         emp_df = get_employees_df()
         if "Ngày vào làm" in emp_df.columns:
