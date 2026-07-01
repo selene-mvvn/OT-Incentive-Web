@@ -71,7 +71,6 @@ def render_base_data():
 
         def make_card(icon, title, value):
             return f"""
-            <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
             <style>
                 .card-icon-override {{ color: #ffffff !important; font-size: 32px !important; margin-bottom: 10px; display: block; }}
             </style>
