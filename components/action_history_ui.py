@@ -245,7 +245,8 @@ def render_action_history():
                         wrapper.style.setProperty('width', '44px', 'important');
                         wrapper.style.setProperty('height', 'max-content', 'important'); // Khóa cứng chiều ngang, linh hoạt chiều cao
                         wrapper.style.setProperty('box-sizing', 'border-box', 'important');
-                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.08)', 'important');
+                        wrapper.style.setProperty('border', '1px solid rgba(0, 176, 240, 0.2)', 'important'); // Dùng viền sắc nét thay vì đổ bóng mờ
+                        wrapper.style.setProperty('box-shadow', 'none', 'important');
                         wrapper.style.setProperty('position', 'fixed', 'important');
                         wrapper.style.setProperty('top', '50%', 'important');
                         wrapper.style.setProperty('transform', 'translateY(-50%)', 'important');
@@ -302,25 +303,33 @@ def render_action_history():
                         const children = Array.from(wrapper.children);
                         children.forEach(child => {
                             if (child.classList.contains('element-container')) {
-                                child.style.setProperty('width', 'auto', 'important');
-                                child.style.setProperty('flex', '0 1 auto', 'important');
-                                child.style.setProperty('min-width', '0', 'important');
-                                child.style.setProperty('margin', '0', 'important');
-                                child.style.setProperty('padding', '0', 'important');
-                                child.style.setProperty('display', 'flex', 'important');
-                                child.style.setProperty('align-items', 'center', 'important');
-                                child.style.setProperty('justify-content', 'center', 'important');
-                                child.style.setProperty('height', '32px', 'important');
-
-                                // Chống lệch từ Streamlit Button Wrapper
-                                const stBtn = child.querySelector('div.stButton, div[data-testid="stButton"]');
-                                if (stBtn) {
-                                    stBtn.style.setProperty('margin', '0', 'important');
-                                    stBtn.style.setProperty('padding', '0', 'important');
-                                    stBtn.style.setProperty('height', '32px', 'important');
-                                    stBtn.style.setProperty('display', 'flex', 'important');
-                                    stBtn.style.setProperty('align-items', 'center', 'important');
-                                    stBtn.style.setProperty('justify-content', 'center', 'important');
+                                if (child.querySelector('button') || child.querySelector('div[data-testid="stButton"]')) {
+                                    child.style.setProperty('width', 'auto', 'important');
+                                    child.style.setProperty('flex', '0 1 auto', 'important');
+                                    child.style.setProperty('min-width', '0', 'important');
+                                    child.style.setProperty('margin', '0', 'important');
+                                    child.style.setProperty('padding', '0', 'important');
+                                    child.style.setProperty('display', 'flex', 'important');
+                                    child.style.setProperty('align-items', 'center', 'important');
+                                    child.style.setProperty('justify-content', 'center', 'important');
+                                    child.style.setProperty('height', '32px', 'important');
+    
+                                    // Chống lệch từ Streamlit Button Wrapper
+                                    const stBtn = child.querySelector('div.stButton, div[data-testid="stButton"]');
+                                    if (stBtn) {
+                                        stBtn.style.setProperty('margin', '0', 'important');
+                                        stBtn.style.setProperty('padding', '0', 'important');
+                                        stBtn.style.setProperty('height', '32px', 'important');
+                                        stBtn.style.setProperty('display', 'flex', 'important');
+                                        stBtn.style.setProperty('align-items', 'center', 'important');
+                                        stBtn.style.setProperty('justify-content', 'center', 'important');
+                                    }
+                                } else {
+                                    // Nếu là container trống do Streamlit sinh ra (chứa iframe, chứa thẻ span ẩn) thì ẨN HOÀN TOÀN
+                                    child.style.setProperty('display', 'none', 'important');
+                                    child.style.setProperty('height', '0px', 'important');
+                                    child.style.setProperty('margin', '0px', 'important');
+                                    child.style.setProperty('padding', '0px', 'important');
                                 }
                             }
                         });
