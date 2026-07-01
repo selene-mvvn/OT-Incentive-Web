@@ -159,13 +159,15 @@ def render_ot_excel():
                     with m_col4:
                         sel_lydo = st.selectbox(t("Cột Lý do OT", "理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
                         
-                    m_col5, m_col6, m_col7 = st.columns(3)
+                    m_col5, m_col6, m_col7, m_col8 = st.columns(4)
                     with m_col5:
                         sel_loai_da = st.selectbox(t("Cột Loại dự án", "プロジェクトタイプ列"), col_opts, index=get_idx(col_map_auto["loai_da"]))
                     with m_col6:
                         sel_ma_dh = st.selectbox(t("Cột Mã đơn hàng", "注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh"]))
                     with m_col7:
                         sel_ma_dh_kh = st.selectbox(t("Cột Mã đơn hàng khách", "顧客注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh_kh"]))
+                    with m_col8:
+                        sel_quan_ly = st.selectbox(t("Cột Người quản lý", "管理者列"), col_opts, index=get_idx(col_map_auto["quan_ly"]))
             
                 st.markdown("<hr style='margin: 10px 0 5px 0;'>", unsafe_allow_html=True)
                 st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 5px;'>{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>", unsafe_allow_html=True)
@@ -181,6 +183,7 @@ def render_ot_excel():
                         col_map["loai_da"] = sel_loai_da if sel_loai_da != "--- Bỏ qua ---" else None
                         col_map["ma_dh"] = sel_ma_dh if sel_ma_dh != "--- Bỏ qua ---" else None
                         col_map["ma_dh_kh"] = sel_ma_dh_kh if sel_ma_dh_kh != "--- Bỏ qua ---" else None
+                        col_map["quan_ly"] = sel_quan_ly if sel_quan_ly != "--- Bỏ qua ---" else None
                     else:
                         # In auto mode, we also show the result of mapping
                         st.success(t(
