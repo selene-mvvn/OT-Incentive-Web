@@ -104,7 +104,7 @@ def render_base_data():
         import plotly.graph_objects as go
         import datetime
         import pandas as pd
-        from logic.i18n import t
+
         
         emp_df = get_employees_df()
         if "Ngày vào làm" in emp_df.columns:
