@@ -69,7 +69,7 @@ def render_base_data():
     def make_card(icon, title, value):
         return f"""
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
-        <div style="background-color: transparent; padding: 10px; margin-bottom: 20px; text-align: center;">
+        <div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; text-align: center;">
             <div style="color: #64748b; font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.5px;">
                 <span class='material-symbols-rounded' style='font-family: "Material Symbols Rounded", sans-serif !important; color: #00B0F0; margin-right: 8px; font-size: 20px; text-transform: none;'>{icon}</span> {title}
             </div>
