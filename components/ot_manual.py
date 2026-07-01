@@ -334,8 +334,8 @@ def render_base_data():
             .holiday-event {{ background: #10b981; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
             .other-month {{ background: #f1f5f9 !important; color: #94a3b8 !important; }}
             .other-month .day-number {{ color: #94a3b8 !important; }}
-            .today {{ background: #eff6ff !important; }}
-            .today .day-number {{ color: #2563eb; font-weight: bold; }}
+            .today {{ background: #f0f9ff !important; }}
+            .today .day-number {{ background: #00B0F0; color: white !important; font-weight: bold; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; display: inline-block; float: right; box-shadow: 0 2px 4px rgba(0, 176, 240, 0.4); margin-bottom: 4px; }}
             </style>
 
             <div class="calendar-container">
