@@ -241,8 +241,28 @@ def render_base_data():
                 st.rerun()
 
         with col_right:
-            with st.container(border=True):
-                st.markdown(f"<h4 style='margin-top: 0; margin-bottom: 15px; color: #1e293b; font-size: 15px;'>{t('📊 THỐNG KÊ THỜI GIAN LÀM VIỆC', '📊 労働時間統計')}</h4>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
+            with st.container():
+                from components.ui_utils import make_container_white
+                make_container_white()
+                
+                st.markdown(f"""
+                    <style>
+                    @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0');
+                    </style>
+                    <div style='
+                        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                        border-radius: 8px;
+                        border-top: 4px solid #00B0F0;
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        text-align: center; color: #2c3e50; font-size: 15px; font-weight: bold; text-transform: uppercase;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                    '>
+                        <span class="material-symbols-rounded" style="vertical-align: middle; color: #00B0F0; margin-right: 5px; font-size: 20px;">query_stats</span>
+                        <span style="vertical-align: middle;">{t('THỐNG KÊ THỜI GIAN', '労働時間統計')}</span>
+                    </div>
+                """, unsafe_allow_html=True)
 
                 std_hours_val = float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0))
                 std_hrs = st.number_input(t("Số giờ chuẩn/ngày:", "1日の標準労働時間:"), min_value=1.0, max_value=24.0, value=std_hours_val, step=0.5, key="std_hours_input")
