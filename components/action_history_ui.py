@@ -193,193 +193,134 @@ def render_action_history():
             components.html("""
             <script>
             setTimeout(() => {
-                const markers = window.parent.document.querySelectorAll('.bulk-marker');
+                const parentDoc = window.parent.document;
+                
+                // 1. Inject Global CSS if not exists
+                if (!parentDoc.getElementById('custom-toolbar-style')) {
+                    const style = parentDoc.createElement('style');
+                    style.id = 'custom-toolbar-style';
+                    style.innerHTML = `
+                        .custom-toolbar-wrapper {
+                            border-radius: 50px !important;
+                            padding: 10px 6px !important;
+                            margin: 0 !important;
+                            display: flex !important;
+                            flex-direction: column !important;
+                            justify-content: center !important;
+                            align-items: center !important;
+                            gap: 10px !important;
+                            width: 44px !important;
+                            height: max-content !important;
+                            box-sizing: border-box !important;
+                            border: 1px solid rgba(0, 176, 240, 0.2) !important;
+                            box-shadow: none !important;
+                            position: fixed !important;
+                            top: 50% !important;
+                            transform: translateY(-50%) !important;
+                            z-index: 999999 !important;
+                        }
+                        .custom-toolbar-wrapper p,
+                        .custom-toolbar-wrapper div[data-testid="stMarkdownContainer"] {
+                            margin: 0 !important; padding: 0 !important;
+                            display: flex !important; align-items: center !important; justify-content: center !important;
+                            height: 100% !important;
+                        }
+                        .custom-toolbar-wrapper button {
+                            background-color: transparent !important; color: #0284c7 !important;
+                            border: none !important; box-shadow: none !important; border-radius: 50% !important;
+                            width: 32px !important; height: 32px !important; min-height: 32px !important;
+                            margin: 0 !important; padding: 0 !important;
+                            display: flex !important; justify-content: center !important; align-items: center !important;
+                            transition: all 0.2s !important;
+                        }
+                        .custom-toolbar-wrapper button:hover { background-color: #ffffff !important; }
+                        .custom-toolbar-wrapper button p,
+                        .custom-toolbar-wrapper button span,
+                        .custom-toolbar-wrapper button div { display: none !important; }
+                        .custom-toolbar-wrapper .toolbar-btn-container {
+                            width: auto !important; flex: 0 1 auto !important; min-width: 0 !important;
+                            margin: 0 !important; padding: 0 !important;
+                            display: flex !important; align-items: center !important; justify-content: center !important;
+                            height: 32px !important;
+                        }
+                        .custom-toolbar-wrapper .toolbar-hidden-container {
+                            display: none !important; height: 0 !important; margin: 0 !important; padding: 0 !important;
+                        }
+                        .custom-toolbar-wrapper div.stButton,
+                        .custom-toolbar-wrapper div[data-testid="stButton"] {
+                            margin: 0 !important; padding: 0 !important; height: 32px !important;
+                            display: flex !important; align-items: center !important; justify-content: center !important;
+                        }
+                    `;
+                    parentDoc.head.appendChild(style);
+                }
+
+                // 2. Setup toolbar
+                const markers = parentDoc.querySelectorAll('.bulk-marker');
                 markers.forEach(marker => {
                     const markerContainer = marker.closest('div.element-container');
                     if (!markerContainer) return;
-
-                    // Xóa trắng khoảng trống của marker
+                    
                     markerContainer.style.display = 'none';
-
                     const wrapper = markerContainer.parentNode;
+                    
                     if (wrapper) {
                         wrapper.classList.add('custom-toolbar-wrapper');
-                        // Căn chỉnh dòng Text (xóa margin của thẻ p và div do Streamlit tạo ra)
-                        const pTags = wrapper.querySelectorAll('p');
-                        pTags.forEach(p => {
-                            p.style.setProperty('margin', '0', 'important');
-                            p.style.setProperty('padding', '0', 'important');
-                            p.style.setProperty('display', 'flex', 'important');
-                            p.style.setProperty('align-items', 'center', 'important');
-                            p.style.setProperty('justify-content', 'center', 'important');
-                            p.style.setProperty('height', '100%', 'important');
-                        });
-                        const mdDivs = wrapper.querySelectorAll('div[data-testid="stMarkdownContainer"]');
-                        mdDivs.forEach(div => {
-                            div.style.setProperty('display', 'flex', 'important');
-                            div.style.setProperty('align-items', 'center', 'important');
-                            div.style.setProperty('justify-content', 'center', 'important');
-                            div.style.setProperty('height', '100%', 'important');
-                        });
-
-                        // Trích xuất mã màu trực tiếp từ hộp st.info (lấy màu của lớp con vì lớp cha thường trong suốt)
-                        let infoBg = 'rgba(0, 176, 240, 0.15)'; // Fallback màu xanh nhạt chắc chắn nhìn thấy được
-                        const stAlertChild = window.parent.document.querySelector('[data-testid="stAlert"] > div');
+                        
+                        let infoBg = 'rgba(0, 176, 240, 0.15)';
+                        const stAlertChild = parentDoc.querySelector('[data-testid="stAlert"] > div');
                         if (stAlertChild) {
                             const bg = window.parent.getComputedStyle(stAlertChild).backgroundColor;
-                            if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
-                                infoBg = bg;
-                            }
-                        }
-
-                        // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
-                        const count = marker.getAttribute('data-count') || '0';
-                        if (!wrapper.hasAttribute('data-original-style')) {
-                            wrapper.setAttribute('data-original-style', wrapper.style.cssText || '');
+                            if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') infoBg = bg;
                         }
                         wrapper.style.setProperty('background-color', infoBg, 'important');
-                        wrapper.style.setProperty('border-radius', '50px', 'important');
-                        wrapper.style.setProperty('padding', '10px 6px', 'important');
-                        wrapper.style.setProperty('margin', '0', 'important');
-                        wrapper.style.setProperty('display', 'flex', 'important');
-                        wrapper.style.setProperty('flex-direction', 'column', 'important');
-                        wrapper.style.setProperty('justify-content', 'center', 'important');
-                        wrapper.style.setProperty('align-items', 'center', 'important');
-                        wrapper.style.setProperty('gap', '10px', 'important');
-                        wrapper.style.setProperty('width', '44px', 'important');
-                        wrapper.style.setProperty('height', 'max-content', 'important'); // Khóa cứng chiều ngang, linh hoạt chiều cao
-                        wrapper.style.setProperty('box-sizing', 'border-box', 'important');
-                        wrapper.style.setProperty('border', '1px solid rgba(0, 176, 240, 0.2)', 'important'); // Dùng viền sắc nét thay vì đổ bóng mờ
-                        wrapper.style.setProperty('box-shadow', 'none', 'important');
-                        wrapper.style.setProperty('position', 'fixed', 'important');
-                        wrapper.style.setProperty('top', '50%', 'important');
-                        wrapper.style.setProperty('transform', 'translateY(-50%)', 'important');
-                        wrapper.style.setProperty('z-index', '999999', 'important');
-
-                        // Tính toán lề trái (left) linh hoạt: Nằm giữa khoảng trống màu xám hoặc bám sát lề khung trắng
+                        
                         let leftPos = 10;
-                        const blockContainer = window.parent.document.querySelector('.block-container') || window.parent.document.querySelector('div[data-testid="stAppViewBlockContainer"]');
+                        const blockContainer = parentDoc.querySelector('.block-container') || parentDoc.querySelector('div[data-testid="stAppViewBlockContainer"]');
                         const sidebarEdge = blockContainer ? blockContainer.getBoundingClientRect().left : 0; 
-
-                        if (wrapper && wrapper.parentElement) {
-                            const whiteCard = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
-                            if (whiteCard) {
-                                const whiteCardEdge = whiteCard.getBoundingClientRect().left;
-                                // Mặc định: Đặt cách khung trắng 12px (chiều rộng thanh 44px -> cần lùi 56px từ mép khung trắng)
-                                leftPos = whiteCardEdge - 56;
-                                
-                                // Nếu khoảng xám quá hẹp (không đủ 56px), thì tự động căn giữa chính xác vào khoảng xám đó
-                                if (leftPos < sidebarEdge + 5) {
-                                    leftPos = sidebarEdge + (whiteCardEdge - sidebarEdge) / 2 - 22;
-                                }
+                        const whiteCard = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
+                        if (whiteCard) {
+                            const whiteCardEdge = whiteCard.getBoundingClientRect().left;
+                            leftPos = whiteCardEdge - 56;
+                            if (leftPos < sidebarEdge + 5) {
+                                leftPos = sidebarEdge + (whiteCardEdge - sidebarEdge) / 2 - 22;
                             }
                         }
-                        
-                        // Chốt chặn an toàn tuyệt đối: Không lấn vào sidebar
                         if (leftPos < sidebarEdge + 2) leftPos = sidebarEdge + 2; 
-
                         wrapper.style.setProperty('left', `${leftPos}px`, 'important');
-                        wrapper.style.removeProperty('right');
 
-                        // Tạo huy hiệu số trực tiếp để không bị Streamlit bao bọc thẻ p
+                        const count = marker.getAttribute('data-count') || '0';
                         let badge = wrapper.querySelector('.selection-badge');
                         if (!badge) {
-                            badge = window.parent.document.createElement('div');
+                            badge = parentDoc.createElement('div');
                             badge.className = 'selection-badge';
+                            badge.style.cssText = 'background-color: #ffffff !important; color: #0284c7 !important; font-weight: bold !important; font-size: 14px !important; width: 32px !important; height: 32px !important; border-radius: 50% !important; display: flex !important; justify-content: center !important; align-items: center !important; box-shadow: 0 2px 5px rgba(0,0,0,0.05) !important; flex-shrink: 0 !important; margin: 0 !important;';
                             wrapper.insertBefore(badge, wrapper.firstChild);
                         }
                         badge.innerText = count;
-                        badge.style.setProperty('background-color', '#ffffff', 'important');
-                        badge.style.setProperty('color', '#0284c7', 'important');
-                        badge.style.setProperty('font-weight', 'bold', 'important');
-                        badge.style.setProperty('font-size', '14px', 'important');
-                        badge.style.setProperty('width', '32px', 'important');
-                        badge.style.setProperty('height', '32px', 'important');
-                        badge.style.setProperty('border-radius', '50%', 'important');
-                        badge.style.setProperty('display', 'flex', 'important');
-                        badge.style.setProperty('justify-content', 'center', 'important');
-                        badge.style.setProperty('align-items', 'center', 'important');
-                        badge.style.setProperty('box-shadow', '0 2px 5px rgba(0,0,0,0.05)', 'important');
-                        badge.style.setProperty('flex-shrink', '0', 'important');
-                        badge.style.setProperty('margin', '0', 'important'); // Chống mọi margin
 
-                        // Co gọn các thành phần bên trong (div.element-container)
                         const children = Array.from(wrapper.children);
                         children.forEach(child => {
                             if (child.classList.contains('element-container')) {
-                                if (!child.hasAttribute('data-original-style')) {
-                                    child.setAttribute('data-original-style', child.style.cssText || '');
-                                }
                                 if (child.querySelector('button') || child.querySelector('div[data-testid="stButton"]')) {
-                                    child.style.setProperty('width', 'auto', 'important');
-                                    child.style.setProperty('flex', '0 1 auto', 'important');
-                                    child.style.setProperty('min-width', '0', 'important');
-                                    child.style.setProperty('margin', '0', 'important');
-                                    child.style.setProperty('padding', '0', 'important');
-                                    child.style.setProperty('display', 'flex', 'important');
-                                    child.style.setProperty('align-items', 'center', 'important');
-                                    child.style.setProperty('justify-content', 'center', 'important');
-                                    child.style.setProperty('height', '32px', 'important');
-    
-                                    // Chống lệch từ Streamlit Button Wrapper
-                                    const stBtn = child.querySelector('div.stButton, div[data-testid="stButton"]');
-                                    if (stBtn) {
-                                        if (!stBtn.hasAttribute('data-original-style')) {
-                                            stBtn.setAttribute('data-original-style', stBtn.style.cssText || '');
-                                        }
-                                        stBtn.style.setProperty('margin', '0', 'important');
-                                        stBtn.style.setProperty('padding', '0', 'important');
-                                        stBtn.style.setProperty('height', '32px', 'important');
-                                        stBtn.style.setProperty('display', 'flex', 'important');
-                                        stBtn.style.setProperty('align-items', 'center', 'important');
-                                        stBtn.style.setProperty('justify-content', 'center', 'important');
-                                    }
+                                    child.classList.add('toolbar-btn-container');
                                 } else {
-                                    // Nếu là container trống do Streamlit sinh ra (chứa iframe, chứa thẻ span ẩn) thì ẨN HOÀN TOÀN
-                                    child.style.setProperty('display', 'none', 'important');
-                                    child.style.setProperty('height', '0px', 'important');
-                                    child.style.setProperty('margin', '0px', 'important');
-                                    child.style.setProperty('padding', '0px', 'important');
+                                    child.classList.add('toolbar-hidden-container');
                                 }
                             }
                         });
 
-                        // Định dạng nút bấm (Thiết kế dạng icon tròn)
                         const btns = wrapper.querySelectorAll('button');
-                        btns.forEach((btn, index) => {
-                            btn.style.setProperty('background-color', 'transparent', 'important');
-                            btn.style.setProperty('color', '#0284c7', 'important');
-                            btn.style.setProperty('border', 'none', 'important');
-                            btn.style.setProperty('box-shadow', 'none', 'important');
-                            btn.style.setProperty('border-radius', '50%', 'important');
-                            btn.style.setProperty('width', '32px', 'important');
-                            btn.style.setProperty('height', '32px', 'important');
-                            btn.style.setProperty('min-height', '32px', 'important');
-                            btn.style.setProperty('margin', '0', 'important'); // Tuyệt đối không margin
-                            btn.style.setProperty('padding', '0', 'important');
-                            btn.style.setProperty('display', 'flex', 'important');
-                            btn.style.setProperty('justify-content', 'center', 'important');
-                            btn.style.setProperty('align-items', 'center', 'important');
-                            btn.style.setProperty('transition', 'all 0.2s', 'important');
-
-                            // Ẩn chữ mặc định
-                            const textElements = btn.querySelectorAll('p, span, div');
-                            textElements.forEach(el => {
-                                if (el.tagName !== 'svg' && el.tagName !== 'path' && el.tagName !== 'polyline' && el.tagName !== 'line') {
-                                    el.style.setProperty('display', 'none', 'important');
-                                }
-                            });
-
-                            btn.addEventListener('mouseenter', () => btn.style.setProperty('background-color', '#ffffff', 'important'));
-                            btn.addEventListener('mouseleave', () => btn.style.setProperty('background-color', 'transparent', 'important'));
-                        });
-
-                        // Chèn icon SVG cho 2 nút
                         if (btns.length >= 1 && !btns[0].querySelector('svg')) {
                             btns[0].insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`);
                         }
                         if (btns.length >= 2 && !btns[1].querySelector('svg')) {
                             btns[1].insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`);
+                        }
+                        
+                        if (window.frameElement) {
+                            window.frameElement.style.display = 'none';
+                            if (window.frameElement.parentElement) window.frameElement.parentElement.style.display = 'none';
                         }
                     }
                 });
@@ -418,47 +359,27 @@ def render_action_history():
                     st.rerun()
 
         else:
-            # CLEANUP SCRIPT: Khắc phục lỗi DOM Recycling của Streamlit.
-            # Khi bỏ chọn toàn bộ, Streamlit xóa thanh công cụ nhưng TÁI SỬ DỤNG (recycle) chính thẻ div đó 
-            # để vẽ History Card đầu tiên, khiến card bị biến dạng. Ta phải KHÔI PHỤC CSS gốc!
+            # CLEANUP SCRIPT: Sử dụng CSS Class an toàn.
+            # Thay vì thao tác trực tiếp lên inline styles (điều gây ra xung đột với Streamlit),
+            # ta chỉ việc xóa bỏ class `.custom-toolbar-wrapper`, mọi CSS !important sẽ tự biến mất!
             import streamlit.components.v1 as components
             components.html("""
             <script>
             setTimeout(() => {
                 const oldToolbars = window.parent.document.querySelectorAll('.custom-toolbar-wrapper');
                 oldToolbars.forEach(tb => {
+                    // Xóa class để ngắt toàn bộ CSS !important của Global Stylesheet!
                     tb.classList.remove('custom-toolbar-wrapper');
-                    const origStyle = tb.getAttribute('data-original-style');
-                    if (origStyle !== null) {
-                        tb.style.cssText = origStyle;
-                        tb.removeAttribute('data-original-style');
-                    } else {
-                        tb.removeAttribute('style');
-                    }
+                    
+                    // Xóa các thuộc tính inline duy nhất ta đã thêm (left, background)
+                    tb.style.removeProperty('left');
+                    tb.style.removeProperty('background-color');
                     
                     const badge = tb.querySelector('.selection-badge');
                     if (badge) badge.remove();
                     
-                    // Phục hồi lại con cái bên trong
                     Array.from(tb.children).forEach(child => {
-                        const childOrig = child.getAttribute('data-original-style');
-                        if (childOrig !== null) {
-                            child.style.cssText = childOrig;
-                            child.removeAttribute('data-original-style');
-                        } else {
-                            child.removeAttribute('style');
-                        }
-                        
-                        const stBtn = child.querySelector('div.stButton, div[data-testid="stButton"]');
-                        if (stBtn) {
-                            const btnOrig = stBtn.getAttribute('data-original-style');
-                            if (btnOrig !== null) {
-                                stBtn.style.cssText = btnOrig;
-                                stBtn.removeAttribute('data-original-style');
-                            } else {
-                                stBtn.removeAttribute('style');
-                            }
-                        }
+                        child.classList.remove('toolbar-btn-container', 'toolbar-hidden-container');
                     });
                 });
             }, 50);
