@@ -195,9 +195,12 @@ def render_action_history():
             setTimeout(() => {
                 const markers = window.parent.document.querySelectorAll('.bulk-marker');
                 markers.forEach(marker => {
-                    const wrapper = marker.closest('div[data-testid="stVerticalBlockBorderWrapper"]');
-                    if (wrapper && !wrapper.classList.contains('bulk-action-bar-wrapper')) {
-                        wrapper.classList.add('bulk-action-bar-wrapper');
+                    const elContainer = marker.closest('div.element-container');
+                    if(elContainer && elContainer.parentNode) {
+                        const wrapper = elContainer.parentNode.closest('div[data-testid="stVerticalBlock"]');
+                        if (wrapper && !wrapper.classList.contains('bulk-action-bar-wrapper')) {
+                            wrapper.classList.add('bulk-action-bar-wrapper');
+                        }
                     }
                 });
             }, 50);
@@ -260,7 +263,7 @@ def render_action_history():
             
             c_wrapper, _ = st.columns([4.5, 5.5])
             with c_wrapper:
-                with st.container(border=True):
+                with st.container():
                     st.markdown("<span class='bulk-marker'></span>", unsafe_allow_html=True)
                     c_text, c_dl, c_del = st.columns([5, 2.5, 2.5], vertical_alignment="center")
                     
@@ -286,12 +289,11 @@ def render_action_history():
                                 data=zip_buffer.getvalue(),
                                 file_name="LichSu_DaChon.zip",
                                 mime="application/zip",
-                                key="bulk_download",
-                                use_container_width=True
+                                key="bulk_download"
                             )
 
                     with c_del:
-                        if st.button("🗑️ " + t("Xóa", "削除"), key="bulk_delete", use_container_width=True):
+                        if st.button("🗑️ " + t("Xóa", "削除"), key="bulk_delete"):
                             for lid in selected_ids:
                                 delete_action_log(lid)
                             st.session_state['selected_logs'] = {}
