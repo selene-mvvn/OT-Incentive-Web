@@ -380,7 +380,7 @@ def render_action_history():
 
                 if st.session_state.get(f'show_preview_{log_id}', False) and not is_missing:
                     st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
-                    st.markdown(t("**:blue[:material/visibility: Xem trước dữ liệu (5 dòng đầu):]**", "**:blue[:material/visibility: データプレビュー (最初の5行):]**"))
+                    st.markdown(t("**Xem trước dữ liệu (5 dòng đầu):**", "**データプレビュー (最初の5行):**"))
                     try:
                         import pandas as pd
                         import io
