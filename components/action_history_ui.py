@@ -208,20 +208,24 @@ def render_action_history():
                         pTags.forEach(p => {
                             p.style.setProperty('margin', '0', 'important');
                             p.style.setProperty('padding', '0', 'important');
+                            p.style.setProperty('display', 'flex', 'important');
+                            p.style.setProperty('align-items', 'center', 'important');
+                            p.style.setProperty('line-height', '1', 'important');
                         });
 
-                        // Biến stVerticalBlock thành dòng ngang (Flex Row)
-                        wrapper.style.setProperty('background-color', '#e8f4fa', 'important');
-                        wrapper.style.setProperty('border-radius', '8px', 'important');
-                        wrapper.style.setProperty('padding', '8px 20px', 'important');
+                        // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
+                        wrapper.style.setProperty('background-color', '#ede9fe', 'important');
+                        wrapper.style.setProperty('border-radius', '50px', 'important');
+                        wrapper.style.setProperty('padding', '6px 20px', 'important');
                         wrapper.style.setProperty('margin-top', '-10px', 'important');
                         wrapper.style.setProperty('margin-bottom', '20px', 'important');
                         wrapper.style.setProperty('display', 'flex', 'important');
                         wrapper.style.setProperty('flex-direction', 'row', 'important');
                         wrapper.style.setProperty('justify-content', 'center', 'important');
                         wrapper.style.setProperty('align-items', 'center', 'important');
-                        wrapper.style.setProperty('gap', '20px', 'important');
-                        wrapper.style.setProperty('min-height', '48px', 'important');
+                        wrapper.style.setProperty('gap', '15px', 'important');
+                        wrapper.style.setProperty('width', 'max-content', 'important');
+                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.06)', 'important');
 
                         // Co gọn các thành phần bên trong (div.element-container)
                         const children = Array.from(wrapper.children);
@@ -234,44 +238,38 @@ def render_action_history():
                             }
                         });
 
-                        // Tô màu và định dạng 2 nút bấm
+                        // Định dạng nút bấm (Thiết kế dạng icon text mềm mại)
                         const btns = wrapper.querySelectorAll('button');
-                        if (btns.length >= 1) {
-                            btns[0].style.setProperty('background-color', '#27ae60', 'important');
-                            btns[0].style.setProperty('color', 'white', 'important');
-                            btns[0].style.setProperty('border-color', '#27ae60', 'important');
-                            btns[0].style.setProperty('min-height', '32px', 'important');
-                            btns[0].style.setProperty('height', '32px', 'important');
-                            btns[0].style.setProperty('padding', '0px 16px', 'important');
-                            btns[0].style.setProperty('font-size', '13px', 'important');
-                            const p1 = btns[0].querySelector('p, span');
-                            if (p1) p1.style.setProperty('color', 'white', 'important');
-                        }
-                        if (btns.length >= 2) {
-                            btns[1].style.setProperty('background-color', '#e74c3c', 'important');
-                            btns[1].style.setProperty('color', 'white', 'important');
-                            btns[1].style.setProperty('border-color', '#e74c3c', 'important');
-                            btns[1].style.setProperty('min-height', '32px', 'important');
-                            btns[1].style.setProperty('height', '32px', 'important');
-                            btns[1].style.setProperty('padding', '0px 16px', 'important');
-                            btns[1].style.setProperty('font-size', '13px', 'important');
-                            const p2 = btns[1].querySelector('p, span');
-                            if (p2) p2.style.setProperty('color', 'white', 'important');
-                        }
+                        btns.forEach(btn => {
+                            btn.style.setProperty('background-color', 'transparent', 'important');
+                            btn.style.setProperty('color', '#4c1d95', 'important');
+                            btn.style.setProperty('border', 'none', 'important');
+                            btn.style.setProperty('box-shadow', 'none', 'important');
+                            btn.style.setProperty('border-radius', '50px', 'important');
+                            btn.style.setProperty('font-weight', '600', 'important');
+                            btn.style.setProperty('padding', '6px 16px', 'important');
+                            btn.style.setProperty('min-height', '32px', 'important');
+                            btn.style.setProperty('height', '32px', 'important');
+                            btn.style.setProperty('transition', 'all 0.2s', 'important');
+                            
+                            const pText = btn.querySelector('p, span');
+                            if (pText) pText.style.setProperty('color', '#4c1d95', 'important');
+                            
+                            btn.addEventListener('mouseenter', () => btn.style.setProperty('background-color', '#ffffff', 'important'));
+                            btn.addEventListener('mouseleave', () => btn.style.setProperty('background-color', 'transparent', 'important'));
+                        });
                     }
                 });
             }, 50);
             </script>
             """, height=0, width=0)
 
-            c_wrapper, _ = st.columns([4.5, 5.5])
-            with c_wrapper:
-                with st.container():
-                    st.markdown("<span class='bulk-marker' style='display:none'></span>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:14px; display:flex; align-items:center; height:28px;'><span style='color:#00B0F0; font-size:18px; margin-right:5px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
+            with st.container():
+                st.markdown("<span class='bulk-marker' style='display:none'></span>", unsafe_allow_html=True)
+                st.markdown(f"<div style='color:#4c1d95; font-weight:600; font-size:14px; margin:0; padding:0; display:flex; align-items:center;'><span style='font-size:16px; margin-right:4px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
 
-                    valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
-                    if valid_logs:
+                valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
+                if valid_logs:
                         import zipfile
                         import io
                         zip_buffer = io.BytesIO()
