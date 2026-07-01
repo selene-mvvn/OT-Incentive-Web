@@ -189,13 +189,28 @@ def render_action_history():
 
         selected_ids = [k for k, v in st.session_state.get('selected_logs', {}).items() if v]
         if selected_ids:
+            import streamlit.components.v1 as components
+            components.html("""
+            <script>
+            setTimeout(() => {
+                const markers = window.parent.document.querySelectorAll('.bulk-marker');
+                markers.forEach(marker => {
+                    const wrapper = marker.closest('div[data-testid="stVerticalBlockBorderWrapper"]');
+                    if (wrapper && !wrapper.classList.contains('bulk-action-bar-wrapper')) {
+                        wrapper.classList.add('bulk-action-bar-wrapper');
+                    }
+                });
+            }, 50);
+            </script>
+            """, height=0, width=0)
+
             st.markdown("""
             <style>
             @keyframes slideDownFade {
                 from { opacity: 0; transform: translateY(-10px); }
                 to { opacity: 1; transform: translateY(0); }
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) {
+            .bulk-action-bar-wrapper {
                 animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                 background-color: #e8f4fa !important;
                 border: 0 !important;
@@ -204,10 +219,10 @@ def render_action_history():
                 margin-top: -15px !important;
                 margin-bottom: 20px !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) > div {
+            .bulk-action-bar-wrapper > div {
                 padding: 6px 12px !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) button {
+            .bulk-action-bar-wrapper button {
                 min-height: 28px !important;
                 height: 28px !important;
                 padding: 0px 8px !important;
@@ -217,27 +232,27 @@ def render_action_history():
                 width: 100% !important;
             }
             /* Nút Tải ZIP (Cột 2) */
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="column"]:nth-child(2) button {
+            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(2) button {
                 background-color: #27ae60 !important;
                 color: white !important;
                 border: none !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="column"]:nth-child(2) button * {
+            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(2) button * {
                 color: white !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="column"]:nth-child(2) button:hover {
+            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(2) button:hover {
                 background-color: #219653 !important;
             }
             /* Nút Xóa (Cột 3) */
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="column"]:nth-child(3) button {
+            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(3) button {
                 background-color: #e74c3c !important;
                 color: white !important;
                 border: none !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="column"]:nth-child(3) button * {
+            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(3) button * {
                 color: white !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="column"]:nth-child(3) button:hover {
+            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(3) button:hover {
                 background-color: #c0392b !important;
             }
             </style>
