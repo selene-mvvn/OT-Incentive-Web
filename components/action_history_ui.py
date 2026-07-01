@@ -247,10 +247,22 @@ def render_action_history():
                         wrapper.style.setProperty('box-sizing', 'border-box', 'important');
                         wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.08)', 'important');
                         wrapper.style.setProperty('position', 'fixed', 'important');
-                        wrapper.style.setProperty('right', '40px', 'important');
                         wrapper.style.setProperty('top', '50%', 'important');
                         wrapper.style.setProperty('transform', 'translateY(-50%)', 'important');
                         wrapper.style.setProperty('z-index', '999999', 'important');
+
+                        // Tính toán lề trái (left) thông minh
+                        const mainContainer = window.parent.document.querySelector('div[data-testid="stAppViewBlockContainer"]');
+                        if (mainContainer) {
+                            const rect = mainContainer.getBoundingClientRect();
+                            let leftPos = rect.left - 65; // Đặt cách lề trái của nội dung chính 65px để không đè vào thẻ Lịch sử
+                            if (leftPos < 10) leftPos = 10; // Ép cách lề màn hình tối thiểu 10px
+                            wrapper.style.setProperty('left', `${leftPos}px`, 'important');
+                            wrapper.style.removeProperty('right');
+                        } else {
+                            wrapper.style.setProperty('left', '30px', 'important');
+                            wrapper.style.removeProperty('right');
+                        }
 
                         // Tạo huy hiệu số trực tiếp để không bị Streamlit bao bọc thẻ p
                         let badge = wrapper.querySelector('.selection-badge');
