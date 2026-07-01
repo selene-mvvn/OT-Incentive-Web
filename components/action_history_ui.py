@@ -235,18 +235,22 @@ def render_action_history():
                         const count = marker.getAttribute('data-count') || '0';
                         wrapper.style.setProperty('background-color', infoBg, 'important');
                         wrapper.style.setProperty('border-radius', '50px', 'important');
-                        wrapper.style.setProperty('padding', '6px 8px', 'important');
-                        wrapper.style.setProperty('margin-top', '-10px', 'important');
-                        wrapper.style.setProperty('margin-bottom', '20px', 'important');
+                        wrapper.style.setProperty('padding', '10px 6px', 'important');
+                        wrapper.style.setProperty('margin', '0', 'important');
                         wrapper.style.setProperty('display', 'flex', 'important');
-                        wrapper.style.setProperty('flex-direction', 'row', 'important');
+                        wrapper.style.setProperty('flex-direction', 'column', 'important');
                         wrapper.style.setProperty('justify-content', 'center', 'important');
                         wrapper.style.setProperty('align-items', 'center', 'important');
-                        wrapper.style.setProperty('gap', '6px', 'important');
-                        wrapper.style.setProperty('width', 'max-content', 'important');
-                        wrapper.style.setProperty('height', '44px', 'important'); // Khóa cứng chiều cao
+                        wrapper.style.setProperty('gap', '10px', 'important');
+                        wrapper.style.setProperty('width', '44px', 'important');
+                        wrapper.style.setProperty('height', 'max-content', 'important'); // Khóa cứng chiều ngang, linh hoạt chiều cao
                         wrapper.style.setProperty('box-sizing', 'border-box', 'important');
-                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.05)', 'important');
+                        wrapper.style.setProperty('box-shadow', '0 4px 15px rgba(0,0,0,0.08)', 'important');
+                        wrapper.style.setProperty('position', 'fixed', 'important');
+                        wrapper.style.setProperty('right', '40px', 'important');
+                        wrapper.style.setProperty('top', '50%', 'important');
+                        wrapper.style.setProperty('transform', 'translateY(-50%)', 'important');
+                        wrapper.style.setProperty('z-index', '999999', 'important');
 
                         // Tạo huy hiệu số trực tiếp để không bị Streamlit bao bọc thẻ p
                         let badge = wrapper.querySelector('.selection-badge');
