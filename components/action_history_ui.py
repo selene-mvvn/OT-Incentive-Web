@@ -384,7 +384,7 @@ def render_action_history():
                 });
             }, 50);
             </script>
-            """, height=0, width=0)
+            """ + f"<!-- {__import__('time').time()} -->", height=0, width=0)
 
         # 4. Render Logs
         for i, log in enumerate(paginated_logs):
