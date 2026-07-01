@@ -195,82 +195,82 @@ def render_action_history():
             setTimeout(() => {
                 const markers = window.parent.document.querySelectorAll('.bulk-marker');
                 markers.forEach(marker => {
-                    const elContainer = marker.closest('div.element-container');
-                    if(elContainer && elContainer.parentNode) {
-                        const wrapper = elContainer.parentNode.closest('div[data-testid="stVerticalBlock"]');
-                        if (wrapper && !wrapper.classList.contains('bulk-action-bar-wrapper')) {
-                            wrapper.classList.add('bulk-action-bar-wrapper');
+                    // Hide the marker container to remove empty space at the top
+                    const markerContainer = marker.closest('div.element-container');
+                    if (markerContainer) {
+                        markerContainer.style.display = 'none';
+                    }
+                    
+                    if(markerContainer && markerContainer.parentNode) {
+                        const wrapper = markerContainer.parentNode.closest('div[data-testid="stVerticalBlock"]');
+                        if (wrapper) {
+                            // Style container
+                            wrapper.style.backgroundColor = '#e8f4fa';
+                            wrapper.style.borderRadius = '8px';
+                            wrapper.style.padding = '10px 20px';
+                            wrapper.style.marginTop = '-10px';
+                            wrapper.style.marginBottom = '20px';
+                            wrapper.style.display = 'flex';
+                            wrapper.style.justifyContent = 'center';
+                            wrapper.style.alignItems = 'center';
+                            wrapper.style.minHeight = '48px';
+                            
+                            // Style row
+                            const row = wrapper.querySelector('div[data-testid="stHorizontalBlock"]');
+                            if (row) {
+                                row.style.justifyContent = 'center';
+                                row.style.alignItems = 'center';
+                                row.style.gap = '20px';
+                                
+                                // Style columns
+                                const cols = row.querySelectorAll('div[data-testid="column"]');
+                                cols.forEach(col => {
+                                    col.style.width = 'auto';
+                                    col.style.flex = '0 1 auto';
+                                    col.style.minWidth = '0';
+                                    
+                                    const innerBlock = col.querySelector('div[data-testid="stVerticalBlock"]');
+                                    if (innerBlock) {
+                                        innerBlock.style.display = 'flex';
+                                        innerBlock.style.justifyContent = 'center';
+                                        innerBlock.style.alignItems = 'center';
+                                    }
+                                });
+                                
+                                // Colors
+                                if (cols.length >= 3) {
+                                    const btn1 = cols[1].querySelector('button');
+                                    if (btn1) {
+                                        btn1.style.backgroundColor = '#27ae60';
+                                        btn1.style.color = 'white';
+                                        btn1.style.borderColor = '#27ae60';
+                                        btn1.style.minHeight = '28px';
+                                        btn1.style.height = '28px';
+                                        btn1.style.padding = '0px 12px';
+                                        btn1.style.fontSize = '12px';
+                                        const p1 = btn1.querySelector('p, span');
+                                        if (p1) p1.style.color = 'white';
+                                    }
+                                    const btn2 = cols[2].querySelector('button');
+                                    if (btn2) {
+                                        btn2.style.backgroundColor = '#e74c3c';
+                                        btn2.style.color = 'white';
+                                        btn2.style.borderColor = '#e74c3c';
+                                        btn2.style.minHeight = '28px';
+                                        btn2.style.height = '28px';
+                                        btn2.style.padding = '0px 12px';
+                                        btn2.style.fontSize = '12px';
+                                        const p2 = btn2.querySelector('p, span');
+                                        if (p2) p2.style.color = 'white';
+                                    }
+                                }
+                            }
                         }
                     }
                 });
             }, 50);
             </script>
             """, height=0, width=0)
-
-            st.markdown("""
-            <style>
-            @keyframes slideDownFade {
-                from { opacity: 0; transform: translateY(-10px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .bulk-action-bar-wrapper {
-                animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                background-color: #e8f4fa !important;
-                border: 0 !important;
-                box-shadow: none !important;
-                border-radius: 8px !important;
-                margin-top: -15px !important;
-                margin-bottom: 20px !important;
-            }
-            /* Căn giữa hoàn hảo toàn bộ nội dung (chữ và 2 nút) */
-            .bulk-action-bar-wrapper div[data-testid="stHorizontalBlock"] {
-                justify-content: center !important;
-                align-items: center !important;
-                gap: 15px !important;
-            }
-            /* Xóa giới hạn độ rộng của cột Streamlit */
-            .bulk-action-bar-wrapper div[data-testid="column"] {
-                width: auto !important;
-                flex: 0 1 auto !important;
-                min-width: 0 !important;
-            }
-            .bulk-action-bar-wrapper > div {
-                padding: 6px 12px !important;
-            }
-            .bulk-action-bar-wrapper button {
-                min-height: 28px !important;
-                height: 28px !important;
-                padding: 0px 12px !important;
-                font-size: 12px !important;
-                border-radius: 4px !important;
-                line-height: 1 !important;
-            }
-            /* Nút Tải ZIP (Cột 2) */
-            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(2) button {
-                background-color: #27ae60 !important;
-                color: white !important;
-                border: none !important;
-            }
-            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(2) button * {
-                color: white !important;
-            }
-            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(2) button:hover {
-                background-color: #219653 !important;
-            }
-            /* Nút Xóa (Cột 3) */
-            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(3) button {
-                background-color: #e74c3c !important;
-                color: white !important;
-                border: none !important;
-            }
-            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(3) button * {
-                color: white !important;
-            }
-            .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(3) button:hover {
-                background-color: #c0392b !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
             
             c_wrapper, _ = st.columns([4.5, 5.5])
             with c_wrapper:
