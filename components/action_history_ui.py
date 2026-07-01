@@ -199,15 +199,7 @@ def render_action_history():
                 if (!parentDoc.getElementById('custom-toolbar-style')) {
                     const style = parentDoc.createElement('style');
                     style.id = 'custom-toolbar-style';
-                    style.innerHTML = `
-                        /* Prevent FOUC and layout gaps before JS processes the toolbar */
-                        div[data-testid="stVerticalBlock"]:has(.bulk-marker):not(.custom-toolbar-wrapper) {
-                            display: none !important;
-                            height: 0 !important;
-                            margin: 0 !important;
-                            padding: 0 !important;
-                        }
-                        
+                    style.innerHTML = `                        
                         .custom-toolbar-wrapper {
                             border-radius: 50px !important;
                             padding: 10px 6px !important;
@@ -336,6 +328,64 @@ def render_action_history():
             </script>
             """ + f"<!-- {len(selected_ids)} -->", height=0, width=0)
 
+        # 4. Render Logs
+        for i, log in enumerate(paginated_logs):
+            log_id = log.get("id")
+            file_b64 = log.get("file_b64")
+            is_missing = file_b64 is None
+
+            action_type_vn = log.get('action_type_vn', log.get('action_type', ''))
+            action_type_jp = log.get('action_type_jp', log.get('action_type', ''))
+            action_type = action_type_vn if st.session_state.get('lang', 'VN') == 'VN' else action_type_jp
+
+            desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
+
+            with st.container(border=True):
+                c_chk, c_head, c_dl, c_del = st.columns([0.5, 6.5, 2, 1])
+                with c_chk:
+                    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
+                    st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
+                with c_head:
+                    marker_class = "missing-marker" if is_missing else "timeline-marker"
+                    filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
+                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
+                with c_dl:
+                    if not is_missing:
+                        file_bytes = base64.b64decode(file_b64)
+                        st.download_button(
+                            label=t("TẢI LẠI", "再DL"),
+                            data=file_bytes,
+                            file_name=log.get("original_filename"),
+                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                            key=f"dl_{log_id}",
+                            type="primary",
+                            use_container_width=True
+                        )
+                    else:
+                        st.button("⚠️ " + t("Mất file", "なし"), disabled=True, key=f"dl_{log_id}", help=t("File vật lý không còn tồn tại trên hệ thống", "物理ファイルはシステムに存在しません"), use_container_width=True)
+                with c_del:
+                    if st.button(t("XÓA", "削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
+                        delete_action_log(log_id)
+                        st.rerun()
+
+        # 5. Pagination Controls
+        if total_pages > 1:
+            st.markdown("<br><hr>", unsafe_allow_html=True)
+            pc1, pc2, pc3 = st.columns([1, 2, 1])
+            with pc1:
+                if st.button("◀ " + t("Trang trước", "前へ"), disabled=(current_page == 1), use_container_width=True):
+                    st.session_state['history_page'] -= 1
+                    st.rerun()
+            with pc2:
+                st.markdown(f"<div style='text-align: center; margin-top: 10px; font-size: 16px;'><b>{t('Trang', 'ページ')} {current_page} / {total_pages}</b></div>", unsafe_allow_html=True)
+            with pc3:
+                if st.button(t("Trang sau", "次へ") + " ▶", disabled=(current_page == total_pages), use_container_width=True):
+                    st.session_state['history_page'] += 1
+                    st.rerun()
+
+        if selected_ids:
             with st.container():
                 st.markdown(f"<span class='bulk-marker' style='display:none' data-count='{len(selected_ids)}'></span>", unsafe_allow_html=True)
 
@@ -394,62 +444,6 @@ def render_action_history():
             </script>
             """ + f"<!-- {__import__('time').time()} -->", height=0, width=0)
 
-        # 4. Render Logs
-        for i, log in enumerate(paginated_logs):
-            log_id = log.get("id")
-            file_b64 = log.get("file_b64")
-            is_missing = file_b64 is None
-
-            action_type_vn = log.get('action_type_vn', log.get('action_type', ''))
-            action_type_jp = log.get('action_type_jp', log.get('action_type', ''))
-            action_type = action_type_vn if st.session_state.get('lang', 'VN') == 'VN' else action_type_jp
-
-            desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
-
-            with st.container(border=True):
-                c_chk, c_head, c_dl, c_del = st.columns([0.5, 6.5, 2, 1])
-                with c_chk:
-                    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
-                    st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
-                with c_head:
-                    marker_class = "missing-marker" if is_missing else "timeline-marker"
-                    filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
-                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
-                    st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
-                    st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
-                with c_dl:
-                    if not is_missing:
-                        file_bytes = base64.b64decode(file_b64)
-                        st.download_button(
-                            label=t("TẢI LẠI", "再DL"),
-                            data=file_bytes,
-                            file_name=log.get("original_filename"),
-                            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                            key=f"dl_{log_id}",
-                            type="primary",
-                            use_container_width=True
-                        )
-                    else:
-                        st.button("⚠️ " + t("Mất file", "なし"), disabled=True, key=f"dl_{log_id}", help=t("File vật lý không còn tồn tại trên hệ thống", "物理ファイルはシステムに存在しません"), use_container_width=True)
-                with c_del:
-                    if st.button(t("XÓA", "削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
-                        delete_action_log(log_id)
-                        st.rerun()
-
-        # 5. Pagination Controls
-        if total_pages > 1:
-            st.markdown("<br><hr>", unsafe_allow_html=True)
-            pc1, pc2, pc3 = st.columns([1, 2, 1])
-            with pc1:
-                if st.button("◀ " + t("Trang trước", "前へ"), disabled=(current_page == 1), use_container_width=True):
-                    st.session_state['history_page'] -= 1
-                    st.rerun()
-            with pc2:
-                st.markdown(f"<div style='text-align: center; margin-top: 10px; font-size: 16px;'><b>{t('Trang', 'ページ')} {current_page} / {total_pages}</b></div>", unsafe_allow_html=True)
-            with pc3:
-                if st.button(t("Trang sau", "次へ") + " ▶", disabled=(current_page == total_pages), use_container_width=True):
-                    st.session_state['history_page'] += 1
-                    st.rerun()
 
         from components.ui_utils import make_history_cards_white
         make_history_cards_white()
