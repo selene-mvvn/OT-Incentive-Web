@@ -334,6 +334,7 @@ def render_base_data():
 
                     # Biểu đồ và Stats
                     if cumulative_hours > 0:
+                        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
                         fig = go.Figure(data=[go.Pie(
                             labels=[t('Hành chính', '通常業務'), t('Tăng ca', '残業')],
                             values=[regular_hours, ot_hours_total],
@@ -343,8 +344,8 @@ def render_base_data():
                             hoverinfo='label+value'
                         )])
                         fig.update_layout(
-                            margin=dict(t=0, b=0, l=0, r=0),
-                            height=160,
+                            margin=dict(t=25, b=0, l=0, r=0),
+                            height=175,
                             showlegend=True,
                             legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
                             paper_bgcolor="rgba(0,0,0,0)",
