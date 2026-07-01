@@ -37,48 +37,49 @@ def make_history_cards_white():
         // Streamlit reuses DOM elements when navigating pages. We must strip our custom classes 
         // from recycled nodes so that random elements (like Pagination) don't inherit the card styles!
         const oldCards = parent.querySelectorAll('.custom-history-card');
-        oldCards.forEach(card => {
+        oldCards.forEach(card => {{
             card.classList.remove('custom-history-card', 'has-timeline-marker', 'has-missing-marker');
             card.style.backgroundColor = '';
-        });
+        }});
 
         const markers = parent.querySelectorAll('.action-card-marker');
-        markers.forEach(marker => {
+        markers.forEach(marker => {{
             // Because .action-card-marker is now inside the column,
             // we first find the horizontal block (st.columns).
             // Its parent is element-container, whose closest stVerticalBlock is the container's inner body.
             // The parent of the inner body is the border wrapper.
             let horizontal = marker.closest('[data-testid="stHorizontalBlock"]');
             let outerContainer = null;
-            if (horizontal && horizontal.parentElement) {
+            if (horizontal && horizontal.parentElement) {{
                 let innerBlock = horizontal.parentElement.closest('[data-testid="stVerticalBlock"]');
                 outerContainer = innerBlock ? innerBlock.parentElement : null;
-            }
+            }}
             
-            if (outerContainer) {
+            if (outerContainer) {{
                 outerContainer.style.backgroundColor = '#ffffff';
                 outerContainer.style.setProperty('background-color', '#ffffff', 'important');
                 outerContainer.classList.add('custom-history-card');
-                if (outerContainer.querySelector('.timeline-marker')) {
+                if (outerContainer.querySelector('.timeline-marker')) {{
                     outerContainer.classList.add('has-timeline-marker');
-                }
-                if (outerContainer.querySelector('.missing-marker')) {
+                }}
+                if (outerContainer.querySelector('.missing-marker')) {{
                     outerContainer.classList.add('has-missing-marker');
-                }
-            }
-        });
+                }}
+            }}
+        }});
 
         // Hide the iframe containing this script to prevent the white bar at the bottom
-        if (window.frameElement) {
+        if (window.frameElement) {{
             window.frameElement.style.display = 'none';
-            if (window.frameElement.parentElement) {
+            if (window.frameElement.parentElement) {{
                 window.frameElement.parentElement.style.display = 'none';
                 window.frameElement.parentElement.style.height = '0px';
                 window.frameElement.parentElement.style.margin = '0px';
                 window.frameElement.parentElement.style.padding = '0px';
-            }
-        }
+            }}
+        }}
     </script>
+    <!-- {time.time()} -->
     """, height=0)
 
 def make_expander_blue():
