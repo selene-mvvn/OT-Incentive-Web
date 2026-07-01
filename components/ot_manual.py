@@ -237,7 +237,7 @@ def render_base_data():
                 edited_emp['Lương Gross'] = gross
 
                 save_employees_df(edited_emp)
-                st.session_state['pending_toast'] = t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！")
+                st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
                 st.rerun()
 
         with col_right:
