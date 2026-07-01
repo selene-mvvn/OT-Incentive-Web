@@ -72,11 +72,15 @@ def render_base_data():
         def make_card(icon, title, value):
             return f"""
             <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded" rel="stylesheet" />
-            <div style="background-color: #00B0F0; border: 1px solid #0090c0; border-radius: 10px; padding: 15px 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; text-align: center;">
-                <div style="color: rgba(255, 255, 255, 0.9); font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; letter-spacing: 0.5px;">
-                    <span class='material-symbols-rounded' style='font-family: "Material Symbols Rounded", sans-serif !important; color: #ffffff; margin-right: 8px; font-size: 20px; text-transform: none;'>{icon}</span> {title}
+            <style>
+                .card-icon-override {{ color: #ffffff !important; font-size: 32px !important; margin-bottom: 10px; display: block; }}
+            </style>
+            <div style="background-color: #00B0F0; border: 4px solid #e0f2fe; border-radius: 50%; aspect-ratio: 1/1; max-width: 180px; margin: 0 auto 20px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 8px 15px rgba(0, 176, 240, 0.2); text-align: center; padding: 10px;">
+                <div style="color: rgba(255, 255, 255, 0.95); font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px;">
+                    <span class='material-symbols-rounded card-icon-override' translate="no">{icon}</span>
+                    {title}
                 </div>
-                <div style="color: #ffffff; font-size: 24px; font-weight: 700;">{value}</div>
+                <div style="color: #ffffff; font-size: 22px; font-weight: 700; line-height: 1.2;">{value}</div>
             </div>
             """
 
