@@ -6,6 +6,23 @@ if 'pending_toast' in st.session_state:
     st.toast(st.session_state['pending_toast'], icon=":material/check_circle:")
     del st.session_state['pending_toast']
 
+# GLOBAL DOM CLEANUP: Fixes React DOM recycling leaks in Streamlit
+import streamlit.components.v1 as components
+components.html("""
+<script>
+    const parent = window.parent.document;
+    const oldContainers = parent.querySelectorAll('.custom-white-container, .custom-history-card');
+    oldContainers.forEach(c => {
+        c.classList.remove('custom-white-container', 'custom-history-card', 'has-timeline-marker', 'has-missing-marker');
+        c.style.removeProperty('background-color');
+        c.style.removeProperty('border-radius');
+        c.style.removeProperty('box-shadow');
+        c.style.removeProperty('padding');
+        c.style.removeProperty('border');
+    });
+</script>
+""", height=0)
+
 # Custom CSS for a beautiful corporate look (White & Blue)
 st.markdown("""
 <style>

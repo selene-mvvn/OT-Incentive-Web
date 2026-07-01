@@ -12,19 +12,12 @@ def make_container_white():
             if (frame.contentWindow === window) {
                 let container = frame.closest('[data-testid="stVerticalBlock"]');
                 if (container) {
+                    container.classList.add('custom-white-container');
                     container.style.backgroundColor = '#ffffff';
                     container.style.borderRadius = '12px';
                     container.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
                     container.style.padding = '20px';
                     container.style.border = '1px solid rgba(0,0,0,0.05)';
-                    
-                    window.addEventListener('unload', () => {
-                        container.style.removeProperty('background-color');
-                        container.style.removeProperty('border-radius');
-                        container.style.removeProperty('box-shadow');
-                        container.style.removeProperty('padding');
-                        container.style.removeProperty('border');
-                    });
                 }
             }
         });
