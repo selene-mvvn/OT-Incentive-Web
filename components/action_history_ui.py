@@ -251,22 +251,27 @@ def render_action_history():
                         wrapper.style.setProperty('transform', 'translateY(-50%)', 'important');
                         wrapper.style.setProperty('z-index', '999999', 'important');
 
-                        // Tính toán lề trái (left) siêu chuẩn dựa trên khung trắng (white card)
+                        // Tính toán lề trái (left) linh hoạt: Nằm giữa khoảng trống màu xám hoặc bám sát lề khung trắng
                         let leftPos = 10;
                         const blockContainer = window.parent.document.querySelector('.block-container') || window.parent.document.querySelector('div[data-testid="stAppViewBlockContainer"]');
-                        const minLeft = blockContainer ? blockContainer.getBoundingClientRect().left + 5 : 5; // An toàn tuyệt đối không đè Sidebar
+                        const sidebarEdge = blockContainer ? blockContainer.getBoundingClientRect().left : 0; 
 
                         if (wrapper && wrapper.parentElement) {
-                            // Lấy container cha chứa toàn bộ nội dung (chính là khung màu trắng)
                             const whiteCard = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
                             if (whiteCard) {
-                                // Đặt ở mép trái của white card (thụt ra ngoài 5px) để nằm gọn gàng bên lề
-                                leftPos = whiteCard.getBoundingClientRect().left - 5;
+                                const whiteCardEdge = whiteCard.getBoundingClientRect().left;
+                                // Mặc định: Đặt cách khung trắng 12px (chiều rộng thanh 44px -> cần lùi 56px từ mép khung trắng)
+                                leftPos = whiteCardEdge - 56;
+                                
+                                // Nếu khoảng xám quá hẹp (không đủ 56px), thì tự động căn giữa chính xác vào khoảng xám đó
+                                if (leftPos < sidebarEdge + 5) {
+                                    leftPos = sidebarEdge + (whiteCardEdge - sidebarEdge) / 2 - 22;
+                                }
                             }
                         }
                         
-                        // Chốt chặn cuối cùng để không bao giờ lọt ra ngoài Sidebar
-                        if (leftPos < minLeft) leftPos = minLeft; 
+                        // Chốt chặn an toàn tuyệt đối: Không lấn vào sidebar
+                        if (leftPos < sidebarEdge + 2) leftPos = sidebarEdge + 2; 
 
                         wrapper.style.setProperty('left', `${leftPos}px`, 'important');
                         wrapper.style.removeProperty('right');
