@@ -27,10 +27,10 @@ st.markdown("""
     
     /* Custom CSS for Toast notifications */
     [data-testid="stToast"] {
-        background-color: #00B0F0 !important;
+        background-color: #10b981 !important;
         border-radius: 12px !important;
         border: none !important;
-        box-shadow: 0 5px 20px rgba(0, 176, 240, 0.4) !important;
+        box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4) !important;
         padding: 15px 20px !important;
     }
     [data-testid="stToast"] * {
