@@ -36,10 +36,10 @@ def render_base_data():
     
     title = t("CÀI ĐẶT CHUNG", "一般設定")
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
+    st.info(t("Cài đặt thông tin hệ thống, nhân sự và ngày nghỉ lễ tại đây.", "システム情報、スタッフ、休日を設定します。"))
     with st.container():
         from components.ui_utils import make_container_white
         make_container_white()
-        st.info(t("Cài đặt thông tin hệ thống, nhân sự và ngày nghỉ lễ tại đây.", "システム情報、スタッフ、休日を設定します。"))
 
         # --- MINI DASHBOARD ---
         import datetime
