@@ -338,7 +338,7 @@ def render_action_history():
                 });
             }, 50);
             </script>
-            """, height=0, width=0)
+            """ + f"<!-- {len(selected_ids)} -->", height=0, width=0)
 
             with st.container():
                 st.markdown(f"<span class='bulk-marker' style='display:none' data-count='{len(selected_ids)}'></span>", unsafe_allow_html=True)
