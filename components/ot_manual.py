@@ -203,7 +203,7 @@ def render_base_data():
                 if len(allowance_cols) > 0:
                     del_c1, del_c2 = st.columns([3, 1])
                     with del_c1:
-                        del_pc_name = st.selectbox(t("Chọn Phụ cấp cần xóa:", "削除する手当を選択:"), options=allowance_cols, key="del_pc_input")
+                        del_pc_name = st.selectbox(t("Chọn Phụ cấp cần xóa:", "削除する手当を選択:"), options=allowance_cols, key="del_pc_input", format_func=lambda x: t("PC ăn trưa", "昼食手当") if x == "PC ăn trưa" else (t("PC khác", "その他手当") if x == "PC khác" else x))
                     with del_c2:
                         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                         if st.button(t("Xóa Cột", "列を削除"), use_container_width=True):
