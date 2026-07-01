@@ -197,8 +197,9 @@ def render_action_history():
             }
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) {
                 animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                background-color: #f4fafe !important;
-                border-color: #b3e0f2 !important;
+                background-color: #e8f4fa !important;
+                border: none !important;
+                border-radius: 8px !important;
                 margin-top: -15px !important;
                 margin-bottom: 20px !important;
             }
@@ -214,6 +215,24 @@ def render_action_history():
                 line-height: 1 !important;
                 width: 100% !important;
             }
+            /* Nút Tải ZIP (Cột 2) */
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(2) button {
+                background-color: #27ae60 !important;
+                color: white !important;
+                border: none !important;
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(2) button:hover {
+                background-color: #219653 !important;
+            }
+            /* Nút Xóa (Cột 3) */
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(3) button {
+                background-color: #e74c3c !important;
+                color: white !important;
+                border: none !important;
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(3) button:hover {
+                background-color: #c0392b !important;
+            }
             </style>
             """, unsafe_allow_html=True)
             
@@ -224,7 +243,7 @@ def render_action_history():
                     c_text, c_dl, c_del = st.columns([5, 2.5, 2.5], vertical_alignment="center")
                     
                     with c_text:
-                        st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:14px; margin-top:2px;'><span style='color:#00B0F0; font-size:18px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:14px;'><span style='color:#00B0F0; font-size:18px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
                     
                     with c_dl:
                         valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
@@ -246,8 +265,7 @@ def render_action_history():
                                 file_name="LichSu_DaChon.zip",
                                 mime="application/zip",
                                 key="bulk_download",
-                                use_container_width=True,
-                                type="primary"
+                                use_container_width=True
                             )
 
                     with c_del:
