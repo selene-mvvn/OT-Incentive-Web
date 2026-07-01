@@ -234,6 +234,9 @@ def render_action_history():
 
                         // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
                         const count = marker.getAttribute('data-count') || '0';
+                        if (!wrapper.hasAttribute('data-original-style')) {
+                            wrapper.setAttribute('data-original-style', wrapper.style.cssText || '');
+                        }
                         wrapper.style.setProperty('background-color', infoBg, 'important');
                         wrapper.style.setProperty('border-radius', '50px', 'important');
                         wrapper.style.setProperty('padding', '10px 6px', 'important');
@@ -304,6 +307,9 @@ def render_action_history():
                         const children = Array.from(wrapper.children);
                         children.forEach(child => {
                             if (child.classList.contains('element-container')) {
+                                if (!child.hasAttribute('data-original-style')) {
+                                    child.setAttribute('data-original-style', child.style.cssText || '');
+                                }
                                 if (child.querySelector('button') || child.querySelector('div[data-testid="stButton"]')) {
                                     child.style.setProperty('width', 'auto', 'important');
                                     child.style.setProperty('flex', '0 1 auto', 'important');
@@ -318,6 +324,9 @@ def render_action_history():
                                     // Chống lệch từ Streamlit Button Wrapper
                                     const stBtn = child.querySelector('div.stButton, div[data-testid="stButton"]');
                                     if (stBtn) {
+                                        if (!stBtn.hasAttribute('data-original-style')) {
+                                            stBtn.setAttribute('data-original-style', stBtn.style.cssText || '');
+                                        }
                                         stBtn.style.setProperty('margin', '0', 'important');
                                         stBtn.style.setProperty('padding', '0', 'important');
                                         stBtn.style.setProperty('height', '32px', 'important');
@@ -411,7 +420,7 @@ def render_action_history():
         else:
             # CLEANUP SCRIPT: Khắc phục lỗi DOM Recycling của Streamlit.
             # Khi bỏ chọn toàn bộ, Streamlit xóa thanh công cụ nhưng TÁI SỬ DỤNG (recycle) chính thẻ div đó 
-            # để vẽ History Card đầu tiên, khiến card bị biến dạng. Ta phải xóa sạch CSS rác!
+            # để vẽ History Card đầu tiên, khiến card bị biến dạng. Ta phải KHÔI PHỤC CSS gốc!
             import streamlit.components.v1 as components
             components.html("""
             <script>
@@ -419,13 +428,37 @@ def render_action_history():
                 const oldToolbars = window.parent.document.querySelectorAll('.custom-toolbar-wrapper');
                 oldToolbars.forEach(tb => {
                     tb.classList.remove('custom-toolbar-wrapper');
-                    tb.removeAttribute('style'); // Xóa toàn bộ CSS Fixed, Width, Height...
+                    const origStyle = tb.getAttribute('data-original-style');
+                    if (origStyle !== null) {
+                        tb.style.cssText = origStyle;
+                        tb.removeAttribute('data-original-style');
+                    } else {
+                        tb.removeAttribute('style');
+                    }
+                    
                     const badge = tb.querySelector('.selection-badge');
                     if (badge) badge.remove();
                     
                     // Phục hồi lại con cái bên trong
                     Array.from(tb.children).forEach(child => {
-                        child.removeAttribute('style');
+                        const childOrig = child.getAttribute('data-original-style');
+                        if (childOrig !== null) {
+                            child.style.cssText = childOrig;
+                            child.removeAttribute('data-original-style');
+                        } else {
+                            child.removeAttribute('style');
+                        }
+                        
+                        const stBtn = child.querySelector('div.stButton, div[data-testid="stButton"]');
+                        if (stBtn) {
+                            const btnOrig = stBtn.getAttribute('data-original-style');
+                            if (btnOrig !== null) {
+                                stBtn.style.cssText = btnOrig;
+                                stBtn.removeAttribute('data-original-style');
+                            } else {
+                                stBtn.removeAttribute('style');
+                            }
+                        }
                     });
                 });
             }, 50);
