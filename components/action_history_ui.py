@@ -197,59 +197,66 @@ def render_action_history():
                 markers.forEach(marker => {
                     const markerContainer = marker.closest('div.element-container');
                     if (!markerContainer) return;
-                    
+
                     // Xóa trắng khoảng trống của marker
                     markerContainer.style.display = 'none';
-                    
+
                     const wrapper = markerContainer.parentNode;
                     if (wrapper) {
+                        // Căn chỉnh dòng Text (xóa margin của thẻ p do Streamlit tạo ra)
+                        const pTags = wrapper.querySelectorAll('p');
+                        pTags.forEach(p => {
+                            p.style.setProperty('margin', '0', 'important');
+                            p.style.setProperty('padding', '0', 'important');
+                        });
+
                         // Biến stVerticalBlock thành dòng ngang (Flex Row)
-                        wrapper.style.backgroundColor = '#e8f4fa';
-                        wrapper.style.borderRadius = '8px';
-                        wrapper.style.padding = '8px 20px';
-                        wrapper.style.marginTop = '-10px';
-                        wrapper.style.marginBottom = '20px';
-                        wrapper.style.display = 'flex';
-                        wrapper.style.flexDirection = 'row';
-                        wrapper.style.justifyContent = 'center';
-                        wrapper.style.alignItems = 'center';
-                        wrapper.style.gap = '20px';
-                        wrapper.style.minHeight = '48px';
-                        
+                        wrapper.style.setProperty('background-color', '#e8f4fa', 'important');
+                        wrapper.style.setProperty('border-radius', '8px', 'important');
+                        wrapper.style.setProperty('padding', '8px 20px', 'important');
+                        wrapper.style.setProperty('margin-top', '-10px', 'important');
+                        wrapper.style.setProperty('margin-bottom', '20px', 'important');
+                        wrapper.style.setProperty('display', 'flex', 'important');
+                        wrapper.style.setProperty('flex-direction', 'row', 'important');
+                        wrapper.style.setProperty('justify-content', 'center', 'important');
+                        wrapper.style.setProperty('align-items', 'center', 'important');
+                        wrapper.style.setProperty('gap', '20px', 'important');
+                        wrapper.style.setProperty('min-height', '48px', 'important');
+
                         // Co gọn các thành phần bên trong (div.element-container)
                         const children = Array.from(wrapper.children);
                         children.forEach(child => {
                             if (child.classList.contains('element-container')) {
-                                child.style.width = 'auto';
-                                child.style.flex = '0 1 auto';
-                                child.style.minWidth = '0';
-                                child.style.margin = '0';
+                                child.style.setProperty('width', 'auto', 'important');
+                                child.style.setProperty('flex', '0 1 auto', 'important');
+                                child.style.setProperty('min-width', '0', 'important');
+                                child.style.setProperty('margin', '0', 'important');
                             }
                         });
-                        
+
                         // Tô màu và định dạng 2 nút bấm
                         const btns = wrapper.querySelectorAll('button');
                         if (btns.length >= 1) {
-                            btns[0].style.backgroundColor = '#27ae60';
-                            btns[0].style.color = 'white';
-                            btns[0].style.borderColor = '#27ae60';
-                            btns[0].style.minHeight = '28px';
-                            btns[0].style.height = '28px';
-                            btns[0].style.padding = '0px 12px';
-                            btns[0].style.fontSize = '12px';
+                            btns[0].style.setProperty('background-color', '#27ae60', 'important');
+                            btns[0].style.setProperty('color', 'white', 'important');
+                            btns[0].style.setProperty('border-color', '#27ae60', 'important');
+                            btns[0].style.setProperty('min-height', '32px', 'important');
+                            btns[0].style.setProperty('height', '32px', 'important');
+                            btns[0].style.setProperty('padding', '0px 16px', 'important');
+                            btns[0].style.setProperty('font-size', '13px', 'important');
                             const p1 = btns[0].querySelector('p, span');
-                            if (p1) p1.style.color = 'white';
+                            if (p1) p1.style.setProperty('color', 'white', 'important');
                         }
                         if (btns.length >= 2) {
-                            btns[1].style.backgroundColor = '#e74c3c';
-                            btns[1].style.color = 'white';
-                            btns[1].style.borderColor = '#e74c3c';
-                            btns[1].style.minHeight = '28px';
-                            btns[1].style.height = '28px';
-                            btns[1].style.padding = '0px 12px';
-                            btns[1].style.fontSize = '12px';
+                            btns[1].style.setProperty('background-color', '#e74c3c', 'important');
+                            btns[1].style.setProperty('color', 'white', 'important');
+                            btns[1].style.setProperty('border-color', '#e74c3c', 'important');
+                            btns[1].style.setProperty('min-height', '32px', 'important');
+                            btns[1].style.setProperty('height', '32px', 'important');
+                            btns[1].style.setProperty('padding', '0px 16px', 'important');
+                            btns[1].style.setProperty('font-size', '13px', 'important');
                             const p2 = btns[1].querySelector('p, span');
-                            if (p2) p2.style.color = 'white';
+                            if (p2) p2.style.setProperty('color', 'white', 'important');
                         }
                     }
                 });
