@@ -349,13 +349,18 @@ def render_base_data():
 
             <script>
             const holidays = {holidays_json};
+            const currentLang = "{t('vn', 'jp')}";
             let currentDate = new Date();
 
             function renderCalendar() {{
                 const year = currentDate.getFullYear();
                 const month = currentDate.getMonth();
                 
-                document.getElementById("monthYear").innerText = "Tháng " + (month + 1) + ", " + year;
+                if (currentLang === 'vn') {{
+                    document.getElementById("monthYear").innerText = "Tháng " + (month + 1) + ", " + year;
+                }} else {{
+                    document.getElementById("monthYear").innerText = year + "年 " + (month + 1) + "月";
+                }}
                 
                 const firstDay = new Date(year, month, 1).getDay();
                 const startDay = firstDay === 0 ? 6 : firstDay - 1; 
@@ -364,13 +369,13 @@ def render_base_data():
                 const daysInPrevMonth = new Date(year, month, 0).getDate();
                 
                 let html = `
-                    <div class="day-name">T2</div>
-                    <div class="day-name">T3</div>
-                    <div class="day-name">T4</div>
-                    <div class="day-name">T5</div>
-                    <div class="day-name">T6</div>
-                    <div class="day-name">T7</div>
-                    <div class="day-name">CN</div>
+                    <div class="day-name">{t('T2', '月')}</div>
+                    <div class="day-name">{t('T3', '火')}</div>
+                    <div class="day-name">{t('T4', '水')}</div>
+                    <div class="day-name">{t('T5', '木')}</div>
+                    <div class="day-name">{t('T6', '金')}</div>
+                    <div class="day-name">{t('T7', '土')}</div>
+                    <div class="day-name">{t('CN', '日')}</div>
                 `;
                 
                 for (let i = 0; i < startDay; i++) {{
