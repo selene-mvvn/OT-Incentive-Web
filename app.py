@@ -948,17 +948,12 @@ else:
         show_user_guide()
     
     if "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"):
-        with st.container(key="page_project_data"):
-            render_project_data()
+        render_project_data()
     elif menu_selection == t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"):
-        with st.container(key="page_ot_excel"):
-            render_ot_excel()
+        render_ot_excel()
     elif menu_selection == t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"):
-        with st.container(key="page_incentive"):
-            render_incentive()
+        render_incentive()
     elif menu_selection == t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"):
-        with st.container(key="page_action_history"):
-            render_action_history()
+        render_action_history()
     elif menu_selection == t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**"):
-        with st.container(key="page_base_data"):
-            render_base_data()
+        render_base_data()
