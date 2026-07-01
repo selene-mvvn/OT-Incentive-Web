@@ -104,7 +104,6 @@ def render_base_data():
         import plotly.graph_objects as go
         import datetime
         import pandas as pd
-
         
         emp_df = get_employees_df()
         if "Ngày vào làm" in emp_df.columns:
@@ -112,9 +111,9 @@ def render_base_data():
         if "Ngày bắt đầu tính" not in emp_df.columns:
             emp_df["Ngày bắt đầu tính"] = None
             
-        col_top_left, col_top_right = st.columns([5.5, 4.5], gap="large")
+        col_left, col_right = st.columns([7.5, 2.5], gap="large")
         
-        with col_top_left:
+        with col_left:
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN CHUNG', '一般情報')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
             
             c1, c2, c3 = st.columns(3)
@@ -143,28 +142,123 @@ def render_base_data():
             with c3:
                 std_days_mo = st.number_input(t("SỐ NGÀY CHUẨN / THÁNG", "月の標準労働日数"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_days', 22.0)), step=0.5)
 
-        with col_top_right:
-            # Dashboard
-            st.markdown(f"<div style='background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02);'>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='margin-top: 0; margin-bottom: 15px; color: #1e293b; font-size: 16px;'>{t('📊 THỐNG KÊ THỜI GIAN LÀM VIỆC', '📊 労働時間統計')}</h4>", unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ', 'スタッフ情報')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
+            st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
+
+            col_cfg = {
+                "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=False),
+                "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
+                "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
+                "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
+                "Lương cơ bản": st.column_config.TextColumn(t("Lương cơ bản", "基本給")),
+                "Lương Gross": st.column_config.TextColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), disabled=True),
+                "Ngày bắt đầu tính": None
+            }
+
+            standard_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "Lương Gross", "Ngày bắt đầu tính"]
             
-            dc1, dc2 = st.columns([1, 1.5])
-            with dc1:
-                std_hours_val = float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0))
-                std_hrs = st.number_input(t("Số giờ chuẩn/ngày:", "1日の標準労働時間:"), min_value=1.0, max_value=24.0, value=std_hours_val, step=0.5, key="std_hours_input")
+            if "PC ăn trưa" not in emp_df.columns: emp_df.insert(5, "PC ăn trưa", 0)
+            if "PC khác" not in emp_df.columns: emp_df.insert(6, "PC khác", 0)
+
+            allowance_cols = [c for c in emp_df.columns if c not in standard_cols]
+            ordered_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản"] + allowance_cols + ["Lương Gross", "Ngày bắt đầu tính"]
+            emp_df = emp_df[ordered_cols]
             
-            with dc2:
-                valid_emps = emp_df["Tên NV"].dropna().unique().tolist()
-                if not valid_emps:
-                    st.info(t("Chưa có nhân sự", "スタッフなし"))
-                    selected_emp = None
-                else:
-                    selected_emp = st.selectbox(t("Chọn nhân sự:", "スタッフを選択:"), valid_emps)
+            for c in allowance_cols:
+                if c == "PC ăn trưa": col_cfg[c] = st.column_config.TextColumn(t("PC ăn trưa", "昼食手当"))
+                elif c == "PC khác": col_cfg[c] = st.column_config.TextColumn(t("PC khác", "その他手当"))
+                else: col_cfg[c] = st.column_config.TextColumn(c)
+
+            display_df = emp_df.copy()
+            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                display_df[c] = pd.to_numeric(display_df[c], errors='coerce').fillna(0)
+                display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}").astype(str)
+
+            edited_emp = st.data_editor(
+                display_df,
+                num_rows="dynamic",
+                use_container_width=True,
+                column_config=col_cfg,
+                column_order=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản"] + allowance_cols + ["Lương Gross"],
+                key="employees_editor_v2"
+            )
+
+            with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
+                from components.ui_utils import make_expander_blue
+                make_expander_blue()
+                add_c1, add_c2 = st.columns([3, 1])
+                with add_c1:
+                    new_pc_name = st.text_input(t("Nhập tên Phụ cấp mới:", "新しい手当名:"), key="new_pc_input")
+                with add_c2:
+                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                    if st.button(t("Thêm Cột", "列を追加"), use_container_width=True):
+                        if new_pc_name and new_pc_name not in emp_df.columns:
+                            emp_df[new_pc_name] = 0
+                            save_employees_df(emp_df)
+                            st.rerun()
+                        elif new_pc_name in emp_df.columns:
+                            st.warning(t("Cột này đã tồn tại!", "この列は既に存在します！"))
+
+                if len(allowance_cols) > 0:
+                    del_c1, del_c2 = st.columns([3, 1])
+                    with del_c1:
+                        del_pc_name = st.selectbox(t("Chọn Phụ cấp cần xóa:", "削除する手当を選択:"), options=allowance_cols, key="del_pc_input")
+                    with del_c2:
+                        st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                        if st.button(t("Xóa Cột", "列を削除"), use_container_width=True):
+                            if del_pc_name in emp_df.columns:
+                                emp_df = emp_df.drop(columns=[del_pc_name])
+                                save_employees_df(emp_df)
+                                st.rerun()
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button(t("💾 LƯU THÔNG TIN CHUNG & NHÂN SỰ", "💾 一般情報とスタッフを保存"), key="save_emps", type="primary"):
+                st.session_state['ot_base_data']['standard_days'] = std_days_mo
+                st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
+                st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
+                
+                std_hrs = st.session_state.get("std_hours_input", 8.0)
+                st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
+                from logic.history import save_base_data
+                save_base_data(st.session_state['ot_base_data'])
+
+                for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                    if c in edited_emp.columns:
+                        edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
+                        edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+
+                edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
+                gross = edited_emp['Lương cơ bản'].copy()
+                for c in allowance_cols:
+                    if c in edited_emp.columns:
+                        edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                        gross += edited_emp[c]
+                edited_emp['Lương Gross'] = gross
+
+                save_employees_df(edited_emp)
+                st.session_state['pending_toast'] = t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！")
+                st.rerun()
+
+        with col_right:
+            st.markdown(f"<div style='background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); position: sticky; top: 20px;'>", unsafe_allow_html=True)
+            st.markdown(f"<h4 style='margin-top: 0; margin-bottom: 15px; color: #1e293b; font-size: 15px;'>{t('📊 THỐNG KÊ THỜI GIAN LÀM VIỆC', '📊 労働時間統計')}</h4>", unsafe_allow_html=True)
+            
+            std_hours_val = float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0))
+            std_hrs = st.number_input(t("Số giờ chuẩn/ngày:", "1日の標準労働時間:"), min_value=1.0, max_value=24.0, value=std_hours_val, step=0.5, key="std_hours_input")
+            
+            valid_emps = emp_df["Tên NV"].dropna().unique().tolist()
+            if not valid_emps:
+                st.info(t("Chưa có nhân sự", "スタッフなし"))
+                selected_emp = None
+            else:
+                selected_emp = st.selectbox(t("Chọn nhân sự:", "スタッフを選択:"), valid_emps)
             
             if selected_emp:
                 emp_row_idx = emp_df.index[emp_df["Tên NV"] == selected_emp].tolist()[0]
                 current_start_date = emp_df.at[emp_row_idx, "Ngày bắt đầu tính"]
                 
+                import datetime
                 try:
                     if current_start_date:
                         default_date = datetime.datetime.strptime(str(current_start_date), "%Y-%m-%d").date()
@@ -211,149 +305,48 @@ def render_base_data():
                 cumulative_hours = regular_hours + ot_hours_total
                 
                 # Biểu đồ và Stats
-                bc1, bc2 = st.columns([1.2, 1])
-                with bc1:
-                    if cumulative_hours > 0:
-                        fig = go.Figure(data=[go.Pie(
-                            labels=[t('Hành chính', '通常業務'), t('Tăng ca', '残業')],
-                            values=[regular_hours, ot_hours_total],
-                            hole=.6,
-                            marker_colors=['#00B0F0', '#ff4757'],
-                            textinfo='percent',
-                            hoverinfo='label+value'
-                        )])
-                        fig.update_layout(
-                            margin=dict(t=0, b=0, l=0, r=0),
-                            height=150,
-                            showlegend=True,
-                            legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
-                            paper_bgcolor="rgba(0,0,0,0)",
-                            plot_bgcolor="rgba(0,0,0,0)"
-                        )
-                        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-                    else:
-                        st.markdown(f"<div style='height: 150px; display:flex; align-items:center; justify-content:center; color: #94a3b8;'>{t('Chưa có dữ liệu', 'データなし')}</div>", unsafe_allow_html=True)
+                if cumulative_hours > 0:
+                    fig = go.Figure(data=[go.Pie(
+                        labels=[t('Hành chính', '通常業務'), t('Tăng ca', '残業')],
+                        values=[regular_hours, ot_hours_total],
+                        hole=.6,
+                        marker_colors=['#00B0F0', '#ff4757'],
+                        textinfo='percent',
+                        hoverinfo='label+value'
+                    )])
+                    fig.update_layout(
+                        margin=dict(t=0, b=0, l=0, r=0),
+                        height=160,
+                        showlegend=True,
+                        legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
+                        paper_bgcolor="rgba(0,0,0,0)",
+                        plot_bgcolor="rgba(0,0,0,0)"
+                    )
+                    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+                else:
+                    st.markdown(f"<div style='height: 160px; display:flex; align-items:center; justify-content:center; color: #94a3b8;'>{t('Chưa có dữ liệu', 'データなし')}</div>", unsafe_allow_html=True)
                 
-                with bc2:
-                    st.markdown(f'''
-                    <style>
-                    .hour-card {{ padding: 8px 12px; border-radius: 8px; margin-bottom: 8px; border-left: 4px solid; background: white; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }}
-                    .hc-title {{ font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }}
-                    .hc-val {{ font-size: 16px; font-weight: 700; }}
-                    </style>
-                    <div class='hour-card' style='border-color: #00B0F0;'>
-                        <div class='hc-title'>🏢 {t("Hành chính", "通常")}</div>
-                        <div class='hc-val' style='color: #00B0F0;'>{regular_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
-                    </div>
-                    <div class='hour-card' style='border-color: #ff4757;'>
-                        <div class='hc-title'>🚀 {t("Tăng ca (OT)", "残業")}</div>
-                        <div class='hc-val' style='color: #ff4757;'>{ot_hours_total:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
-                    </div>
-                    <div class='hour-card' style='border-color: #10b981;'>
-                        <div class='hc-title'>⭐ {t("Tổng", "累計")}</div>
-                        <div class='hc-val' style='color: #10b981;'>{cumulative_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
-                    </div>
-                    ''', unsafe_allow_html=True)
+                st.markdown(f'''
+                <style>
+                .hour-card {{ padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
+                .hc-title {{ font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }}
+                .hc-val {{ font-size: 18px; font-weight: 700; }}
+                </style>
+                <div class='hour-card' style='border-color: #00B0F0;'>
+                    <div class='hc-title'>🏢 {t("Hành chính", "通常")}</div>
+                    <div class='hc-val' style='color: #00B0F0;'>{regular_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                </div>
+                <div class='hour-card' style='border-color: #ff4757;'>
+                    <div class='hc-title'>🚀 {t("Tăng ca (OT)", "残業")}</div>
+                    <div class='hc-val' style='color: #ff4757;'>{ot_hours_total:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                </div>
+                <div class='hour-card' style='border-color: #10b981;'>
+                    <div class='hc-title'>⭐ {t("Tổng", "累計")}</div>
+                    <div class='hc-val' style='color: #10b981;'>{cumulative_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                </div>
+                ''', unsafe_allow_html=True)
             
             st.markdown("</div>", unsafe_allow_html=True)
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ', 'スタッフ情報')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
-        st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
-
-        col_cfg = {
-            "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=False),
-            "Tên NV": st.column_config.TextColumn(t("Tên NV", "氏名"), required=True),
-            "Phòng ban": st.column_config.TextColumn(t("Phòng ban", "部署")),
-            "Chức vụ": st.column_config.TextColumn(t("Chức vụ", "役職")),
-            "Lương cơ bản": st.column_config.TextColumn(t("Lương cơ bản", "基本給")),
-            "Lương Gross": st.column_config.TextColumn(t("Lương Gross (Tự động)", "総支給額 (自動)"), disabled=True),
-            "Ngày bắt đầu tính": None
-        }
-
-        standard_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "Lương Gross", "Ngày bắt đầu tính"]
-        
-        if "PC ăn trưa" not in emp_df.columns: emp_df.insert(5, "PC ăn trưa", 0)
-        if "PC khác" not in emp_df.columns: emp_df.insert(6, "PC khác", 0)
-
-        allowance_cols = [c for c in emp_df.columns if c not in standard_cols]
-        ordered_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản"] + allowance_cols + ["Lương Gross", "Ngày bắt đầu tính"]
-        emp_df = emp_df[ordered_cols]
-        
-        for c in allowance_cols:
-            if c == "PC ăn trưa": col_cfg[c] = st.column_config.TextColumn(t("PC ăn trưa", "昼食手当"))
-            elif c == "PC khác": col_cfg[c] = st.column_config.TextColumn(t("PC khác", "その他手当"))
-            else: col_cfg[c] = st.column_config.TextColumn(c)
-
-        display_df = emp_df.copy()
-        for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-            display_df[c] = pd.to_numeric(display_df[c], errors='coerce').fillna(0)
-            display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}").astype(str)
-
-        edited_emp = st.data_editor(
-            display_df,
-            num_rows="dynamic",
-            use_container_width=True,
-            column_config=col_cfg,
-            column_order=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản"] + allowance_cols + ["Lương Gross"],
-            key="employees_editor_v2"
-        )
-
-        with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
-            from components.ui_utils import make_expander_blue
-            make_expander_blue()
-            add_c1, add_c2 = st.columns([3, 1])
-            with add_c1:
-                new_pc_name = st.text_input(t("Nhập tên Phụ cấp mới:", "新しい手当名:"), key="new_pc_input")
-            with add_c2:
-                st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                if st.button(t("Thêm Cột", "列を追加"), use_container_width=True):
-                    if new_pc_name and new_pc_name not in emp_df.columns:
-                        emp_df[new_pc_name] = 0
-                        save_employees_df(emp_df)
-                        st.rerun()
-                    elif new_pc_name in emp_df.columns:
-                        st.warning(t("Cột này đã tồn tại!", "この列は既に存在します！"))
-
-            if len(allowance_cols) > 0:
-                del_c1, del_c2 = st.columns([3, 1])
-                with del_c1:
-                    del_pc_name = st.selectbox(t("Chọn Phụ cấp cần xóa:", "削除する手当を選択:"), options=allowance_cols, key="del_pc_input")
-                with del_c2:
-                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                    if st.button(t("Xóa Cột", "列を削除"), use_container_width=True):
-                        if del_pc_name in emp_df.columns:
-                            emp_df = emp_df.drop(columns=[del_pc_name])
-                            save_employees_df(emp_df)
-                            st.rerun()
-
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button(t("💾 LƯU THÔNG TIN CHUNG & NHÂN SỰ", "💾 一般情報とスタッフを保存"), key="save_emps", type="primary"):
-            st.session_state['ot_base_data']['standard_days'] = std_days_mo
-            st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
-            st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
-            
-            std_hrs = st.session_state.get("std_hours_input", 8.0)
-            st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
-            from logic.history import save_base_data
-            save_base_data(st.session_state['ot_base_data'])
-
-            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-                if c in edited_emp.columns:
-                    edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
-                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-
-            edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
-            gross = edited_emp['Lương cơ bản'].copy()
-            for c in allowance_cols:
-                if c in edited_emp.columns:
-                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-                    gross += edited_emp[c]
-            edited_emp['Lương Gross'] = gross
-
-            save_employees_df(edited_emp)
-            st.session_state['pending_toast'] = t("Đã lưu Thông tin chung và Danh sách nhân sự thành công!", "設定とスタッフリストを保存しました！")
-            st.rerun()
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
