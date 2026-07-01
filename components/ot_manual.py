@@ -248,6 +248,20 @@ def render_base_data():
 
             # Fix StreamlitAPIException: Ensure the column is a datetime64 dtype so Streamlit doesn't think it's a string
             current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce")
+            
+            holiday_translations = {
+                "Tết Dương lịch": "元日",
+                "Giải phóng Miền Nam": "南部解放記念日",
+                "Quốc tế Lao động": "メーデー",
+                "Lễ Quốc khánh": "建国記念日",
+                "Nghỉ Tết Nguyên Đán": "テト（旧正月）",
+                "Giỗ Tổ Hùng Vương": "フン王の命日"
+            }
+            reverse_holiday_translations = {v: k for k, v in holiday_translations.items()}
+            
+            display_df = current_df.copy()
+            if st.session_state.get('lang', 'vn') == 'jp':
+                display_df['Lý do'] = display_df['Lý do'].map(lambda x: holiday_translations.get(x, x))
 
             import datetime
             # Extract year from selected period to make it dynamic
@@ -286,7 +300,7 @@ def render_base_data():
                 st.rerun()
 
             holidays_df = st.data_editor(
-                current_df,
+                display_df,
                 num_rows="dynamic",
                 column_order=["Ngày nghỉ", "Lý do"],
                 column_config={
@@ -298,6 +312,8 @@ def render_base_data():
             )
 
             if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
+                if st.session_state.get('lang', 'vn') == 'jp':
+                    holidays_df['Lý do'] = holidays_df['Lý do'].map(lambda x: reverse_holiday_translations.get(x, x))
                 st.session_state['ot_base_data']['holidays_df'] = holidays_df
                 save_base_data(st.session_state['ot_base_data'])
                 st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon=":material/check_circle:")
