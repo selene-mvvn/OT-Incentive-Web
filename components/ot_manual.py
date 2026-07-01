@@ -326,12 +326,11 @@ def render_base_data():
             .cal-header button {{ background: none; border: 1px solid #cbd5e1; border-radius: 4px; padding: 4px 12px; cursor: pointer; color: #475569; font-weight: bold; background: white; }}
             .cal-header button:hover {{ background: #f1f5f9; }}
             .cal-header h3 {{ margin: 0; font-size: 18px; font-weight: 600; color: #0f172a; }}
-            .cal-grid {{ display: grid; grid-template-columns: repeat(7, 1fr); gap: 1px; background: #e2e8f0; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
-            .cal-grid > div {{ background: #fff; min-height: 85px; padding: 4px; box-sizing: border-box; }}
+            .cal-grid {{ display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: #e2e8f0; border: 1px solid #e2e8f0; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
+            .cal-grid > div {{ background: #fff; min-height: 85px; padding: 4px; box-sizing: border-box; min-width: 0; }}
             .day-name {{ min-height: 30px !important; text-align: center; font-weight: bold; background: #f8fafc !important; font-size: 13px; padding-top: 8px !important; color: #64748b; }}
             .day-number {{ font-weight: 500; font-size: 13px; margin-bottom: 4px; text-align: right; color: #475569; }}
-            .holiday-event {{ background: #10b981; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }}
-            .holiday-event:hover {{ white-space: normal; overflow: visible; word-break: break-word; }}
+            .holiday-event {{ background: #10b981; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
             .other-month {{ background: #f8fafc !important; color: #cbd5e1 !important; }}
             .other-month .day-number {{ color: #cbd5e1 !important; }}
             .today {{ background: #eff6ff !important; }}
