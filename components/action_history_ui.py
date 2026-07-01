@@ -270,30 +270,30 @@ def render_action_history():
 
                 valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
                 if valid_logs:
-                        import zipfile
-                        import io
-                        zip_buffer = io.BytesIO()
-                        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-                            for idx, l in enumerate(valid_logs):
-                                file_bytes = base64.b64decode(l.get('file_b64'))
-                                safe_name = l.get('original_filename', f'file_{l.get("id")}.xlsx')
-                                if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
-                                    safe_name = f"{idx+1}_{safe_name}"
-                                    zip_file.writestr(safe_name, file_bytes)
+                    import zipfile
+                    import io
+                    zip_buffer = io.BytesIO()
+                    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+                        for idx, l in enumerate(valid_logs):
+                            file_bytes = base64.b64decode(l.get('file_b64'))
+                            safe_name = l.get('original_filename', f'file_{l.get("id")}.xlsx')
+                            if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
+                                safe_name = f"{idx+1}_{safe_name}"
+                            zip_file.writestr(safe_name, file_bytes)
 
-                        st.download_button(
-                            label=t("TẢI ZIP", "ZIP DL"),
-                            data=zip_buffer.getvalue(),
-                            file_name="LichSu_DaChon.zip",
-                            mime="application/zip",
-                            key="bulk_download"
-                        )
+                    st.download_button(
+                        label=t("TẢI ZIP", "ZIP DL"),
+                        data=zip_buffer.getvalue(),
+                        file_name="LichSu_DaChon.zip",
+                        mime="application/zip",
+                        key="bulk_download"
+                    )
 
-                    if st.button(t("XÓA", "削除"), key="bulk_delete"):
-                        for lid in selected_ids:
-                            delete_action_log(lid)
-                        st.session_state['selected_logs'] = {}
-                        st.rerun()
+                if st.button(t("XÓA", "削除"), key="bulk_delete"):
+                    for lid in selected_ids:
+                        delete_action_log(lid)
+                    st.session_state['selected_logs'] = {}
+                    st.rerun()
 
         # 4. Render Logs
         for i, log in enumerate(paginated_logs):
