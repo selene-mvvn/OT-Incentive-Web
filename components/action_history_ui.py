@@ -222,17 +222,28 @@ def render_action_history():
                 margin-top: -15px !important;
                 margin-bottom: 20px !important;
             }
+            /* Căn giữa hoàn hảo toàn bộ nội dung (chữ và 2 nút) */
+            .bulk-action-bar-wrapper div[data-testid="stHorizontalBlock"] {
+                justify-content: center !important;
+                align-items: center !important;
+                gap: 15px !important;
+            }
+            /* Xóa giới hạn độ rộng của cột Streamlit */
+            .bulk-action-bar-wrapper div[data-testid="column"] {
+                width: auto !important;
+                flex: 0 1 auto !important;
+                min-width: 0 !important;
+            }
             .bulk-action-bar-wrapper > div {
                 padding: 6px 12px !important;
             }
             .bulk-action-bar-wrapper button {
                 min-height: 28px !important;
                 height: 28px !important;
-                padding: 0px 8px !important;
+                padding: 0px 12px !important;
                 font-size: 12px !important;
                 border-radius: 4px !important;
                 line-height: 1 !important;
-                width: 100% !important;
             }
             /* Nút Tải ZIP (Cột 2) */
             .bulk-action-bar-wrapper div[data-testid="column"]:nth-child(2) button {
@@ -268,7 +279,7 @@ def render_action_history():
                     c_text, c_dl, c_del = st.columns([5, 2.5, 2.5], vertical_alignment="center")
                     
                     with c_text:
-                        st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:14px;'><span style='color:#00B0F0; font-size:18px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:14px; display:flex; align-items:center; height:28px;'><span style='color:#00B0F0; font-size:18px; margin-right:5px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
                     
                     with c_dl:
                         valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
@@ -285,7 +296,7 @@ def render_action_history():
                                     zip_file.writestr(safe_name, file_bytes)
                             
                             st.download_button(
-                                label="⬇️ " + t("Tải ZIP", "ZIP DL"),
+                                label=t("TẢI ZIP", "ZIP DL"),
                                 data=zip_buffer.getvalue(),
                                 file_name="LichSu_DaChon.zip",
                                 mime="application/zip",
@@ -293,7 +304,7 @@ def render_action_history():
                             )
 
                     with c_del:
-                        if st.button("🗑️ " + t("Xóa", "削除"), key="bulk_delete"):
+                        if st.button(t("XÓA", "削除"), key="bulk_delete"):
                             for lid in selected_ids:
                                 delete_action_log(lid)
                             st.session_state['selected_logs'] = {}
