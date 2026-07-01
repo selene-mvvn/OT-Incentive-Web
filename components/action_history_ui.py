@@ -380,7 +380,7 @@ def render_action_history():
 
                 if st.session_state.get(f'show_preview_{log_id}', False) and not is_missing:
                     st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
-                    st.markdown(t("**👀 Xem trước dữ liệu (5 dòng đầu):**", "**👀 データプレビュー (最初の5行):**"))
+                    st.markdown(t("**:blue[:material/visibility: Xem trước dữ liệu (5 dòng đầu):]**", "**:blue[:material/visibility: データプレビュー (最初の5行):]**"))
                     try:
                         import pandas as pd
                         import io
@@ -388,7 +388,24 @@ def render_action_history():
                         original_filename = log.get("original_filename", "")
                         
                         if original_filename.endswith(".xlsx"):
-                            df_preview = pd.read_excel(io.BytesIO(file_bytes), nrows=5)
+                            # Heuristic to find the actual header row
+                            df_temp = pd.read_excel(io.BytesIO(file_bytes), nrows=15, header=None)
+                            header_idx = 0
+                            max_non_nulls = 0
+                            for idx, row_data in df_temp.iterrows():
+                                non_nulls = row_data.dropna().count()
+                                if non_nulls > max_non_nulls:
+                                    max_non_nulls = non_nulls
+                                    header_idx = idx
+                            
+                            df_preview = pd.read_excel(io.BytesIO(file_bytes), skiprows=header_idx, nrows=5)
+                            
+                            # Format numbers with commas
+                            for col in df_preview.select_dtypes(include=['number']).columns:
+                                df_preview[col] = df_preview[col].apply(
+                                    lambda x: f"{int(x):,}" if pd.notna(x) and x == int(x) else (f"{x:,}" if pd.notna(x) else x)
+                                )
+                                
                             st.dataframe(df_preview, use_container_width=True)
                         elif original_filename.endswith(".zip"):
                             st.info(t("Đây là file ZIP tổng hợp nhiều báo cáo, vui lòng tải về để giải nén và xem chi tiết.", "これは複数のレポートを含むZIPファイルです。ダウンロードして展開してください。"))
