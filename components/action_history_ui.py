@@ -400,10 +400,10 @@ def render_action_history():
                             
                             df_preview = pd.read_excel(io.BytesIO(file_bytes), skiprows=header_idx, nrows=5)
                             
-                            # Format numbers with commas
-                            for col in df_preview.select_dtypes(include=['number']).columns:
+                            # Format numbers with commas (handling mixed type columns)
+                            for col in df_preview.columns:
                                 df_preview[col] = df_preview[col].apply(
-                                    lambda x: f"{int(x):,}" if pd.notna(x) and x == int(x) else (f"{x:,}" if pd.notna(x) else x)
+                                    lambda x: f"{int(x):,}" if pd.notna(x) and isinstance(x, (int, float)) and x == int(x) else (f"{x:,}" if pd.notna(x) and isinstance(x, (int, float)) else x)
                                 )
                                 
                             st.dataframe(df_preview, use_container_width=True)
