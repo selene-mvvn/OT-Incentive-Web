@@ -46,7 +46,8 @@ def render_incentive():
         combined_employees = list(dict.fromkeys(master_employees))
     
         with st.container():
-            
+            from components.ui_utils import make_container_white
+            make_container_white()
             st.markdown(f"""
                 <style>
                 /* Force all Material icons inside widget labels to be UI blue */

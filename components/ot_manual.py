@@ -465,6 +465,8 @@ def render_project_data():
             return
         
         with st.container():
+            from components.ui_utils import make_container_white
+            make_container_white()
             import datetime
             try:
                 fd_str = st.session_state['ot_base_data'].get('from_date', '')
