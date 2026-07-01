@@ -47,7 +47,7 @@ def render_welcome():
         .logo-container {
             text-align: center;
             margin-top: -20px;
-            margin-bottom: 30px;
+            margin-bottom: 80px;
         }
         .logo-container img {
             max-width: 240px;
