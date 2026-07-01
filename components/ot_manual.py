@@ -96,7 +96,7 @@ def render_base_data():
         st.markdown("<div style='margin-bottom: -25px;'></div>", unsafe_allow_html=True)
         # ----------------------
     
-    tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG & NHÂN SỰ", "1. 一般情報・スタッフ"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
+    tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG", "1. 一般情報"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
 
     with tab1:
         from logic.employee_data import get_employees_df, save_employees_df
@@ -114,7 +114,7 @@ def render_base_data():
         col_left, col_right = st.columns([7.5, 2.5], gap="large")
         
         with col_left:
-            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN CHUNG', '一般情報')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('KỲ TÍNH LƯƠNG', '給与計算期間')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
             
             c1, c2, c3 = st.columns(3)
             with c1:
@@ -126,7 +126,7 @@ def render_base_data():
                         fd_val = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
                 except:
                     fd_val = datetime.date.today().replace(day=21) - datetime.timedelta(days=30)
-                from_date = st.date_input(t("TỪ NGÀY (Kỳ Lương)", "開始日"), value=fd_val)
+                from_date = st.date_input(t("TỪ NGÀY", "開始日"), value=fd_val)
             
             with c2:
                 try:
@@ -137,13 +137,13 @@ def render_base_data():
                         td_val = datetime.date.today().replace(day=20)
                 except:
                     td_val = datetime.date.today().replace(day=20)
-                to_date = st.date_input(t("ĐẾN NGÀY (Kỳ Lương)", "終了日"), value=td_val)
+                to_date = st.date_input(t("ĐẾN NGÀY", "終了日"), value=td_val)
             
             with c3:
                 std_days_mo = st.number_input(t("SỐ NGÀY CHUẨN / THÁNG", "月の標準労働日数"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_days', 22.0)), step=0.5)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ', 'スタッフ情報')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
             st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
 
             col_cfg = {
@@ -213,7 +213,7 @@ def render_base_data():
                                 st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
-            if st.button(t("💾 LƯU THÔNG TIN CHUNG & NHÂN SỰ", "💾 一般情報とスタッフを保存"), key="save_emps", type="primary"):
+            if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary"):
                 st.session_state['ot_base_data']['standard_days'] = std_days_mo
                 st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
                 st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
