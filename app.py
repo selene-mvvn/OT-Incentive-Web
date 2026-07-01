@@ -12,14 +12,19 @@ import time
 components.html(f"""
 <script>
     const parent = window.parent.document;
-    const oldContainers = parent.querySelectorAll('.custom-white-container, .custom-history-card');
-    oldContainers.forEach(c => {{
-        c.classList.remove('custom-white-container', 'custom-history-card', 'has-timeline-marker', 'has-missing-marker');
-        c.style.removeProperty('background-color');
-        c.style.removeProperty('border-radius');
-        c.style.removeProperty('box-shadow');
-        c.style.removeProperty('padding');
-        c.style.removeProperty('border');
+    
+    // React strips custom classes during re-render but leaves inline styles intact (DOM leak)!
+    // So we cannot rely on .querySelectorAll('.custom-white-container').
+    // Instead, we indiscriminately strip our 5 custom inline styles from ALL block containers.
+    // Streamlit natively uses CSS classes, not inline styles, for these properties, so this is 100% safe.
+    const allBlocks = parent.querySelectorAll('[data-testid="stVerticalBlock"], [data-testid="stVerticalBlockBorderWrapper"]');
+    allBlocks.forEach(b => {{
+        b.style.removeProperty('background-color');
+        b.style.removeProperty('border-radius');
+        b.style.removeProperty('box-shadow');
+        b.style.removeProperty('padding');
+        b.style.removeProperty('border');
+        b.classList.remove('custom-white-container', 'custom-history-card', 'has-timeline-marker', 'has-missing-marker');
     }});
 </script>
 <!-- {time.time()} -->
