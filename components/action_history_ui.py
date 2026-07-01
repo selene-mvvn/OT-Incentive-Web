@@ -221,11 +221,14 @@ def render_action_history():
                             div.style.setProperty('height', '100%', 'important');
                         });
 
-                        // Trích xuất mã màu trực tiếp từ hộp st.info
-                        let infoBg = '#e8f4fa';
-                        const stAlert = window.parent.document.querySelector('[data-testid="stAlert"]');
-                        if (stAlert) {
-                            infoBg = window.parent.getComputedStyle(stAlert).backgroundColor;
+                        // Trích xuất mã màu trực tiếp từ hộp st.info (lấy màu của lớp con vì lớp cha thường trong suốt)
+                        let infoBg = 'rgba(0, 176, 240, 0.15)'; // Fallback màu xanh nhạt chắc chắn nhìn thấy được
+                        const stAlertChild = window.parent.document.querySelector('[data-testid="stAlert"] > div');
+                        if (stAlertChild) {
+                            const bg = window.parent.getComputedStyle(stAlertChild).backgroundColor;
+                            if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+                                infoBg = bg;
+                            }
                         }
 
                         // Biến stVerticalBlock thành một thanh công cụ (Pill-shaped action bar)
