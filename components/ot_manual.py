@@ -314,7 +314,7 @@ def render_base_data():
                     ot_records = get_records('ot')
                     ot_hours_total = 0.0
                     if ot_records:
-                        ot_df = pd.DataFrame(ot_records)
+                        ot_df = pd.DataFrame(ot_records).drop_duplicates()
                         if not ot_df.empty and 'employee_name' in ot_df.columns and 'ot_date' in ot_df.columns and 'ot_hours' in ot_df.columns:
                             ot_df['ot_date'] = pd.to_datetime(ot_df['ot_date'], format='mixed', dayfirst=True).dt.date
                             ot_df['ot_hours'] = pd.to_numeric(ot_df['ot_hours'], errors='coerce').fillna(0)
