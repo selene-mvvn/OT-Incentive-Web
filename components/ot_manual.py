@@ -348,21 +348,21 @@ def render_base_data():
 
                     st.markdown(f'''
                     <style>
-                    .hour-card {{ padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
-                    .hc-title {{ font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }}
-                    .hc-val {{ font-size: 18px; font-weight: 700; }}
+                    .hour-card {{ padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid; border: 1px solid; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }}
+                    .hc-title {{ font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 3px; }}
+                    .hc-val {{ font-size: 19px; font-weight: 700; }}
                     </style>
-                    <div class='hour-card' style='border-color: #00B0F0;'>
+                    <div class='hour-card' style='background: #f0f9ff; border-color: #e0f2fe; border-left-color: #00B0F0;'>
                         <div class='hc-title'>🏢 {t("Hành chính", "通常")}</div>
-                        <div class='hc-val' style='color: #00B0F0;'>{regular_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                        <div class='hc-val' style='color: #00B0F0;'>{regular_hours:,.1f} <span style='font-size: 13px; font-weight: 500;'>h</span></div>
                     </div>
-                    <div class='hour-card' style='border-color: #ff4757;'>
+                    <div class='hour-card' style='background: #fff5f5; border-color: #ffe4e6; border-left-color: #ff4757;'>
                         <div class='hc-title'>🚀 {t("Tăng ca (OT)", "残業")}</div>
-                        <div class='hc-val' style='color: #ff4757;'>{ot_hours_total:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                        <div class='hc-val' style='color: #ff4757;'>{ot_hours_total:,.1f} <span style='font-size: 13px; font-weight: 500;'>h</span></div>
                     </div>
-                    <div class='hour-card' style='border-color: #10b981;'>
+                    <div class='hour-card' style='background: #f0fdf4; border-color: #dcfce7; border-left-color: #10b981;'>
                         <div class='hc-title'>⭐ {t("Tổng", "累計")}</div>
-                        <div class='hc-val' style='color: #10b981;'>{cumulative_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                        <div class='hc-val' style='color: #10b981;'>{cumulative_hours:,.1f} <span style='font-size: 13px; font-weight: 500;'>h</span></div>
                     </div>
                     ''', unsafe_allow_html=True)
 
