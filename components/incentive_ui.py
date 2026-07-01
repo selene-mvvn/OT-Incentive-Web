@@ -45,9 +45,7 @@ def render_incentive():
     
         combined_employees = list(dict.fromkeys(master_employees))
     
-        with st.container():
-            from components.ui_utils import make_container_white
-            make_container_white()
+        with st.container(border=True):
             
             st.markdown(f"""
                 <style>

@@ -16,11 +16,7 @@ def render_action_history():
         st.info(t("Chưa có lịch sử thao tác nào.", "操作履歴がありません。"))
         return
         
-    with st.container():
-        from components.ui_utils import make_container_white
-        make_container_white()
-        # st.markdown("---")
-
+    with st.container(border=True):
         # 1. Search and Filter
         col_search, col_filter, col_clean, col_clear = st.columns([3, 2, 2, 2])
         with col_search:
@@ -523,7 +519,3 @@ def render_action_history():
             }, 50);
             </script>
             """ + f"<!-- {__import__('time').time()} -->", height=0, width=0)
-
-
-        from components.ui_utils import make_history_cards_white
-        make_history_cards_white()
