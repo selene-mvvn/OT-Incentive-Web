@@ -350,6 +350,14 @@ def render_base_data():
             <script>
             const holidays = {holidays_json};
             const currentLang = "{t('vn', 'jp')}";
+            const holidayTranslations = {{
+                "Tết Dương lịch": "元日",
+                "Giải phóng Miền Nam": "南部解放記念日",
+                "Quốc tế Lao động": "メーデー",
+                "Lễ Quốc khánh": "建国記念日",
+                "Nghỉ Tết Nguyên Đán": "テト（旧正月）",
+                "Giỗ Tổ Hùng Vương": "フン王の命日"
+            }};
             let currentDate = new Date();
 
             function renderCalendar() {{
@@ -395,7 +403,8 @@ def render_base_data():
                     let eventsHtml = "";
                     const dayHolidays = holidays.filter(h => h.date === dateStr);
                     dayHolidays.forEach(h => {{
-                        eventsHtml += `<div class="holiday-event" title="${{h.reason}}">${{h.reason}}</div>`;
+                        const displayReason = (currentLang === 'jp' && holidayTranslations[h.reason]) ? holidayTranslations[h.reason] : h.reason;
+                        eventsHtml += `<div class="holiday-event" title="${{displayReason}}">${{displayReason}}</div>`;
                     }});
                     
                     html += `<div class="${{cls}}"><div class="day-number">${{i}}</div>${{eventsHtml}}</div>`;
