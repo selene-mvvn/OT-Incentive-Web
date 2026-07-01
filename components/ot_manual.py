@@ -241,112 +241,111 @@ def render_base_data():
                 st.rerun()
 
         with col_right:
-            st.markdown(f"<div style='background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); position: sticky; top: 20px;'>", unsafe_allow_html=True)
-            st.markdown(f"<h4 style='margin-top: 0; margin-bottom: 15px; color: #1e293b; font-size: 15px;'>{t('📊 THỐNG KÊ THỜI GIAN LÀM VIỆC', '📊 労働時間統計')}</h4>", unsafe_allow_html=True)
-            
-            std_hours_val = float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0))
-            std_hrs = st.number_input(t("Số giờ chuẩn/ngày:", "1日の標準労働時間:"), min_value=1.0, max_value=24.0, value=std_hours_val, step=0.5, key="std_hours_input")
-            
-            valid_emps = emp_df["Tên NV"].dropna().unique().tolist()
-            if not valid_emps:
-                st.info(t("Chưa có nhân sự", "スタッフなし"))
-                selected_emp = None
-            else:
-                selected_emp = st.selectbox(t("Chọn nhân sự:", "スタッフを選択:"), valid_emps)
-            
-            if selected_emp:
-                emp_row_idx = emp_df.index[emp_df["Tên NV"] == selected_emp].tolist()[0]
-                current_start_date = emp_df.at[emp_row_idx, "Ngày bắt đầu tính"]
-                
-                import datetime
-                try:
-                    if current_start_date:
-                        default_date = datetime.datetime.strptime(str(current_start_date), "%Y-%m-%d").date()
-                    else:
-                        default_date = datetime.date.today()
-                except:
-                    default_date = datetime.date.today()
-                    
-                new_start_date = st.date_input(t("Ngày bắt đầu tính (Tích lũy):", "計算開始日 (累計):"), value=default_date, key=f"start_date_{selected_emp}")
-                
-                if str(new_start_date) != str(current_start_date):
-                    emp_df.at[emp_row_idx, "Ngày bắt đầu tính"] = str(new_start_date)
-                    save_employees_df(emp_df)
-                    st.rerun()
-                
-                today = datetime.date.today()
-                
-                holidays_list = []
-                if 'holidays_df' in st.session_state['ot_base_data']:
-                    hdf = st.session_state['ot_base_data']['holidays_df']
-                    if not hdf.empty and 'Ngày nghỉ' in hdf.columns:
-                        holidays_list = pd.to_datetime(hdf['Ngày nghỉ'], format='mixed', dayfirst=True).dt.date.tolist()
-                
-                regular_days = 0
-                curr_date = new_start_date
-                while curr_date <= today:
-                    if curr_date.weekday() < 5 and curr_date not in holidays_list:
-                        regular_days += 1
-                    curr_date += datetime.timedelta(days=1)
-                
-                regular_hours = regular_days * std_hrs
-                
-                ot_records = get_records('ot')
-                ot_hours_total = 0.0
-                if ot_records:
-                    ot_df = pd.DataFrame(ot_records)
-                    if not ot_df.empty and 'employee_name' in ot_df.columns and 'ot_date' in ot_df.columns and 'ot_hours' in ot_df.columns:
-                        ot_df['ot_date'] = pd.to_datetime(ot_df['ot_date'], format='mixed', dayfirst=True).dt.date
-                        ot_df['ot_hours'] = pd.to_numeric(ot_df['ot_hours'], errors='coerce').fillna(0)
-                        
-                        mask = (ot_df['employee_name'] == selected_emp) & (ot_df['ot_date'] >= new_start_date) & (ot_df['ot_date'] <= today)
-                        ot_hours_total = ot_df[mask]['ot_hours'].sum()
-                
-                cumulative_hours = regular_hours + ot_hours_total
-                
-                # Biểu đồ và Stats
-                if cumulative_hours > 0:
-                    fig = go.Figure(data=[go.Pie(
-                        labels=[t('Hành chính', '通常業務'), t('Tăng ca', '残業')],
-                        values=[regular_hours, ot_hours_total],
-                        hole=.6,
-                        marker_colors=['#00B0F0', '#ff4757'],
-                        textinfo='percent',
-                        hoverinfo='label+value'
-                    )])
-                    fig.update_layout(
-                        margin=dict(t=0, b=0, l=0, r=0),
-                        height=160,
-                        showlegend=True,
-                        legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
-                        paper_bgcolor="rgba(0,0,0,0)",
-                        plot_bgcolor="rgba(0,0,0,0)"
-                    )
-                    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+            with st.container(border=True):
+                st.markdown(f"<h4 style='margin-top: 0; margin-bottom: 15px; color: #1e293b; font-size: 15px;'>{t('📊 THỐNG KÊ THỜI GIAN LÀM VIỆC', '📊 労働時間統計')}</h4>", unsafe_allow_html=True)
+
+                std_hours_val = float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0))
+                std_hrs = st.number_input(t("Số giờ chuẩn/ngày:", "1日の標準労働時間:"), min_value=1.0, max_value=24.0, value=std_hours_val, step=0.5, key="std_hours_input")
+
+                valid_emps = emp_df["Tên NV"].dropna().unique().tolist()
+                if not valid_emps:
+                    st.info(t("Chưa có nhân sự", "スタッフなし"))
+                    selected_emp = None
                 else:
-                    st.markdown(f"<div style='height: 160px; display:flex; align-items:center; justify-content:center; color: #94a3b8;'>{t('Chưa có dữ liệu', 'データなし')}</div>", unsafe_allow_html=True)
-                
-                st.markdown(f'''
-                <style>
-                .hour-card {{ padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
-                .hc-title {{ font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }}
-                .hc-val {{ font-size: 18px; font-weight: 700; }}
-                </style>
-                <div class='hour-card' style='border-color: #00B0F0;'>
-                    <div class='hc-title'>🏢 {t("Hành chính", "通常")}</div>
-                    <div class='hc-val' style='color: #00B0F0;'>{regular_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
-                </div>
-                <div class='hour-card' style='border-color: #ff4757;'>
-                    <div class='hc-title'>🚀 {t("Tăng ca (OT)", "残業")}</div>
-                    <div class='hc-val' style='color: #ff4757;'>{ot_hours_total:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
-                </div>
-                <div class='hour-card' style='border-color: #10b981;'>
-                    <div class='hc-title'>⭐ {t("Tổng", "累計")}</div>
-                    <div class='hc-val' style='color: #10b981;'>{cumulative_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
-                </div>
-                ''', unsafe_allow_html=True)
-            
-            st.markdown("</div>", unsafe_allow_html=True)
+                    selected_emp = st.selectbox(t("Chọn nhân sự:", "スタッフを選択:"), valid_emps)
+
+                if selected_emp:
+                    emp_row_idx = emp_df.index[emp_df["Tên NV"] == selected_emp].tolist()[0]
+                    current_start_date = emp_df.at[emp_row_idx, "Ngày bắt đầu tính"]
+
+                    import datetime
+                    try:
+                        if current_start_date:
+                            default_date = datetime.datetime.strptime(str(current_start_date), "%Y-%m-%d").date()
+                        else:
+                            default_date = datetime.date.today()
+                    except:
+                        default_date = datetime.date.today()
+
+                    new_start_date = st.date_input(t("Ngày bắt đầu tính (Tích lũy):", "計算開始日 (累計):"), value=default_date, key=f"start_date_{selected_emp}")
+
+                    if str(new_start_date) != str(current_start_date):
+                        emp_df.at[emp_row_idx, "Ngày bắt đầu tính"] = str(new_start_date)
+                        save_employees_df(emp_df)
+                        st.rerun()
+
+                    today = datetime.date.today()
+
+                    holidays_list = []
+                    if 'holidays_df' in st.session_state['ot_base_data']:
+                        hdf = st.session_state['ot_base_data']['holidays_df']
+                        if not hdf.empty and 'Ngày nghỉ' in hdf.columns:
+                            holidays_list = pd.to_datetime(hdf['Ngày nghỉ'], format='mixed', dayfirst=True).dt.date.tolist()
+
+                    regular_days = 0
+                    curr_date = new_start_date
+                    while curr_date <= today:
+                        if curr_date.weekday() < 5 and curr_date not in holidays_list:
+                            regular_days += 1
+                        curr_date += datetime.timedelta(days=1)
+
+                    regular_hours = regular_days * std_hrs
+
+                    ot_records = get_records('ot')
+                    ot_hours_total = 0.0
+                    if ot_records:
+                        ot_df = pd.DataFrame(ot_records)
+                        if not ot_df.empty and 'employee_name' in ot_df.columns and 'ot_date' in ot_df.columns and 'ot_hours' in ot_df.columns:
+                            ot_df['ot_date'] = pd.to_datetime(ot_df['ot_date'], format='mixed', dayfirst=True).dt.date
+                            ot_df['ot_hours'] = pd.to_numeric(ot_df['ot_hours'], errors='coerce').fillna(0)
+
+                            mask = (ot_df['employee_name'] == selected_emp) & (ot_df['ot_date'] >= new_start_date) & (ot_df['ot_date'] <= today)
+                            ot_hours_total = ot_df[mask]['ot_hours'].sum()
+
+                    cumulative_hours = regular_hours + ot_hours_total
+
+                    # Biểu đồ và Stats
+                    if cumulative_hours > 0:
+                        fig = go.Figure(data=[go.Pie(
+                            labels=[t('Hành chính', '通常業務'), t('Tăng ca', '残業')],
+                            values=[regular_hours, ot_hours_total],
+                            hole=.6,
+                            marker_colors=['#00B0F0', '#ff4757'],
+                            textinfo='percent',
+                            hoverinfo='label+value'
+                        )])
+                        fig.update_layout(
+                            margin=dict(t=0, b=0, l=0, r=0),
+                            height=160,
+                            showlegend=True,
+                            legend=dict(orientation="h", yanchor="bottom", y=-0.3, xanchor="center", x=0.5),
+                            paper_bgcolor="rgba(0,0,0,0)",
+                            plot_bgcolor="rgba(0,0,0,0)"
+                        )
+                        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+                    else:
+                        st.markdown(f"<div style='height: 160px; display:flex; align-items:center; justify-content:center; color: #94a3b8;'>{t('Chưa có dữ liệu', 'データなし')}</div>", unsafe_allow_html=True)
+
+                    st.markdown(f'''
+                    <style>
+                    .hour-card {{ padding: 10px 12px; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid; background: white; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }}
+                    .hc-title {{ font-size: 11px; color: #64748b; font-weight: 600; text-transform: uppercase; margin-bottom: 2px; }}
+                    .hc-val {{ font-size: 18px; font-weight: 700; }}
+                    </style>
+                    <div class='hour-card' style='border-color: #00B0F0;'>
+                        <div class='hc-title'>🏢 {t("Hành chính", "通常")}</div>
+                        <div class='hc-val' style='color: #00B0F0;'>{regular_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                    </div>
+                    <div class='hour-card' style='border-color: #ff4757;'>
+                        <div class='hc-title'>🚀 {t("Tăng ca (OT)", "残業")}</div>
+                        <div class='hc-val' style='color: #ff4757;'>{ot_hours_total:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                    </div>
+                    <div class='hour-card' style='border-color: #10b981;'>
+                        <div class='hc-title'>⭐ {t("Tổng", "累計")}</div>
+                        <div class='hc-val' style='color: #10b981;'>{cumulative_hours:,.1f} <span style='font-size: 12px; font-weight: 500;'>h</span></div>
+                    </div>
+                    ''', unsafe_allow_html=True)
+
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
