@@ -228,7 +228,7 @@ def render_base_data():
             st.rerun()
             
     with tab2:
-        c1, c2 = st.columns([1.2, 1], gap="large")
+        c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
 
@@ -322,18 +322,18 @@ def render_base_data():
             html_code = f"""
             <style>
             body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; color: #334155; }}
-            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 20px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
+            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 45px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
             .cal-header {{ display: flex; justify-content: space-between; align-items: center; padding: 5px 0 15px 0; }}
-            .cal-header button {{ background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 4px; padding: 4px 12px; cursor: pointer; color: white; font-weight: bold; transition: all 0.2s; }}
-            .cal-header button:hover {{ background: rgba(255,255,255,0.3); }}
+            .cal-header button {{ background: white; border: none; border-radius: 4px; padding: 4px 14px; cursor: pointer; color: #00B0F0; font-weight: bold; transition: all 0.2s; font-size: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
+            .cal-header button:hover {{ background: #f8fafc; color: #0089b8; }}
             .cal-header h3 {{ margin: 0; font-size: 18px; font-weight: 600; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.1); }}
             .cal-grid {{ display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 1px; background: #0098d0; border: 1px solid #0098d0; border-radius: 6px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }}
-            .cal-grid > div {{ background: #fff; min-height: 85px; padding: 4px; box-sizing: border-box; min-width: 0; }}
+            .cal-grid > div {{ background: #fff; min-height: 70px; padding: 4px; box-sizing: border-box; min-width: 0; }}
             .day-name {{ min-height: 30px !important; text-align: center; font-weight: bold; background: #f8fafc !important; font-size: 13px; padding-top: 8px !important; color: #64748b; }}
             .day-number {{ font-weight: 500; font-size: 13px; margin-bottom: 4px; text-align: right; color: #475569; }}
             .holiday-event {{ background: #10b981; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
-            .other-month {{ background: #f8fafc !important; color: #cbd5e1 !important; }}
-            .other-month .day-number {{ color: #cbd5e1 !important; }}
+            .other-month {{ background: #f1f5f9 !important; color: #94a3b8 !important; }}
+            .other-month .day-number {{ color: #94a3b8 !important; }}
             .today {{ background: #eff6ff !important; }}
             .today .day-number {{ color: #2563eb; font-weight: bold; }}
             </style>
