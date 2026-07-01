@@ -198,7 +198,8 @@ def render_action_history():
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) {
                 animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                 background-color: #e8f4fa !important;
-                border: none !important;
+                border: 0px solid transparent !important;
+                box-shadow: none !important;
                 border-radius: 8px !important;
                 margin-top: -15px !important;
                 margin-bottom: 20px !important;
@@ -216,22 +217,30 @@ def render_action_history():
                 width: 100% !important;
             }
             /* Nút Tải ZIP (Cột 2) */
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(2) button {
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(2) div[data-testid="stButton"] button {
                 background-color: #27ae60 !important;
                 color: white !important;
                 border: none !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(2) button:hover {
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(2) div[data-testid="stButton"] button p {
+                color: white !important;
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(2) div[data-testid="stButton"] button:hover {
                 background-color: #219653 !important;
+                color: white !important;
             }
             /* Nút Xóa (Cột 3) */
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(3) button {
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(3) div[data-testid="stButton"] button {
                 background-color: #e74c3c !important;
                 color: white !important;
                 border: none !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(3) button:hover {
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(3) div[data-testid="stButton"] button p {
+                color: white !important;
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.bulk-marker) div[data-testid="stHorizontalBlock"] > div:nth-child(3) div[data-testid="stButton"] button:hover {
                 background-color: #c0392b !important;
+                color: white !important;
             }
             </style>
             """, unsafe_allow_html=True)
