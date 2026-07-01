@@ -116,7 +116,7 @@ def render_base_data():
         with col_left:
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('KỲ TÍNH LƯƠNG', '給与計算期間')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
             
-            c1, c2, c3 = st.columns(3)
+            c1, c2, c3, c4 = st.columns(4)
             with c1:
                 try:
                     fd_str = st.session_state['ot_base_data'].get('from_date', '')
@@ -141,6 +141,9 @@ def render_base_data():
             
             with c3:
                 std_days_mo = st.number_input(t("SỐ NGÀY CHUẨN / THÁNG", "月の標準労働日数"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_days', 22.0)), step=0.5)
+
+            with c4:
+                std_hrs = st.number_input(t("SỐ GIỜ CHUẨN / NGÀY", "1日の標準労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0)), step=0.5)
 
             st.markdown("<br>", unsafe_allow_html=True)
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
@@ -220,7 +223,6 @@ def render_base_data():
                 st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
                 st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
                 
-                std_hrs = st.session_state.get("std_hours_input", 8.0)
                 st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
                 from logic.history import save_base_data
                 save_base_data(st.session_state['ot_base_data'])
@@ -266,9 +268,6 @@ def render_base_data():
                     </div>
                 """, unsafe_allow_html=True)
 
-                std_hours_val = float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0))
-                std_hrs = st.number_input(t("Số giờ chuẩn/ngày:", "1日の標準労働時間:"), min_value=1.0, max_value=24.0, value=std_hours_val, step=0.5, key="std_hours_input")
-
                 valid_emps = emp_df["Tên NV"].dropna().unique().tolist()
                 if not valid_emps:
                     st.info(t("Chưa có nhân sự", "スタッフなし"))
@@ -290,6 +289,8 @@ def render_base_data():
                         default_date = datetime.date.today()
 
                     new_start_date = st.date_input(t("Ngày bắt đầu tính (Tích lũy):", "計算開始日 (累計):"), value=default_date, key=f"start_date_{selected_emp}")
+                    
+                    days_off = st.number_input(t("Số ngày nghỉ:", "休んだ日数:"), min_value=0.0, value=0.0, step=0.5)
 
                     if str(new_start_date) != str(current_start_date):
                         emp_df.at[emp_row_idx, "Ngày bắt đầu tính"] = str(new_start_date)
@@ -319,6 +320,8 @@ def render_base_data():
                             regular_days += 1
                         curr_date += datetime.timedelta(days=1)
 
+                    regular_days = max(0, regular_days - days_off)
+                    std_hrs = float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0))
                     regular_hours = regular_days * std_hrs
 
                     ot_records = get_records('ot')
