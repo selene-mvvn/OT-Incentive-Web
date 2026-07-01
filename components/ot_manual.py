@@ -278,7 +278,7 @@ def render_base_data():
                 if 'holidays_df' in st.session_state['ot_base_data']:
                     hdf = st.session_state['ot_base_data']['holidays_df']
                     if not hdf.empty and 'Ngày nghỉ' in hdf.columns:
-                        holidays_list = pd.to_datetime(hdf['Ngày nghỉ']).dt.date.tolist()
+                        holidays_list = pd.to_datetime(hdf['Ngày nghỉ'], format='mixed', dayfirst=True).dt.date.tolist()
                 
                 regular_days = 0
                 curr_date = new_start_date
@@ -294,7 +294,7 @@ def render_base_data():
                 if ot_records:
                     ot_df = pd.DataFrame(ot_records)
                     if not ot_df.empty and 'employee_name' in ot_df.columns and 'ot_date' in ot_df.columns and 'ot_hours' in ot_df.columns:
-                        ot_df['ot_date'] = pd.to_datetime(ot_df['ot_date']).dt.date
+                        ot_df['ot_date'] = pd.to_datetime(ot_df['ot_date'], format='mixed', dayfirst=True).dt.date
                         ot_df['ot_hours'] = pd.to_numeric(ot_df['ot_hours'], errors='coerce').fillna(0)
                         
                         mask = (ot_df['employee_name'] == selected_emp) & (ot_df['ot_date'] >= new_start_date) & (ot_df['ot_date'] <= today)
@@ -364,7 +364,7 @@ def render_base_data():
                 current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
 
             # Fix StreamlitAPIException: Ensure the column is a datetime64 dtype so Streamlit doesn't think it's a string
-            current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce")
+            current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce", format='mixed', dayfirst=True)
         
             holiday_translations = {
                 "Tết Dương lịch": "元日",
@@ -409,7 +409,7 @@ def render_base_data():
                     st.warning(t(f"Lưu ý: Hệ thống chỉ có sẵn dữ liệu Dương lịch cho năm {selected_year}, các ngày Lễ Âm lịch (Tết, Giỗ tổ) bạn vui lòng bổ sung thêm thủ công nhé.", f"注意：{selected_year}年の太陽暦の祝日のみ自動入力されました。旧正月などは手動で追加してください。"))
 
                 vn_holidays = pd.DataFrame(holidays_data)
-                vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"])
+                vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"], format='mixed', dayfirst=True)
                 combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="first").reset_index(drop=True)
                 st.session_state['ot_base_data']['holidays_df'] = combined
                 if "holidays_editor" in st.session_state:
@@ -714,10 +714,10 @@ def render_project_data():
             holiday_reason = ""
             if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
                 try:
-                    holidays_list = pd.to_datetime(base['holidays_df']["Ngày nghỉ"]).dt.date.tolist()
+                    holidays_list = pd.to_datetime(base['holidays_df']["Ngày nghỉ"], format='mixed', dayfirst=True).dt.date.tolist()
                     if ot_date in holidays_list:
                         is_holiday = True
-                        reason_row = base['holidays_df'][pd.to_datetime(base['holidays_df']["Ngày nghỉ"]).dt.date == ot_date]
+                        reason_row = base['holidays_df'][pd.to_datetime(base['holidays_df']["Ngày nghỉ"], format='mixed', dayfirst=True).dt.date == ot_date]
                         if not reason_row.empty:
                             holiday_reason = str(reason_row.iloc[0].get("Lý do", ""))
                 except:
