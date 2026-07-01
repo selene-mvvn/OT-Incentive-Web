@@ -341,7 +341,7 @@ def render_action_history():
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
 
             with st.container(border=True):
-                c_chk, c_head, c_dl, c_del = st.columns([0.5, 6.5, 2, 1])
+                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 4.5, 2, 2, 1])
                 with c_chk:
                     st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
                     st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
@@ -351,6 +351,14 @@ def render_action_history():
                     st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
+                with c_preview:
+                    if not is_missing:
+                        preview_key = f"preview_{log_id}"
+                        if st.button("👁️ " + t("XEM TRƯỚC", "プレビュー"), key=preview_key, use_container_width=True):
+                            st.session_state[f'show_preview_{log_id}'] = not st.session_state.get(f'show_preview_{log_id}', False)
+                            st.rerun()
+                    else:
+                        st.empty()
                 with c_dl:
                     if not is_missing:
                         file_bytes = base64.b64decode(file_b64)
@@ -369,6 +377,26 @@ def render_action_history():
                     if st.button(t("XÓA", "削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
                         delete_action_log(log_id)
                         st.rerun()
+
+                if st.session_state.get(f'show_preview_{log_id}', False) and not is_missing:
+                    st.markdown("<hr style='margin: 10px 0;'>", unsafe_allow_html=True)
+                    st.markdown(t("**👀 Xem trước dữ liệu (5 dòng đầu):**", "**👀 データプレビュー (最初の5行):**"))
+                    try:
+                        import pandas as pd
+                        import io
+                        file_bytes = base64.b64decode(file_b64)
+                        original_filename = log.get("original_filename", "")
+                        
+                        if original_filename.endswith(".xlsx"):
+                            df_preview = pd.read_excel(io.BytesIO(file_bytes), nrows=5)
+                            st.dataframe(df_preview, use_container_width=True)
+                        elif original_filename.endswith(".zip"):
+                            st.info(t("Đây là file ZIP tổng hợp nhiều báo cáo, vui lòng tải về để giải nén và xem chi tiết.", "これは複数のレポートを含むZIPファイルです。ダウンロードして展開してください。"))
+                        else:
+                            st.info(t("Định dạng file không hỗ trợ xem trước.", "プレビューがサポートされていないファイル形式です。"))
+                    except Exception as e:
+                        st.error(t(f"Không thể đọc file để xem trước: {e}", f"プレビュー用ファイルの読み込みに失敗しました: {e}"))
+
 
         # 5. Pagination Controls
         if total_pages > 1:
