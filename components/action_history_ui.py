@@ -255,12 +255,14 @@ def render_action_history():
                         const mainContainer = window.parent.document.querySelector('div[data-testid="stAppViewBlockContainer"]');
                         if (mainContainer) {
                             const rect = mainContainer.getBoundingClientRect();
-                            let leftPos = rect.left - 65; // Đặt cách lề trái của nội dung chính 65px để không đè vào thẻ Lịch sử
-                            if (leftPos < 10) leftPos = 10; // Ép cách lề màn hình tối thiểu 10px
+                            // rect.left chính là mép phải của Sidebar (nếu có mở).
+                            // Nội dung chính có padding trái ~16px, thẻ timeline thụt vào thêm 40px -> Tổng khoảng trống là ~56px.
+                            // Đặt thanh công cụ (rộng 44px) ở vị trí rect.left + 10px sẽ lọt thỏm hoàn hảo vào khoảng trống này!
+                            let leftPos = rect.left + 10; 
                             wrapper.style.setProperty('left', `${leftPos}px`, 'important');
                             wrapper.style.removeProperty('right');
                         } else {
-                            wrapper.style.setProperty('left', '30px', 'important');
+                            wrapper.style.setProperty('left', '10px', 'important');
                             wrapper.style.removeProperty('right');
                         }
 
