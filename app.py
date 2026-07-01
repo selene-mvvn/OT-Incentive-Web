@@ -6,29 +6,7 @@ if 'pending_toast' in st.session_state:
     st.toast(st.session_state['pending_toast'], icon=":material/check_circle:")
     del st.session_state['pending_toast']
 
-# GLOBAL DOM CLEANUP: Fixes React DOM recycling leaks in Streamlit
-import streamlit.components.v1 as components
-import time
-components.html(f"""
-<script>
-    const parent = window.parent.document;
-    
-    // React strips custom classes during re-render but leaves inline styles intact (DOM leak)!
-    // So we cannot rely on .querySelectorAll('.custom-white-container').
-    // Instead, we indiscriminately strip our 5 custom inline styles from ALL block containers.
-    // Streamlit natively uses CSS classes, not inline styles, for these properties, so this is 100% safe.
-    const allBlocks = parent.querySelectorAll('[data-testid="stVerticalBlock"], [data-testid="stVerticalBlockBorderWrapper"]');
-    allBlocks.forEach(b => {{
-        b.style.removeProperty('background-color');
-        b.style.removeProperty('border-radius');
-        b.style.removeProperty('box-shadow');
-        b.style.removeProperty('padding');
-        b.style.removeProperty('border');
-        b.classList.remove('custom-white-container', 'custom-history-card', 'has-timeline-marker', 'has-missing-marker');
-    }});
-</script>
-<!-- {time.time()} -->
-""", height=0)
+
 
 # Custom CSS for a beautiful corporate look (White & Blue)
 st.markdown("""
