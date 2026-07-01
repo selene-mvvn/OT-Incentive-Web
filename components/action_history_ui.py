@@ -195,120 +195,100 @@ def render_action_history():
             setTimeout(() => {
                 const markers = window.parent.document.querySelectorAll('.bulk-marker');
                 markers.forEach(marker => {
-                    // Hide the marker container to remove empty space at the top
                     const markerContainer = marker.closest('div.element-container');
-                    if (markerContainer) {
-                        markerContainer.style.display = 'none';
-                    }
+                    if (!markerContainer) return;
                     
-                    if(markerContainer && markerContainer.parentNode) {
-                        const wrapper = markerContainer.parentNode.closest('div[data-testid="stVerticalBlock"]');
-                        if (wrapper) {
-                            // Style container
-                            wrapper.style.backgroundColor = '#e8f4fa';
-                            wrapper.style.borderRadius = '8px';
-                            wrapper.style.padding = '10px 20px';
-                            wrapper.style.marginTop = '-10px';
-                            wrapper.style.marginBottom = '20px';
-                            wrapper.style.display = 'flex';
-                            wrapper.style.justifyContent = 'center';
-                            wrapper.style.alignItems = 'center';
-                            wrapper.style.minHeight = '48px';
-                            
-                            // Style row
-                            const row = wrapper.querySelector('div[data-testid="stHorizontalBlock"]');
-                            if (row) {
-                                row.style.justifyContent = 'center';
-                                row.style.alignItems = 'center';
-                                row.style.gap = '20px';
-                                
-                                // Style columns
-                                const cols = row.querySelectorAll('div[data-testid="column"]');
-                                cols.forEach(col => {
-                                    col.style.width = 'auto';
-                                    col.style.flex = '0 1 auto';
-                                    col.style.minWidth = '0';
-                                    
-                                    const innerBlock = col.querySelector('div[data-testid="stVerticalBlock"]');
-                                    if (innerBlock) {
-                                        innerBlock.style.display = 'flex';
-                                        innerBlock.style.justifyContent = 'center';
-                                        innerBlock.style.alignItems = 'center';
-                                    }
-                                });
-                                
-                                // Colors
-                                if (cols.length >= 3) {
-                                    const btn1 = cols[1].querySelector('button');
-                                    if (btn1) {
-                                        btn1.style.backgroundColor = '#27ae60';
-                                        btn1.style.color = 'white';
-                                        btn1.style.borderColor = '#27ae60';
-                                        btn1.style.minHeight = '28px';
-                                        btn1.style.height = '28px';
-                                        btn1.style.padding = '0px 12px';
-                                        btn1.style.fontSize = '12px';
-                                        const p1 = btn1.querySelector('p, span');
-                                        if (p1) p1.style.color = 'white';
-                                    }
-                                    const btn2 = cols[2].querySelector('button');
-                                    if (btn2) {
-                                        btn2.style.backgroundColor = '#e74c3c';
-                                        btn2.style.color = 'white';
-                                        btn2.style.borderColor = '#e74c3c';
-                                        btn2.style.minHeight = '28px';
-                                        btn2.style.height = '28px';
-                                        btn2.style.padding = '0px 12px';
-                                        btn2.style.fontSize = '12px';
-                                        const p2 = btn2.querySelector('p, span');
-                                        if (p2) p2.style.color = 'white';
-                                    }
-                                }
+                    // Xóa trắng khoảng trống của marker
+                    markerContainer.style.display = 'none';
+                    
+                    const wrapper = markerContainer.parentNode;
+                    if (wrapper) {
+                        // Biến stVerticalBlock thành dòng ngang (Flex Row)
+                        wrapper.style.backgroundColor = '#e8f4fa';
+                        wrapper.style.borderRadius = '8px';
+                        wrapper.style.padding = '8px 20px';
+                        wrapper.style.marginTop = '-10px';
+                        wrapper.style.marginBottom = '20px';
+                        wrapper.style.display = 'flex';
+                        wrapper.style.flexDirection = 'row';
+                        wrapper.style.justifyContent = 'center';
+                        wrapper.style.alignItems = 'center';
+                        wrapper.style.gap = '20px';
+                        wrapper.style.minHeight = '48px';
+                        
+                        // Co gọn các thành phần bên trong (div.element-container)
+                        const children = Array.from(wrapper.children);
+                        children.forEach(child => {
+                            if (child.classList.contains('element-container')) {
+                                child.style.width = 'auto';
+                                child.style.flex = '0 1 auto';
+                                child.style.minWidth = '0';
+                                child.style.margin = '0';
                             }
+                        });
+                        
+                        // Tô màu và định dạng 2 nút bấm
+                        const btns = wrapper.querySelectorAll('button');
+                        if (btns.length >= 1) {
+                            btns[0].style.backgroundColor = '#27ae60';
+                            btns[0].style.color = 'white';
+                            btns[0].style.borderColor = '#27ae60';
+                            btns[0].style.minHeight = '28px';
+                            btns[0].style.height = '28px';
+                            btns[0].style.padding = '0px 12px';
+                            btns[0].style.fontSize = '12px';
+                            const p1 = btns[0].querySelector('p, span');
+                            if (p1) p1.style.color = 'white';
+                        }
+                        if (btns.length >= 2) {
+                            btns[1].style.backgroundColor = '#e74c3c';
+                            btns[1].style.color = 'white';
+                            btns[1].style.borderColor = '#e74c3c';
+                            btns[1].style.minHeight = '28px';
+                            btns[1].style.height = '28px';
+                            btns[1].style.padding = '0px 12px';
+                            btns[1].style.fontSize = '12px';
+                            const p2 = btns[1].querySelector('p, span');
+                            if (p2) p2.style.color = 'white';
                         }
                     }
                 });
             }, 50);
             </script>
             """, height=0, width=0)
-            
+
             c_wrapper, _ = st.columns([4.5, 5.5])
             with c_wrapper:
                 with st.container():
-                    st.markdown("<span class='bulk-marker'></span>", unsafe_allow_html=True)
-                    c_text, c_dl, c_del = st.columns([5, 2.5, 2.5], vertical_alignment="center")
-                    
-                    with c_text:
-                        st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:14px; display:flex; align-items:center; height:28px;'><span style='color:#00B0F0; font-size:18px; margin-right:5px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
-                    
-                    with c_dl:
-                        valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
-                        if valid_logs:
-                            import zipfile
-                            import io
-                            zip_buffer = io.BytesIO()
-                            with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-                                for idx, l in enumerate(valid_logs):
-                                    file_bytes = base64.b64decode(l.get('file_b64'))
-                                    safe_name = l.get('original_filename', f'file_{l.get("id")}.xlsx')
-                                    if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
-                                        safe_name = f"{idx+1}_{safe_name}"
-                                    zip_file.writestr(safe_name, file_bytes)
-                            
-                            st.download_button(
-                                label=t("TẢI ZIP", "ZIP DL"),
-                                data=zip_buffer.getvalue(),
-                                file_name="LichSu_DaChon.zip",
-                                mime="application/zip",
-                                key="bulk_download"
-                            )
+                    st.markdown("<span class='bulk-marker' style='display:none'></span>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='color:#0f172a; font-weight:600; font-size:14px; display:flex; align-items:center; height:28px;'><span style='color:#00B0F0; font-size:18px; margin-right:5px;'>{len(selected_ids)}</span> {t('mục đang chọn', '件選択中')}</div>", unsafe_allow_html=True)
 
-                    with c_del:
-                        if st.button(t("XÓA", "削除"), key="bulk_delete"):
-                            for lid in selected_ids:
-                                delete_action_log(lid)
-                            st.session_state['selected_logs'] = {}
-                            st.rerun()
+                    valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
+                    if valid_logs:
+                        import zipfile
+                        import io
+                        zip_buffer = io.BytesIO()
+                        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
+                            for idx, l in enumerate(valid_logs):
+                                file_bytes = base64.b64decode(l.get('file_b64'))
+                                safe_name = l.get('original_filename', f'file_{l.get("id")}.xlsx')
+                                if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
+                                    safe_name = f"{idx+1}_{safe_name}"
+                                    zip_file.writestr(safe_name, file_bytes)
+
+                        st.download_button(
+                            label=t("TẢI ZIP", "ZIP DL"),
+                            data=zip_buffer.getvalue(),
+                            file_name="LichSu_DaChon.zip",
+                            mime="application/zip",
+                            key="bulk_download"
+                        )
+
+                    if st.button(t("XÓA", "削除"), key="bulk_delete"):
+                        for lid in selected_ids:
+                            delete_action_log(lid)
+                        st.session_state['selected_logs'] = {}
+                        st.rerun()
 
         # 4. Render Logs
         for i, log in enumerate(paginated_logs):
