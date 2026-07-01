@@ -77,7 +77,7 @@ def render_base_data():
             }
             icon_svg = svgs.get(icon_name, '')
             return f"""
-            <div style="background-color: #00B0F0; border: 4px solid #e0f2fe; border-radius: 50%; aspect-ratio: 1/1; max-width: 180px; margin: 0 auto 60px auto; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 8px 15px rgba(0, 176, 240, 0.2); text-align: center; padding: 10px;">
+            <div style="background-color: #00B0F0; border: 4px solid #e0f2fe; border-radius: 50%; aspect-ratio: 1/1; max-width: 180px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 8px 15px rgba(0, 176, 240, 0.2); text-align: center; padding: 10px;">
                 <div style="color: rgba(255, 255, 255, 0.95); font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px;">
                     <div style="margin-bottom: 10px; display: flex; justify-content: center;">{icon_svg}</div>
                     {title}
@@ -93,6 +93,7 @@ def render_base_data():
             st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"{holiday_count} <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
         with c_dash3:
             st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 20px;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
+        st.markdown("<div style='margin-bottom: -25px;'></div>", unsafe_allow_html=True)
         # ----------------------
     
     tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG & NHÂN SỰ", "1. 一般情報・スタッフ"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
