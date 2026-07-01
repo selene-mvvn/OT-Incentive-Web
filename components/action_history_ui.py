@@ -200,6 +200,14 @@ def render_action_history():
                     const style = parentDoc.createElement('style');
                     style.id = 'custom-toolbar-style';
                     style.innerHTML = `
+                        /* Prevent FOUC and layout gaps before JS processes the toolbar */
+                        div[data-testid="stVerticalBlock"]:has(.bulk-marker):not(.custom-toolbar-wrapper) {
+                            display: none !important;
+                            height: 0 !important;
+                            margin: 0 !important;
+                            padding: 0 !important;
+                        }
+                        
                         .custom-toolbar-wrapper {
                             border-radius: 50px !important;
                             padding: 10px 6px !important;
