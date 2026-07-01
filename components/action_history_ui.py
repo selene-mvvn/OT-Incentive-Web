@@ -253,8 +253,25 @@ def render_action_history():
                         }
                     `;
                     parentDoc.head.appendChild(style);
+                    // Setup cleanup logic when the iframe unmounts (e.g., page navigation)
+                    const cleanup = () => {
+                        parentDoc.querySelectorAll('.custom-toolbar-wrapper').forEach(el => {
+                            // Only clean up if the marker is actually gone or we are unloading
+                            el.classList.remove('custom-toolbar-wrapper');
+                            el.style.removeProperty('background-color');
+                            el.style.removeProperty('left');
+                            const badge = el.querySelector('.selection-badge');
+                            if (badge) badge.remove();
+                            Array.from(el.children).forEach(child => {
+                                child.classList.remove('toolbar-btn-container');
+                                child.classList.remove('toolbar-hidden-container');
+                            });
+                        });
+                    };
                     
-                    // Setup MutationObserver to clean up tainted DOM nodes when navigating away
+                    window.addEventListener('unload', cleanup);
+                    
+                    // Also observe in case Streamlit rerenders parts without destroying the iframe
                     const observer = new MutationObserver(() => {
                         parentDoc.querySelectorAll('.custom-toolbar-wrapper').forEach(el => {
                             if (!el.querySelector('.bulk-marker')) {
