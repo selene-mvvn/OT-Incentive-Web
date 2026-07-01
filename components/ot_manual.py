@@ -92,7 +92,7 @@ def render_base_data():
         with c_dash2:
             st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"{holiday_count} <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
         with c_dash3:
-            st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 20px;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
+            st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 18px; white-space: nowrap;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
         st.markdown("<div style='margin-bottom: -25px;'></div>", unsafe_allow_html=True)
         # ----------------------
     
