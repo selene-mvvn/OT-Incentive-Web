@@ -366,21 +366,21 @@ def render_action_history():
             components.html("""
             <script>
             setTimeout(() => {
-                const oldToolbars = window.parent.document.querySelectorAll('.custom-toolbar-wrapper');
-                oldToolbars.forEach(tb => {
-                    // Xóa class để ngắt toàn bộ CSS !important của Global Stylesheet!
-                    tb.classList.remove('custom-toolbar-wrapper');
-                    
-                    // Xóa các thuộc tính inline duy nhất ta đã thêm (left, background)
-                    tb.style.removeProperty('left');
-                    tb.style.removeProperty('background-color');
-                    
-                    const badge = tb.querySelector('.selection-badge');
-                    if (badge) badge.remove();
-                    
-                    Array.from(tb.children).forEach(child => {
-                        child.classList.remove('toolbar-btn-container', 'toolbar-hidden-container');
-                    });
+                // React có thể đã xóa mất class 'custom-toolbar-wrapper' khi tái chế thẻ DOM.
+                // Do đó, ta tìm thẻ DOM bị lỗi thông qua 'selection-badge' (phần tử JS ta chèn tay vào mà React không biết để xóa).
+                const badges = window.parent.document.querySelectorAll('.selection-badge');
+                badges.forEach(badge => {
+                    const tb = badge.parentNode;
+                    if (tb) {
+                        tb.classList.remove('custom-toolbar-wrapper');
+                        tb.style.removeProperty('left');
+                        tb.style.removeProperty('background-color');
+                        
+                        Array.from(tb.children).forEach(child => {
+                            child.classList.remove('toolbar-btn-container', 'toolbar-hidden-container');
+                        });
+                    }
+                    badge.remove();
                 });
             }, 50);
             </script>
