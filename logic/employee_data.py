@@ -23,6 +23,13 @@ def init_employee_data():
             json.dump([], f, ensure_ascii=False, indent=4)
 
 def get_employees_df():
+    default_cols = ["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "PC ăn trưa", "PC khác", "Ngày bắt đầu tính", "Lương Gross"]
+    
+    def process_df(df):
+        if "Ngày bắt đầu tính" not in df.columns:
+            df["Ngày bắt đầu tính"] = None
+        return df
+
     firebase_url = get_firebase_url("employees.json")
     if firebase_url:
         try:
@@ -30,8 +37,8 @@ def get_employees_df():
             if resp.status_code == 200 and resp.json() is not None:
                 data = resp.json()
                 if not data:
-                    return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
-                return pd.DataFrame(data)
+                    return pd.DataFrame(columns=default_cols)
+                return process_df(pd.DataFrame(data))
         except Exception:
             pass
 
@@ -40,10 +47,10 @@ def get_employees_df():
         with open(EMPLOYEE_FILE, "r", encoding="utf-8") as f:
             data = json.load(f)
             if not data:
-                return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
-            return pd.DataFrame(data)
+                return pd.DataFrame(columns=default_cols)
+            return process_df(pd.DataFrame(data))
     except Exception:
-        return pd.DataFrame(columns=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản", "PC ăn trưa", "PC khác", "Lương Gross"])
+        return pd.DataFrame(columns=default_cols)
 
 def save_employees_df(df):
     try:
