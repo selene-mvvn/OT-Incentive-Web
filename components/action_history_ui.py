@@ -253,6 +253,24 @@ def render_action_history():
                         }
                     `;
                     parentDoc.head.appendChild(style);
+                    
+                    // Setup MutationObserver to clean up tainted DOM nodes when navigating away
+                    const observer = new MutationObserver(() => {
+                        parentDoc.querySelectorAll('.custom-toolbar-wrapper').forEach(el => {
+                            if (!el.querySelector('.bulk-marker')) {
+                                el.classList.remove('custom-toolbar-wrapper');
+                                el.style.removeProperty('background-color');
+                                el.style.removeProperty('left');
+                                const badge = el.querySelector('.selection-badge');
+                                if (badge) badge.remove();
+                                Array.from(el.children).forEach(child => {
+                                    child.classList.remove('toolbar-btn-container');
+                                    child.classList.remove('toolbar-hidden-container');
+                                });
+                            }
+                        });
+                    });
+                    observer.observe(parentDoc.body, { childList: true, subtree: true });
                 }
 
                 // 2. Setup toolbar

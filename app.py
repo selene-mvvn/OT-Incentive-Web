@@ -18,17 +18,6 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
-    /* Fix tab switching jerkiness with a smooth fade in */
-    div[data-testid="stAppViewBlockContainer"], .stMainBlockContainer {
-        animation: smoothFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        min-height: 100vh;
-    }
-    
-    @keyframes smoothFade {
-        0% { opacity: 0; transform: translateY(10px); }
-        100% { opacity: 1; transform: translateY(0); }
-    }
-    
     /* Adjust spacing for horizontal rules */
     hr {
         margin-top: 15px !important;
