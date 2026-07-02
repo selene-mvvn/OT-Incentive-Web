@@ -894,12 +894,13 @@ else:
                     }
                     if(elContainer && elContainer.classList.contains('element-container')) {
                         elContainer.style.position = 'fixed';
-                        elContainer.style.bottom = '20px';
+                        elContainer.style.bottom = '40px'; /* Raised from 20px */
                         elContainer.style.zIndex = '999';
                         
                         const updateWidth = () => {
-                            const sidebarWidth = sidebar.getBoundingClientRect().width;
-                            elContainer.style.width = sidebarWidth + 'px';
+                            const rect = sidebar.getBoundingClientRect();
+                            elContainer.style.width = rect.width + 'px';
+                            elContainer.style.left = rect.left + 'px'; /* Explicitly match sidebar left edge */
                         };
                         
                         updateWidth();
