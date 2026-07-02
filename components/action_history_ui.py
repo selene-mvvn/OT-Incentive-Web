@@ -510,10 +510,15 @@ def render_action_history():
                 if st.button(t("XÓA", "削除"), key="bulk_delete"):
                     for lid in selected_ids:
                         delete_action_log(lid)
+                        if f"chk_sel_{lid}" in st.session_state:
+                            st.session_state[f"chk_sel_{lid}"] = False
                     st.session_state['selected_logs'] = {}
                     st.rerun()
 
                 if st.button(t("BỎ CHỌN", "選択解除"), key="bulk_uncheck"):
+                    for lid in selected_ids:
+                        if f"chk_sel_{lid}" in st.session_state:
+                            st.session_state[f"chk_sel_{lid}"] = False
                     st.session_state['selected_logs'] = {}
                     st.rerun()
 
