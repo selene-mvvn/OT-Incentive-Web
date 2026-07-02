@@ -933,10 +933,17 @@ else:
                         // Clock Logic
                         const timeEl = doc.getElementById('clock-time');
                         const dateEl = doc.getElementById('clock-date');
-                        const lang = footer.getAttribute('data-lang') || 'VN';
                         const updateClock = () => {
                             if (!timeEl || !dateEl) return;
-                            const now = new Date();
+                            const currentLang = footer.getAttribute('data-lang') || 'VN';
+                            
+                            let now = new Date();
+                            if (currentLang === 'JP') {
+                                // Convert to Japan Standard Time (JST)
+                                const jstStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
+                                now = new Date(jstStr);
+                            }
+                            
                             const hrs = String(now.getHours()).padStart(2, '0');
                             const mins = String(now.getMinutes()).padStart(2, '0');
                             const secs = String(now.getSeconds()).padStart(2, '0');
@@ -947,7 +954,7 @@ else:
                             const month = now.getMonth();
                             const year = now.getFullYear();
                             
-                            if (lang === 'JP') {
+                            if (currentLang === 'JP') {
                                 const daysJP = ['日', '月', '火', '水', '木', '金', '土'];
                                 dateEl.innerText = `${year}年${String(month + 1).padStart(2, '0')}月${date}日 (${daysJP[day]})`;
                             } else {
