@@ -602,63 +602,11 @@ def render_base_data():
             </script>
             """
             components.html(html_code, height=650)
-def render_budget_chart(container=st):
-    import plotly.express as px
-    from logic.i18n import t
-    import pandas as pd
-    
-    records = st.session_state.get('ot_records', [])
-    if not records:
-        container.empty()
-        return
-        
-    project_hours = {}
-    for r in records:
-        proj = r.get('order_name', t('Khác', 'その他'))
-        hrs = r.get('ot_hours', 0)
-        project_hours[proj] = project_hours.get(proj, 0) + hrs
-        
-    df = pd.DataFrame({
-        'Project': list(project_hours.keys()),
-        'Hours': list(project_hours.values())
-    })
-    
-    if df['Hours'].sum() == 0:
-        container.empty()
-        return
-        
-    with container.container():
-        st.markdown(f"""
-        <div style='background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 20px; border: 1px solid #f0f2f6;'>
-            <h4 style='font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 5px; text-transform: uppercase;'>
-                {t('📊 Phân bổ dự án', '📊 プロジェクト別分布')}
-            </h4>
-            <div style='font-size: 11px; color: #7f8c8d; margin-bottom: 10px;'>
-                {t('Tỷ trọng giờ OT (Dữ liệu đang nhập)', '残業時間の割合 (入力中のデータ)')}
-            </div>
-        """, unsafe_allow_html=True)
-        
-        fig = px.pie(df, values='Hours', names='Project', hole=0.5, 
-                     color_discrete_sequence=px.colors.qualitative.Set3)
-        fig.update_traces(textposition='inside', textinfo='percent')
-        fig.update_layout(
-            margin=dict(t=0, b=0, l=0, r=0),
-            showlegend=True,
-            legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),
-            height=220,
-            paper_bgcolor='rgba(0,0,0,0)',
-            plot_bgcolor='rgba(0,0,0,0)',
-        )
-        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-        
-        st.markdown("</div>", unsafe_allow_html=True)
-
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
     with col_rank:
         from components.mini_leaderboard import render_mini_leaderboard
         render_mini_leaderboard("ot")
-        chart_placeholder = st.empty()
     with col_main:
         init_session_state()
         st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{t('DỮ LIỆU DỰ ÁN VÀ TÍNH TĂNG CA', 'プロジェクトデータと残業計算')}</h2>", unsafe_allow_html=True)
@@ -982,7 +930,6 @@ def render_project_data():
                     column_config=col_cfg
                 )
                 st.session_state['ot_records'] = edited_df
-                render_budget_chart(chart_placeholder)
             
                 st.markdown("---")
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.5, 2.0])

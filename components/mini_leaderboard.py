@@ -228,3 +228,36 @@ def render_mini_leaderboard(data_type="ot"):
     st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
     if st.button(t("✏️ Sửa dữ liệu (Nhanh)", "✏️ 簡易編集"), use_container_width=True, key=f"btn_edit_mini_{data_type}"):
         show_mini_edit_dialog(data_type, df)
+
+    if data_type == "ot" and not df.empty:
+        # Budget Chart
+        project_hours = df.groupby('order_name')['ot_hours'].sum().reset_index()
+        project_hours.columns = ['Project', 'Hours']
+        # Fill missing project names
+        project_hours['Project'] = project_hours['Project'].replace('', t('Khác', 'その他'))
+        
+        if project_hours['Hours'].sum() > 0:
+            st.markdown(f"""
+            <div style='background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 20px; border: 1px solid #f0f2f6;'>
+                <h4 style='font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 5px; text-transform: uppercase;'>
+                    {t('📊 Phân bổ dự án', '📊 プロジェクト別分布')}
+                </h4>
+                <div style='font-size: 11px; color: #7f8c8d; margin-bottom: 10px;'>
+                    {t('Tỷ trọng giờ OT (Dữ liệu lịch sử)', '残業時間の割合 (履歴データ)')}
+                </div>
+            """, unsafe_allow_html=True)
+            
+            import plotly.express as px
+            fig_pie = px.pie(project_hours, values='Hours', names='Project', hole=0.5, 
+                         color_discrete_sequence=px.colors.qualitative.Set3)
+            fig_pie.update_traces(textposition='inside', textinfo='percent')
+            fig_pie.update_layout(
+                margin=dict(t=0, b=0, l=0, r=0),
+                showlegend=True,
+                legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),
+                height=220,
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+            )
+            st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
+            st.markdown("</div>", unsafe_allow_html=True)
