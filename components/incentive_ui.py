@@ -221,17 +221,19 @@ def render_incentive():
                     st.session_state['incentive_records'] = edited_df.rename(columns=reverse_map).to_dict('records')
                 
                 # Export Excel
-                excel_buffer = generate_incentive_excel(st.session_state['incentive_records'])
-                if excel_buffer:
-                    today_str = datetime.datetime.now().strftime("%Y%m%d")
-                    default_name = f"{t('Bảng tổng hợp Incentive_', 'インセンティブ計算結果_')}{today_str}.xlsx"
-                
+                if st.session_state['incentive_records']:
+                    default_name = f"{t('Bảng tổng hợp Incentive', 'インセンティブ集計表')}.xlsx"
+
                     st.markdown("---")
                     c_name, c_dl, c_del = st.columns([5, 3, 2])
                     with c_name:
-                        export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="incentive_filename")
+                        export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="incentive_filename_v2")
                         if not export_name.endswith(".xlsx"):
                             export_name += ".xlsx"
+                            
+                    title_for_excel = export_name.replace(".xlsx", "").upper()
+                    excel_buffer = generate_incentive_excel(st.session_state['incentive_records'], title=title_for_excel)
+
                     with c_dl:
                         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                     
