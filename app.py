@@ -874,6 +874,21 @@ else:
         
         st.markdown("""
     <div class='sidebar-footer-container'>
+        <div id='sidebar-clock' style='
+            text-align: center;
+            margin: 0 auto 20px auto;
+            width: 80%;
+            background: linear-gradient(145deg, #ffffff, #f0f8ff);
+            border: 1px solid rgba(0, 168, 232, 0.3);
+            border-radius: 16px;
+            padding: 12px 10px;
+            box-shadow: 0 4px 15px rgba(0, 168, 232, 0.15);
+            color: #00a8e8;
+            transition: all 0.3s ease;
+        '>
+            <div id='clock-time' style='font-family: "Courier New", monospace; font-size: 26px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0, 168, 232, 0.2);'>00:00:00</div>
+            <div id='clock-date' style='font-size: 11px; font-weight: 700; opacity: 0.8; letter-spacing: 1px; margin-top: 5px; color: #34495e;'>---</div>
+        </div>
         <div class='sidebar-footer-text' style='text-align: center; opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #34495e;'>
             VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0
         </div>
@@ -908,6 +923,28 @@ else:
                             updateWidth();
                         });
                         resizeObserver.observe(sidebar);
+                        
+                        // Clock Logic
+                        const timeEl = doc.getElementById('clock-time');
+                        const dateEl = doc.getElementById('clock-date');
+                        const updateClock = () => {
+                            if (!timeEl || !dateEl) return;
+                            const now = new Date();
+                            const hrs = String(now.getHours()).padStart(2, '0');
+                            const mins = String(now.getMinutes()).padStart(2, '0');
+                            const secs = String(now.getSeconds()).padStart(2, '0');
+                            timeEl.innerText = `${hrs}:${mins}:${secs}`;
+                            
+                            const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+                            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                            const dayName = days[now.getDay()];
+                            const date = String(now.getDate()).padStart(2, '0');
+                            const month = months[now.getMonth()];
+                            const year = now.getFullYear();
+                            dateEl.innerText = `${dayName}, ${date} ${month} ${year}`;
+                        };
+                        updateClock();
+                        setInterval(updateClock, 1000);
                     }
                 }
             });
