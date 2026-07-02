@@ -75,6 +75,44 @@ def render_ot_excel():
         st.info("💡 " + t(f"Hệ thống sẽ sử dụng Mức lương cơ bản từ Danh sách Nhân sự và Ngày nghỉ/Lễ để tính toán tự động. (Số ngày chuẩn: {base.get('standard_days', 22.0)})", f"システムはスタッフリストの基本給と休日を使用して自動計算します。（標準日数: {base.get('standard_days', 22.0)}）"))
     
         # Removed Project Overrides expander
+
+        st.markdown("""
+            <style>
+                [data-testid="stFileUploader"] {
+                    padding: 10px 0;
+                    margin-bottom: 20px;
+                }
+                [data-testid="stFileUploaderDropzone"] {
+                    border: 2.5px dashed #3498db !important;
+                    border-radius: 16px !important;
+                    background-color: #f4faff !important;
+                    padding: 40px 20px !important;
+                    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+                }
+                [data-testid="stFileUploaderDropzone"]:hover {
+                    background-color: #ebf5ff !important;
+                    border-color: #2980b9 !important;
+                    transform: translateY(-2px) !important;
+                    box-shadow: 0 8px 24px rgba(52, 152, 219, 0.15) !important;
+                }
+                [data-testid="stFileUploaderDropzone"] svg {
+                    color: #3498db !important;
+                    width: 64px !important;
+                    height: 64px !important;
+                    filter: drop-shadow(0 4px 6px rgba(52, 152, 219, 0.2)) !important;
+                    margin-bottom: 15px !important;
+                    transition: all 0.3s ease !important;
+                }
+                @keyframes bounceCloud {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-8px); }
+                }
+                [data-testid="stFileUploaderDropzone"]:hover svg {
+                    animation: bounceCloud 1.5s infinite ease-in-out !important;
+                    color: #2980b9 !important;
+                }
+            </style>
+        """, unsafe_allow_html=True)
         uploaded_file = st.file_uploader(t("Upload File Dữ Liệu Tăng Ca", "残業データファイルをアップロード"), type=['xlsx', 'xls'])
         if uploaded_file is not None:
             try:
