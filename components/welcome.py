@@ -230,7 +230,7 @@ def render_welcome():
     <!DOCTYPE html>
     <html>
     <head>
-    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
     body {{
         margin: 0; padding: 0; 
@@ -269,7 +269,7 @@ def render_welcome():
     </head>
     <body>
         <div class="clock-widget">
-            <lord-icon src="https://cdn.lordicon.com/qwwuyobg.json" trigger="loop" delay="2000" colors="primary:#00B0F0,secondary:#00B0F0" style="width:32px;height:32px"></lord-icon>
+            <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_V9t630.json" background="transparent" speed="1" style="width:36px;height:36px;margin:-5px" loop autoplay></lottie-player>
             <div class="time-display" id="time">00:00:00</div>
             <div class="greeting-text" id="greeting">Loading...</div>
         </div>
