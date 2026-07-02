@@ -876,18 +876,18 @@ else:
     <div class='sidebar-footer-container'>
         <div id='sidebar-clock' style='
             text-align: center;
-            margin: 0 auto 20px auto;
-            width: 80%;
+            margin: 0 auto 30px auto; /* Increased bottom margin from 20px to 30px to shift it up */
+            width: 65%; /* Reduced width from 80% */
             background: linear-gradient(145deg, #ffffff, #f0f8ff);
             border: 1px solid rgba(0, 168, 232, 0.3);
-            border-radius: 16px;
-            padding: 12px 10px;
-            box-shadow: 0 4px 15px rgba(0, 168, 232, 0.15);
+            border-radius: 12px; /* Smaller border radius */
+            padding: 8px 8px; /* Reduced padding */
+            box-shadow: 0 3px 10px rgba(0, 168, 232, 0.1);
             color: #00a8e8;
             transition: all 0.3s ease;
         '>
-            <div id='clock-time' style='font-family: "Courier New", monospace; font-size: 26px; font-weight: 900; letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0, 168, 232, 0.2);'>00:00:00</div>
-            <div id='clock-date' style='font-size: 11px; font-weight: 700; opacity: 0.8; letter-spacing: 1px; margin-top: 5px; color: #34495e;'>---</div>
+            <div id='clock-time' style='font-family: "Courier New", monospace; font-size: 20px; font-weight: 900; letter-spacing: 1px; text-shadow: 0 1px 2px rgba(0, 168, 232, 0.2);'>00:00:00</div>
+            <div id='clock-date' style='font-size: 9px; font-weight: 700; opacity: 0.8; letter-spacing: 1px; margin-top: 3px; color: #34495e;'>---</div>
         </div>
         <div class='sidebar-footer-text' style='text-align: center; opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #34495e;'>
             VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0
