@@ -872,8 +872,26 @@ else:
         
         menu_selection = st.session_state['menu_selection']
         
-        st.markdown("<br><br><br><br>", unsafe_allow_html=True)
-        st.markdown("<div class='sidebar-footer-text' style='text-align: center; opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px;'>VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0</div>", unsafe_allow_html=True)
+        st.markdown("""
+    <style>
+        .sidebar-footer-container {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+        }
+        /* Ensure the sidebar content leaves space for the footer so it doesn't overlap */
+        [data-testid="stSidebarUserContent"] {
+            padding-bottom: 80px;
+        }
+    </style>
+    <div class='sidebar-footer-container'>
+        <div class='sidebar-footer-text' style='opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #34495e;'>
+            VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0
+        </div>
+    </div>
+""", unsafe_allow_html=True)
 
     # Main Content Area
     st.markdown("""
