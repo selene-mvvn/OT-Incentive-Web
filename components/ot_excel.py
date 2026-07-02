@@ -351,7 +351,7 @@ def render_ot_excel():
                 st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 0;'>{t('BẢNG DỮ LIỆU KẾT QUẢ', '処理結果データ')}</h3>", unsafe_allow_html=True)
             with col_clear:
                 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-                if st.button("🗑️ " + t("Xóa kết quả này", "結果をクリア"), use_container_width=True):
+                if st.button(":material/delete: " + t("Xóa kết quả này", "結果をクリア"), use_container_width=True):
                     st.session_state['ot_excel_records'] = []
                     st.rerun()
                 

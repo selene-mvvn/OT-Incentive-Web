@@ -143,7 +143,7 @@ def render_incentive():
                 st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 0;'>{t('3. Kết quả & Phân tích', '3. 結果と分析')}</h3>", unsafe_allow_html=True)
             with col_clear:
                 st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
-                if st.button("🗑️ " + t("Xóa kết quả này", "結果をクリア"), use_container_width=True, key="clear_incentive_result"):
+                if st.button(":material/delete: " + t("Xóa kết quả này", "結果をクリア"), use_container_width=True, key="clear_incentive_result"):
                     if 'last_incentive_calc' in st.session_state:
                         del st.session_state['last_incentive_calc']
                     if 'last_incentive_inputs' in st.session_state:
@@ -261,7 +261,7 @@ def render_incentive():
                         )
                     with c_del:
                         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                        if st.button(t("🗑️ XÓA TOÀN BỘ", "🗑️ 全データ削除"), use_container_width=True):
+                        if st.button(t(":material/delete: XÓA TOÀN BỘ", ":material/delete: 全データ削除"), use_container_width=True):
                             st.session_state['incentive_records'] = []
                             st.rerun()
                 

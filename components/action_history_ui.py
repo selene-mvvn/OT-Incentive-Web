@@ -40,7 +40,7 @@ def render_action_history():
                 st.rerun()
         with col_clear:
             st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-            if st.button(t("🗑️ Xóa toàn bộ", "🗑️ 全履歴クリア"), type="primary", use_container_width=True):
+            if st.button(t(":material/delete: Xóa toàn bộ", ":material/delete: 全履歴クリア"), type="primary", use_container_width=True):
                 clear_all_logs()
                 st.rerun()
 
