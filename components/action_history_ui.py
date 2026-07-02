@@ -9,12 +9,12 @@ def render_action_history():
     st.markdown("""
         <style>
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title) {
-                transition: all 0.2s ease-in-out;
+                transition: all 0.2s ease-in-out !important;
             }
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title):hover {
-                box-shadow: 0 6px 16px rgba(0,0,0,0.1);
-                transform: translateY(-2px);
-                border-color: #3498db;
+                box-shadow: 0 6px 16px rgba(0,0,0,0.1) !important;
+                transform: translateY(-2px) !important;
+                border-color: #3498db !important;
             }
         </style>
     """, unsafe_allow_html=True)
