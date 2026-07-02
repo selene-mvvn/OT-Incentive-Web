@@ -627,30 +627,31 @@ def render_budget_chart(container=st):
         container.empty()
         return
         
-    container.markdown(f"""
-    <div style='background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 20px; border: 1px solid #f0f2f6;'>
-        <h4 style='font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 5px; text-transform: uppercase;'>
-            {t('📊 Phân bổ dự án', '📊 プロジェクト別分布')}
-        </h4>
-        <div style='font-size: 11px; color: #7f8c8d; margin-bottom: 10px;'>
-            {t('Tỷ trọng giờ OT (Dữ liệu đang nhập)', '残業時間の割合 (入力中のデータ)')}
-        </div>
-    """, unsafe_allow_html=True)
-    
-    fig = px.pie(df, values='Hours', names='Project', hole=0.5, 
-                 color_discrete_sequence=px.colors.qualitative.Set3)
-    fig.update_traces(textposition='inside', textinfo='percent')
-    fig.update_layout(
-        margin=dict(t=0, b=0, l=0, r=0),
-        showlegend=True,
-        legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),
-        height=220,
-        paper_bgcolor='rgba(0,0,0,0)',
-        plot_bgcolor='rgba(0,0,0,0)',
-    )
-    container.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-    
-    container.markdown("</div>", unsafe_allow_html=True)
+    with container.container():
+        st.markdown(f"""
+        <div style='background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 20px; border: 1px solid #f0f2f6;'>
+            <h4 style='font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 5px; text-transform: uppercase;'>
+                {t('📊 Phân bổ dự án', '📊 プロジェクト別分布')}
+            </h4>
+            <div style='font-size: 11px; color: #7f8c8d; margin-bottom: 10px;'>
+                {t('Tỷ trọng giờ OT (Dữ liệu đang nhập)', '残業時間の割合 (入力中のデータ)')}
+            </div>
+        """, unsafe_allow_html=True)
+        
+        fig = px.pie(df, values='Hours', names='Project', hole=0.5, 
+                     color_discrete_sequence=px.colors.qualitative.Set3)
+        fig.update_traces(textposition='inside', textinfo='percent')
+        fig.update_layout(
+            margin=dict(t=0, b=0, l=0, r=0),
+            showlegend=True,
+            legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),
+            height=220,
+            paper_bgcolor='rgba(0,0,0,0)',
+            plot_bgcolor='rgba(0,0,0,0)',
+        )
+        st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+        
+        st.markdown("</div>", unsafe_allow_html=True)
 
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
