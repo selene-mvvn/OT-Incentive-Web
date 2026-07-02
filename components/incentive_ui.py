@@ -225,9 +225,15 @@ def render_incentive():
                     default_name = f"{t('Bảng tổng hợp Incentive', 'インセンティブ集計表')}.xlsx"
 
                     st.markdown("---")
-                    c_name, c_dl, c_del = st.columns([5, 3, 2])
+                    c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.5, 2.0])
                     with c_name:
                         export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="incentive_filename_v2")
+                    with c_save:
+                        st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                        if st.button(t("💾 LƯU DỮ LIỆU", "💾 データ保存"), use_container_width=True, type="primary", key="save_inc_data"):
+                            from logic.history_records import add_records
+                            add_records("incentive", st.session_state['incentive_records'])
+                            st.toast(t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！"), icon="✅")
                         if not export_name.endswith(".xlsx"):
                             export_name += ".xlsx"
                             
