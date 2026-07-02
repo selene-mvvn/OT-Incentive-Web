@@ -304,7 +304,7 @@ def render_welcome():
                 <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 50px; border: none; overflow: hidden; background: transparent;"></iframe>
             </div>
             <div style="position: absolute; top: -6vh; width: 100%; display: flex; justify-content: center; pointer-events: none;">
-                <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets4.lottiefiles.com/packages/lf20_w51pcehl.json' background='transparent' speed='1' style='width: 140px; height: 140px;' loop autoplay></lottie-player></body></html>" style="width: 160px; height: 160px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe>
+                <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets4.lottiefiles.com/packages/lf20_w51pcehl.json' background='transparent' speed='1' style='width: 140px; height: 140px; filter: hue-rotate(-85deg) brightness(1.1);' loop autoplay></lottie-player></body></html>" style="width: 160px; height: 160px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe>
             </div>
         </div>
     """, unsafe_allow_html=True)
