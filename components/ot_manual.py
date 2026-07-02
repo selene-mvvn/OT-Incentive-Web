@@ -528,7 +528,7 @@ def render_base_data():
                 
                 for y in [curr_y - 1, curr_y, curr_y + 1]:
                     for jp_date, jp_name in jpholiday.year_holidays(y):
-                        display_name = f"JP {jp_name}" if lang == 'JP' else f"JP {get_vn_name(jp_name)}"
+                        display_name = jp_name if lang == 'JP' else get_vn_name(jp_name)
                         holidays_list.append({
                             "date": jp_date.strftime("%Y-%m-%d"),
                             "reason": display_name,
