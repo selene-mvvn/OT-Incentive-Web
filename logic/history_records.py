@@ -85,7 +85,8 @@ def save_all_records(file_type, records_list):
     
     import pandas as pd
     if records_list:
-        records_list = pd.DataFrame(records_list).drop_duplicates().to_dict('records')
+        import json
+        records_list = json.loads(pd.DataFrame(records_list).drop_duplicates().to_json(orient='records'))
 
     firebase_url = get_firebase_url(filename)
     if firebase_url:
