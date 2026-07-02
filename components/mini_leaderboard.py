@@ -270,7 +270,7 @@ def render_mini_leaderboard(data_type="ot"):
             all_proj_in_db = sorted(project_hours['Project'].unique().tolist())
             
             selected_hidden = st.multiselect(
-                "🗑️ " + t("Dự án đã đóng (Không hiển thị):", "クローズ済プロジェクト (表示しない):"),
+                ":material/delete: " + t("Dự án đã đóng (Không hiển thị):", "クローズ済プロジェクト (表示しない):"),
                 options=list(set(all_proj_in_db + hidden_projects)),
                 default=[p for p in hidden_projects if p in set(all_proj_in_db + hidden_projects)],
                 key="ms_hidden_proj"
