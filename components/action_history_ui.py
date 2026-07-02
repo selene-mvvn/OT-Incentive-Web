@@ -8,10 +8,10 @@ from logic.action_log import get_action_logs, clear_all_logs, delete_action_log,
 def render_action_history():
     st.markdown("""
         <style>
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title) {
+            div[data-testid="stVerticalBlockBorderWrapper"] {
                 transition: all 0.2s ease-in-out !important;
             }
-            div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title):hover {
+            div[data-testid="stVerticalBlockBorderWrapper"]:hover {
                 box-shadow: 0 6px 16px rgba(0,0,0,0.1) !important;
                 transform: translateY(-2px) !important;
                 border-color: #3498db !important;
