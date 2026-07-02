@@ -302,7 +302,7 @@ def render_welcome():
         </div>
         <div class="info-card">
             <div style="font-size: 0.95rem; line-height: 1.6; color: #555; text-align: justify; font-family: 'Times New Roman', serif; font-style: italic; padding-bottom: 30px;">
-                {intro_text}
+                {info_text}
             </div>
             <div style="position: absolute; bottom: -20px; right: -20px; pointer-events: none;">
                 <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets4.lottiefiles.com/packages/lf20_w51pcehl.json' background='transparent' speed='1' style='width: 110px; height: 110px; filter: hue-rotate(-85deg);' loop autoplay></lottie-player></body></html>" style="width: 130px; height: 130px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe>
