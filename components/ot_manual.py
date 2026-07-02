@@ -503,8 +503,25 @@ def render_base_data():
                             "reason": f"🇯🇵 {jp_name}",
                             "is_jp": True
                         })
-            except ImportError:
-                pass
+            except ImportError as e:
+                st.error(f"Lỗi: Không tìm thấy thư viện jpholiday ({e}). Vui lòng báo cho AI biết.")
+                
+            # Hardcode a fallback test holiday to verify JS rendering
+            holidays_list.append({
+                "date": "2026-05-03",
+                "reason": "🇯🇵 Lễ Test (Hiến pháp)",
+                "is_jp": True
+            })
+            holidays_list.append({
+                "date": "2026-05-04",
+                "reason": "🇯🇵 Lễ Test (Cây xanh)",
+                "is_jp": True
+            })
+            holidays_list.append({
+                "date": "2026-05-05",
+                "reason": "🇯🇵 Lễ Test (Thiếu nhi)",
+                "is_jp": True
+            })
         
             holidays_json = json.dumps(holidays_list)
         
