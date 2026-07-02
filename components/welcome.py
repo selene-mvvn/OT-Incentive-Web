@@ -292,6 +292,7 @@ def render_welcome():
         </script>
     </body>
     </html>
+    """
     clock_html_escaped = html.escape(clock_html)
     st.markdown(f"""
         <div class="title">
