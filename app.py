@@ -872,8 +872,9 @@ else:
         
         menu_selection = st.session_state['menu_selection']
         
-        st.markdown("""
-    <div class='sidebar-footer-container'>
+        lang = st.session_state.get('lang', 'VN')
+        st.markdown(f"""
+    <div class='sidebar-footer-container' data-lang='{lang}'>
         <div id='sidebar-clock' style='
             text-align: center;
             margin: 0 auto 30px auto; /* Increased bottom margin from 20px to 30px to shift it up */
@@ -932,6 +933,7 @@ else:
                         // Clock Logic
                         const timeEl = doc.getElementById('clock-time');
                         const dateEl = doc.getElementById('clock-date');
+                        const lang = footer.getAttribute('data-lang') || 'VN';
                         const updateClock = () => {
                             if (!timeEl || !dateEl) return;
                             const now = new Date();
@@ -940,13 +942,19 @@ else:
                             const secs = String(now.getSeconds()).padStart(2, '0');
                             timeEl.innerText = `${hrs}:${mins}:${secs}`;
                             
-                            const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-                            const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-                            const dayName = days[now.getDay()];
+                            const day = now.getDay();
                             const date = String(now.getDate()).padStart(2, '0');
-                            const month = months[now.getMonth()];
+                            const month = now.getMonth();
                             const year = now.getFullYear();
-                            dateEl.innerText = `${dayName}, ${date} ${month} ${year}`;
+                            
+                            if (lang === 'JP') {
+                                const daysJP = ['日', '月', '火', '水', '木', '金', '土'];
+                                dateEl.innerText = `${year}年${String(month + 1).padStart(2, '0')}月${date}日 (${daysJP[day]})`;
+                            } else {
+                                const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
+                                const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+                                dateEl.innerText = `${days[day]}, ${date} ${months[month]} ${year}`;
+                            }
                         };
                         updateClock();
                         setInterval(updateClock, 1000);
