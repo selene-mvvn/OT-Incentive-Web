@@ -914,7 +914,7 @@ else:
                         
                         const updateWidth = () => {
                             const rect = sidebar.getBoundingClientRect();
-                            if (rect.width < 100) {
+                            if (rect.width < 200) {
                                 elContainer.style.display = 'none';
                             } else {
                                 elContainer.style.display = 'block';
