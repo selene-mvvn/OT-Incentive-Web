@@ -254,6 +254,7 @@ def render_mini_leaderboard(data_type="ot"):
             """, unsafe_allow_html=True)
             
             # Hidden projects logic
+            df['ot_hours'] = pd.to_numeric(df['ot_hours'], errors='coerce').fillna(0)
             if 'ot_base_data' in st.session_state:
                 base_data = st.session_state['ot_base_data']
                 if 'hidden_projects' not in base_data:
