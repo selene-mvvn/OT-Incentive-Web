@@ -914,8 +914,13 @@ else:
                         
                         const updateWidth = () => {
                             const rect = sidebar.getBoundingClientRect();
-                            elContainer.style.width = rect.width + 'px';
-                            elContainer.style.left = rect.left + 'px'; /* Explicitly match sidebar left edge */
+                            if (rect.width < 100) {
+                                elContainer.style.display = 'none';
+                            } else {
+                                elContainer.style.display = 'block';
+                                elContainer.style.width = rect.width + 'px';
+                                elContainer.style.left = rect.left + 'px';
+                            }
                         };
                         
                         updateWidth();
