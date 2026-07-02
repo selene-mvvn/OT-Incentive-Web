@@ -59,7 +59,8 @@ def add_records(file_type, new_records_list):
     
     import pandas as pd
     if current_records:
-        current_records = pd.DataFrame(current_records).drop_duplicates().to_dict('records')
+        import json
+        current_records = json.loads(pd.DataFrame(current_records).drop_duplicates().to_json(orient='records'))
 
     firebase_url = get_firebase_url(filename)
     if firebase_url:
