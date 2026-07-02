@@ -114,7 +114,9 @@ def render_base_data():
         col_left, col_right = st.columns([7.5, 2.5], gap="large")
         
         with col_left:
-            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('KỲ TÍNH LƯƠNG', '給与計算期間')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 0px; padding-bottom: 0px;'>{t('KỲ TÍNH LƯƠNG', '給与計算期間')}</h3>", unsafe_allow_html=True)
+            st.caption(t("*(Thông tin Từ ngày - Đến ngày này sẽ được ghi ở trong file Excel xuất ra ở phía dưới tiêu đề bảng)*", "*(この開始日～終了日の情報は、出力されるExcelファイルの表タイトルの下に記載されます)*"))
+            st.markdown("<div style='height: 5px;'></div>", unsafe_allow_html=True)
             
             c1, c2, c3, c4 = st.columns(4)
             with c1:
