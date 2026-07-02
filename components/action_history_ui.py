@@ -374,9 +374,8 @@ def render_action_history():
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
 
             with st.container(border=True):
-                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1])
+                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1], vertical_alignment="center")
                 with c_chk:
-                    st.markdown("<div style='margin-top:10px;'></div>", unsafe_allow_html=True)
                     st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
                 with c_head:
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
@@ -385,7 +384,6 @@ def render_action_history():
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_preview:
-                    st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
                     if not is_missing:
                         preview_key = f"preview_{log_id}"
                         if st.button(":material/visibility: " + t("XEM TRƯỚC", "プレビュー"), key=preview_key, use_container_width=True):
@@ -394,7 +392,6 @@ def render_action_history():
                     else:
                         st.empty()
                 with c_dl:
-                    st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
                     if not is_missing:
                         file_bytes = base64.b64decode(file_b64)
                         st.download_button(
@@ -409,7 +406,6 @@ def render_action_history():
                     else:
                         st.button("⚠️ " + t("Mất file", "なし"), disabled=True, key=f"dl_{log_id}", help=t("File vật lý không còn tồn tại trên hệ thống", "物理ファイルはシステムに存在しません"), use_container_width=True)
                 with c_del:
-                    st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
                     if st.button(t("XÓA", "削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
                         delete_action_log(log_id)
                         st.rerun()
