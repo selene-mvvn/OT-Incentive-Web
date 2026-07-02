@@ -6,6 +6,18 @@ from logic.i18n import t
 from logic.action_log import get_action_logs, clear_all_logs, delete_action_log, cleanup_missing_files
 
 def render_action_history():
+    st.markdown("""
+        <style>
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title) {
+                transition: all 0.2s ease-in-out;
+            }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title):hover {
+                box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+                transform: translateY(-2px);
+                border-color: #3498db;
+            }
+        </style>
+    """, unsafe_allow_html=True)
     title = t("LỊCH SỬ THAO TÁC", "操作履歴")
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
     st.info(t("Lưu trữ lịch sử tính toán và xuất báo cáo gần đây.", "最近の計算とレポート出力履歴。"))
