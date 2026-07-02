@@ -1035,3 +1035,5 @@ else:
         render_action_history()
     elif menu_selection == t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**"):
         render_base_data()
+
+# force reload
