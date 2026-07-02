@@ -535,3 +535,55 @@ def render_action_history():
 
         from components.ui_utils import make_history_cards_white
         make_history_cards_white()
+
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+        // Use requestAnimationFrame to ensure DOM is fully loaded
+        window.parent.requestAnimationFrame(() => {
+            const doc = window.parent.document;
+            const titles = doc.querySelectorAll('.history-card-title');
+            titles.forEach(title => {
+                // Find the nearest wrapper that acts as the bordered container
+                // In Streamlit, st.container(border=True) creates a wrapper with border
+                let el = title;
+                let container = null;
+                while (el && el.tagName !== 'BODY') {
+                    const style = window.parent.getComputedStyle(el);
+                    // Check if this element has a border
+                    if (style.borderWidth !== '' && style.borderWidth !== '0px' && style.borderStyle !== 'none' && !el.classList.contains('stMarkdown')) {
+                        container = el;
+                        break;
+                    }
+                    // Fallback to specific testid if border detection fails
+                    if (el.getAttribute('data-testid') === 'stVerticalBlockBorderWrapper') {
+                        container = el;
+                        break;
+                    }
+                    el = el.parentElement;
+                }
+                
+                if (container && !container.hasAttribute('data-hover-applied')) {
+                    container.setAttribute('data-hover-applied', 'true');
+                    container.style.transition = 'all 0.2s ease-in-out';
+                    
+                    const originalBorder = container.style.borderColor;
+                    const originalShadow = container.style.boxShadow;
+                    const originalTransform = container.style.transform;
+                    
+                    container.addEventListener('mouseenter', () => {
+                        container.style.boxShadow = '0 6px 16px rgba(0,0,0,0.1)';
+                        container.style.transform = 'translateY(-2px)';
+                        container.style.borderColor = '#3498db';
+                    });
+                    
+                    container.addEventListener('mouseleave', () => {
+                        container.style.boxShadow = originalShadow || 'none';
+                        container.style.transform = originalTransform || 'none';
+                        container.style.borderColor = originalBorder || '';
+                    });
+                }
+            });
+        });
+    </script>
+    """, height=0)
