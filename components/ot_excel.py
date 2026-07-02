@@ -85,7 +85,7 @@ def render_ot_excel():
                 [data-testid="stFileUploaderDropzone"] {
                     border: 2.5px dashed #3498db !important;
                     border-radius: 16px !important;
-                    background-color: #f4faff !important;
+                    background-color: #ffffff !important;
                     padding: 40px 20px !important;
                     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
                 }
