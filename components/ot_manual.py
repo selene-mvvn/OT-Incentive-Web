@@ -557,6 +557,11 @@ def render_base_data():
             .other-month .day-number {{ color: #94a3b8 !important; }}
             .today {{ background: #f0f9ff !important; }}
             .today .day-number {{ background: #00B0F0; color: white !important; font-weight: bold; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; display: inline-block; float: right; box-shadow: 0 2px 4px rgba(0, 176, 240, 0.4); margin-bottom: 4px; }}
+            .legend-container {{ margin-top: 15px; display: flex; gap: 15px; justify-content: center; font-size: 12px; color: white; }}
+            .legend-item {{ display: flex; align-items: center; gap: 6px; }}
+            .legend-color {{ width: 14px; height: 14px; border-radius: 3px; box-shadow: 0 1px 2px rgba(0,0,0,0.1); }}
+            .legend-vn {{ background: #10b981; }}
+            .legend-jp {{ background: #ef4444; }}
             </style>
 
             <div class="calendar-container">
@@ -566,6 +571,16 @@ def render_base_data():
                     <button onclick="changeMonth(1)">&gt;</button>
                 </div>
                 <div class="cal-grid" id="calGrid"></div>
+                <div class="legend-container">
+                    <div class="legend-item">
+                        <div class="legend-color legend-vn"></div>
+                        <span>{t('Lễ Việt Nam', 'ベトナムの祝日')}</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-jp"></div>
+                        <span>{t('Lễ Nhật Bản', '日本の祝日')}</span>
+                    </div>
+                </div>
             </div>
 
             <script>
