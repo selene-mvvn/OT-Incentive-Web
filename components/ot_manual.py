@@ -932,7 +932,7 @@ def render_project_data():
                     if st.button(t("💾 LƯU DỮ LIỆU", "💾 データ保存"), use_container_width=True, type="primary", key="save_ot_data"):
                         from logic.history_records import add_records
                         add_records("ot", st.session_state['ot_records'])
-                        st.toast(t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！"), icon="✅")
+                        st.toast(t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！"), icon=":material/check_circle:")
                     
                 # Extract general period for excel export
                 try:

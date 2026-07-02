@@ -233,7 +233,7 @@ def render_incentive():
                         if st.button(t("💾 LƯU DỮ LIỆU", "💾 データ保存"), use_container_width=True, type="primary", key="save_inc_data"):
                             from logic.history_records import add_records
                             add_records("incentive", st.session_state['incentive_records'])
-                            st.toast(t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！"), icon="✅")
+                            st.toast(t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！"), icon=":material/check_circle:")
                         if not export_name.endswith(".xlsx"):
                             export_name += ".xlsx"
                             
