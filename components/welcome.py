@@ -138,6 +138,12 @@ def render_welcome():
             pointer-events: none;
         }
         
+        @keyframes float-pulse {
+            0% { transform: scale(1) translateY(0); opacity: 0.25; }
+            50% { transform: scale(1.05) translateY(-15px); opacity: 0.15; }
+            100% { transform: scale(1) translateY(0); opacity: 0.25; }
+        }
+        
         .decor-circle-1 {
             position: fixed;
             top: -10vh;
@@ -149,6 +155,7 @@ def render_welcome():
             opacity: 0.25;
             z-index: 0;
             pointer-events: none;
+            animation: float-pulse 8s ease-in-out infinite;
         }
         
         .decor-circle-2 {
@@ -162,6 +169,7 @@ def render_welcome():
             opacity: 0.2;
             z-index: 0;
             pointer-events: none;
+            animation: float-pulse 10s ease-in-out infinite reverse;
         }
         .info-card {
             position: fixed;
@@ -222,6 +230,7 @@ def render_welcome():
     <!DOCTYPE html>
     <html>
     <head>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <style>
     body {{
         margin: 0; padding: 0; 
@@ -260,6 +269,7 @@ def render_welcome():
     </head>
     <body>
         <div class="clock-widget">
+            <lord-icon src="https://cdn.lordicon.com/qwwuyobg.json" trigger="loop" delay="2000" colors="primary:#00B0F0,secondary:#00B0F0" style="width:32px;height:32px"></lord-icon>
             <div class="time-display" id="time">00:00:00</div>
             <div class="greeting-text" id="greeting">Loading...</div>
         </div>
