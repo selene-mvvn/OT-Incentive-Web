@@ -305,7 +305,7 @@ def render_welcome():
                 {info_text}
             </div>
             <div style="position: absolute; bottom: -35px; right: -30px; pointer-events: none;">
-                <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets4.lottiefiles.com/packages/lf20_w51pcehl.json' background='transparent' speed='1' style='width: 90px; height: 90px; filter: hue-rotate(-85deg);' loop autoplay></lottie-player></body></html>" style="width: 100px; height: 100px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe>
+                <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets8.lottiefiles.com/packages/lf20_touohxv0.json' background='transparent' speed='1' style='width: 90px; height: 90px;' loop autoplay></lottie-player></body></html>" style="width: 100px; height: 100px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe>
             </div>
         </div>
     """, unsafe_allow_html=True)
