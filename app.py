@@ -873,25 +873,45 @@ else:
         menu_selection = st.session_state['menu_selection']
         
         st.markdown("""
-    <style>
-        .sidebar-footer-container {
-            position: absolute;
-            bottom: 30px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-        }
-        /* Ensure the sidebar content leaves space for the footer so it doesn't overlap */
-        [data-testid="stSidebarUserContent"] {
-            padding-bottom: 80px;
-        }
-    </style>
     <div class='sidebar-footer-container'>
-        <div class='sidebar-footer-text' style='opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #34495e;'>
+        <div class='sidebar-footer-text' style='text-align: center; opacity: 0.9; font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #34495e;'>
             VIET.MOS COMPANY LIMITED<br><br>INTERNAL TOOL V1.0
         </div>
     </div>
 """, unsafe_allow_html=True)
+        import streamlit.components.v1 as components
+        components.html("""
+        <script>
+            window.parent.requestAnimationFrame(() => {
+                const doc = window.parent.document;
+                const footer = doc.querySelector('.sidebar-footer-container');
+                const sidebar = doc.querySelector('[data-testid="stSidebar"]');
+                if (footer && sidebar) {
+                    let elContainer = footer;
+                    while(elContainer && !elContainer.classList.contains('element-container')) {
+                        elContainer = elContainer.parentElement;
+                        if(elContainer && elContainer.tagName === 'BODY') break;
+                    }
+                    if(elContainer && elContainer.classList.contains('element-container')) {
+                        elContainer.style.position = 'fixed';
+                        elContainer.style.bottom = '20px';
+                        elContainer.style.zIndex = '999';
+                        
+                        const updateWidth = () => {
+                            const sidebarWidth = sidebar.getBoundingClientRect().width;
+                            elContainer.style.width = sidebarWidth + 'px';
+                        };
+                        
+                        updateWidth();
+                        const resizeObserver = new window.parent.ResizeObserver(() => {
+                            updateWidth();
+                        });
+                        resizeObserver.observe(sidebar);
+                    }
+                }
+            });
+        </script>
+        """, height=0)
 
     # Main Content Area
     st.markdown("""
