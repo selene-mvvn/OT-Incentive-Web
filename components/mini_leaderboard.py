@@ -292,10 +292,10 @@ def render_mini_leaderboard(data_type="ot"):
                              color_discrete_sequence=px.colors.qualitative.Set3)
                 fig_pie.update_traces(textposition='inside', textinfo='percent')
                 fig_pie.update_layout(
-                    margin=dict(t=0, b=0, l=0, r=0),
+                    margin=dict(t=10, b=0, l=0, r=0),
                     showlegend=True,
                     legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),
-                    height=240,
+                    height=350,
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
                 )
