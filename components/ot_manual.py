@@ -602,13 +602,14 @@ def render_base_data():
             </script>
             """
             components.html(html_code, height=650)
-def render_budget_chart():
+def render_budget_chart(container=st):
     import plotly.express as px
     from logic.i18n import t
     import pandas as pd
     
     records = st.session_state.get('ot_records', [])
     if not records:
+        container.empty()
         return
         
     project_hours = {}
@@ -623,9 +624,10 @@ def render_budget_chart():
     })
     
     if df['Hours'].sum() == 0:
+        container.empty()
         return
         
-    st.markdown(f"""
+    container.markdown(f"""
     <div style='background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 20px; border: 1px solid #f0f2f6;'>
         <h4 style='font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 5px; text-transform: uppercase;'>
             {t('📊 Phân bổ dự án', '📊 プロジェクト別分布')}
@@ -646,16 +648,16 @@ def render_budget_chart():
         paper_bgcolor='rgba(0,0,0,0)',
         plot_bgcolor='rgba(0,0,0,0)',
     )
-    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+    container.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
     
-    st.markdown("</div>", unsafe_allow_html=True)
+    container.markdown("</div>", unsafe_allow_html=True)
 
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
     with col_rank:
         from components.mini_leaderboard import render_mini_leaderboard
         render_mini_leaderboard("ot")
-        render_budget_chart()
+        chart_placeholder = st.empty()
     with col_main:
         init_session_state()
         st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{t('DỮ LIỆU DỰ ÁN VÀ TÍNH TĂNG CA', 'プロジェクトデータと残業計算')}</h2>", unsafe_allow_html=True)
@@ -979,6 +981,7 @@ def render_project_data():
                     column_config=col_cfg
                 )
                 st.session_state['ot_records'] = edited_df
+                render_budget_chart(chart_placeholder)
             
                 st.markdown("---")
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.5, 2.0])
