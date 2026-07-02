@@ -918,15 +918,21 @@ def render_project_data():
                     key="ot_records_editor",
                     column_config=col_cfg
                 )
-                st.session_state['ot_records'] = edited_df
+                st.session_state['ot_records'] = edited_df.to_dict('records')
             
                 st.markdown("---")
-                c_name, c_dl, c_del = st.columns([4.8, 2.5, 2.7])
+                c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.5, 2.0])
                 with c_name:
                     default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
                     export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="ot_manual_filename")
                     if not export_name.endswith(".xlsx"):
                         export_name += ".xlsx"
+                with c_save:
+                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                    if st.button(t("💾 LƯU DỮ LIỆU", "💾 データ保存"), use_container_width=True, type="primary", key="save_ot_data"):
+                        from logic.history_records import add_records
+                        add_records("ot", st.session_state['ot_records'])
+                        st.toast(t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！"), icon="✅")
                     
                 # Extract general period for excel export
                 try:
