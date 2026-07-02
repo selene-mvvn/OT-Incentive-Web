@@ -495,12 +495,43 @@ def render_base_data():
             try:
                 import jpholiday
                 import datetime
+                
+                jp_vn_map = {
+                    "元日": "Tết Dương lịch",
+                    "成人の日": "Lễ Thành nhân",
+                    "建国記念の日": "Quốc khánh",
+                    "天皇誕生日": "SN Thiên hoàng",
+                    "春分の日": "Ngày Xuân phân",
+                    "昭和の日": "Ngày Chiêu Hòa",
+                    "憲法記念日": "Ngày Hiến pháp",
+                    "みどりの日": "Ngày Lễ xanh",
+                    "こどもの日": "Tết Thiếu nhi",
+                    "海の日": "Ngày của Biển",
+                    "山の日": "Ngày của Núi",
+                    "敬老の日": "Ngày Kính lão",
+                    "秋分の日": "Ngày Thu phân",
+                    "スポーツの日": "Ngày Thể thao",
+                    "文化の日": "Ngày Văn hóa",
+                    "勤労感謝の日": "Lễ Cảm tạ",
+                    "振替休日": "Nghỉ bù",
+                    "国民の休日": "Quốc lễ"
+                }
+
+                def get_vn_name(jp_name):
+                    res = jp_name
+                    for jp, vn in jp_vn_map.items():
+                        res = res.replace(jp, vn)
+                    return res
+
                 curr_y = datetime.datetime.now().year
+                lang = st.session_state.get('lang', 'VN')
+                
                 for y in [curr_y - 1, curr_y, curr_y + 1]:
                     for jp_date, jp_name in jpholiday.year_holidays(y):
+                        display_name = f"JP {jp_name}" if lang == 'JP' else f"JP {get_vn_name(jp_name)}"
                         holidays_list.append({
                             "date": jp_date.strftime("%Y-%m-%d"),
-                            "reason": f"🇯🇵 {jp_name}",
+                            "reason": display_name,
                             "is_jp": True
                         })
             except ImportError:
