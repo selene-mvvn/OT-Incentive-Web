@@ -230,7 +230,6 @@ def render_welcome():
     <!DOCTYPE html>
     <html>
     <head>
-    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <style>
     body {{
         margin: 0; padding: 0; 
@@ -269,7 +268,6 @@ def render_welcome():
     </head>
     <body>
         <div class="clock-widget">
-            <lottie-player src="https://assets5.lottiefiles.com/packages/lf20_V9t630.json" background="transparent" speed="1" style="width:36px;height:36px;margin:-5px" loop autoplay></lottie-player>
             <div class="time-display" id="time">00:00:00</div>
             <div class="greeting-text" id="greeting">Loading...</div>
         </div>
@@ -294,10 +292,7 @@ def render_welcome():
         </script>
     </body>
     </html>
-    """
-    
     clock_html_escaped = html.escape(clock_html)
-
     st.markdown(f"""
         <div class="title">
             OVERTIME & INCENTIVE<br>MANAGEMENT SYSTEM
@@ -310,8 +305,12 @@ def render_welcome():
         </div>
     """, unsafe_allow_html=True)
     
-    # Empty space to push buttons down
-    st.markdown("<div style='height: 10vh;'></div>", unsafe_allow_html=True)
+    # Lottie Animation replacing empty space
+    st.markdown(f"""
+        <div style="display: flex; justify-content: center; margin-top: 3vh; margin-bottom: 2vh;">
+            <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets5.lottiefiles.com/packages/lf20_V9t630.json' background='transparent' speed='1' style='width: 120px; height: 120px;' loop autoplay></lottie-player></body></html>" style="width: 140px; height: 140px; border: none; overflow: hidden; background: transparent;"></iframe>
+        </div>
+    """, unsafe_allow_html=True)
     
     # Render Buttons using standard Streamlit columns
     # Increase the outer spacers to push the buttons closer to the center
