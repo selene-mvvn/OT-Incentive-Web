@@ -230,34 +230,74 @@ def render_mini_leaderboard(data_type="ot"):
         show_mini_edit_dialog(data_type, df)
 
     if data_type == "ot" and not df.empty:
-        # Budget Chart
-        project_hours = df.groupby('order_name')['ot_hours'].sum().reset_index()
-        project_hours.columns = ['Project', 'Hours']
-        # Fill missing project names
-        project_hours['Project'] = project_hours['Project'].replace('', t('Khác', 'その他'))
-        
-        if project_hours['Hours'].sum() > 0:
+        with st.container():
+            from components.ui_utils import make_container_white
+            make_container_white()
+            
+            border_color = "#00a8e8"
+            icon = "pie_chart"
+            title_text = t("PHÂN BỔ DỰ ÁN", "プロジェクト分布")
+            
             st.markdown(f"""
-            <div style='background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 20px; border: 1px solid #f0f2f6;'>
-                <h4 style='font-size: 14px; font-weight: bold; color: #34495e; margin-bottom: 5px; text-transform: uppercase;'>
-                    {t('📊 Phân bổ dự án', '📊 プロジェクト別分布')}
-                </h4>
-                <div style='font-size: 11px; color: #7f8c8d; margin-bottom: 10px;'>
-                    {t('Tỷ trọng giờ OT (Dữ liệu lịch sử)', '残業時間の割合 (履歴データ)')}
+                <div style='
+                    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                    border-radius: 8px;
+                    border-top: 4px solid {border_color};
+                    padding: 10px;
+                    margin-bottom: 15px;
+                    text-align: center; color: #2c3e50; font-size: 16px; font-weight: bold; text-transform: uppercase;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                '>
+                    <span class="material-symbols-rounded" style="vertical-align: middle; color: {border_color}; margin-right: 5px; font-size: 20px;">{icon}</span>
+                    <span style="vertical-align: middle;">{title_text}</span>
                 </div>
             """, unsafe_allow_html=True)
             
-            import plotly.express as px
-            fig_pie = px.pie(project_hours, values='Hours', names='Project', hole=0.5, 
-                         color_discrete_sequence=px.colors.qualitative.Set3)
-            fig_pie.update_traces(textposition='inside', textinfo='percent')
-            fig_pie.update_layout(
-                margin=dict(t=0, b=0, l=0, r=0),
-                showlegend=True,
-                legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),
-                height=220,
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
+            # Hidden projects logic
+            if 'ot_base_data' in st.session_state:
+                base_data = st.session_state['ot_base_data']
+                if 'hidden_projects' not in base_data:
+                    base_data['hidden_projects'] = []
+                hidden_projects = base_data['hidden_projects']
+            else:
+                hidden_projects = []
+            
+            project_hours = df.groupby('order_name')['ot_hours'].sum().reset_index()
+            project_hours.columns = ['Project', 'Hours']
+            project_hours['Project'] = project_hours['Project'].replace('', t('Khác', 'その他'))
+            
+            all_proj_in_db = sorted(project_hours['Project'].unique().tolist())
+            
+            selected_hidden = st.multiselect(
+                "🗑️ " + t("Dự án đã đóng (Không hiển thị):", "クローズ済プロジェクト (表示しない):"),
+                options=list(set(all_proj_in_db + hidden_projects)),
+                default=[p for p in hidden_projects if p in set(all_proj_in_db + hidden_projects)],
+                key="ms_hidden_proj"
             )
-            st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
-            st.markdown("</div>", unsafe_allow_html=True)
+            
+            if set(selected_hidden) != set(hidden_projects):
+                if 'ot_base_data' in st.session_state:
+                    st.session_state['ot_base_data']['hidden_projects'] = selected_hidden
+                    from logic.history import save_base_data
+                    save_base_data(st.session_state['ot_base_data'])
+                st.rerun()
+            
+            # Filter chart data
+            project_hours = project_hours[~project_hours['Project'].isin(hidden_projects)]
+            
+            if project_hours['Hours'].sum() > 0:
+                import plotly.express as px
+                fig_pie = px.pie(project_hours, values='Hours', names='Project', hole=0.5, 
+                             color_discrete_sequence=px.colors.qualitative.Set3)
+                fig_pie.update_traces(textposition='inside', textinfo='percent')
+                fig_pie.update_layout(
+                    margin=dict(t=0, b=0, l=0, r=0),
+                    showlegend=True,
+                    legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),
+                    height=240,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                )
+                st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
+            else:
+                st.markdown(f"<div style='text-align:center; font-size:13px; color:#7f8c8d;'>{t('Chưa có dữ liệu dự án', 'プロジェクトデータなし')}</div>", unsafe_allow_html=True)
