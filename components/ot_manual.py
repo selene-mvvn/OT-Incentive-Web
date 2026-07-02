@@ -489,7 +489,22 @@ def render_base_data():
                     reason = row.get("Lý do", "")
                     if pd.notnull(dt):
                         date_str = str(dt)[:10]
-                        holidays_list.append({"date": date_str, "reason": reason})
+                        holidays_list.append({"date": date_str, "reason": reason, "is_jp": False})
+            
+            # Fetch JP holidays dynamically
+            try:
+                import jpholiday
+                import datetime
+                curr_y = datetime.datetime.now().year
+                for y in [curr_y - 1, curr_y, curr_y + 1]:
+                    for jp_date, jp_name in jpholiday.year_holidays(y):
+                        holidays_list.append({
+                            "date": jp_date.strftime("%Y-%m-%d"),
+                            "reason": f"🇯🇵 {jp_name}",
+                            "is_jp": True
+                        })
+            except ImportError:
+                pass
         
             holidays_json = json.dumps(holidays_list)
         
@@ -506,6 +521,7 @@ def render_base_data():
             .day-name {{ min-height: 30px !important; text-align: center; font-weight: bold; background: #f8fafc !important; font-size: 13px; padding-top: 8px !important; color: #64748b; }}
             .day-number {{ font-weight: 500; font-size: 13px; margin-bottom: 4px; text-align: right; color: #475569; }}
             .holiday-event {{ background: #10b981; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
+            .jp-holiday-event {{ background: #ef4444; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
             .other-month {{ background: #f1f5f9 !important; color: #94a3b8 !important; }}
             .other-month .day-number {{ color: #94a3b8 !important; }}
             .today {{ background: #f0f9ff !important; }}
@@ -578,7 +594,8 @@ def render_base_data():
                     const dayHolidays = holidays.filter(h => h.date === dateStr);
                     dayHolidays.forEach(h => {{
                         const displayReason = (currentLang === 'jp' && holidayTranslations[h.reason]) ? holidayTranslations[h.reason] : h.reason;
-                        eventsHtml += `<div class="holiday-event" title="${{displayReason}}">${{displayReason}}</div>`;
+                        const eventClass = h.is_jp ? "jp-holiday-event" : "holiday-event";
+                        eventsHtml += `<div class="${{eventClass}}" title="${{displayReason}}">${{displayReason}}</div>`;
                     }});
                 
                     html += `<div class="${{cls}}"><div class="day-number">${{i}}</div>${{eventsHtml}}</div>`;
