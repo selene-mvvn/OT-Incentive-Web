@@ -303,15 +303,14 @@ def render_welcome():
             <div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center;">
                 <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 50px; border: none; overflow: hidden; background: transparent;"></iframe>
             </div>
+            <div style="position: absolute; top: -6vh; width: 100%; display: flex; justify-content: center; pointer-events: none;">
+                <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets5.lottiefiles.com/packages/lf20_V9t630.json' background='transparent' speed='1' style='width: 100px; height: 100px;' loop autoplay></lottie-player></body></html>" style="width: 120px; height: 120px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe>
+            </div>
         </div>
     """, unsafe_allow_html=True)
     
-    # Lottie Animation replacing empty space
-    st.markdown(f"""
-        <div style="display: flex; justify-content: center; margin-top: 3vh; margin-bottom: 2vh;">
-            <iframe srcdoc="<!DOCTYPE html><html><head><script src='https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js'></script><style>body {{ margin: 0; padding: 0; background: transparent; overflow: hidden; display: flex; justify-content: center; align-items: center; }}</style></head><body><lottie-player src='https://assets5.lottiefiles.com/packages/lf20_V9t630.json' background='transparent' speed='1' style='width: 120px; height: 120px;' loop autoplay></lottie-player></body></html>" style="width: 140px; height: 140px; border: none; overflow: hidden; background: transparent;"></iframe>
-        </div>
-    """, unsafe_allow_html=True)
+    # Empty space to push buttons down
+    st.markdown("<div style='height: 10vh;'></div>", unsafe_allow_html=True)
     
     # Render Buttons using standard Streamlit columns
     # Increase the outer spacers to push the buttons closer to the center
