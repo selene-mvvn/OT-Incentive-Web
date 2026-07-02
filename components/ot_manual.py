@@ -504,24 +504,24 @@ def render_base_data():
                             "is_jp": True
                         })
             except ImportError as e:
-                st.error(f"Lỗi: Không tìm thấy thư viện jpholiday ({e}). Vui lòng báo cho AI biết.")
-                
-            # Hardcode a fallback test holiday to verify JS rendering
-            holidays_list.append({
-                "date": "2026-05-03",
-                "reason": "🇯🇵 Lễ Test (Hiến pháp)",
-                "is_jp": True
-            })
-            holidays_list.append({
-                "date": "2026-05-04",
-                "reason": "🇯🇵 Lễ Test (Cây xanh)",
-                "is_jp": True
-            })
-            holidays_list.append({
-                "date": "2026-05-05",
-                "reason": "🇯🇵 Lễ Test (Thiếu nhi)",
-                "is_jp": True
-            })
+                try:
+                    import subprocess
+                    import sys
+                    st.info(t("Đang tự động cài đặt thư viện Lịch Nhật Bản (jpholiday) vào hệ thống... vui lòng đợi vài giây.", "日本の祝日ライブラリを自動インストールしています... 数秒お待ちください。"))
+                    subprocess.check_call([sys.executable, "-m", "pip", "install", "jpholiday"])
+                    import jpholiday
+                    # Try fetching again after install
+                    curr_y = datetime.datetime.now().year
+                    for y in [curr_y - 1, curr_y, curr_y + 1]:
+                        for jp_date, jp_name in jpholiday.year_holidays(y):
+                            holidays_list.append({
+                                "date": jp_date.strftime("%Y-%m-%d"),
+                                "reason": f"🇯🇵 {jp_name}",
+                                "is_jp": True
+                            })
+                    st.rerun()
+                except Exception as ex:
+                    st.error(f"Lỗi cài đặt tự động: {ex}")
         
             holidays_json = json.dumps(holidays_list)
         
