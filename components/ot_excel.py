@@ -95,19 +95,16 @@ def render_ot_excel():
                     transform: translateY(-2px) !important;
                     box-shadow: 0 8px 24px rgba(52, 152, 219, 0.15) !important;
                 }
-                [data-testid="stFileUploaderDropzone"] svg {
+                /* Prevent styling the uploaded file SVGs by excluding them */
+                [data-testid="stFileUploaderDropzone"] div > svg:first-child {
                     color: #3498db !important;
-                    width: 64px !important;
-                    height: 64px !important;
-                    filter: drop-shadow(0 4px 6px rgba(52, 152, 219, 0.2)) !important;
-                    margin-bottom: 15px !important;
                     transition: all 0.3s ease !important;
                 }
                 @keyframes bounceCloud {
                     0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-8px); }
+                    50% { transform: translateY(-5px); }
                 }
-                [data-testid="stFileUploaderDropzone"]:hover svg {
+                [data-testid="stFileUploaderDropzone"]:hover div > svg:first-child {
                     animation: bounceCloud 1.5s infinite ease-in-out !important;
                     color: #2980b9 !important;
                 }
