@@ -16,7 +16,7 @@ def calculate_incentive(target_hours: float, actual_hours: float, unit_price: fl
         "final_incentive": final_incentive
     }
 
-def generate_incentive_excel(data: list) -> io.BytesIO:
+def generate_incentive_excel(data: list, title: str = None) -> io.BytesIO:
     
     if not data:
         return None
@@ -102,7 +102,9 @@ def generate_incentive_excel(data: list) -> io.BytesIO:
             'valign': 'vcenter',
             'font_name': 'Times New Roman'
         })
-        worksheet.merge_range(0, 0, 0, len(columns) - 1, t("BẢNG TỔNG HỢP INCENTIVE", "インセンティブ集計表"), title_format)
+        if title is None:
+            title = t("BẢNG TỔNG HỢP INCENTIVE", "インセンティブ集計表")
+        worksheet.merge_range(0, 0, 0, len(columns) - 1, title, title_format)
         worksheet.set_row(0, 30)
         
         # Write headers
