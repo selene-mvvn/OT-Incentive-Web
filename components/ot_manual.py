@@ -749,7 +749,6 @@ def render_project_data():
             ot_date = st.date_input(t("NGÀY THÁNG TĂNG CA", "残業日"))
             # Auto-calculate the period based on OT date
             calculated_period = get_payroll_period(ot_date)
-            st.caption(f"{t('Thuộc kỳ lương', '給与計算期間')}: **{calculated_period}**")
         
             is_holiday = False
             holiday_reason = ""
@@ -771,15 +770,22 @@ def render_project_data():
                     is_weekend = False
 
             if is_holiday:
-                st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🏖️ {t('Ngày lễ', '祭日')} ({holiday_reason}) (3.0x - 4.0x)</span></div>", unsafe_allow_html=True)
+                tag_html = f"<span style='background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🏖️ {t('Ngày lễ', '祭日')} ({holiday_reason}) (3.0x - 4.0x)</span>"
             elif is_weekend:
-                st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span></div>", unsafe_allow_html=True)
+                tag_html = f"<span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span>"
             else:
                 if ot_date.weekday() == 5:
                     label = t('Ngày đi làm hành chính (Thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')
                 else:
                     label = t('Ngày đi làm hành chính', '平日')
-                st.markdown(f"<div style='margin-bottom: 15px;'><span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {label} (1.5x - 2.0x)</span></div>", unsafe_allow_html=True)
+                tag_html = f"<span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {label} (1.5x - 2.0x)</span>"
+
+            st.markdown(f"""
+                <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 15px; margin-top: -5px;'>
+                    <span style='color: rgba(49, 51, 63, 0.6); font-size: 14px;'>{t('Thuộc kỳ lương', '給与計算期間')}: <strong>{calculated_period}</strong></span>
+                    {tag_html}
+                </div>
+            """, unsafe_allow_html=True)
         
             tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
         
