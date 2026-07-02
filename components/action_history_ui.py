@@ -356,14 +356,19 @@ def render_action_history():
                         });
 
                         const btns = wrapper.querySelectorAll('button');
-                        if (btns.length >= 1 && !btns[0].querySelector('svg')) {
-                            btns[0].insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`);
+                        let dlBtn, delBtn, unBtn;
+                        if (btns.length === 3) { dlBtn = btns[0]; delBtn = btns[1]; unBtn = btns[2]; }
+                        else if (btns.length === 2) { delBtn = btns[0]; unBtn = btns[1]; }
+                        else if (btns.length === 1) { unBtn = btns[0]; } // fallback
+                        
+                        if (dlBtn && !dlBtn.querySelector('svg')) {
+                            dlBtn.insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`);
                         }
-                        if (btns.length >= 2 && !btns[1].querySelector('svg')) {
-                            btns[1].insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`);
+                        if (delBtn && !delBtn.querySelector('svg')) {
+                            delBtn.insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`);
                         }
-                        if (btns.length >= 3 && !btns[2].querySelector('svg')) {
-                            btns[2].insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"></path></svg>`);
+                        if (unBtn && !unBtn.querySelector('svg')) {
+                            unBtn.insertAdjacentHTML('beforeend', `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`);
                         }
                         
                         if (window.frameElement) {
@@ -374,7 +379,7 @@ def render_action_history():
                 });
             }, 50);
             </script>
-            """ + f"<!-- {len(selected_ids)} -->", height=0, width=0)
+            """ + f"<!-- {len(selected_ids)}_{__import__('time').time()} -->", height=0, width=0)
 
         # 4. Render Logs
         for i, log in enumerate(paginated_logs):
