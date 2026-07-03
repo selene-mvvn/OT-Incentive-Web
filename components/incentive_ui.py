@@ -177,7 +177,7 @@ def render_incentive():
         if st.session_state.get('incentive_records') and len(st.session_state['incentive_records']) > 0:
             if True:
                 st.markdown("---")
-                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU CHỜ XUẤT', '出力待ちデータ一覧')}</h3>", unsafe_allow_html=True)
+                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-top: 20px;'>{t('BẢNG DỮ LIỆU CHỜ XUẤT', '出力待ちデータ一覧')}</h3>", unsafe_allow_html=True)
             
                 df_records = pd.DataFrame(st.session_state['incentive_records'])
             
