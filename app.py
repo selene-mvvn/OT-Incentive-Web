@@ -952,6 +952,10 @@ else:
                                 // Convert to Japan Standard Time (JST)
                                 const jstStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
                                 now = new Date(jstStr);
+                            } else {
+                                // Convert to Vietnam Time (ICT)
+                                const vnStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" });
+                                now = new Date(vnStr);
                             }
                             
                             const hrs = String(now.getHours()).padStart(2, '0');
@@ -966,11 +970,11 @@ else:
                             
                             if (currentLang === 'JP') {
                                 const daysJP = ['日', '月', '火', '水', '木', '金', '土'];
-                                dateEl.innerText = `${year}年${String(month + 1).padStart(2, '0')}月${date}日 (${daysJP[day]})`;
+                                dateEl.innerText = `${year}年${String(month + 1).padStart(2, '0')}月${date}日 (${daysJP[day]}) • JP`;
                             } else {
                                 const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
                                 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-                                dateEl.innerText = `${days[day]}, ${date} ${months[month]} ${year}`;
+                                dateEl.innerText = `${days[day]}, ${date} ${months[month]} ${year} • VN`;
                             }
                         };
                         updateClock();
