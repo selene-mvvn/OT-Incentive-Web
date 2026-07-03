@@ -451,9 +451,19 @@ def render_base_data():
                 vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"], format='mixed', dayfirst=True)
                 combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="first").reset_index(drop=True)
                 st.session_state['ot_base_data']['holidays_df'] = combined
-                if "holidays_editor" in st.session_state:
-                    del st.session_state["holidays_editor"]
+                
+                # Force widget reset by changing key
+                if "holidays_editor_key" not in st.session_state:
+                    st.session_state["holidays_editor_key"] = 1
+                st.session_state["holidays_editor_key"] += 1
+                
+                # Save immediately
+                save_base_data(st.session_state['ot_base_data'])
+                st.toast(t("Đã tự động điền thành công!", "自動入力が完了しました！"), icon="✅")
+                
                 st.rerun()
+
+            editor_key = f"holidays_editor_{st.session_state.get('holidays_editor_key', 0)}"
 
             holidays_df = st.data_editor(
                 display_df,
@@ -464,7 +474,7 @@ def render_base_data():
                     "Lý do": st.column_config.TextColumn(t("Lý do / Tên ngày lễ", "理由・祭日名"), required=True)
                 },
                 use_container_width=True,
-                key="holidays_editor"
+                key=editor_key
             )
 
             if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
