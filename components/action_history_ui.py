@@ -146,7 +146,7 @@ def render_action_history():
                             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
                             border-radius: 12px !important;
                             background-color: #ffffff !important;
-                            border: 2px solid transparent !important;
+                            border: 1px solid #e2e8f0 !important;
                             box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
                             padding: 0px !important;
                             margin-left: 40px !important;
@@ -490,9 +490,8 @@ def render_action_history():
                     if is_missing: dot_color = "#e74c3c"
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
                     marker_id = f"marker-{log_id}"
-                    color_style = f"<style>div[data-testid='stVerticalBlockBorderWrapper']:has(.{marker_id}) {{ --timeline-color: {dot_color}; --timeline-shadow: 0 0 0 4px {dot_color}26; }}</style>"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
-                    st.markdown(f"{color_style}<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker {marker_id}'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker {marker_id}'></span><span class='white-card-bg'></span><span class='{marker_class}' data-color='{dot_color}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_preview:
