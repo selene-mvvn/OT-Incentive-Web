@@ -172,36 +172,37 @@ def render_incentive():
             comp_charge = inputs['company_charge']
             profit_val = result['profit']
             
+            # Premium HTML Title
+            st.markdown(f"<div style='text-align: center; font-family: \"Times New Roman\", serif; font-size: 1.1rem; font-weight: bold; color: #00B0F0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;'>📊 {t('Trực quan hóa Dòng tiền Dự án', 'プロジェクトのキャッシュフロー可視化')}</div>", unsafe_allow_html=True)
+            
             fig = go.Figure(go.Waterfall(
                 name = "Cashflow", orientation = "v",
                 measure = ["relative", "relative", "relative", "total"],
                 x = [t("Doanh thu dự kiến", "予想売上"), t("Company Charge", "会社運用費"), t("Chi phí Thực tế", "実コスト"), t("Quỹ Incentive", "インセンティブ原資")],
                 textposition = "outside",
                 text = [f"+{expected_revenue:,.0f}", f"-{comp_charge:,.0f}", f"-{actual_cost:,.0f}", f"{profit_val:,.0f}"],
+                textfont=dict(family="Arial, sans-serif", size=14, color="#333", weight="bold"),
                 y = [expected_revenue, -comp_charge, -actual_cost, 0],
-                connector = {"line":{"color":"#e9ecef"}},
-                decreasing = {"marker":{"color":"#ff6b6b"}},
-                increasing = {"marker":{"color":"#4facfe"}},
-                totals = {"marker":{"color":"#20c997" if profit_val >= 0 else "#ff6b6b"}}
+                connector = {"line":{"color":"rgba(0,0,0,0.15)", "width": 2, "dash": "dot"}},
+                decreasing = {"marker":{"color":"rgba(255, 107, 107, 0.85)", "line":{"color":"#ff6b6b", "width":1}}},
+                increasing = {"marker":{"color":"rgba(0, 176, 240, 0.85)", "line":{"color":"#00B0F0", "width":1}}},
+                totals = {"marker":{"color":"rgba(32, 201, 151, 0.85)" if profit_val >= 0 else "rgba(255, 107, 107, 0.85)", "line":{"color":"#20c997" if profit_val >= 0 else "#ff6b6b", "width":1}}},
+                hovertemplate="<b>%{x}</b><br>Giá trị: %{text}<extra></extra>"
             ))
             
             fig.update_layout(
-                title=dict(
-                    text=t("📊 Biểu đồ Thác nước: Trực quan hóa Dòng tiền", "📊 ウォーターフォールチャート：キャッシュフロー"),
-                    font=dict(size=17, color="#2c3e50"),
-                    x=0.01,
-                    y=0.95
-                ),
                 showlegend=False,
-                height=380,
-                margin=dict(l=20, r=20, t=60, b=20),
+                height=320,
+                bargap=0.4,
+                margin=dict(l=10, r=10, t=10, b=20),
                 plot_bgcolor="rgba(0,0,0,0)",
                 paper_bgcolor="rgba(0,0,0,0)",
-                yaxis=dict(showgrid=True, gridcolor="#f8f9fa", zeroline=True, zerolinecolor="#dee2e6"),
-                xaxis=dict(showgrid=False, tickfont=dict(size=13, color="#495057"))
+                yaxis=dict(showgrid=False, zeroline=True, zerolinecolor="rgba(0,0,0,0.1)", zerolinewidth=1, showticklabels=False),
+                xaxis=dict(showgrid=False, tickfont=dict(family="'Times New Roman', serif", size=15, color="#2c3e50", weight="bold")),
+                hoverlabel=dict(bgcolor="white", font_size=14, font_family="'Times New Roman', serif")
             )
             
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             # --------------------------------------
 
