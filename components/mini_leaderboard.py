@@ -18,6 +18,21 @@ def show_mini_edit_dialog(data_type, df):
     """, unsafe_allow_html=True)
     st.caption(t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。"))
     
+    date_col = 'ot_date' if data_type == 'ot' else 'date'
+    if date_col in df.columns:
+        df['date_obj_edit'] = pd.to_datetime(df[date_col], errors='coerce', dayfirst=True)
+        years = sorted(df['date_obj_edit'].dt.year.dropna().astype(int).unique().tolist(), reverse=True)
+    else:
+        years = []
+    
+    year_options = [t("Tất cả", "すべて")] + years
+    sel_year = st.selectbox(t("Chọn năm:", "年を選択:"), options=year_options, key=f"dialog_year_{data_type}")
+    
+    if sel_year not in ["Tất cả", "すべて"]:
+        edit_df = df[df['date_obj_edit'].dt.year == sel_year].copy()
+    else:
+        edit_df = df.copy()
+
     if data_type == "ot":
         col_order = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df.columns if str(c).endswith("%")]
         col_order = [c for c in col_order if c in df.columns] + [c for c in df.columns if c not in col_order]
@@ -54,11 +69,19 @@ def show_mini_edit_dialog(data_type, df):
             "notes": st.column_config.TextColumn(t("Ghi chú", "備考"))
         }
 
-    edited_df = st.data_editor(df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
+    edited_df = st.data_editor(edit_df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
     if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
-        save_df = edited_df.copy()
+        if sel_year not in ["Tất cả", "すべて"]:
+            other_years_df = df[df['date_obj_edit'].dt.year != sel_year].copy()
+            save_df = pd.concat([other_years_df, edited_df], ignore_index=True)
+        else:
+            save_df = edited_df.copy()
+            
+        if 'date_obj_edit' in save_df.columns:
+            save_df = save_df.drop(columns=['date_obj_edit'])
         if 'date_obj' in save_df.columns:
             save_df = save_df.drop(columns=['date_obj'])
+            
         if save_all_records(data_type, save_df.to_dict('records')):
             st.session_state['pending_toast'] = t("Đã lưu thành công!", "保存しました！")
             st.rerun()
