@@ -66,13 +66,12 @@ def show_skeleton_loading(duration=0.6):
 
 def show_page_transition(duration=0.6):
     """
-    Displays a full-screen transition overlay for a specified duration,
-    then automatically clears itself. Used for page-to-page navigation.
+    Displays a full-screen transition overlay that fades out to reveal the new page.
+    Uses pure CSS so it doesn't block the server or cause ghosting.
     """
-    ph = st.empty()
-    ph.markdown("""
+    st.markdown(f"""
     <style>
-    .page-transition-overlay {
+    .page-transition-overlay {{
         position: fixed;
         top: 0; left: 0; width: 100vw; height: 100vh;
         background: #ffffff;
@@ -81,34 +80,28 @@ def show_page_transition(duration=0.6):
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        animation: fadeOutTransition 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        animation: fadeOutTransition {duration}s cubic-bezier(0.65, 0, 0.35, 1) forwards;
         animation-delay: 0.1s;
-    }
-    @keyframes fadeOutTransition {
-        0% { opacity: 1; }
-        100% { opacity: 0; visibility: hidden; }
-    }
-    .transition-spinner {
+        pointer-events: none; /* Allow clicks through the overlay after it fades */
+    }}
+    @keyframes fadeOutTransition {{
+        0% {{ opacity: 1; pointer-events: all; }}
+        100% {{ opacity: 0; visibility: hidden; pointer-events: none; }}
+    }}
+    .transition-spinner {{
         width: 50px;
         height: 50px;
         border: 4px solid rgba(0, 176, 240, 0.2);
         border-top: 4px solid #00B0F0;
         border-radius: 50%;
         animation: spinTransition 0.8s linear infinite;
-    }
-    @keyframes spinTransition {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
-    }
-    /* Hide old elements in main block container to prevent pushing down */
-    div[data-testid="stElementContainer"]:has(.page-transition-overlay) ~ div {
-        display: none !important;
-        opacity: 0 !important;
-    }
+    }}
+    @keyframes spinTransition {{
+        0% {{ transform: rotate(0deg); }}
+        100% {{ transform: rotate(360deg); }}
+    }}
     </style>
     <div class="page-transition-overlay">
         <div class="transition-spinner"></div>
     </div>
     """, unsafe_allow_html=True)
-    time.sleep(duration)
-    ph.empty()
