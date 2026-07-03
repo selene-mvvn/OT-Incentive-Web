@@ -169,6 +169,7 @@ def render_mini_leaderboard(data_type="ot"):
                 agg_df = agg_df.sort_values(by='ot_hours', ascending=False).reset_index(drop=True)
                 val_col = 'ot_hours'
                 val_suffix = "h"
+            top_5 = agg_df.head(5)
             if len(top_5) > 0:
                 fig = go.Figure(go.Bar(
                     x=top_5[val_col][::-1],
