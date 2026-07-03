@@ -143,17 +143,14 @@ def render_action_history():
                             margin-left: 40px !important;
                             width: calc(100% - 40px) !important;
                         }
-
                         div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker) > div[data-testid="stVerticalBlock"] {
                             padding: 12px 15px !important;
                         }
-
                         div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover {
                             transform: translateY(-3px) !important;
                             box-shadow: 0 8px 25px rgba(0, 176, 240, 0.15) !important;
                             border-color: rgba(0, 176, 240, 0.5) !important;
                         }
-
                         div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::before {
                             content: '' !important;
                             position: absolute !important;
@@ -165,11 +162,9 @@ def render_action_history():
                             opacity: 0.3 !important;
                             z-index: 0 !important;
                         }
-
                         div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):last-child::before {
                             bottom: 50% !important;
                         }
-
                         div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::after {
                             content: '' !important;
                             position: absolute !important;
@@ -186,15 +181,23 @@ def render_action_history():
                             z-index: 1 !important;
                             transition: transform 0.3s ease !important;
                         }
-
                         div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover::after {
                             transform: scale(1.2) !important;
                         }
-
                         div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker) {
                             opacity: 0.7 !important;
                             margin-bottom: 25px !important;
                             border: 1px solid rgba(231, 76, 60, 0.3) !important;
+                        }
+                        /* Custom buttons inside timeline */
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker) button {
+                            border-radius: 6px !important;
+                            padding: 5px 15px !important;
+                            font-size: 13px !important;
+                        }
+                        /* Override global h3 underline length for history cards */
+                        h3.history-card-title::after {
+                            width: 50px !important;
                         }
                     `;
                     parentDoc.head.appendChild(style);
