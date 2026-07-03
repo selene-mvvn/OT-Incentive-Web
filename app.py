@@ -1049,6 +1049,13 @@ else:
     if st.button("?", key="floating_guide_btn", help=t("Hướng dẫn sử dụng", "使い方ガイド")):
         show_user_guide()
         
+    from components.skeleton import show_skeleton_loading
+    if 'last_rendered_tab' not in st.session_state:
+        st.session_state['last_rendered_tab'] = menu_selection
+        show_skeleton_loading(0.8)
+    elif st.session_state['last_rendered_tab'] != menu_selection:
+        show_skeleton_loading(0.8)
+        st.session_state['last_rendered_tab'] = menu_selection
 
     if "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"):
         render_project_data()
