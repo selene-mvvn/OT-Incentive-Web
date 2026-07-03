@@ -75,8 +75,13 @@ def render_incentive():
                 
                 st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
                 
-                with st.expander(t(":blue[:material/info:] Cách đọc biểu đồ", ":blue[:material/info:] チャートの見方")):
+                with st.expander(t(":material/info: Cách đọc biểu đồ", ":material/info: チャートの見方")):
                     st.markdown(f"""
+                    <style>
+                    div[data-testid="stExpander"] details summary p span {{
+                        color: #00B0F0 !important;
+                    }}
+                    </style>
                     <div style="color: #5f6368; font-size: 13px; line-height: 1.6; font-family: 'Times New Roman', serif; margin-top: -10px; padding-bottom: 5px;">
                         • <b>Doanh thu:</b> {t('(Kế hoạch) x (Đơn giá). Là khoản tiền công ty tính với khách hàng.', '(目標工数) x (単価)。顧客に請求する金額。')}<br>
                         • <b>Chi phí:</b> {t('(Thực tế) x (Charge). Là chi phí nội bộ công ty dùng để vận hành dự án.', '(実工数) x (会社運用費)。プロジェクトの内部運用コスト。')}<br>
