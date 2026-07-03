@@ -18,42 +18,47 @@ def render_incentive():
             result_rk = st.session_state['last_incentive_calc']
             inputs_rk = st.session_state['last_incentive_inputs']
             
-            st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True)
-            exp_rev = inputs_rk['target_hours'] * inputs_rk['unit_price']
-            act_cost = inputs_rk['actual_hours'] * inputs_rk['unit_price']
-            c_charge = inputs_rk['company_charge']
-            p_val = result_rk['profit']
+            st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
             
-            st.markdown(f"<div style='text-align: center; font-family: \"Times New Roman\", serif; font-size: 1.05rem; font-weight: bold; color: #00B0F0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;'><span class='material-symbols-rounded' style='vertical-align: -5px; font-size: 20px;'>waterfall_chart</span> {t('Dòng tiền Dự án', 'キャッシュフロー')}</div>", unsafe_allow_html=True)
-            
-            fig = go.Figure(go.Waterfall(
-                name = "Cashflow", orientation = "v",
-                measure = ["relative", "relative", "relative", "total"],
-                x = [t("D.Thu", "売上"), t("Charge", "会社"), t("Chi phí", "コスト"), t("Quỹ", "原資")],
-                textposition = "outside",
-                text = [f"+{exp_rev:,.0f}", f"-{c_charge:,.0f}", f"-{act_cost:,.0f}", f"{p_val:,.0f}"],
-                textfont=dict(family="Arial, sans-serif", size=11, color="#333", weight="bold"),
-                y = [exp_rev, -c_charge, -act_cost, 0],
-                connector = {"line":{"color":"rgba(0,0,0,0.15)", "width": 1, "dash": "dot"}},
-                decreasing = {"marker":{"color":"rgba(255, 107, 107, 0.85)", "line":{"color":"#ff6b6b", "width":1}}},
-                increasing = {"marker":{"color":"rgba(0, 176, 240, 0.85)", "line":{"color":"#00B0F0", "width":1}}},
-                totals = {"marker":{"color":"rgba(32, 201, 151, 0.85)" if p_val >= 0 else "rgba(255, 107, 107, 0.85)", "line":{"color":"#20c997" if p_val >= 0 else "#ff6b6b", "width":1}}},
-                hovertemplate="<b>%{x}</b><br>Giá trị: %{text}<extra></extra>"
-            ))
-            
-            fig.update_layout(
-                showlegend=False,
-                height=260,
-                bargap=0.3,
-                margin=dict(l=5, r=5, t=10, b=20),
-                plot_bgcolor="rgba(0,0,0,0)",
-                paper_bgcolor="rgba(0,0,0,0)",
-                yaxis=dict(showgrid=False, zeroline=True, zerolinecolor="rgba(0,0,0,0.1)", zerolinewidth=1, showticklabels=False),
-                xaxis=dict(showgrid=False, tickfont=dict(family="'Times New Roman', serif", size=11, color="#2c3e50", weight="bold")),
-                hoverlabel=dict(bgcolor="white", font_size=12, font_family="'Times New Roman', serif")
-            )
-            
-            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+            with st.container():
+                from components.ui_utils import make_container_white
+                make_container_white()
+                
+                exp_rev = inputs_rk['target_hours'] * inputs_rk['unit_price']
+                act_cost = inputs_rk['actual_hours'] * inputs_rk['unit_price']
+                c_charge = inputs_rk['company_charge']
+                p_val = result_rk['profit']
+                
+                st.markdown(f"<div style='text-align: center; font-family: \"Times New Roman\", serif; font-size: 1.05rem; font-weight: bold; color: #00B0F0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;'><span class='material-symbols-rounded' style='vertical-align: -5px; font-size: 20px;'>waterfall_chart</span> {t('Dòng tiền Dự án', 'キャッシュフロー')}</div>", unsafe_allow_html=True)
+                
+                fig = go.Figure(go.Waterfall(
+                    name = "Cashflow", orientation = "v",
+                    measure = ["relative", "relative", "relative", "total"],
+                    x = [t("D.Thu", "売上"), t("Charge", "会社"), t("Chi phí", "コスト"), t("Quỹ", "原資")],
+                    textposition = "outside",
+                    text = [f"+{exp_rev:,.0f}", f"-{c_charge:,.0f}", f"-{act_cost:,.0f}", f"{p_val:,.0f}"],
+                    textfont=dict(family="Arial, sans-serif", size=11, color="#333", weight="bold"),
+                    y = [exp_rev, -c_charge, -act_cost, 0],
+                    connector = {"line":{"color":"rgba(0,0,0,0.15)", "width": 1, "dash": "dot"}},
+                    decreasing = {"marker":{"color":"rgba(255, 107, 107, 0.85)", "line":{"color":"#ff6b6b", "width":1}}},
+                    increasing = {"marker":{"color":"rgba(0, 176, 240, 0.85)", "line":{"color":"#00B0F0", "width":1}}},
+                    totals = {"marker":{"color":"rgba(32, 201, 151, 0.85)" if p_val >= 0 else "rgba(255, 107, 107, 0.85)", "line":{"color":"#20c997" if p_val >= 0 else "#ff6b6b", "width":1}}},
+                    hovertemplate="<b>%{x}</b><br>Giá trị: %{text}<extra></extra>"
+                ))
+                
+                fig.update_layout(
+                    showlegend=False,
+                    height=260,
+                    bargap=0.3,
+                    margin=dict(l=5, r=5, t=10, b=20),
+                    plot_bgcolor="rgba(0,0,0,0)",
+                    paper_bgcolor="rgba(0,0,0,0)",
+                    yaxis=dict(showgrid=False, zeroline=True, zerolinecolor="rgba(0,0,0,0.1)", zerolinewidth=1, showticklabels=False),
+                    xaxis=dict(showgrid=False, tickfont=dict(family="'Times New Roman', serif", size=11, color="#2c3e50", weight="bold")),
+                    hoverlabel=dict(bgcolor="white", font_size=12, font_family="'Times New Roman', serif")
+                )
+                
+                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
     with col_main:
         if 'incentive_records' not in st.session_state:
             st.session_state['incentive_records'] = []
