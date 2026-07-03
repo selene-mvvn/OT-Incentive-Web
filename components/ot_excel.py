@@ -430,6 +430,8 @@ def render_ot_excel():
             for col in df_display.columns:
                 if t("Lương/H", "時給") in col or t("Tiền", "金額") in col:
                     format_dict[col] = "{:,.0f}"
+                elif t("Giờ OT", "残業時間") in col:
+                    format_dict[col] = "{:,.2f}"
                 
             styled_df = df_display.style.apply(color_ot_cols, axis=0).format(format_dict, na_rep="")
             st.dataframe(styled_df, use_container_width=True)
