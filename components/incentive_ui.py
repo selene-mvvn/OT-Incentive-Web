@@ -165,6 +165,46 @@ def render_incentive():
             except:
                 pass
 
+            # --- Waterfall Chart Implementation ---
+            st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+            expected_revenue = inputs['target_hours'] * inputs['unit_price']
+            actual_cost = inputs['actual_hours'] * inputs['unit_price']
+            comp_charge = inputs['company_charge']
+            profit_val = result['profit']
+            
+            fig = go.Figure(go.Waterfall(
+                name = "Cashflow", orientation = "v",
+                measure = ["relative", "relative", "relative", "total"],
+                x = [t("Doanh thu dự kiến", "予想売上"), t("Company Charge", "会社運用費"), t("Chi phí Thực tế", "実コスト"), t("Quỹ Incentive", "インセンティブ原資")],
+                textposition = "outside",
+                text = [f"+{expected_revenue:,.0f}", f"-{comp_charge:,.0f}", f"-{actual_cost:,.0f}", f"{profit_val:,.0f}"],
+                y = [expected_revenue, -comp_charge, -actual_cost, 0],
+                connector = {"line":{"color":"#e9ecef"}},
+                decreasing = {"marker":{"color":"#ff6b6b"}},
+                increasing = {"marker":{"color":"#4facfe"}},
+                totals = {"marker":{"color":"#20c997" if profit_val >= 0 else "#ff6b6b"}}
+            ))
+            
+            fig.update_layout(
+                title=dict(
+                    text=t("📊 Biểu đồ Thác nước: Trực quan hóa Dòng tiền", "📊 ウォーターフォールチャート：キャッシュフロー"),
+                    font=dict(size=17, color="#2c3e50"),
+                    x=0.01,
+                    y=0.95
+                ),
+                showlegend=False,
+                height=380,
+                margin=dict(l=20, r=20, t=60, b=20),
+                plot_bgcolor="rgba(0,0,0,0)",
+                paper_bgcolor="rgba(0,0,0,0)",
+                yaxis=dict(showgrid=True, gridcolor="#f8f9fa", zeroline=True, zerolinecolor="#dee2e6"),
+                xaxis=dict(showgrid=False, tickfont=dict(size=13, color="#495057"))
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+            # --------------------------------------
+
             # Add to List button
             if st.button(t("➕ Thêm vào Danh sách Chờ xuất", "➕ リストに追加")):
                 if not inputs['project_name'] or not inputs['employee_name']:
