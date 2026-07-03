@@ -72,11 +72,14 @@ def show_skeleton_loading(duration=0.6):
                     let children = Array.from(parent.children);
                     let index = children.indexOf(container);
                     
+                    // Scope CSS to THIS specific parent by adding a class
+                    parent.classList.add('skeleton-parent-block');
+                    
                     if (!doc.getElementById('skeleton-hide-style')) {
                         let style = doc.createElement('style');
                         style.id = 'skeleton-hide-style';
                         style.innerHTML = `
-                            [data-testid="stVerticalBlock"] > div:nth-child(n+${index + 2}) {
+                            .skeleton-parent-block > div:nth-child(n+${index + 2}) {
                                 display: none !important;
                                 opacity: 0 !important;
                                 pointer-events: none !important;
@@ -85,14 +88,28 @@ def show_skeleton_loading(duration=0.6):
                         doc.head.appendChild(style);
                     }
                     
-                    const observer = new MutationObserver((mutations) => {
-                        if (!doc.getElementById('skeleton-marker')) {
-                            const style = doc.getElementById('skeleton-hide-style');
-                            if (style) style.remove();
-                            observer.disconnect();
-                        }
-                    });
-                    observer.observe(doc.body, { childList: true, subtree: true });
+                    // Inject a polling script into the parent doc so it survives iframe destruction
+                    if (!doc.getElementById('skeleton-cleanup-script')) {
+                        let script = doc.createElement('script');
+                        script.id = 'skeleton-cleanup-script';
+                        script.innerHTML = `
+                            const skeletonPoll = setInterval(() => {
+                                if (!document.getElementById('skeleton-marker')) {
+                                    clearInterval(skeletonPoll);
+                                    
+                                    const style = document.getElementById('skeleton-hide-style');
+                                    if (style) style.remove();
+                                    
+                                    const parents = document.querySelectorAll('.skeleton-parent-block');
+                                    parents.forEach(p => p.classList.remove('skeleton-parent-block'));
+                                    
+                                    const selfScript = document.getElementById('skeleton-cleanup-script');
+                                    if (selfScript) selfScript.remove();
+                                }
+                            }, 50);
+                        `;
+                        doc.head.appendChild(script);
+                    }
                 }
             }
         </script>
