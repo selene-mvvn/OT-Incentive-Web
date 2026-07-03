@@ -75,6 +75,18 @@ def render_incentive():
                 )
                 
                 st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+                
+                st.markdown(f"""
+                <details style="margin-top: 5px; margin-bottom: 5px; cursor: pointer; color: #7f8c8d; font-size: 13px; font-family: 'Times New Roman', serif;">
+                  <summary style="font-weight: 600; outline: none; margin-bottom: 5px;">ℹ️ {t('Cách đọc biểu đồ', 'チャートの見方')}</summary>
+                  <div style="background-color: #f8f9fa; padding: 12px; border-radius: 6px; border-left: 3px solid #00B0F0; color: #5f6368; font-size: 12px; line-height: 1.6; margin-top: 5px; font-family: Arial, sans-serif;">
+                    • <b>D.Thu:</b> {t('Doanh thu dự kiến tính theo Giờ KH.', '目標工数に基づく予想売上。')}<br>
+                    • <b>Charge:</b> {t('Chi phí quản lý cố định của c.ty.', '固定の会社運用費。')}<br>
+                    • <b>Chi phí:</b> {t('Lương thực tế dựa trên Giờ làm.', '実工数に基づく給与コスト。')}<br>
+                    • <b>Quỹ:</b> {t('Phần lợi nhuận dư cuối cùng. Cột <b style="color:#20c997">Xanh</b> là tiền thưởng, cột <b style="color:#ff6b6b">Đỏ</b> là lỗ (không có thưởng).', '最終の利益。<b style="color:#20c997">緑</b>の柱はボーナス、<b style="color:#ff6b6b">赤</b>は未達成。')}
+                  </div>
+                </details>
+                """, unsafe_allow_html=True)
     with col_main:
         if 'incentive_records' not in st.session_state:
             st.session_state['incentive_records'] = []
