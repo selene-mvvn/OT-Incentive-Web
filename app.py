@@ -667,6 +667,8 @@ if 'current_page' not in st.session_state:
     st.session_state['current_page'] = 'welcome'
 
 if st.session_state['current_page'] == 'welcome':
+    if 'last_rendered_tab' in st.session_state:
+        del st.session_state['last_rendered_tab']
     render_welcome()
 else:
     # Main App specific CSS
@@ -1042,9 +1044,9 @@ else:
     from components.skeleton import show_skeleton_loading
     if 'last_rendered_tab' not in st.session_state:
         st.session_state['last_rendered_tab'] = menu_selection
-        show_skeleton_loading(0.7)
+        show_skeleton_loading(0.8)
     elif st.session_state['last_rendered_tab'] != menu_selection:
-        show_skeleton_loading(0.7)
+        show_skeleton_loading(0.8)
         st.session_state['last_rendered_tab'] = menu_selection
     
     if "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"):
