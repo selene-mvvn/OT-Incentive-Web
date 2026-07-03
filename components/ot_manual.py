@@ -552,15 +552,17 @@ def render_base_data():
             .day-number {{ font-weight: 500; font-size: 13px; margin-bottom: 4px; text-align: right; color: #475569; }}
             .holiday-event {{ background: #10b981; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
             .jp-holiday-event {{ background: #ef4444; color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
+            .joint-holiday-event {{ background: linear-gradient(135deg, #10b981 50%, #ef4444 50%); color: white; font-size: 11px; padding: 3px 5px; border-radius: 4px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: default; }}
             .other-month {{ background: #f1f5f9 !important; color: #94a3b8 !important; }}
             .other-month .day-number {{ color: #94a3b8 !important; }}
             .today {{ background: #f0f9ff !important; }}
             .today .day-number {{ background: #00B0F0; color: white !important; font-weight: bold; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; display: inline-block; float: right; box-shadow: 0 2px 4px rgba(0, 176, 240, 0.4); margin-bottom: 4px; }}
-            .legend-container {{ margin-top: 15px; display: flex; gap: 15px; justify-content: center; font-size: 13px; color: white; font-weight: 500; }}
+            .legend-container {{ margin-top: 15px; display: flex; gap: 15px; justify-content: center; font-size: 13px; color: white; font-weight: 500; flex-wrap: wrap; }}
             .legend-item {{ display: flex; align-items: center; gap: 6px; }}
             .legend-color {{ width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }}
             .legend-vn {{ background: #10b981; }}
             .legend-jp {{ background: #ef4444; }}
+            .legend-joint {{ background: linear-gradient(135deg, #10b981 50%, #ef4444 50%); }}
             </style>
 
             <div class="calendar-container">
