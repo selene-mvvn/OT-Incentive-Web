@@ -537,7 +537,7 @@ def render_base_data():
                 pass
         
             holidays_json = json.dumps(holidays_list)
-        
+            st.error("HỆ THỐNG ĐÃ CẬP NHẬT: Vui lòng F5 (tải lại trang) để áp dụng giao diện mới nhất!")
             html_code = f"""
             <style>
             body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; color: #334155; }}
