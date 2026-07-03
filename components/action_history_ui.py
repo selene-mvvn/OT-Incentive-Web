@@ -29,12 +29,12 @@ def render_action_history():
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             st.markdown("""
-                <div style='text-align: center; padding: 20px;'>
-                    <div style='display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; background-color: #f8f9fa; margin-bottom: 20px;'>
-                        <span class="material-symbols-rounded" style="font-size: 64px; color: #adb5bd;">inventory_2</span>
+                <div style='text-align: center; padding: 20px; width: 100%;'>
+                    <div style='display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; background-color: #00B0F0; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0, 176, 240, 0.3);'>
+                        <span class="material-symbols-rounded" style="font-size: 64px; color: white;">inventory_2</span>
                     </div>
-                    <h3 style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 20px; font-weight: bold; margin: 0;'>""" + t("Chưa có dữ liệu lịch sử", "操作履歴がありません") + """</h3>
-                    <p style='color: #7f8c8d; font-size: 14px; margin-top: 10px;'>""" + t("Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.", "計算やレポート出力を実行すると、ここに履歴が表示されます。") + """</p>
+                    <div style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 22px; font-weight: bold; margin: 0 auto; line-height: 1.2;'>""" + t("Chưa có dữ liệu lịch sử", "操作履歴がありません") + """</div>
+                    <div style='color: #7f8c8d; font-size: 15px; margin-top: 10px; line-height: 1.5;'>""" + t("Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.", "計算やレポート出力を実行すると、ここに履歴が表示されます。") + """</div>
                 </div>
             """, unsafe_allow_html=True)
         return
@@ -88,12 +88,12 @@ def render_action_history():
             col1, col2, col3 = st.columns([1, 1.5, 1])
             with col2:
                 st.markdown("""
-                    <div style='text-align: center; padding: 20px;'>
-                        <div style='display: inline-flex; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 50%; background-color: #f8f9fa; margin-bottom: 20px;'>
-                            <span class="material-symbols-rounded" style="font-size: 54px; color: #adb5bd;">search_off</span>
+                    <div style='text-align: center; padding: 20px; width: 100%;'>
+                        <div style='display: inline-flex; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 50%; background-color: #00B0F0; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0, 176, 240, 0.3);'>
+                            <span class="material-symbols-rounded" style="font-size: 54px; color: white;">search_off</span>
                         </div>
-                        <h3 style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 18px; font-weight: bold; margin: 0;'>""" + t("Không tìm thấy kết quả nào", "一致する結果が見つかりません") + """</h3>
-                        <p style='color: #7f8c8d; font-size: 14px; margin-top: 10px;'>""" + t("Vui lòng thử lại với từ khóa hoặc bộ lọc khác.", "別のキーワードやフィルターをお試しください。") + """</p>
+                        <div style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 20px; font-weight: bold; margin: 0 auto; line-height: 1.2;'>""" + t("Không tìm thấy kết quả nào", "一致する結果が見つかりません") + """</div>
+                        <div style='color: #7f8c8d; font-size: 15px; margin-top: 10px; line-height: 1.5;'>""" + t("Vui lòng thử lại với từ khóa hoặc bộ lọc khác.", "別のキーワードやフィルターをお試しください。") + """</div>
                     </div>
                 """, unsafe_allow_html=True)
             return
