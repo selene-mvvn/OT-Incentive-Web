@@ -403,7 +403,7 @@ def render_base_data():
                 current_df = pd.DataFrame(columns=["Ngày nghỉ", "Lý do"])
 
             # Fix StreamlitAPIException: Ensure the column is a datetime64 dtype so Streamlit doesn't think it's a string
-            current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce", format='mixed', dayfirst=True)
+            current_df["Ngày nghỉ"] = pd.to_datetime(current_df["Ngày nghỉ"], errors="coerce")
         
             holiday_translations = {
                 "Tết Dương lịch": "元日",
@@ -448,7 +448,7 @@ def render_base_data():
                     st.warning(t(f"Lưu ý: Hệ thống chỉ có sẵn dữ liệu Dương lịch cho năm {selected_year}, các ngày Lễ Âm lịch (Tết, Giỗ tổ) bạn vui lòng bổ sung thêm thủ công nhé.", f"注意：{selected_year}年の太陽暦の祝日のみ自動入力されました。旧正月などは手動で追加してください。"))
 
                 vn_holidays = pd.DataFrame(holidays_data)
-                vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"], format='mixed', dayfirst=True)
+                vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"], format='%Y-%m-%d')
                 
                 # Filter out standard holidays from current_df to prevent duplicates
                 standard_reasons = ["Tết Dương lịch", "Giải phóng Miền Nam", "Quốc tế Lao động", "Lễ Quốc khánh", "Nghỉ Tết Nguyên Đán", "Giỗ Tổ Hùng Vương"]
