@@ -1000,7 +1000,7 @@ def render_project_data():
 
             if len(st.session_state['ot_records']) > 0:
                 st.markdown("---")
-                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-top: 20px;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>", unsafe_allow_html=True)
+                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>", unsafe_allow_html=True)
                 st.caption(t("Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.", "セルをクリックして編集。行を選択してDeleteで削除。"))
             
                 df = pd.DataFrame(st.session_state['ot_records'])

@@ -177,7 +177,7 @@ def render_incentive():
         if st.session_state.get('incentive_records') and len(st.session_state['incentive_records']) > 0:
             if True:
                 st.markdown("---")
-                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-top: 20px;'>{t('BẢNG DỮ LIỆU CHỜ XUẤT', '出力待ちデータ一覧')}</h3>", unsafe_allow_html=True)
+                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU CHỜ XUẤT', '出力待ちデータ一覧')}</h3>", unsafe_allow_html=True)
             
                 df_records = pd.DataFrame(st.session_state['incentive_records'])
             
@@ -203,6 +203,7 @@ def render_incentive():
                     if col in df_display.columns:
                         df_display[col] = pd.to_numeric(df_display[col], errors='coerce').apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else "")
             
+                st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
                 edited_df = st.data_editor(
                     df_display,
                     use_container_width=True,
