@@ -225,7 +225,7 @@ def render_incentive():
                     default_name = f"{t('Bảng tổng hợp Incentive', 'インセンティブ集計表')}.xlsx"
 
                     st.markdown("---")
-                    c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.5, 2.0])
+                    c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                     with c_name:
                         export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="incentive_filename_v2")
                     with c_save:
