@@ -309,10 +309,28 @@ def render_welcome():
             </div>
         </div>
     """, unsafe_allow_html=True)
+    import random
+    if 'daily_quote' not in st.session_state:
+        quotes = [
+            {"jp": "継続は力なり", "vn": "Sự kiên trì chính là sức mạnh", "author": "Tục ngữ Nhật Bản"},
+            {"jp": "千里の道も一歩から", "vn": "Hành trình ngàn dặm bắt đầu từ một bước chân", "author": "Lão Tử"},
+            {"jp": "石の上にも三年", "vn": "Ba năm trên tảng đá (Có công mài sắt có ngày nên kim)", "author": "Tục ngữ Nhật Bản"},
+            {"jp": "七転び八起き", "vn": "Bảy lần ngã, tám lần đứng dậy", "author": "Tục ngữ Nhật Bản"},
+            {"jp": "初心忘るべからず", "vn": "Đừng bao giờ quên tâm nguyện thuở ban đầu", "author": "Zeami Motokiyo"},
+            {"jp": "努力は必ず報われる", "vn": "Nỗ lực chắc chắn sẽ được đền đáp", "author": "Vương Trinh Trị (Oh Sadaharu)"},
+            {"jp": "為せば成る、為さねば成らぬ何事も", "vn": "Có làm thì mới có thành, không làm thì chẳng nên chuyện gì", "author": "Uesugi Yozan"}
+        ]
+        st.session_state['daily_quote'] = random.choice(quotes)
+        
+    quote = st.session_state['daily_quote']
     
-    # Empty space to push buttons down
-    st.markdown("<div style='height: 10vh;'></div>", unsafe_allow_html=True)
-    
+    st.markdown(f"""
+    <div style='text-align: center; margin-top: 4vh; margin-bottom: 4vh; padding: 0 10px;'>
+        <div style='font-size: 1.3rem; font-weight: bold; color: #2c3e50; letter-spacing: 2px;'>「{quote['jp']}」</div>
+        <div style='font-size: 0.95rem; font-style: italic; color: #7f8c8d; margin-top: 8px;'>{quote['vn']}</div>
+        <div style='font-size: 0.8rem; color: #bdc3c7; margin-top: 4px;'>— {quote['author']} —</div>
+    </div>
+    """, unsafe_allow_html=True)
     # Render Buttons using standard Streamlit columns
     # Increase the outer spacers to push the buttons closer to the center
     col_spacer_left, col1, col_spacer_mid, col2, col_spacer_right = st.columns([3, 1.5, 0.2, 1.5, 3])
