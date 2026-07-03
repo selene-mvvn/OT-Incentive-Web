@@ -169,6 +169,14 @@ def render_mini_leaderboard(data_type="ot"):
                 agg_df = agg_df.sort_values(by='ot_hours', ascending=False).reset_index(drop=True)
                 val_col = 'ot_hours'
                 val_suffix = "h"
+            else:
+                if 'final_incentive' not in df_filtered.columns: df_filtered['final_incentive'] = 0
+                df_filtered['final_incentive'] = pd.to_numeric(df_filtered['final_incentive'], errors='coerce').fillna(0)
+                agg_df = df_filtered.groupby('employee_name')['final_incentive'].sum().reset_index()
+                agg_df = agg_df.sort_values(by='final_incentive', ascending=False).reset_index(drop=True)
+                val_col = 'final_incentive'
+                val_suffix = "¥"
+
             agg_df['rank'] = agg_df[val_col].rank(method='min', ascending=False).astype(int)
             top_5 = agg_df.head(5)
 
