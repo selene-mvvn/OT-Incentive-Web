@@ -223,7 +223,7 @@ def render_welcome():
     import random
     import json
     
-    if 'daily_quote_jp' not in st.session_state:
+    if 'daily_quotes_jp' not in st.session_state:
         quotes_jp = [
             {"text": "継続は力なり", "author": "日本のことわざ"},
             {"text": "千里の道も一歩から", "author": "老子"},
@@ -233,9 +233,14 @@ def render_welcome():
             {"text": "努力は必ず報われる", "author": "王貞治"},
             {"text": "為せば成る、為さねば成らぬ何事も", "author": "上杉鷹山"}
         ]
-        st.session_state['daily_quote_jp'] = random.choice(quotes_jp)
+        selected_jp = random.sample(quotes_jp, 3)
+        st.session_state['daily_quotes_jp'] = {
+            "morning": f"「{selected_jp[0]['text']}」 - {selected_jp[0]['author']}",
+            "afternoon": f"「{selected_jp[1]['text']}」 - {selected_jp[1]['author']}",
+            "evening": f"「{selected_jp[2]['text']}」 - {selected_jp[2]['author']}"
+        }
         
-    if 'daily_quote_vn' not in st.session_state:
+    if 'daily_quotes_vn' not in st.session_state:
         quotes_vn = [
             {"text": "Mẹo nhỏ: Hãy áp dụng quy tắc 20-20-20! Mỗi 20 phút, nhìn xa 6m trong 20 giây để bảo vệ mắt nhé.", "author": "Góc sức khỏe"},
             {"text": "Đừng làm việc chăm chỉ, hãy làm việc thông minh.", "author": "Khuyết danh"},
@@ -245,17 +250,16 @@ def render_welcome():
             {"text": "Thành công không đến từ những gì bạn thỉnh thoảng làm, mà từ những gì bạn kiên trì làm mỗi ngày.", "author": "Marie Forleo"},
             {"text": "Hôm nay là một ngày tuyệt vời để bug tự nhiên biến mất.", "author": "Góc giải trí"}
         ]
-        st.session_state['daily_quote_vn'] = random.choice(quotes_vn)
+        selected_vn = random.sample(quotes_vn, 3)
+        st.session_state['daily_quotes_vn'] = {
+            "morning": f"{selected_vn[0]['text']} ({selected_vn[0]['author']})",
+            "afternoon": f"{selected_vn[1]['text']} ({selected_vn[1]['author']})",
+            "evening": f"{selected_vn[2]['text']} ({selected_vn[2]['author']})"
+        }
         
+    daily_quotes_jp_js = json.dumps(st.session_state['daily_quotes_jp'])
+    daily_quotes_vn_js = json.dumps(st.session_state['daily_quotes_vn'])
     lang = st.session_state.get('lang', 'VN')
-    if lang == 'JP':
-        q = st.session_state['daily_quote_jp']
-        quote_display = f"「{q['text']}」 - {q['author']}"
-    else:
-        q = st.session_state['daily_quote_vn']
-        quote_display = f"{q['text']} ({q['author']})"
-        
-    quote_js = json.dumps(quote_display)
 
     
     clock_html = f"""
@@ -304,6 +308,8 @@ def render_welcome():
             <div class="greeting-text" id="greeting">Loading...</div>
         </div>
         <script>
+            const quotes_jp = {daily_quotes_jp_js};
+            const quotes_vn = {daily_quotes_vn_js};
             const lang = "{lang}";
             const offset = lang === "JP" ? 9 : 7;
             function updateTime() {{
@@ -311,7 +317,13 @@ def render_welcome():
                 const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
                 const local = new Date(utc + (3600000 * offset));
                 let h = local.getHours(); let m = local.getMinutes(); let s = local.getSeconds();
-                let greeting = {quote_js};
+                
+                let quotes = lang === "JP" ? quotes_jp : quotes_vn;
+                let greeting = "";
+                if (h >= 5 && h < 12) greeting = quotes["morning"];
+                else if (h >= 12 && h < 18) greeting = quotes["afternoon"];
+                else greeting = quotes["evening"];
+                
                 h = h < 10 ? "0" + h : h; m = m < 10 ? "0" + m : m; s = s < 10 ? "0" + s : s;
                 document.getElementById("time").innerText = h + ":" + m + ":" + s;
                 document.getElementById("greeting").innerText = greeting;
