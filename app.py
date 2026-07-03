@@ -735,6 +735,16 @@ else:
         menu_title = t("MENU", "管理メニュー")
         st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
+        st.markdown("""
+        <style>
+            [data-testid="stSidebar"] div[role="radiogroup"] span.material-symbols-rounded {
+                font-size: 1.4em !important;
+                vertical-align: middle !important;
+                margin-right: 4px;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        
         options = [
             t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"),
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
