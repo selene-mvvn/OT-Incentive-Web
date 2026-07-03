@@ -56,7 +56,10 @@ def show_mini_edit_dialog(data_type, df):
 
     edited_df = st.data_editor(df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
     if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
-        if save_all_records(data_type, edited_df.to_dict('records')):
+        save_df = edited_df.copy()
+        if 'date_obj' in save_df.columns:
+            save_df = save_df.drop(columns=['date_obj'])
+        if save_all_records(data_type, save_df.to_dict('records')):
             st.session_state['pending_toast'] = t("Đã lưu thành công!", "保存しました！")
             st.rerun()
 
