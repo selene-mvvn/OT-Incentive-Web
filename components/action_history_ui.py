@@ -28,10 +28,15 @@ def render_action_history():
         st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            if os.path.exists("empty_state.png"):
-                st.image("empty_state.png", use_container_width=True)
-            st.markdown(f"<h3 style='text-align: center; color: #2c3e50; font-family: \"Times New Roman\", serif; font-size: 20px; font-weight: bold; margin-top: 15px;'>{t('Chưa có dữ liệu lịch sử', '操作履歴がありません')}</h3>", unsafe_allow_html=True)
-            st.markdown(f"<p style='text-align: center; color: #7f8c8d; font-size: 14px;'>{t('Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.', '計算やレポート出力を実行すると、ここに履歴が表示されます。')}</p>", unsafe_allow_html=True)
+            st.markdown("""
+                <div style='text-align: center; padding: 20px;'>
+                    <div style='display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; background-color: #f8f9fa; margin-bottom: 20px;'>
+                        <span class="material-symbols-rounded" style="font-size: 64px; color: #adb5bd;">inventory_2</span>
+                    </div>
+                    <h3 style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 20px; font-weight: bold; margin: 0;'>""" + t("Chưa có dữ liệu lịch sử", "操作履歴がありません") + """</h3>
+                    <p style='color: #7f8c8d; font-size: 14px; margin-top: 10px;'>""" + t("Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.", "計算やレポート出力を実行すると、ここに履歴が表示されます。") + """</p>
+                </div>
+            """, unsafe_allow_html=True)
         return
         
     with st.container():
@@ -82,10 +87,15 @@ def render_action_history():
             st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
             col1, col2, col3 = st.columns([1, 1.5, 1])
             with col2:
-                if os.path.exists("empty_state.png"):
-                    st.image("empty_state.png", use_container_width=True)
-                st.markdown(f"<h3 style='text-align: center; color: #2c3e50; font-family: \"Times New Roman\", serif; font-size: 20px; font-weight: bold; margin-top: 15px;'>{t('Không tìm thấy kết quả nào', '一致する結果が見つかりません')}</h3>", unsafe_allow_html=True)
-                st.markdown(f"<p style='text-align: center; color: #7f8c8d; font-size: 14px;'>{t('Vui lòng thử lại với từ khóa hoặc bộ lọc khác.', '別のキーワードやフィルターをお試しください。')}</p>", unsafe_allow_html=True)
+                st.markdown("""
+                    <div style='text-align: center; padding: 20px;'>
+                        <div style='display: inline-flex; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 50%; background-color: #f8f9fa; margin-bottom: 20px;'>
+                            <span class="material-symbols-rounded" style="font-size: 54px; color: #adb5bd;">search_off</span>
+                        </div>
+                        <h3 style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 18px; font-weight: bold; margin: 0;'>""" + t("Không tìm thấy kết quả nào", "一致する結果が見つかりません") + """</h3>
+                        <p style='color: #7f8c8d; font-size: 14px; margin-top: 10px;'>""" + t("Vui lòng thử lại với từ khóa hoặc bộ lọc khác.", "別のキーワードやフィルターをお試しください。") + """</p>
+                    </div>
+                """, unsafe_allow_html=True)
             return
 
         # 2. Pagination
