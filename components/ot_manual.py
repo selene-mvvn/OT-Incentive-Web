@@ -229,7 +229,6 @@ def render_base_data():
                 st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
                 
                 st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
-                from logic.history import save_base_data
                 save_base_data(st.session_state['ot_base_data'])
 
                 for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
