@@ -1056,7 +1056,7 @@ else:
     elif st.session_state['last_rendered_tab'] != menu_selection:
         show_skeleton_loading(0.8)
         st.session_state['last_rendered_tab'] = menu_selection
-
+    
     if "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"):
         render_project_data()
     elif menu_selection == t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"):
