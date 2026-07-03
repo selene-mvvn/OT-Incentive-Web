@@ -78,13 +78,9 @@ def render_incentive():
                 with st.expander(t(":material/info: Cách đọc biểu đồ", ":material/info: チャートの見方")):
                     st.markdown(f"""
                     <style>
-                    details[data-testid="stExpander"] summary span[class*="material"],
-                    details[data-testid="stExpander"] summary p {{
+                    div[data-testid="stExpander"] details summary * {{
                         color: #00B0F0 !important;
-                    }}
-                    details[data-testid="stExpander"] summary svg {{
                         fill: #00B0F0 !important;
-                        color: #00B0F0 !important;
                     }}
                     </style>
                     <div style="color: #5f6368; font-size: 13px; line-height: 1.6; font-family: 'Times New Roman', serif; margin-top: -10px; padding-bottom: 5px;">
