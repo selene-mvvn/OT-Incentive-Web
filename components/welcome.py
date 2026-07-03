@@ -211,11 +211,11 @@ def render_welcome():
     if os.path.exists("logo.png"):
         logo_b64 = get_image_as_base64("logo.png")
         if logo_b64:
-            st.markdown(f'<div class="logo-container"><img src="data:image/png;base64,{logo_b64}"></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="logo-container"><img src="data:image/png;base64,{logo_b64}" style="width: 250px; max-width: 100%;"></div>', unsafe_allow_html=True)
     elif os.path.exists("logo.jpg"):
         logo_b64 = get_image_as_base64("logo.jpg")
         if logo_b64:
-            st.markdown(f'<div class="logo-container"><img src="data:image/jpeg;base64,{logo_b64}"></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="logo-container"><img src="data:image/jpeg;base64,{logo_b64}" style="width: 250px; max-width: 100%;"></div>', unsafe_allow_html=True)
     else: 
         st.markdown('<div style="height: 50px;"></div>', unsafe_allow_html=True)
 
