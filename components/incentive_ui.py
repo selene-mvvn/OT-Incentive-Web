@@ -29,7 +29,23 @@ def render_incentive():
                 c_charge = inputs_rk['company_charge']
                 p_val = result_rk['profit']
                 
-                st.markdown(f"<div style='text-align: center; font-family: \"Times New Roman\", serif; font-size: 1.05rem; font-weight: bold; color: #00B0F0; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px;'><span class='material-symbols-rounded' style='vertical-align: -5px; font-size: 20px;'>waterfall_chart</span> {t('Dòng tiền Dự án', 'キャッシュフロー')}</div>", unsafe_allow_html=True)
+                border_color = "#00a8e8"
+                title_text = t('DÒNG TIỀN DỰ ÁN', 'キャッシュフロー')
+                st.markdown(f"""
+                    <div style='
+                        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+                        border-radius: 8px;
+                        border-top: 4px solid {border_color};
+                        padding: 10px;
+                        margin-bottom: 15px;
+                        text-align: center; color: #2c3e50; font-size: 16px; font-weight: bold; text-transform: uppercase;
+                        box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+                        font-family: "Times New Roman", serif;
+                    '>
+                        <span class="material-symbols-rounded" style="vertical-align: middle; color: {border_color}; margin-right: 5px; font-size: 20px;">waterfall_chart</span>
+                        <span style="vertical-align: middle;">{title_text}</span>
+                    </div>
+                """, unsafe_allow_html=True)
                 
                 fig = go.Figure(go.Waterfall(
                     name = "Cashflow", orientation = "v",
