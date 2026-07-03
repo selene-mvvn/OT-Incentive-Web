@@ -221,23 +221,42 @@ def render_welcome():
 
     import html
     import random
+    import json
     
-    if 'daily_quote' not in st.session_state:
-        quotes = [
-            {"jp": "継続は力なり", "vn": "Sự kiên trì chính là sức mạnh", "author": "Tục ngữ Nhật Bản"},
-            {"jp": "千里の道も一歩から", "vn": "Hành trình ngàn dặm bắt đầu từ một bước chân", "author": "Lão Tử"},
-            {"jp": "石の上にも三年", "vn": "Ba năm trên tảng đá", "author": "Tục ngữ Nhật Bản"},
-            {"jp": "七転び八起き", "vn": "Bảy lần ngã, tám lần đứng dậy", "author": "Tục ngữ Nhật Bản"},
-            {"jp": "初心忘るべからず", "vn": "Đừng quên tâm nguyện thuở ban đầu", "author": "Zeami Motokiyo"},
-            {"jp": "努力は必ず報われる", "vn": "Nỗ lực chắc chắn sẽ được đền đáp", "author": "Oh Sadaharu"},
-            {"jp": "為せば成る、為さねば成らぬ何事も", "vn": "Có làm thì mới có thành", "author": "Uesugi Yozan"}
+    if 'daily_quote_jp' not in st.session_state:
+        quotes_jp = [
+            {"text": "継続は力なり", "author": "日本のことわざ"},
+            {"text": "千里の道も一歩から", "author": "老子"},
+            {"text": "石の上にも三年", "author": "日本のことわざ"},
+            {"text": "七転び八起き", "author": "日本のことわざ"},
+            {"text": "初心忘るべからず", "author": "世阿弥"},
+            {"text": "努力は必ず報われる", "author": "王貞治"},
+            {"text": "為せば成る、為さねば成らぬ何事も", "author": "上杉鷹山"}
         ]
-        st.session_state['daily_quote'] = random.choice(quotes)
+        st.session_state['daily_quote_jp'] = random.choice(quotes_jp)
         
-    quote = st.session_state['daily_quote']
-    
+    if 'daily_quote_vn' not in st.session_state:
+        quotes_vn = [
+            {"text": "Mẹo nhỏ: Hãy áp dụng quy tắc 20-20-20! Mỗi 20 phút, nhìn xa 6m trong 20 giây để bảo vệ mắt nhé.", "author": "Góc sức khỏe"},
+            {"text": "Đừng làm việc chăm chỉ, hãy làm việc thông minh.", "author": "Khuyết danh"},
+            {"text": "Uống đủ nước chưa? Hãy đứng lên vươn vai và uống một ngụm nước đi nào!", "author": "Góc sức khỏe"},
+            {"text": "Code không có bug chỉ là code chưa được test đủ thôi!", "author": "Châm ngôn Dev"},
+            {"text": "OT là nghệ thuật, người làm OT chắc chắn là người rất kiên nhẫn.", "author": "Góc giải trí"},
+            {"text": "Thành công không đến từ những gì bạn thỉnh thoảng làm, mà từ những gì bạn kiên trì làm mỗi ngày.", "author": "Marie Forleo"},
+            {"text": "Hôm nay là một ngày tuyệt vời để bug tự nhiên biến mất.", "author": "Góc giải trí"}
+        ]
+        st.session_state['daily_quote_vn'] = random.choice(quotes_vn)
+        
     lang = st.session_state.get('lang', 'VN')
-    quote_display = f"「{quote['jp']}」 - {quote['vn']} ({quote['author']})"
+    if lang == 'JP':
+        q = st.session_state['daily_quote_jp']
+        quote_display = f"「{q['text']}」 - {q['author']}"
+    else:
+        q = st.session_state['daily_quote_vn']
+        quote_display = f"{q['text']} ({q['author']})"
+        
+    quote_js = json.dumps(quote_display)
+
     
     clock_html = f"""
     <!DOCTYPE html>
@@ -292,7 +311,7 @@ def render_welcome():
                 const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
                 const local = new Date(utc + (3600000 * offset));
                 let h = local.getHours(); let m = local.getMinutes(); let s = local.getSeconds();
-                let greeting = "{quote_display}";
+                let greeting = {quote_js};
                 h = h < 10 ? "0" + h : h; m = m < 10 ? "0" + m : m; s = s < 10 ? "0" + s : s;
                 document.getElementById("time").innerText = h + ":" + m + ":" + s;
                 document.getElementById("greeting").innerText = greeting;
