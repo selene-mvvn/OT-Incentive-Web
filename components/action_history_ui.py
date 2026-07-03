@@ -25,7 +25,13 @@ def render_action_history():
     logs = get_action_logs()
     
     if not logs:
-        st.info(t("Chưa có lịch sử thao tác nào.", "操作履歴がありません。"))
+        st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            if os.path.exists("empty_state.png"):
+                st.image("empty_state.png", use_container_width=True)
+            st.markdown(f"<h3 style='text-align: center; color: #2c3e50; font-family: \"Times New Roman\", serif; font-size: 20px; font-weight: bold; margin-top: 15px;'>{t('Chưa có dữ liệu lịch sử', '操作履歴がありません')}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<p style='text-align: center; color: #7f8c8d; font-size: 14px;'>{t('Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.', '計算やレポート出力を実行すると、ここに履歴が表示されます。')}</p>", unsafe_allow_html=True)
         return
         
     with st.container():
@@ -73,7 +79,13 @@ def render_action_history():
             filtered_logs = temp_logs
 
         if not filtered_logs:
-            st.warning(t("Không tìm thấy kết quả nào phù hợp.", "一致する結果が見つかりません。"))
+            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+            col1, col2, col3 = st.columns([1, 1.5, 1])
+            with col2:
+                if os.path.exists("empty_state.png"):
+                    st.image("empty_state.png", use_container_width=True)
+                st.markdown(f"<h3 style='text-align: center; color: #2c3e50; font-family: \"Times New Roman\", serif; font-size: 20px; font-weight: bold; margin-top: 15px;'>{t('Không tìm thấy kết quả nào', '一致する結果が見つかりません')}</h3>", unsafe_allow_html=True)
+                st.markdown(f"<p style='text-align: center; color: #7f8c8d; font-size: 14px;'>{t('Vui lòng thử lại với từ khóa hoặc bộ lọc khác.', '別のキーワードやフィルターをお試しください。')}</p>", unsafe_allow_html=True)
             return
 
         # 2. Pagination
