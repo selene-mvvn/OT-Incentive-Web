@@ -16,6 +16,9 @@ def render_action_history():
                 transform: translateY(-2px) !important;
                 border-color: #3498db !important;
             }
+            h3.history-card-title::after {
+                width: 50px !important;
+            }
         </style>
     """, unsafe_allow_html=True)
     title = t("LỊCH SỬ THAO TÁC", "操作履歴")
