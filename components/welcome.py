@@ -366,6 +366,7 @@ def render_welcome():
             st.session_state['current_page'] = 'ot_calc'
             st.session_state['menu_selection'] = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**")
             st.session_state['ot_menu_expanded'] = True
+            st.session_state['show_page_transition'] = True
             st.rerun()
             
     with col2:
@@ -373,6 +374,7 @@ def render_welcome():
             st.session_state['current_page'] = 'incentive_calc'
             st.session_state['menu_selection'] = t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**")
             st.session_state['ot_menu_expanded'] = False
+            st.session_state['show_page_transition'] = True
             st.rerun()
 
     # 5. Instructional Text

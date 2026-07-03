@@ -63,3 +63,52 @@ def show_skeleton_loading(duration=0.6):
     
     time.sleep(duration)
     placeholder.empty()
+
+def show_page_transition(duration=0.6):
+    """
+    Displays a full-screen transition overlay for a specified duration,
+    then automatically clears itself. Used for page-to-page navigation.
+    """
+    ph = st.empty()
+    ph.markdown("""
+    <style>
+    .page-transition-overlay {
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #ffffff;
+        z-index: 9999999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        animation: fadeOutTransition 0.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+        animation-delay: 0.1s;
+    }
+    @keyframes fadeOutTransition {
+        0% { opacity: 1; }
+        100% { opacity: 0; visibility: hidden; }
+    }
+    .transition-spinner {
+        width: 50px;
+        height: 50px;
+        border: 4px solid rgba(0, 176, 240, 0.2);
+        border-top: 4px solid #00B0F0;
+        border-radius: 50%;
+        animation: spinTransition 0.8s linear infinite;
+    }
+    @keyframes spinTransition {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    /* Hide old elements in main block container to prevent pushing down */
+    div[data-testid="stElementContainer"]:has(.page-transition-overlay) ~ div {
+        display: none !important;
+        opacity: 0 !important;
+    }
+    </style>
+    <div class="page-transition-overlay">
+        <div class="transition-spinner"></div>
+    </div>
+    """, unsafe_allow_html=True)
+    time.sleep(duration)
+    ph.empty()

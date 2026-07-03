@@ -2,6 +2,10 @@ import streamlit as st
 
 st.set_page_config(page_title="OT & Incentive Calculator", layout="wide", initial_sidebar_state="expanded")
 
+if st.session_state.pop('show_page_transition', False):
+    from components.skeleton import show_page_transition
+    show_page_transition()
+
 if 'pending_toast' in st.session_state:
     st.toast(st.session_state['pending_toast'], icon=":material/check_circle:")
     del st.session_state['pending_toast']
@@ -726,11 +730,15 @@ else:
             with col2:
                 if st.button("HOME", use_container_width=True):
                     st.session_state['current_page'] = 'welcome'
+                    st.session_state['show_page_transition'] = True
+                    if 'last_rendered_tab' in st.session_state:
+                        del st.session_state['last_rendered_tab']
                     st.rerun()
             st.markdown("<br>", unsafe_allow_html=True)
         else:
             if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
                 st.session_state['current_page'] = 'welcome'
+                st.session_state['show_page_transition'] = True
                 st.rerun()
             st.markdown("<br>", unsafe_allow_html=True)
         
