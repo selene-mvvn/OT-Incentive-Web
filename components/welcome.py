@@ -334,7 +334,7 @@ def render_welcome():
     </body>
     </html>
     """
-    clock_html_escaped = html.escape(clock_html)
+    clock_html_escaped = html.escape(clock_html.replace('\n', ' '))
     st.markdown(f"""
         <div class="title">
             OVERTIME & INCENTIVE<br>MANAGEMENT SYSTEM
