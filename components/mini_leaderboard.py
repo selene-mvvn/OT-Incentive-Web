@@ -223,6 +223,33 @@ def render_mini_leaderboard(data_type="ot"):
                 
             st.markdown(html_content, unsafe_allow_html=True)
             
+            if len(top_5) > 0:
+                fig = go.Figure(go.Bar(
+                    x=top_5[val_col][::-1],
+                    y=top_5['employee_name'][::-1],
+                    orientation='h',
+                    marker=dict(
+                        color=top_5[val_col][::-1],
+                        colorscale=[[0, '#e1f5fe'], [1, '#00a8e8']],
+                    ),
+                    text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
+                    textposition='inside',
+                    insidetextanchor='end',
+                    textfont=dict(
+                        color=['#2c3e50'] * (len(top_5) - 1) + ['white'] if len(top_5) > 0 else [],
+                        size=11
+                    )
+                ))
+                fig.update_layout(
+                    margin=dict(l=0, r=0, t=5, b=5),
+                    height=160,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                    xaxis=dict(visible=False),
+                    yaxis=dict(tickfont=dict(size=11, color='#2c3e50')),
+                    showlegend=False
+                )
+                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
     if st.button(t("✏️ Sửa dữ liệu (Nhanh)", "✏️ 簡易編集"), use_container_width=True, key=f"btn_edit_mini_{data_type}"):
         show_mini_edit_dialog(data_type, df)
