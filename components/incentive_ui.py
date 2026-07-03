@@ -205,6 +205,7 @@ def render_incentive():
                 "company_charge": company_charge
             }
             st.session_state['just_calculated_incentive'] = True
+            st.rerun()
         
         if 'last_incentive_calc' in st.session_state:
             result = st.session_state['last_incentive_calc']
