@@ -25,8 +25,7 @@ def render_incentive():
                 make_container_white()
                 
                 exp_rev = inputs_rk['target_hours'] * inputs_rk['unit_price']
-                act_cost = inputs_rk['actual_hours'] * inputs_rk['unit_price']
-                c_charge = inputs_rk['company_charge']
+                act_cost = inputs_rk['actual_hours'] * inputs_rk['company_charge']
                 p_val = result_rk['profit']
                 
                 border_color = "#00a8e8"
@@ -49,12 +48,12 @@ def render_incentive():
                 
                 fig = go.Figure(go.Waterfall(
                     name = "Cashflow", orientation = "v",
-                    measure = ["relative", "relative", "relative", "total"],
-                    x = [t("D.Thu", "売上"), t("Charge", "会社"), t("Chi phí", "コスト"), t("Quỹ", "原資")],
+                    measure = ["relative", "relative", "total"],
+                    x = [t("D.Thu", "売上"), t("Chi phí", "コスト"), t("Lợi nhuận", "利益")],
                     textposition = "outside",
-                    text = [f"+{exp_rev:,.0f}", f"-{c_charge:,.0f}", f"-{act_cost:,.0f}", f"{p_val:,.0f}"],
+                    text = [f"+{exp_rev:,.0f}", f"-{act_cost:,.0f}", f"{p_val:,.0f}"],
                     textfont=dict(family="Arial, sans-serif", size=11, color="#333", weight="bold"),
-                    y = [exp_rev, -c_charge, -act_cost, 0],
+                    y = [exp_rev, -act_cost, 0],
                     connector = {"line":{"color":"rgba(0,0,0,0.15)", "width": 1, "dash": "dot"}},
                     decreasing = {"marker":{"color":"rgba(255, 107, 107, 0.85)", "line":{"color":"#ff6b6b", "width":1}}},
                     increasing = {"marker":{"color":"rgba(0, 176, 240, 0.85)", "line":{"color":"#00B0F0", "width":1}}},
@@ -79,10 +78,9 @@ def render_incentive():
                 with st.expander(f"ℹ️ {t('Cách đọc biểu đồ', 'チャートの見方')}"):
                     st.markdown(f"""
                     <div style="color: #5f6368; font-size: 13px; line-height: 1.6; font-family: Arial, sans-serif;">
-                        • <b>D.Thu:</b> {t('Doanh thu dự kiến tính theo Giờ KH.', '目標工数に基づく予想売上。')}<br>
-                        • <b>Charge:</b> {t('Chi phí quản lý cố định của c.ty.', '固定の会社運用費。')}<br>
-                        • <b>Chi phí:</b> {t('Lương thực tế dựa trên Giờ làm.', '実工数に基づく給与コスト。')}<br>
-                        • <b>Quỹ:</b> {t('Phần lợi nhuận dư cuối cùng. Cột <b style="color:#20c997">Xanh</b> là tiền thưởng, cột <b style="color:#ff6b6b">Đỏ</b> là lỗ (không có thưởng).', '最終の利益。<b style="color:#20c997">緑</b>の柱はボーナス、<b style="color:#ff6b6b">赤</b>は未達成。')}
+                        • <b>D.Thu:</b> {t('Kế hoạch * Đơn giá. Là khoản tiền c.ty tính với khách hàng.', '目標工数 * 単価。顧客に請求する金額。')}<br>
+                        • <b>Chi phí:</b> {t('Thực tế * Charge. Là chi phí nội bộ c.ty dùng để vận hành dự án.', '実工数 * 会社運用費。プロジェクトの内部運用コスト。')}<br>
+                        • <b>Lợi nhuận:</b> {t('D.Thu - Chi phí. Cột <b style="color:#20c997">Xanh</b> là lãi, cột <b style="color:#ff6b6b">Đỏ</b> là lỗ. Quỹ Incentive được trích từ đây.', '利益 = 売上 - コスト。<b style="color:#20c997">緑</b>は黒字、<b style="color:#ff6b6b">赤</b>は赤字。')}
                     </div>
                     """, unsafe_allow_html=True)
     with col_main:
