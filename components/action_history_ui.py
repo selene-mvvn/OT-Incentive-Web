@@ -31,7 +31,7 @@ def render_action_history():
             st.markdown("""
                 <div style='text-align: center; padding: 20px; width: 100%;'>
                     <div style='display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; background-color: #00B0F0; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0, 176, 240, 0.3);'>
-                        <span class="material-symbols-rounded" style="font-size: 64px; color: white;">inventory_2</span>
+                        <span class="material-symbols-rounded" style="font-size: 64px; color: #ffffff !important;">inventory_2</span>
                     </div>
                     <div style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 22px; font-weight: bold; margin: 0 auto; line-height: 1.2;'>""" + t("Chưa có dữ liệu lịch sử", "操作履歴がありません") + """</div>
                     <div style='color: #7f8c8d; font-size: 15px; margin-top: 10px; line-height: 1.5;'>""" + t("Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.", "計算やレポート出力を実行すると、ここに履歴が表示されます。") + """</div>
@@ -90,7 +90,7 @@ def render_action_history():
                 st.markdown("""
                     <div style='text-align: center; padding: 20px; width: 100%;'>
                         <div style='display: inline-flex; align-items: center; justify-content: center; width: 100px; height: 100px; border-radius: 50%; background-color: #00B0F0; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0, 176, 240, 0.3);'>
-                            <span class="material-symbols-rounded" style="font-size: 54px; color: white;">search_off</span>
+                            <span class="material-symbols-rounded" style="font-size: 54px; color: #ffffff !important;">search_off</span>
                         </div>
                         <div style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 20px; font-weight: bold; margin: 0 auto; line-height: 1.2;'>""" + t("Không tìm thấy kết quả nào", "一致する結果が見つかりません") + """</div>
                         <div style='color: #7f8c8d; font-size: 15px; margin-top: 10px; line-height: 1.5;'>""" + t("Vui lòng thử lại với từ khóa hoặc bộ lọc khác.", "別のキーワードやフィルターをお試しください。") + """</div>
