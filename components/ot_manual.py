@@ -449,7 +449,12 @@ def render_base_data():
 
                 vn_holidays = pd.DataFrame(holidays_data)
                 vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"], format='mixed', dayfirst=True)
-                combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="first").reset_index(drop=True)
+                
+                # Filter out standard holidays from current_df to prevent duplicates
+                standard_reasons = ["Tết Dương lịch", "Giải phóng Miền Nam", "Quốc tế Lao động", "Lễ Quốc khánh", "Nghỉ Tết Nguyên Đán", "Giỗ Tổ Hùng Vương"]
+                current_df = current_df[~current_df["Lý do"].isin(standard_reasons)]
+                
+                combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="last").sort_values("Ngày nghỉ").reset_index(drop=True)
                 st.session_state['ot_base_data']['holidays_df'] = combined
                 
                 # Force widget reset by changing key
