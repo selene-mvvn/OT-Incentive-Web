@@ -579,6 +579,10 @@ def render_base_data():
                         <div class="legend-color legend-jp"></div>
                         <span>{t('Lễ Nhật Bản', '日本の祝日')}</span>
                     </div>
+                    <div class="legend-item">
+                        <div class="legend-color legend-joint"></div>
+                        <span>{t('Lễ chung (VN & JP)', '共通の祝日 (越・日)')}</span>
+                    </div>
                 </div>
             </div>
 
@@ -636,10 +640,29 @@ def render_base_data():
                     const dateStr = `${{year}}-${{m}}-${{d}}`;
                 
                     let eventsHtml = "";
-                    const dayHolidays = holidays.filter(h => h.date === dateStr);
+                    let dayHolidays = holidays.filter(h => h.date === dateStr);
+                    
+                    let hasJoint = false;
+                    const jointKeywords = ["tết dương lịch", "quốc tế lao động", "元日", "メーデー"];
+                    let filteredHolidays = [];
+                    
                     dayHolidays.forEach(h => {{
+                        const lowerReason = h.reason.toLowerCase();
+                        const isJoint = jointKeywords.some(k => lowerReason.includes(k));
+                        if (isJoint) {{
+                            if (!hasJoint) {{
+                                hasJoint = true;
+                                filteredHolidays.push({{ ...h, is_joint: true }});
+                            }}
+                        }} else {{
+                            filteredHolidays.push(h);
+                        }}
+                    }});
+
+                    filteredHolidays.forEach(h => {{
                         const displayReason = (currentLang === 'jp' && holidayTranslations[h.reason]) ? holidayTranslations[h.reason] : h.reason;
-                        const eventClass = h.is_jp ? "jp-holiday-event" : "holiday-event";
+                        let eventClass = h.is_jp ? "jp-holiday-event" : "holiday-event";
+                        if (h.is_joint) eventClass = "joint-holiday-event";
                         eventsHtml += `<div class="${{eventClass}}" title="${{displayReason}}">${{displayReason}}</div>`;
                     }});
                 
