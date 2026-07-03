@@ -120,89 +120,88 @@ def render_action_history():
         end_idx = start_idx + ITEMS_PER_PAGE
         paginated_logs = filtered_logs[start_idx:end_idx]
 
-        # 3. Timeline UI CSS
-        st.markdown("""
-        <style>
-        /* PURE CSS TIMELINE - NO JS REQUIRED */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker) {
-            position: relative;
-            margin-bottom: 20px !important;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
-            border-radius: 12px !important;
-            background-color: #ffffff !important;
-            border: 2px solid transparent !important;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
-            padding: 0px !important;
-            margin-left: 40px !important;
-            width: calc(100% - 40px) !important;
-        }
+        # 3. Timeline UI CSS (Injected via JS to bypass Streamlit sanitizer)
+        import streamlit.components.v1 as components
+        components.html("""
+        <script>
+            setTimeout(() => {
+                const parentDoc = window.parent.document;
+                if (!parentDoc.getElementById('custom-timeline-style')) {
+                    const style = parentDoc.createElement('style');
+                    style.id = 'custom-timeline-style';
+                    style.innerHTML = `
+                        /* PURE CSS TIMELINE */
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker) {
+                            position: relative !important;
+                            margin-bottom: 20px !important;
+                            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+                            border-radius: 12px !important;
+                            background-color: #ffffff !important;
+                            border: 2px solid transparent !important;
+                            box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
+                            padding: 0px !important;
+                            margin-left: 40px !important;
+                            width: calc(100% - 40px) !important;
+                        }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker) > div[data-testid="stVerticalBlock"] {
-            padding: 12px 15px !important;
-        }
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker) > div[data-testid="stVerticalBlock"] {
+                            padding: 12px 15px !important;
+                        }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 8px 25px rgba(0, 176, 240, 0.15) !important;
-            border-color: rgba(0, 176, 240, 0.5) !important;
-        }
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover {
+                            transform: translateY(-3px) !important;
+                            box-shadow: 0 8px 25px rgba(0, 176, 240, 0.15) !important;
+                            border-color: rgba(0, 176, 240, 0.5) !important;
+                        }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            bottom: -30px;
-            left: -27px;
-            width: 2px;
-            background-color: var(--timeline-color, #00B0F0);
-            opacity: 0.3;
-            z-index: 0;
-        }
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::before {
+                            content: '' !important;
+                            position: absolute !important;
+                            top: -10px !important;
+                            bottom: -30px !important;
+                            left: -27px !important;
+                            width: 2px !important;
+                            background-color: var(--timeline-color, #00B0F0) !important;
+                            opacity: 0.3 !important;
+                            z-index: 0 !important;
+                        }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):last-child::before {
-            bottom: 50%;
-        }
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):last-child::before {
+                            bottom: 50% !important;
+                        }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            margin-top: -9px;
-            left: -35px;
-            width: 18px;
-            height: 18px;
-            box-sizing: border-box;
-            border-radius: 50%;
-            background-color: #ffffff;
-            border: 4px solid var(--timeline-color, #00B0F0);
-            box-shadow: var(--timeline-shadow, 0 0 0 4px rgba(0, 176, 240, 0.15));
-            z-index: 1;
-            transition: transform 0.3s ease;
-        }
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::after {
+                            content: '' !important;
+                            position: absolute !important;
+                            top: 50% !important;
+                            margin-top: -9px !important;
+                            left: -35px !important;
+                            width: 18px !important;
+                            height: 18px !important;
+                            box-sizing: border-box !important;
+                            border-radius: 50% !important;
+                            background-color: #ffffff !important;
+                            border: 4px solid var(--timeline-color, #00B0F0) !important;
+                            box-shadow: var(--timeline-shadow, 0 0 0 4px rgba(0, 176, 240, 0.15)) !important;
+                            z-index: 1 !important;
+                            transition: transform 0.3s ease !important;
+                        }
 
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover::after {
-            transform: scale(1.2);
-        }
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover::after {
+                            transform: scale(1.2) !important;
+                        }
 
-        /* Missing file styling overrides */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker) {
-            opacity: 0.7;
-            margin-bottom: 25px !important;
-            border: 1px solid rgba(231, 76, 60, 0.3) !important;
-        }
-
-        /* Custom buttons inside timeline */
-        div[data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker) button {
-            border-radius: 6px !important;
-            padding: 5px 15px !important;
-            font-size: 13px !important;
-        }
-        /* Override global h3 underline length for history cards */
-        h3.history-card-title::after {
-            width: 50px !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
+                        div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker) {
+                            opacity: 0.7 !important;
+                            margin-bottom: 25px !important;
+                            border: 1px solid rgba(231, 76, 60, 0.3) !important;
+                        }
+                    `;
+                    parentDoc.head.appendChild(style);
+                }
+            }, 100);
+        </script>
+        """, height=0, width=0)
 
         # Removed redundant <br> to reduce gap
         if 'selected_logs' not in st.session_state:
