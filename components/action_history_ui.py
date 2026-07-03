@@ -158,7 +158,7 @@ def render_action_history():
             bottom: -30px;
             left: -27px;
             width: 2px;
-            background-color: #00B0F0;
+            background-color: var(--timeline-color, #00B0F0);
             opacity: 0.3;
             z-index: 0;
         }
@@ -180,8 +180,8 @@ def render_action_history():
             box-sizing: border-box;
             border-radius: 50%;
             background-color: #ffffff;
-            border: 4px solid #00B0F0;
-            box-shadow: 0 0 0 4px rgba(0, 176, 240, 0.15);
+            border: 4px solid var(--timeline-color, #00B0F0);
+            box-shadow: var(--timeline-shadow, 0 0 0 4px rgba(0, 176, 240, 0.15));
             z-index: 1;
             transition: transform 0.3s ease;
         }
@@ -420,6 +420,14 @@ def render_action_history():
             action_type = action_type_vn if st.session_state.get('lang', 'VN') == 'VN' else action_type_jp
 
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
+            
+            # Determine color based on action type
+            dot_color = "#00B0F0"
+            at_vn_lower = action_type_vn.lower()
+            if "excel" in at_vn_lower: dot_color = "#27ae60"
+            elif "ot" in at_vn_lower: dot_color = "#2980b9"
+            elif "incentive" in at_vn_lower: dot_color = "#8e44ad"
+            elif "sửa" in at_vn_lower: dot_color = "#f39c12"
 
             with st.container(border=True):
                 c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1], vertical_alignment="center")
@@ -427,8 +435,9 @@ def render_action_history():
                     st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
                 with c_head:
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
+                    color_attr = f" data-color='{dot_color}'"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
-                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'{color_attr}></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_preview:
