@@ -123,8 +123,8 @@ def render_action_history():
         # 3. Timeline UI CSS
         st.markdown("""
         <style>
-        /* CSS hack to turn st.container(border=True) into a timeline node */
-        .custom-history-card {
+        /* PURE CSS TIMELINE - NO JS REQUIRED */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker) {
             position: relative;
             margin-bottom: 20px !important;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
@@ -133,26 +133,21 @@ def render_action_history():
             border: 2px solid transparent !important;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05) !important;
             padding: 0px !important;
-        }
-
-        .custom-history-card > div[data-testid="stVerticalBlock"] {
-            padding: 12px 15px !important;
-        }
-
-        .custom-history-card.has-timeline-marker,
-        .custom-history-card.has-missing-marker {
             margin-left: 40px !important;
             width: calc(100% - 40px) !important;
         }
 
-        .custom-history-card:hover {
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker) > div[data-testid="stVerticalBlock"] {
+            padding: 12px 15px !important;
+        }
+
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover {
             transform: translateY(-3px) !important;
             box-shadow: 0 8px 25px rgba(0, 176, 240, 0.15) !important;
             border-color: rgba(0, 176, 240, 0.5) !important;
         }
 
-        .custom-history-card.has-timeline-marker::before,
-        .custom-history-card.has-missing-marker::before {
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::before {
             content: '';
             position: absolute;
             top: -10px;
@@ -164,13 +159,11 @@ def render_action_history():
             z-index: 0;
         }
 
-        .custom-history-card.has-timeline-marker:last-child::before,
-        .custom-history-card.has-missing-marker:last-child::before {
-            bottom: 50%; /* Stop line at the last dot */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):last-child::before {
+            bottom: 50%;
         }
 
-        .custom-history-card.has-timeline-marker::after,
-        .custom-history-card.has-missing-marker::after {
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker)::after {
             content: '';
             position: absolute;
             top: 50%;
@@ -187,23 +180,15 @@ def render_action_history():
             transition: transform 0.3s ease;
         }
 
-        .custom-history-card.has-timeline-marker:hover::after,
-        .custom-history-card.has-missing-marker:hover::after {
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.action-card-marker):hover::after {
             transform: scale(1.2);
         }
 
-        /* Missing file styling */
-        .custom-history-card.has-missing-marker {
+        /* Missing file styling overrides */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker) {
             opacity: 0.7;
-            background-color: #ffffff !important;
-            border-radius: 12px !important;
-            margin-left: 25px !important;
             margin-bottom: 25px !important;
             border: 1px solid rgba(231, 76, 60, 0.3) !important;
-        }
-        .custom-history-card.has-missing-marker::after {
-            border-color: #e74c3c;
-            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
         }
 
         /* Custom buttons inside timeline */
@@ -435,10 +420,12 @@ def render_action_history():
                 with c_chk:
                     st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
                 with c_head:
+                    if is_missing: dot_color = "#e74c3c"
                     marker_class = "missing-marker" if is_missing else "timeline-marker"
-                    color_attr = f" data-color='{dot_color}'"
+                    marker_id = f"marker-{log_id}"
+                    color_style = f"<style>div[data-testid='stVerticalBlockBorderWrapper']:has(.{marker_id}) {{ --timeline-color: {dot_color}; --timeline-shadow: 0 0 0 4px {dot_color}26; }}</style>"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
-                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker'></span><span class='white-card-bg'></span><span class='{marker_class}'{color_attr}></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"{color_style}<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'><span class='action-card-marker {marker_id}'></span><span class='white-card-bg'></span><span class='{marker_class}'></span>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_preview:
