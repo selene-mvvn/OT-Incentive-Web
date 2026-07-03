@@ -18,7 +18,7 @@ def render_incentive():
             result_rk = st.session_state['last_incentive_calc']
             inputs_rk = st.session_state['last_incentive_inputs']
             
-            st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 45px;'></div>", unsafe_allow_html=True)
             
             with st.container():
                 from components.ui_utils import make_container_white
