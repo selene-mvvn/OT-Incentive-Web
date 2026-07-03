@@ -40,6 +40,12 @@ def show_skeleton_loading(duration=0.6):
     .skeleton-row-box {
         width: 100%; height: 50px; margin-bottom: 15px; border-radius: 8px;
     }
+    
+    /* MAGIC TRICK: Hide all old elements that get pushed down by Streamlit during transition */
+    div[data-testid="stElementContainer"]:has(.skeleton-wrapper) ~ div {
+        display: none !important;
+        opacity: 0 !important;
+    }
     </style>
     <div class="skeleton-wrapper">
         <div class="skeleton-box skeleton-header-box"></div>
