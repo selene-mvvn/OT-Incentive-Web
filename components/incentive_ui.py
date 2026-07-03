@@ -49,7 +49,7 @@ def render_incentive():
                 fig = go.Figure(go.Waterfall(
                     name = "Cashflow", orientation = "v",
                     measure = ["relative", "relative", "total"],
-                    x = [t("D.Thu", "売上"), t("Chi phí", "コスト"), t("Lợi nhuận", "利益")],
+                    x = [t("Doanh thu", "売上"), t("Chi phí", "コスト"), t("Lợi nhuận", "利益")],
                     textposition = "outside",
                     text = [f"+{exp_rev:,.0f}", f"-{act_cost:,.0f}", f"{p_val:,.0f}"],
                     textfont=dict(family="Arial, sans-serif", size=11, color="#333", weight="bold"),
@@ -78,9 +78,9 @@ def render_incentive():
                 with st.expander(t(":material/info: Cách đọc biểu đồ", ":material/info: チャートの見方")):
                     st.markdown(f"""
                     <div style="color: #5f6368; font-size: 13px; line-height: 1.6; font-family: 'Times New Roman', serif; margin-top: -10px; padding-bottom: 5px;">
-                        • <b>D.Thu:</b> {t('(Kế hoạch) x (Đơn giá). Là khoản tiền c.ty tính với khách hàng.', '(目標工数) x (単価)。顧客に請求する金額。')}<br>
-                        • <b>Chi phí:</b> {t('(Thực tế) x (Charge). Là chi phí nội bộ c.ty dùng để vận hành dự án.', '(実工数) x (会社運用費)。プロジェクトの内部運用コスト。')}<br>
-                        • <b>Lợi nhuận:</b> {t('(D.Thu) - (Chi phí). Cột <b style="color:#20c997">Xanh</b> là lãi, cột <b style="color:#ff6b6b">Đỏ</b> là lỗ. Quỹ Incentive được trích từ đây.', '利益 = (売上) - (コスト)。<b style="color:#20c997">緑</b>は黒字、<b style="color:#ff6b6b">赤</b>は赤字。')}
+                        • <b>Doanh thu:</b> {t('(Kế hoạch) x (Đơn giá). Là khoản tiền công ty tính với khách hàng.', '(目標工数) x (単価)。顧客に請求する金額。')}<br>
+                        • <b>Chi phí:</b> {t('(Thực tế) x (Charge). Là chi phí nội bộ công ty dùng để vận hành dự án.', '(実工数) x (会社運用費)。プロジェクトの内部運用コスト。')}<br>
+                        • <b>Lợi nhuận:</b> {t('(Doanh thu) - (Chi phí). Cột <b style="color:#20c997">Xanh</b> là lãi, cột <b style="color:#ff6b6b">Đỏ</b> là lỗ. Quỹ Incentive được trích từ đây.', '利益 = (売上) - (コスト)。<b style="color:#20c997">緑</b>は黒字、<b style="color:#ff6b6b">赤</b>は赤字。')}
                     </div>
                     """, unsafe_allow_html=True)
     with col_main:
