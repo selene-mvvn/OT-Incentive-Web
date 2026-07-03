@@ -92,7 +92,17 @@ def render_mini_leaderboard(data_type="ot"):
         st.markdown(f"<div style='text-align:center; font-size:13px; color:#7f8c8d; margin-top:50px;'>{t('Chưa có dữ liệu', 'データなし')}</div>", unsafe_allow_html=True)
         return
 
-    df = pd.DataFrame(records).drop_duplicates()
+    df = pd.DataFrame(records)
+    if data_type == 'ot':
+        if all(c in df.columns for c in ['ot_date', 'employee_name', 'order_name', 'ot_hours']):
+            df = df.drop_duplicates(subset=['ot_date', 'employee_name', 'order_name', 'ot_hours'])
+        else:
+            df = df.drop_duplicates()
+    else:
+        if all(c in df.columns for c in ['date', 'employee_name', 'project_name', 'final_incentive']):
+            df = df.drop_duplicates(subset=['date', 'employee_name', 'project_name', 'final_incentive'])
+        else:
+            df = df.drop_duplicates()
     
     date_col = 'ot_date' if data_type == 'ot' else 'date'
     if date_col in df.columns:
@@ -133,13 +143,12 @@ def render_mini_leaderboard(data_type="ot"):
         """, unsafe_allow_html=True)
         
         # Selectbox (Small and centered)
-        col1, col2, col3 = st.columns([1, 2, 1])
+        col1, col2, col3 = st.columns([0.5, 3, 0.5])
         with col2:
             sel_year = st.selectbox(
-                t("Chọn năm", "年を選択"), 
+                t("Chọn năm (Bộ lọc)", "年を選択 (フィルター)"), 
                 options=year_options, 
-                key=f"mini_year_{data_type}", 
-                label_visibility="collapsed"
+                key=f"mini_year_{data_type}"
             )
             
         # Spacing
@@ -160,69 +169,6 @@ def render_mini_leaderboard(data_type="ot"):
                 agg_df = agg_df.sort_values(by='ot_hours', ascending=False).reset_index(drop=True)
                 val_col = 'ot_hours'
                 val_suffix = "h"
-                colors = [
-                    ("linear-gradient(135deg, #ffcdd2 0%, #ffebee 100%)", "#c62828"),
-                    ("linear-gradient(135deg, #ffe0b2 0%, #fff3e0 100%)", "#ef6c00"),
-                    ("linear-gradient(135deg, #fff9c4 0%, #fffde7 100%)", "#f57f17")
-                ]
-            else:
-                if 'final_incentive' not in df_filtered.columns: df_filtered['final_incentive'] = 0
-                df_filtered['final_incentive'] = pd.to_numeric(df_filtered['final_incentive'], errors='coerce').fillna(0)
-                agg_df = df_filtered.groupby('employee_name')['final_incentive'].sum().reset_index()
-                agg_df = agg_df.sort_values(by='final_incentive', ascending=False).reset_index(drop=True)
-                val_col = 'final_incentive'
-                val_suffix = "¥"
-                colors = [
-                    ("linear-gradient(135deg, #b2ebf2 0%, #e0f7fa 100%)", "#00838f"),
-                    ("linear-gradient(135deg, #e0f7fa 0%, #e0f7fa 100%)", "#00bcd4"),
-                    ("linear-gradient(135deg, #e0f7fa 0%, #f1fbfc 100%)", "#00acc1")
-                ]
-
-            # Calculate standard competition ranking
-            agg_df['rank'] = agg_df[val_col].rank(method='min', ascending=False).astype(int)
-            top_5 = agg_df.head(5)
-            
-            medals_dict = {1: "🥇", 2: "🥈", 3: "🥉", 4: "4️⃣", 5: "5️⃣"}
-
-            html_content = ""
-            for i, row in top_5.iterrows():
-                emp_name = row['employee_name']
-                val = row[val_col]
-                rank = row['rank']
-                medal = medals_dict.get(rank, "🏅")
-
-                bg_color = "rgba(255,255,255,0.7)"
-                text_color = "#00a8e8" # Always blue for rank 4+ in both tables
-                
-                if rank <= 3:
-                    bg_color = colors[rank - 1][0]
-                    text_color = colors[rank - 1][1]
-                
-                formatted_val = f"{val:,.1f}" if data_type == "ot" else f"{int(val):,}"
-                
-                html_content += f"""
-                <div style='
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    background: {bg_color};
-                    padding: 8px 10px;
-                    border-radius: 8px;
-                    margin-bottom: 8px;
-                    font-size: 13px;
-                    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-                    border-left: 3px solid {text_color};
-                '>
-                    <div style='display: flex; align-items: center; gap: 8px;'>
-                        <span style='font-size: 16px;'>{medal}</span>
-                        <span style='font-weight: 600; color: #34495e;' title='{emp_name}'>{emp_name}</span>
-                    </div>
-                    <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
-                </div>
-                """
-                
-            st.markdown(html_content, unsafe_allow_html=True)
-            
             if len(top_5) > 0:
                 fig = go.Figure(go.Bar(
                     x=top_5[val_col][::-1],
@@ -250,7 +196,6 @@ def render_mini_leaderboard(data_type="ot"):
                     showlegend=False
                 )
                 st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-
     if st.button(t("✏️ Sửa dữ liệu (Nhanh)", "✏️ 簡易編集"), use_container_width=True, key=f"btn_edit_mini_{data_type}"):
         show_mini_edit_dialog(data_type, df)
 
