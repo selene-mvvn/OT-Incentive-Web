@@ -225,7 +225,6 @@ def render_mini_leaderboard(data_type="ot"):
                 )
                 st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
 
-    st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
     if st.button(t("✏️ Sửa dữ liệu (Nhanh)", "✏️ 簡易編集"), use_container_width=True, key=f"btn_edit_mini_{data_type}"):
         show_mini_edit_dialog(data_type, df)
 
