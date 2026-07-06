@@ -977,11 +977,25 @@ def render_project_data():
                     nt = t("Ngày đi làm hành chính", "平日")
                     ct = t("Cuối tuần", "週末")
                     nl = t("Ngày lễ", "祭日")
-                    with b_col1: st.metric("150%", f"{auto_buckets[150]:.1f} h", help=f"{nt}: 17h-22h")
-                    with b_col2: st.metric("200%", f"{auto_buckets[200]:.1f} h", help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
-                    with b_col3: st.metric("270%", f"{auto_buckets[270]:.1f} h", help=f"{ct}: 22h-24h")
-                    with b_col4: st.metric("300%", f"{auto_buckets[300]:.1f} h", help=f"{nl}: 17h-22h")
-                    with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h")
+                    
+                    def make_metric(label, hrs, is_active, help_txt):
+                        bg = "#e8f5e9" if is_active else "#f8fafc"
+                        bc = "#4caf50" if is_active else "#e2e8f0"
+                        tc = "#2e7d32" if is_active else "#64748b"
+                        vc = "#1b5e20" if is_active else "#0f172a"
+                        return f'''<div title="{help_txt}" style="background-color: {bg}; border: 1px solid {bc}; border-radius: 8px; padding: 10px; text-align: center; margin-bottom: 15px;"><div style="font-size: 13px; font-weight: 600; color: {tc}; margin-bottom: 5px;">{label}</div><div style="font-size: 22px; font-weight: bold; color: {vc};">{hrs:.1f} h</div></div>'''
+
+                    with b_col1: st.markdown(make_metric("150%", auto_buckets[150], auto_buckets[150]>0, f"{nt}: 17h-22h"), unsafe_allow_html=True)
+                    with b_col2: st.markdown(make_metric("200%", auto_buckets[200], auto_buckets[200]>0, f"{nt}: 22h-24h&#10;{ct}: 08h-22h"), unsafe_allow_html=True)
+                    with b_col3: st.markdown(make_metric("270%", auto_buckets[270], auto_buckets[270]>0, f"{ct}: 22h-24h"), unsafe_allow_html=True)
+                    with b_col4: st.markdown(make_metric("300%", auto_buckets[300], auto_buckets[300]>0, f"{nl}: 17h-22h"), unsafe_allow_html=True)
+                    with b_col5: st.markdown(make_metric("400%", auto_buckets[400], auto_buckets[400]>0, f"{nl}: 08h-17h"), unsafe_allow_html=True)
+                    
+                    std_days = float(base.get('standard_days', 22.0))
+                    hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
+                    est_cost = sum([auto_buckets[k] * (k/100.0) * hourly_rate for k in auto_buckets])
+                    if est_cost > 0:
+                        st.info(f"💡 **{t('Dự tính chi phí OT:', '予想残業代:')}** `{est_cost:,.0f} VNĐ`")
                 
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
                     if employee_name_proj == opt_emp:
@@ -1029,6 +1043,12 @@ def render_project_data():
                 c_col1, c_col2 = st.columns(2)
                 with c_col1: c_mult = st.number_input(t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"), min_value=0.0, step=10.0)
                 with c_col2: c_hrs = st.number_input(t("Số giờ cho hệ số này", "時間数"), min_value=0.0, step=0.1, format="%.1f")
+            
+                std_days = float(base.get('standard_days', 22.0))
+                hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
+                est_cost_manual = (h_150*1.5 + h_200*2.0 + h_270*2.7 + h_300*3.0 + h_400*4.0 + c_hrs*(c_mult/100.0)) * hourly_rate
+                if est_cost_manual > 0:
+                    st.info(f"💡 **{t('Dự tính chi phí OT:', '予想残業代:')}** `{est_cost_manual:,.0f} VNĐ`")
             
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
                     manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
