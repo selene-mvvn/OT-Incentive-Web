@@ -426,8 +426,7 @@ def render_base_data():
         
             display_df = current_df.copy()
             if st.session_state.get('lang', 'VN') == 'JP':
-                display_df['Lý do'] = display_df['Lý do'].map(lambda x: holiday_translations.get(x, x))
-
+                display_df['Lý do'] = display_df['Lý do'].apply(lambda x: holiday_translations.get(str(x).strip(), x))
             import datetime
             # Extract year from selected period to make it dynamic
             selected_year = datetime.datetime.now().year
@@ -522,7 +521,7 @@ def render_base_data():
 
             if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
                 if st.session_state.get('lang', 'VN') == 'JP':
-                    holidays_df['Lý do'] = holidays_df['Lý do'].map(lambda x: reverse_holiday_translations.get(x, x))
+                    holidays_df['Lý do'] = holidays_df['Lý do'].apply(lambda x: reverse_holiday_translations.get(str(x).strip(), x))
                 st.session_state['ot_base_data']['holidays_df'] = holidays_df
                 save_base_data(st.session_state['ot_base_data'])
                 st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon=":material/check_circle:")
