@@ -197,7 +197,7 @@ def render_base_data():
                 with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
                     from components.ui_utils import make_expander_blue
                     make_expander_blue()
-                    add_c1, add_c2 = st.columns([3, 1])
+                    add_c1, add_c2 = st.columns([2, 1])
                     with add_c1:
                         new_pc_name = st.text_input(t("Nhập tên Phụ cấp mới:", "新しい手当名:"), key="new_pc_input")
                     with add_c2:
@@ -211,7 +211,7 @@ def render_base_data():
                                 st.warning(t("Cột này đã tồn tại!", "この列は既に存在します！"))
 
                     if len(allowance_cols) > 0:
-                        del_c1, del_c2 = st.columns([3, 1])
+                        del_c1, del_c2 = st.columns([2, 1])
                         with del_c1:
                             pc_mapping = { (t("PC ăn trưa", "昼食手当") if c == "PC ăn trưa" else (t("PC khác", "その他手当") if c == "PC khác" else c)): c for c in allowance_cols }
                             del_pc_translated = st.selectbox(t("Chọn Phụ cấp cần xóa:", "削除する手当を選択:"), options=list(pc_mapping.keys()), key="del_pc_input_translated")
