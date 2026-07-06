@@ -973,7 +973,6 @@ def render_project_data():
                     
                     auto_buckets = breakdown_ot_hours(ot_date, total_hours_auto, holidays)
                 
-                    st.markdown("<span id='metric-anchor'></span>", unsafe_allow_html=True)
                     b_col1, b_col2, b_col3, b_col4, b_col5 = st.columns(5)
                     nt = t("Ngày đi làm hành chính", "平日")
                     ct = t("Cuối tuần", "週末")
@@ -983,26 +982,6 @@ def render_project_data():
                     with b_col3: st.metric("270%", f"{auto_buckets[270]:.1f} h", help=f"{ct}: 22h-24h")
                     with b_col4: st.metric("300%", f"{auto_buckets[300]:.1f} h", help=f"{nl}: 17h-22h")
                     with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h")
-                    
-                    css_rules = ""
-                    for idx, (k, v) in enumerate(auto_buckets.items()):
-                        if v > 0:
-                            child_idx = idx + 1
-                            css_rules += f"""
-                            div.element-container:has(span#metric-anchor) + div.element-container [data-testid="column"]:nth-child({child_idx}) [data-testid="stMetric"] {{
-                                background: #10b981 !important;
-                                box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
-                                border-color: #10b981 !important;
-                            }}
-                            """
-                    if css_rules:
-                        st.markdown(f"<style>{css_rules}</style>", unsafe_allow_html=True)
-                    
-                    std_days = float(base.get('standard_days', 22.0))
-                    hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
-                    est_cost = sum([auto_buckets[k] * (k/100.0) * hourly_rate for k in auto_buckets])
-                    if est_cost > 0:
-                        st.info(f"💡 **{t('Dự tính chi phí OT:', '予想残業代:')}** `{est_cost:,.0f} VNĐ`")
                 
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
                     if employee_name_proj == opt_emp:
@@ -1050,12 +1029,6 @@ def render_project_data():
                 c_col1, c_col2 = st.columns(2)
                 with c_col1: c_mult = st.number_input(t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"), min_value=0.0, step=10.0)
                 with c_col2: c_hrs = st.number_input(t("Số giờ cho hệ số này", "時間数"), min_value=0.0, step=0.1, format="%.1f")
-            
-                std_days = float(base.get('standard_days', 22.0))
-                hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
-                est_cost_manual = (h_150*1.5 + h_200*2.0 + h_270*2.7 + h_300*3.0 + h_400*4.0 + c_hrs*(c_mult/100.0)) * hourly_rate
-                if est_cost_manual > 0:
-                    st.info(f"💡 **{t('Dự tính chi phí OT:', '予想残業代:')}** `{est_cost_manual:,.0f} VNĐ`")
             
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
                     manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
