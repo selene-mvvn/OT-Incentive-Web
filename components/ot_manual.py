@@ -88,9 +88,9 @@ def render_base_data():
 
         c_dash1, c_dash2, c_dash3 = st.columns(3)
         with c_dash1:
-            st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), f"<span id='dash-count-emp'>{emp_count}</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>"), unsafe_allow_html=True)
+            st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), f"{emp_count} <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>"), unsafe_allow_html=True)
         with c_dash2:
-            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"<span id='dash-count-hol'>{holiday_count}</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
+            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"{holiday_count} <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
         with c_dash3:
             st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 16px; white-space: nowrap;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
         
@@ -98,38 +98,63 @@ def render_base_data():
         import streamlit.components.v1 as components
         components.html(f"""
         <script>
-            setTimeout(() => {{
-                const doc = window.parent.document;
-                const items = [
-                    {{ id: 'dash-count-emp', target: {emp_count} }},
-                    {{ id: 'dash-count-hol', target: {holiday_count} }}
-                ];
-                const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
-                
-                items.forEach(({{ id, target }}) => {{
-                    const el = doc.getElementById(id);
-                    if (!el || el.getAttribute('data-animated') === 'true') return;
-                    el.setAttribute('data-animated', 'true');
-                    if (target === 0) {{ el.innerText = '0'; return; }}
+            setTimeout(function() {{
+                try {{
+                    var doc = window.parent.document;
+                    // Find circular card containers by their unique border-radius: 50% style
+                    var allDivs = doc.querySelectorAll('div[style*="border-radius: 50%"]');
                     
-                    el.innerText = '0';
-                    const duration = 1200;
-                    let startTime = null;
-                    
-                    function animate(currentTime) {{
-                        if (!startTime) startTime = currentTime;
-                        const elapsed = currentTime - startTime;
-                        const progress = Math.min(elapsed / duration, 1);
-                        el.innerText = Math.round(easeOutQuart(progress) * target);
-                        if (progress < 1) {{
-                            window.parent.requestAnimationFrame(animate);
-                        }} else {{
-                            el.innerText = target;
+                    allDivs.forEach(function(card) {{
+                        // Find the value div inside (last child div with font-size 22px)
+                        var children = card.querySelectorAll('div');
+                        var valueDiv = null;
+                        for (var i = 0; i < children.length; i++) {{
+                            if (children[i].style.fontSize === '22px' || 
+                                (children[i].getAttribute('style') && children[i].getAttribute('style').indexOf('22px') > -1)) {{
+                                valueDiv = children[i];
+                            }}
                         }}
-                    }}
-                    window.parent.requestAnimationFrame(animate);
-                }});
-            }}, 150);
+                        
+                        if (!valueDiv) return;
+                        if (valueDiv.getAttribute('data-cu-done') === '1') return;
+                        
+                        // Extract the leading number from text content
+                        var text = valueDiv.textContent.trim();
+                        var numMatch = text.match(/^(\d+)/);
+                        if (!numMatch) return;
+                        
+                        var target = parseInt(numMatch[1]);
+                        if (target <= 0) return;
+                        
+                        valueDiv.setAttribute('data-cu-done', '1');
+                        
+                        // Save original innerHTML and extract suffix HTML
+                        var origHTML = valueDiv.innerHTML;
+                        var numStr = String(target);
+                        var suffixHTML = origHTML.substring(origHTML.indexOf(numStr) + numStr.length);
+                        
+                        // Start animation
+                        valueDiv.innerHTML = '0' + suffixHTML;
+                        var duration = 1200;
+                        var startTime = null;
+                        
+                        function easeOut(t) {{ return 1 - Math.pow(1 - t, 4); }}
+                        
+                        function step(ts) {{
+                            if (!startTime) startTime = ts;
+                            var progress = Math.min((ts - startTime) / duration, 1);
+                            var val = Math.round(easeOut(progress) * target);
+                            valueDiv.innerHTML = val + suffixHTML;
+                            if (progress < 1) {{
+                                window.parent.requestAnimationFrame(step);
+                            }} else {{
+                                valueDiv.innerHTML = target + suffixHTML;
+                            }}
+                        }}
+                        window.parent.requestAnimationFrame(step);
+                    }});
+                }} catch(e) {{}}
+            }}, 200);
         </script>
         <!-- {__import__('time').time()} -->
         """, height=0)
