@@ -246,6 +246,11 @@ def render_base_data():
                             emp_df = pd.concat([emp_df, new_df], ignore_index=True)
                             save_employees_df(emp_df)
                             st.toast(t(f"Đã thêm {qa_ten_nv} thành công!", f"{qa_ten_nv} を追加しました！"), icon="✅")
+                            st.session_state['qa_ma_nv'] = ""
+                            st.session_state['qa_ten_nv'] = ""
+                            st.session_state['qa_phong_ban'] = ""
+                            st.session_state['qa_chuc_vu'] = ""
+                            st.session_state['qa_luong_cb'] = 0
                             import time; time.sleep(0.5)
                             st.rerun()
 
