@@ -425,28 +425,57 @@ def render_base_data():
             selected_year = datetime.datetime.now().year
 
             if st.button(t(f"Tự động điền Ngày Lễ VN {selected_year}", f"{selected_year}年ベトナム祝日を自動入力")):
-                # Standard Solar Holidays
-                solar_holidays = [
-                    {"Ngày nghỉ": f"{selected_year}-01-01", "Lý do": "Tết Dương lịch"},
-                    {"Ngày nghỉ": f"{selected_year}-04-30", "Lý do": "Giải phóng Miền Nam"},
-                    {"Ngày nghỉ": f"{selected_year}-05-01", "Lý do": "Quốc tế Lao động"},
-                    {"Ngày nghỉ": f"{selected_year}-09-02", "Lý do": "Lễ Quốc khánh"}
-                ]
-
-                # Mapping of Lunar Holidays (Tết + Giỗ Tổ) for 2025-2028
-                lunar_map = {
-                    2025: [("2025-01-25", "Nghỉ Tết Nguyên Đán"), ("2025-01-26", "Nghỉ Tết Nguyên Đán"), ("2025-01-27", "Nghỉ Tết Nguyên Đán"), ("2025-01-28", "Nghỉ Tết Nguyên Đán"), ("2025-01-29", "Nghỉ Tết Nguyên Đán"), ("2025-01-30", "Nghỉ Tết Nguyên Đán"), ("2025-01-31", "Nghỉ Tết Nguyên Đán"), ("2025-02-01", "Nghỉ Tết Nguyên Đán"), ("2025-02-02", "Nghỉ Tết Nguyên Đán"), ("2025-04-07", "Giỗ Tổ Hùng Vương")],
-                    2026: [("2026-02-14", "Nghỉ Tết Nguyên Đán"), ("2026-02-15", "Nghỉ Tết Nguyên Đán"), ("2026-02-16", "Nghỉ Tết Nguyên Đán"), ("2026-02-17", "Nghỉ Tết Nguyên Đán"), ("2026-02-18", "Nghỉ Tết Nguyên Đán"), ("2026-02-19", "Nghỉ Tết Nguyên Đán"), ("2026-02-20", "Nghỉ Tết Nguyên Đán"), ("2026-02-21", "Nghỉ Tết Nguyên Đán"), ("2026-02-22", "Nghỉ Tết Nguyên Đán"), ("2026-04-26", "Giỗ Tổ Hùng Vương")],
-                    2027: [("2027-02-04", "Nghỉ Tết Nguyên Đán"), ("2027-02-05", "Nghỉ Tết Nguyên Đán"), ("2027-02-06", "Nghỉ Tết Nguyên Đán"), ("2027-02-07", "Nghỉ Tết Nguyên Đán"), ("2027-02-08", "Nghỉ Tết Nguyên Đán"), ("2027-02-09", "Nghỉ Tết Nguyên Đán"), ("2027-02-10", "Nghỉ Tết Nguyên Đán"), ("2027-02-11", "Nghỉ Tết Nguyên Đán"), ("2027-02-12", "Nghỉ Tết Nguyên Đán"), ("2027-04-16", "Giỗ Tổ Hùng Vương")],
-                    2028: [("2028-01-22", "Nghỉ Tết Nguyên Đán"), ("2028-01-23", "Nghỉ Tết Nguyên Đán"), ("2028-01-24", "Nghỉ Tết Nguyên Đán"), ("2028-01-25", "Nghỉ Tết Nguyên Đán"), ("2028-01-26", "Nghỉ Tết Nguyên Đán"), ("2028-01-27", "Nghỉ Tết Nguyên Đán"), ("2028-01-28", "Nghỉ Tết Nguyên Đán"), ("2028-01-29", "Nghỉ Tết Nguyên Đán"), ("2028-01-30", "Nghỉ Tết Nguyên Đán"), ("2028-04-04", "Giỗ Tổ Hùng Vương")]
+                # Comprehensive Holiday Map for 2025-2028 (Solar, Lunar, Compensatory, and Swaps)
+                holidays_map_all = {
+                    2025: [
+                        ("2025-01-01", "Tết Dương lịch"),
+                        ("2025-01-25", "Nghỉ Tết Nguyên Đán"), ("2025-01-26", "Nghỉ Tết Nguyên Đán"), ("2025-01-27", "Nghỉ Tết Nguyên Đán"), ("2025-01-28", "Nghỉ Tết Nguyên Đán"), ("2025-01-29", "Nghỉ Tết Nguyên Đán"), ("2025-01-30", "Nghỉ Tết Nguyên Đán"), ("2025-01-31", "Nghỉ Tết Nguyên Đán"), ("2025-02-01", "Nghỉ Tết Nguyên Đán"), ("2025-02-02", "Nghỉ Tết Nguyên Đán"),
+                        ("2025-04-07", "Giỗ Tổ Hùng Vương"),
+                        ("2025-04-30", "Giải phóng Miền Nam"),
+                        ("2025-05-01", "Quốc tế Lao động"),
+                        ("2025-05-02", "Nghỉ hoán đổi (30/4-1/5)"),
+                        ("2025-08-30", "Nghỉ Lễ Quốc khánh"), ("2025-08-31", "Nghỉ Lễ Quốc khánh"), ("2025-09-01", "Lễ Quốc khánh"), ("2025-09-02", "Lễ Quốc khánh")
+                    ],
+                    2026: [
+                        ("2026-01-01", "Tết Dương lịch"),
+                        ("2026-02-14", "Nghỉ Tết Nguyên Đán"), ("2026-02-15", "Nghỉ Tết Nguyên Đán"), ("2026-02-16", "Nghỉ Tết Nguyên Đán"), ("2026-02-17", "Nghỉ Tết Nguyên Đán"), ("2026-02-18", "Nghỉ Tết Nguyên Đán"), ("2026-02-19", "Nghỉ Tết Nguyên Đán"), ("2026-02-20", "Nghỉ Tết Nguyên Đán"), ("2026-02-21", "Nghỉ Tết Nguyên Đán"), ("2026-02-22", "Nghỉ Tết Nguyên Đán"),
+                        ("2026-04-26", "Giỗ Tổ Hùng Vương"), ("2026-04-27", "Nghỉ bù Giỗ Tổ Hùng Vương"),
+                        ("2026-04-30", "Giải phóng Miền Nam"),
+                        ("2026-05-01", "Quốc tế Lao động"),
+                        ("2026-08-29", "Nghỉ Lễ Quốc khánh"), ("2026-08-30", "Nghỉ Lễ Quốc khánh"), ("2026-08-31", "Nghỉ hoán đổi Quốc khánh"), ("2026-09-01", "Lễ Quốc khánh"), ("2026-09-02", "Lễ Quốc khánh")
+                    ],
+                    2027: [
+                        ("2027-01-01", "Tết Dương lịch"),
+                        ("2027-02-04", "Nghỉ Tết Nguyên Đán"), ("2027-02-05", "Nghỉ Tết Nguyên Đán"), ("2027-02-06", "Nghỉ Tết Nguyên Đán"), ("2027-02-07", "Nghỉ Tết Nguyên Đán"), ("2027-02-08", "Nghỉ Tết Nguyên Đán"), ("2027-02-09", "Nghỉ Tết Nguyên Đán"), ("2027-02-10", "Nghỉ Tết Nguyên Đán"), ("2027-02-11", "Nghỉ Tết Nguyên Đán"), ("2027-02-12", "Nghỉ Tết Nguyên Đán"),
+                        ("2027-04-16", "Giỗ Tổ Hùng Vương"),
+                        ("2027-04-30", "Giải phóng Miền Nam"),
+                        ("2027-05-01", "Quốc tế Lao động"), ("2027-05-03", "Nghỉ bù Quốc tế Lao động"),
+                        ("2027-09-01", "Lễ Quốc khánh"), ("2027-09-02", "Lễ Quốc khánh")
+                    ],
+                    2028: [
+                        ("2028-01-01", "Tết Dương lịch"), ("2028-01-03", "Nghỉ bù Tết Dương lịch"),
+                        ("2028-01-22", "Nghỉ Tết Nguyên Đán"), ("2028-01-23", "Nghỉ Tết Nguyên Đán"), ("2028-01-24", "Nghỉ Tết Nguyên Đán"), ("2028-01-25", "Nghỉ Tết Nguyên Đán"), ("2028-01-26", "Nghỉ Tết Nguyên Đán"), ("2028-01-27", "Nghỉ Tết Nguyên Đán"), ("2028-01-28", "Nghỉ Tết Nguyên Đán"), ("2028-01-29", "Nghỉ Tết Nguyên Đán"), ("2028-01-30", "Nghỉ Tết Nguyên Đán"),
+                        ("2028-04-04", "Giỗ Tổ Hùng Vương"),
+                        ("2028-04-30", "Giải phóng Miền Nam"),
+                        ("2028-05-01", "Quốc tế Lao động"), ("2028-05-02", "Nghỉ bù Giải phóng Miền Nam"),
+                        ("2028-09-01", "Lễ Quốc khánh"), ("2028-09-02", "Lễ Quốc khánh"), ("2028-09-04", "Nghỉ bù Lễ Quốc khánh")
+                    ]
                 }
 
-                holidays_data = solar_holidays
-                if selected_year in lunar_map:
-                    for date_str, reason in lunar_map[selected_year]:
+                holidays_data = []
+                if selected_year in holidays_map_all:
+                    for date_str, reason in holidays_map_all[selected_year]:
                         holidays_data.append({"Ngày nghỉ": date_str, "Lý do": reason})
                 else:
-                    st.warning(t(f"Lưu ý: Hệ thống chỉ có sẵn dữ liệu Dương lịch cho năm {selected_year}, các ngày Lễ Âm lịch (Tết, Giỗ tổ) bạn vui lòng bổ sung thêm thủ công nhé.", f"注意：{selected_year}年の太陽暦の祝日のみ自動入力されました。旧正月などは手動で追加してください。"))
+                    # Fallback for years beyond 2028
+                    holidays_data = [
+                        {"Ngày nghỉ": f"{selected_year}-01-01", "Lý do": "Tết Dương lịch"},
+                        {"Ngày nghỉ": f"{selected_year}-04-30", "Lý do": "Giải phóng Miền Nam"},
+                        {"Ngày nghỉ": f"{selected_year}-05-01", "Lý do": "Quốc tế Lao động"},
+                        {"Ngày nghỉ": f"{selected_year}-09-01", "Lý do": "Lễ Quốc khánh"},
+                        {"Ngày nghỉ": f"{selected_year}-09-02", "Lý do": "Lễ Quốc khánh"}
+                    ]
+                    st.warning(t(f"Hệ thống chỉ điền ngày Lễ Dương lịch cơ bản cho năm {selected_year}. Vui lòng tự thêm Lễ Âm lịch và nghỉ bù.", f"{selected_year}年の太陽暦の祝日のみ自動入力されました。旧正月や振替休日は手動で追加してください。"))
 
                 vn_holidays = pd.DataFrame(holidays_data)
                 vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"], format='%Y-%m-%d')
