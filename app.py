@@ -648,28 +648,36 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-col_space, col_lang = st.columns([8, 2])
-with col_lang:
+lang_container = st.container()
+with lang_container:
     st.markdown("<div class='lang-switcher-container'>", unsafe_allow_html=True)
-    st.markdown("""
+    st.markdown(f"""
     <style>
-    /* Make the container a flex row to perfectly align the toggle and button */
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) {
+    /* Exact selector targeting only this container's stVerticalBlock */
+    div[data-testid="stVerticalBlock"]:has(> .element-container > .stMarkdown .lang-switcher-container) {{
+        position: fixed !important;
+        top: {lang_top_pos} !important;
+        right: 20px !important;
+        z-index: 9999 !important;
+        width: auto !important;
         display: flex !important;
         flex-direction: row !important;
         justify-content: flex-end !important;
         align-items: center !important;
         gap: 12px !important;
-    }
+        background: transparent !important;
+    }}
     
-    /* Remove float right from radio since flexbox handles alignment */
-    div[role="radiogroup"][aria-label="LangToggle_123"] {
+    /* Prevent toggle items from wrapping vertically */
+    div[role="radiogroup"][aria-label="LangToggle_123"] {{
         float: none !important;
         margin: 0 !important;
-    }
+        min-width: max-content !important;
+        flex-wrap: nowrap !important;
+    }}
     
     /* Style the settings button to be a blue circle with white material icon */
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) button[kind="secondary"] {
+    div[data-testid="stVerticalBlock"]:has(> .element-container > .stMarkdown .lang-switcher-container) button[kind="secondary"] {{
         border-radius: 50% !important;
         width: 38px !important;
         height: 38px !important;
@@ -681,15 +689,15 @@ with col_lang:
         align-items: center;
         justify-content: center;
         transition: all 0.2s ease !important;
-    }
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) button[kind="secondary"] * {
+    }}
+    div[data-testid="stVerticalBlock"]:has(> .element-container > .stMarkdown .lang-switcher-container) button[kind="secondary"] * {{
         color: white !important;
         font-size: 22px !important;
-    }
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) button[kind="secondary"]:hover {
+    }}
+    div[data-testid="stVerticalBlock"]:has(> .element-container > .stMarkdown .lang-switcher-container) button[kind="secondary"]:hover {{
         background-color: #0098d4 !important;
         transform: scale(1.1) !important;
-    }
+    }}
     </style>
     """, unsafe_allow_html=True)
 
