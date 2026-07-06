@@ -88,45 +88,51 @@ def render_base_data():
 
         c_dash1, c_dash2, c_dash3 = st.columns(3)
         with c_dash1:
-            st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), f"<span class='count-up-num' data-target='{emp_count}'>0</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>"), unsafe_allow_html=True)
+            st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), f"<span id='dash-count-emp'>{emp_count}</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>"), unsafe_allow_html=True)
         with c_dash2:
-            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"<span class='count-up-num' data-target='{holiday_count}'>0</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
+            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"<span id='dash-count-hol'>{holiday_count}</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
         with c_dash3:
             st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 16px; white-space: nowrap;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
         
         # Count-up animation for dashboard numbers
         import streamlit.components.v1 as components
-        components.html("""
+        components.html(f"""
         <script>
-            window.parent.requestAnimationFrame(() => {
+            setTimeout(() => {{
                 const doc = window.parent.document;
-                const countElements = doc.querySelectorAll('.count-up-num');
-                countElements.forEach(el => {
-                    if (el.hasAttribute('data-animated')) return;
+                const items = [
+                    {{ id: 'dash-count-emp', target: {emp_count} }},
+                    {{ id: 'dash-count-hol', target: {holiday_count} }}
+                ];
+                const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+                
+                items.forEach(({{ id, target }}) => {{
+                    const el = doc.getElementById(id);
+                    if (!el || el.getAttribute('data-animated') === 'true') return;
                     el.setAttribute('data-animated', 'true');
-                    const target = parseInt(el.getAttribute('data-target'));
-                    if (isNaN(target) || target === 0) { el.innerText = '0'; return; }
+                    if (target === 0) {{ el.innerText = '0'; return; }}
+                    
+                    el.innerText = '0';
                     const duration = 1200;
                     let startTime = null;
-                    const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
                     
-                    function animate(currentTime) {
+                    function animate(currentTime) {{
                         if (!startTime) startTime = currentTime;
                         const elapsed = currentTime - startTime;
                         const progress = Math.min(elapsed / duration, 1);
-                        const easedProgress = easeOutQuart(progress);
-                        el.innerText = Math.round(easedProgress * target);
-                        if (progress < 1) {
+                        el.innerText = Math.round(easeOutQuart(progress) * target);
+                        if (progress < 1) {{
                             window.parent.requestAnimationFrame(animate);
-                        } else {
+                        }} else {{
                             el.innerText = target;
-                        }
-                    }
+                        }}
+                    }}
                     window.parent.requestAnimationFrame(animate);
-                });
-            });
+                }});
+            }}, 150);
         </script>
-        """ + f"<!-- {__import__('time').time()} -->", height=0)
+        <!-- {__import__('time').time()} -->
+        """, height=0)
         st.markdown("<div style='margin-bottom: -25px;'></div>", unsafe_allow_html=True)
         # ----------------------
     
