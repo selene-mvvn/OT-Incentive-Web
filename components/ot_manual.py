@@ -984,27 +984,30 @@ def render_project_data():
                     with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h")
                     
                     active_metrics = [f"{int(k)}%" if float(k).is_integer() else f"{k}%" for k, v in auto_buckets.items() if v > 0]
-                    if active_metrics:
-                        import json
-                        import streamlit.components.v1 as components
-                        js_list = json.dumps(active_metrics)
-                        components.html(f"""
-                        <script>
-                            const parent = window.parent.document;
-                            const activeLabels = {js_list};
-                            const labels = parent.querySelectorAll('[data-testid="stMetricLabel"]');
-                            labels.forEach(l => {{
+                    import json
+                    import streamlit.components.v1 as components
+                    js_list = json.dumps(active_metrics)
+                    components.html(f"""
+                    <script>
+                        const parent = window.parent.document;
+                        const activeLabels = {js_list};
+                        const labels = parent.querySelectorAll('[data-testid="stMetricLabel"]');
+                        labels.forEach(l => {{
+                            let metricCard = l.closest('[data-testid="stMetric"]');
+                            if (metricCard) {{
                                 if (activeLabels.some(act => l.innerText.includes(act))) {{
-                                    let metricCard = l.closest('[data-testid="stMetric"]');
-                                    if (metricCard) {{
-                                        metricCard.style.setProperty('background-color', '#10b981', 'important');
-                                        metricCard.style.setProperty('box-shadow', '0 4px 15px rgba(16, 185, 129, 0.4)', 'important');
-                                        metricCard.style.setProperty('border-color', '#10b981', 'important');
-                                    }}
+                                    metricCard.style.setProperty('background-color', '#10b981', 'important');
+                                    metricCard.style.setProperty('box-shadow', '0 4px 15px rgba(16, 185, 129, 0.4)', 'important');
+                                    metricCard.style.setProperty('border-color', '#10b981', 'important');
+                                }} else {{
+                                    metricCard.style.removeProperty('background-color');
+                                    metricCard.style.removeProperty('box-shadow');
+                                    metricCard.style.removeProperty('border-color');
                                 }}
-                            }});
-                        </script>
-                        """, height=0)
+                            }}
+                        }});
+                    </script>
+                    """, height=0)
                     
                     std_days = float(base.get('standard_days', 22.0))
                     hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
