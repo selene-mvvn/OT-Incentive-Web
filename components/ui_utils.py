@@ -3,36 +3,18 @@ from logic.history import get_history, remove_from_history
 from logic.i18n import t
 
 def make_container_white():
-    import streamlit.components.v1 as components
-    components.html("""
-    <script>
-        const parent = window.parent.document;
-        const frames = parent.querySelectorAll('iframe');
-        frames.forEach(frame => {
-            if (frame.contentWindow === window) {
-                let container = frame.closest('[data-testid="stVerticalBlock"]');
-                if (container) {
-                    container.classList.add('custom-white-container');
-                    container.style.backgroundColor = '#ffffff';
-                    container.style.borderRadius = '12px';
-                    container.style.boxShadow = '0 4px 15px rgba(0,0,0,0.05)';
-                    container.style.padding = '20px';
-                    container.style.border = '1px solid rgba(0,0,0,0.05)';
-                }
+    st.markdown("""
+        <div class='custom-white-container-marker' style='display: none;'></div>
+        <style>
+            [data-testid="stVerticalBlock"]:has(> .element-container .custom-white-container-marker) {
+                background-color: #ffffff;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+                padding: 20px;
+                border: 1px solid rgba(0,0,0,0.05);
             }
-        });
-        
-        if (window.frameElement) {
-            window.frameElement.style.display = 'none';
-            if (window.frameElement.parentElement) {
-                window.frameElement.parentElement.style.display = 'none';
-                window.frameElement.parentElement.style.height = '0px';
-                window.frameElement.parentElement.style.margin = '0px';
-                window.frameElement.parentElement.style.padding = '0px';
-            }
-        }
-    </script>
-    """, height=0)
+        </style>
+    """, unsafe_allow_html=True)
 
 def make_history_cards_white():
     import streamlit.components.v1 as components
@@ -95,35 +77,26 @@ def make_history_cards_white():
     """, height=0)
 
 def make_expander_blue():
-    import streamlit.components.v1 as components
-    components.html("""
-    <script>
-        const parent = window.parent.document;
-        const frames = parent.querySelectorAll('iframe');
-        frames.forEach(frame => {
-            if (frame.contentWindow === window) {
-                let expander = frame.closest('[data-testid="stExpander"]');
-                if (expander) {
-                    expander.style.backgroundColor = '#ffffff';
-                    expander.style.border = '2px solid #00B0F0';
-                    expander.style.borderRadius = '8px';
-                    let summary = expander.querySelector('summary');
-                    if (summary) {
-                        summary.style.backgroundColor = '#00B0F0';
-                        summary.style.color = '#ffffff';
-                        summary.style.fontWeight = 'bold';
-                        summary.style.borderRadius = '5px 5px 0 0';
-                        let svg = summary.querySelector('svg');
-                        if (svg) {
-                            svg.style.fill = '#ffffff';
-                            svg.style.color = '#ffffff';
-                        }
-                    }
-                }
+    st.markdown("""
+        <div class='custom-expander-marker' style='display: none;'></div>
+        <style>
+            [data-testid="stExpander"]:has(.custom-expander-marker) {
+                background-color: #ffffff;
+                border: 2px solid #00B0F0;
+                border-radius: 8px;
             }
-        });
-    </script>
-    """, height=0)
+            [data-testid="stExpander"]:has(.custom-expander-marker) summary {
+                background-color: #00B0F0;
+                color: #ffffff;
+                font-weight: bold;
+                border-radius: 5px 5px 0 0;
+            }
+            [data-testid="stExpander"]:has(.custom-expander-marker) summary svg {
+                fill: #ffffff;
+                color: #ffffff;
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
 def _switch_to_select(mode_key, sel_key):
     """Callback to switch back to select mode."""
