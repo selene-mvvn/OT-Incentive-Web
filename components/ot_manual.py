@@ -192,35 +192,62 @@ def render_base_data():
                 key="employees_editor_v2"
             )
 
-            with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
-                from components.ui_utils import make_expander_blue
-                make_expander_blue()
-                add_c1, add_c2 = st.columns([3, 1])
-                with add_c1:
-                    new_pc_name = st.text_input(t("Nhập tên Phụ cấp mới:", "新しい手当名:"), key="new_pc_input")
-                with add_c2:
-                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                    if st.button(t("Thêm Cột", "列を追加"), use_container_width=True):
-                        if new_pc_name and new_pc_name not in emp_df.columns:
-                            emp_df[new_pc_name] = 0
-                            save_employees_df(emp_df)
-                            st.rerun()
-                        elif new_pc_name in emp_df.columns:
-                            st.warning(t("Cột này đã tồn tại!", "この列は既に存在します！"))
-
-                if len(allowance_cols) > 0:
-                    del_c1, del_c2 = st.columns([3, 1])
-                    with del_c1:
-                        pc_mapping = { (t("PC ăn trưa", "昼食手当") if c == "PC ăn trưa" else (t("PC khác", "その他手当") if c == "PC khác" else c)): c for c in allowance_cols }
-                        del_pc_translated = st.selectbox(t("Chọn Phụ cấp cần xóa:", "削除する手当を選択:"), options=list(pc_mapping.keys()), key="del_pc_input_translated")
-                        del_pc_name = pc_mapping.get(del_pc_translated, "")
-                    with del_c2:
+            ex_col1, ex_col2 = st.columns(2)
+            with ex_col1:
+                with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
+                    from components.ui_utils import make_expander_blue
+                    make_expander_blue()
+                    add_c1, add_c2 = st.columns([3, 1])
+                    with add_c1:
+                        new_pc_name = st.text_input(t("Nhập tên Phụ cấp mới:", "新しい手当名:"), key="new_pc_input")
+                    with add_c2:
                         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                        if st.button(t("Xóa Cột", "列を削除"), use_container_width=True):
-                            if del_pc_name in emp_df.columns:
-                                emp_df = emp_df.drop(columns=[del_pc_name])
+                        if st.button(t("Thêm Cột", "列を追加"), use_container_width=True):
+                            if new_pc_name and new_pc_name not in emp_df.columns:
+                                emp_df[new_pc_name] = 0
                                 save_employees_df(emp_df)
                                 st.rerun()
+                            elif new_pc_name in emp_df.columns:
+                                st.warning(t("Cột này đã tồn tại!", "この列は既に存在します！"))
+
+                    if len(allowance_cols) > 0:
+                        del_c1, del_c2 = st.columns([3, 1])
+                        with del_c1:
+                            pc_mapping = { (t("PC ăn trưa", "昼食手当") if c == "PC ăn trưa" else (t("PC khác", "その他手当") if c == "PC khác" else c)): c for c in allowance_cols }
+                            del_pc_translated = st.selectbox(t("Chọn Phụ cấp cần xóa:", "削除する手当を選択:"), options=list(pc_mapping.keys()), key="del_pc_input_translated")
+                            del_pc_name = pc_mapping.get(del_pc_translated, "")
+                        with del_c2:
+                            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                            if st.button(t("Xóa Cột", "列を削除"), use_container_width=True):
+                                if del_pc_name in emp_df.columns:
+                                    emp_df = emp_df.drop(columns=[del_pc_name])
+                                    save_employees_df(emp_df)
+                                    st.rerun()
+            with ex_col2:
+                with st.expander(t("⚡ Thêm Nhanh Nhân Sự", "⚡ スタッフをクイック追加")):
+                    make_expander_blue()
+                    qa_ma_nv = st.text_input(t("Mã NV", "社員番号"), key="qa_ma_nv")
+                    qa_ten_nv = st.text_input(t("Tên NV (*)", "氏名 (*)"), key="qa_ten_nv")
+                    qa_c1, qa_c2 = st.columns(2)
+                    with qa_c1: qa_phong_ban = st.text_input(t("Phòng ban", "部署"), key="qa_phong_ban")
+                    with qa_c2: qa_chuc_vu = st.text_input(t("Chức vụ", "役職"), key="qa_chuc_vu")
+                    qa_luong_cb = st.number_input(t("Lương cơ bản", "基本給"), min_value=0, step=1000000, key="qa_luong_cb")
+                    if st.button(t("Thêm Nhân Sự", "追加する"), use_container_width=True, type="primary"):
+                        if not qa_ten_nv.strip():
+                            st.warning(t("Vui lòng nhập Tên NV!", "氏名を入力してください！"))
+                        else:
+                            new_row = {"Mã NV": qa_ma_nv.strip(), "Tên NV": qa_ten_nv.strip(), "Phòng ban": qa_phong_ban.strip(), "Chức vụ": qa_chuc_vu.strip(), "Lương cơ bản": qa_luong_cb}
+                            for c in allowance_cols:
+                                new_row[c] = 0
+                            new_row["Lương Gross"] = qa_luong_cb
+                            new_row["Ngày bắt đầu tính"] = None
+                            import pandas as pd
+                            new_df = pd.DataFrame([new_row])
+                            emp_df = pd.concat([emp_df, new_df], ignore_index=True)
+                            save_employees_df(emp_df)
+                            st.toast(t(f"Đã thêm {qa_ten_nv} thành công!", f"{qa_ten_nv} を追加しました！"), icon="✅")
+                            import time; time.sleep(0.5)
+                            st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary"):
