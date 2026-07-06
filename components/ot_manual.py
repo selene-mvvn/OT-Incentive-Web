@@ -410,11 +410,10 @@ def render_base_data():
                 "Tết Dương lịch": "元日",
                 "Giải phóng Miền Nam": "南部解放記念日",
                 "Quốc tế Lao động": "メーデー",
-                "Lễ Quốc khánh": "建国記念日",
-                "Nghỉ Tết Nguyên Đán": "テト（旧正月）",
+                "Lễ Quốc khánh": "建国記念日休暇",
+                "Tết Nguyên Đán": "テト（旧正月）",
                 "Giỗ Tổ Hùng Vương": "フン王の命日",
                 "Nghỉ hoán đổi (30/4-1/5)": "振替休日（南部解放・メーデー）",
-                "Nghỉ Lễ Quốc khánh": "建国記念日休暇",
                 "Nghỉ bù Giỗ Tổ Hùng Vương": "フン王の命日（振替休日）",
                 "Nghỉ hoán đổi Quốc khánh": "建国記念日（振替休日）",
                 "Nghỉ bù Quốc tế Lao động": "メーデー（振替休日）",
@@ -436,24 +435,24 @@ def render_base_data():
                 holidays_map_all = {
                     2025: [
                         ("2025-01-01", "Tết Dương lịch"),
-                        ("2025-01-25", "Nghỉ Tết Nguyên Đán"), ("2025-01-26", "Nghỉ Tết Nguyên Đán"), ("2025-01-27", "Nghỉ Tết Nguyên Đán"), ("2025-01-28", "Nghỉ Tết Nguyên Đán"), ("2025-01-29", "Nghỉ Tết Nguyên Đán"), ("2025-01-30", "Nghỉ Tết Nguyên Đán"), ("2025-01-31", "Nghỉ Tết Nguyên Đán"), ("2025-02-01", "Nghỉ Tết Nguyên Đán"), ("2025-02-02", "Nghỉ Tết Nguyên Đán"),
+                        ("2025-01-25", "Tết Nguyên Đán"), ("2025-01-26", "Tết Nguyên Đán"), ("2025-01-27", "Tết Nguyên Đán"), ("2025-01-28", "Tết Nguyên Đán"), ("2025-01-29", "Tết Nguyên Đán"), ("2025-01-30", "Tết Nguyên Đán"), ("2025-01-31", "Tết Nguyên Đán"), ("2025-02-01", "Tết Nguyên Đán"), ("2025-02-02", "Tết Nguyên Đán"),
                         ("2025-04-07", "Giỗ Tổ Hùng Vương"),
                         ("2025-04-30", "Giải phóng Miền Nam"),
                         ("2025-05-01", "Quốc tế Lao động"),
                         ("2025-05-02", "Nghỉ hoán đổi (30/4-1/5)"),
-                        ("2025-08-30", "Nghỉ Lễ Quốc khánh"), ("2025-08-31", "Nghỉ Lễ Quốc khánh"), ("2025-09-01", "Lễ Quốc khánh"), ("2025-09-02", "Lễ Quốc khánh")
+                        ("2025-08-30", "Lễ Quốc khánh"), ("2025-08-31", "Lễ Quốc khánh"), ("2025-09-01", "Lễ Quốc khánh"), ("2025-09-02", "Lễ Quốc khánh")
                     ],
                     2026: [
                         ("2026-01-01", "Tết Dương lịch"),
-                        ("2026-02-14", "Nghỉ Tết Nguyên Đán"), ("2026-02-15", "Nghỉ Tết Nguyên Đán"), ("2026-02-16", "Nghỉ Tết Nguyên Đán"), ("2026-02-17", "Nghỉ Tết Nguyên Đán"), ("2026-02-18", "Nghỉ Tết Nguyên Đán"), ("2026-02-19", "Nghỉ Tết Nguyên Đán"), ("2026-02-20", "Nghỉ Tết Nguyên Đán"), ("2026-02-21", "Nghỉ Tết Nguyên Đán"), ("2026-02-22", "Nghỉ Tết Nguyên Đán"),
+                        ("2026-02-14", "Tết Nguyên Đán"), ("2026-02-15", "Tết Nguyên Đán"), ("2026-02-16", "Tết Nguyên Đán"), ("2026-02-17", "Tết Nguyên Đán"), ("2026-02-18", "Tết Nguyên Đán"), ("2026-02-19", "Tết Nguyên Đán"), ("2026-02-20", "Tết Nguyên Đán"), ("2026-02-21", "Tết Nguyên Đán"), ("2026-02-22", "Tết Nguyên Đán"),
                         ("2026-04-26", "Giỗ Tổ Hùng Vương"), ("2026-04-27", "Nghỉ bù Giỗ Tổ Hùng Vương"),
                         ("2026-04-30", "Giải phóng Miền Nam"),
                         ("2026-05-01", "Quốc tế Lao động"),
-                        ("2026-08-29", "Nghỉ Lễ Quốc khánh"), ("2026-08-30", "Nghỉ Lễ Quốc khánh"), ("2026-08-31", "Nghỉ hoán đổi Quốc khánh"), ("2026-09-01", "Lễ Quốc khánh"), ("2026-09-02", "Lễ Quốc khánh")
+                        ("2026-08-29", "Lễ Quốc khánh"), ("2026-08-30", "Lễ Quốc khánh"), ("2026-08-31", "Nghỉ hoán đổi Quốc khánh"), ("2026-09-01", "Lễ Quốc khánh"), ("2026-09-02", "Lễ Quốc khánh")
                     ],
                     2027: [
                         ("2027-01-01", "Tết Dương lịch"),
-                        ("2027-02-04", "Nghỉ Tết Nguyên Đán"), ("2027-02-05", "Nghỉ Tết Nguyên Đán"), ("2027-02-06", "Nghỉ Tết Nguyên Đán"), ("2027-02-07", "Nghỉ Tết Nguyên Đán"), ("2027-02-08", "Nghỉ Tết Nguyên Đán"), ("2027-02-09", "Nghỉ Tết Nguyên Đán"), ("2027-02-10", "Nghỉ Tết Nguyên Đán"), ("2027-02-11", "Nghỉ Tết Nguyên Đán"), ("2027-02-12", "Nghỉ Tết Nguyên Đán"),
+                        ("2027-02-04", "Tết Nguyên Đán"), ("2027-02-05", "Tết Nguyên Đán"), ("2027-02-06", "Tết Nguyên Đán"), ("2027-02-07", "Tết Nguyên Đán"), ("2027-02-08", "Tết Nguyên Đán"), ("2027-02-09", "Tết Nguyên Đán"), ("2027-02-10", "Tết Nguyên Đán"), ("2027-02-11", "Tết Nguyên Đán"), ("2027-02-12", "Tết Nguyên Đán"),
                         ("2027-04-16", "Giỗ Tổ Hùng Vương"),
                         ("2027-04-30", "Giải phóng Miền Nam"),
                         ("2027-05-01", "Quốc tế Lao động"), ("2027-05-03", "Nghỉ bù Quốc tế Lao động"),
@@ -461,7 +460,7 @@ def render_base_data():
                     ],
                     2028: [
                         ("2028-01-01", "Tết Dương lịch"), ("2028-01-03", "Nghỉ bù Tết Dương lịch"),
-                        ("2028-01-22", "Nghỉ Tết Nguyên Đán"), ("2028-01-23", "Nghỉ Tết Nguyên Đán"), ("2028-01-24", "Nghỉ Tết Nguyên Đán"), ("2028-01-25", "Nghỉ Tết Nguyên Đán"), ("2028-01-26", "Nghỉ Tết Nguyên Đán"), ("2028-01-27", "Nghỉ Tết Nguyên Đán"), ("2028-01-28", "Nghỉ Tết Nguyên Đán"), ("2028-01-29", "Nghỉ Tết Nguyên Đán"), ("2028-01-30", "Nghỉ Tết Nguyên Đán"),
+                        ("2028-01-22", "Tết Nguyên Đán"), ("2028-01-23", "Tết Nguyên Đán"), ("2028-01-24", "Tết Nguyên Đán"), ("2028-01-25", "Tết Nguyên Đán"), ("2028-01-26", "Tết Nguyên Đán"), ("2028-01-27", "Tết Nguyên Đán"), ("2028-01-28", "Tết Nguyên Đán"), ("2028-01-29", "Tết Nguyên Đán"), ("2028-01-30", "Tết Nguyên Đán"),
                         ("2028-04-04", "Giỗ Tổ Hùng Vương"),
                         ("2028-04-30", "Giải phóng Miền Nam"),
                         ("2028-05-01", "Quốc tế Lao động"), ("2028-05-02", "Nghỉ bù Giải phóng Miền Nam"),
@@ -488,7 +487,7 @@ def render_base_data():
                 vn_holidays["Ngày nghỉ"] = pd.to_datetime(vn_holidays["Ngày nghỉ"], format='%Y-%m-%d')
                 
                 # Filter out standard holidays from current_df to prevent duplicates
-                standard_reasons = ["Tết Dương lịch", "Giải phóng Miền Nam", "Quốc tế Lao động", "Lễ Quốc khánh", "Nghỉ Tết Nguyên Đán", "Giỗ Tổ Hùng Vương"]
+                standard_reasons = ["Tết Dương lịch", "Giải phóng Miền Nam", "Quốc tế Lao động", "Lễ Quốc khánh", "Tết Nguyên Đán", "Giỗ Tổ Hùng Vương"]
                 current_df = current_df[~current_df["Lý do"].isin(standard_reasons)]
                 
                 combined = pd.concat([current_df, vn_holidays]).drop_duplicates(subset=["Ngày nghỉ"], keep="last").sort_values("Ngày nghỉ").reset_index(drop=True)
@@ -647,7 +646,7 @@ def render_base_data():
                 "Giải phóng Miền Nam": "南部解放記念日",
                 "Quốc tế Lao động": "メーデー",
                 "Lễ Quốc khánh": "建国記念日",
-                "Nghỉ Tết Nguyên Đán": "テト（旧正月）",
+                "Tết Nguyên Đán": "テト（旧正月）",
                 "Giỗ Tổ Hùng Vương": "フン王の命日"
             }};
             let currentDate = new Date();
