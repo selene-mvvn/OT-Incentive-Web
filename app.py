@@ -648,7 +648,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-col_space, col_lang = st.columns([8, 2])
+col_space, col_lang, col_set = st.columns([7.7, 1.7, 0.6])
 with col_lang:
     st.markdown("<div class='lang-switcher-container'>", unsafe_allow_html=True)
     def update_lang():
@@ -666,7 +666,38 @@ with col_lang:
     )
     st.markdown("</div>", unsafe_allow_html=True)
 
-
+with col_set:
+    if st.session_state.get('current_page', 'welcome') == 'welcome':
+        st.markdown("""
+        <style>
+        div[data-testid="stVerticalBlock"]:has(> .element-container .quick-settings-btn-wrapper) button {
+            border-radius: 50% !important;
+            width: 38px !important;
+            height: 38px !important;
+            padding: 0 !important;
+            border: none !important;
+            background-color: rgba(0, 176, 240, 0.08) !important;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 5px;
+            transition: all 0.2s ease !important;
+        }
+        div[data-testid="stVerticalBlock"]:has(> .element-container .quick-settings-btn-wrapper) button:hover {
+            background-color: #00B0F0 !important;
+            transform: scale(1.1) !important;
+        }
+        </style>
+        <div class='quick-settings-btn-wrapper'></div>
+        """, unsafe_allow_html=True)
+        
+        def go_to_settings():
+            st.session_state['current_page'] = 'main'
+            st.session_state['menu_selection'] = ":material/settings: **CÀI ĐẶT CHUNG**" if st.session_state.get('lang', 'VN') == 'VN' else ":material/settings: **一般設定**"
+            st.session_state['show_page_transition'] = True
+            
+        st.button("⚙️", key="quick_settings_btn", on_click=go_to_settings, help="Cài đặt chung" if st.session_state.get('lang', 'VN') == 'VN' else "一般設定")
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = 'welcome'
 
