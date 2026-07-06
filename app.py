@@ -651,55 +651,6 @@ st.markdown(f"""
 col_space, col_lang = st.columns([8, 2])
 with col_lang:
     st.markdown("<div class='lang-switcher-container'>", unsafe_allow_html=True)
-    st.markdown("""
-    <style>
-    /* Float settings button container right */
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) > .element-container:has(button[kind="secondary"]) {
-        float: right !important;
-        width: auto !important;
-        margin-left: 10px !important;
-    }
-    
-    /* Float radio container right */
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) > .element-container:has(div[role="radiogroup"]) {
-        float: right !important;
-        width: auto !important;
-    }
-
-    /* Style the settings button to be a blue circle with white material icon */
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) button[kind="secondary"] {
-        border-radius: 50% !important;
-        width: 32px !important;
-        height: 32px !important;
-        padding: 0 !important;
-        border: none !important;
-        background-color: #00B0F0 !important;
-        box-shadow: 0 4px 10px rgba(0, 176, 240, 0.4) !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        transition: all 0.2s ease !important;
-    }
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) button[kind="secondary"] * {
-        color: white !important;
-        font-size: 20px !important;
-    }
-    div[data-testid="stVerticalBlock"]:has(> .element-container .lang-switcher-container) button[kind="secondary"]:hover {
-        background-color: #0098d4 !important;
-        transform: scale(1.1) !important;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    # Render button FIRST so it floats to the far right edge!
-    if st.session_state.get('current_page', 'welcome') == 'welcome':
-        def go_to_settings():
-            st.session_state['current_page'] = 'main'
-            st.session_state['menu_selection'] = ":material/settings: **CÀI ĐẶT CHUNG**" if st.session_state.get('lang', 'VN') == 'VN' else ":material/settings: **一般設定**"
-            st.session_state['show_page_transition'] = True
-            
-        st.button(":material/settings:", key="quick_settings_btn", on_click=go_to_settings, help="Cài đặt chung" if st.session_state.get('lang', 'VN') == 'VN' else "一般設定")
-
     def update_lang():
         val = st.session_state['lang_radio']
         st.session_state['lang'] = 'VN' if 'VN' in val else 'JP'
@@ -713,8 +664,9 @@ with col_lang:
         on_change=update_lang,
         label_visibility="hidden"
     )
-    
     st.markdown("</div>", unsafe_allow_html=True)
+
+
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = 'welcome'
 
