@@ -253,14 +253,14 @@ def render_empty_state(text, subtitle=None, icon="inbox", height=200):
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
-            background: linear-gradient(to bottom, #f8fafc, #f1f5f9); 
+            background: #f8fafc; 
             border: 1px dashed #cbd5e1; 
             border-radius: 12px; 
             color: #94a3b8; 
             margin-bottom: 20px;
             padding: 20px;
         '>
-            <span class="material-symbols-rounded" style='font-size: 48px; color: #cbd5e1; margin-bottom: 10px;'>{icon}</span>
+            <span class="material-symbols-rounded" style='font-size: 48px; color: #00a8e8; margin-bottom: 10px;'>{icon}</span>
             <div style='font-size: 15px; font-weight: 500; color: #64748b; text-align: center;'>{text}</div>
             {subtitle_html}
         </div>
