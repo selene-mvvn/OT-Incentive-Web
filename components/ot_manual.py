@@ -983,6 +983,15 @@ def render_project_data():
                     with b_col4: st.metric("300%", f"{auto_buckets[300]:.1f} h", help=f"{nl}: 17h-22h")
                     with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h")
                 
+                    std_days = float(base.get('standard_days', 22.0))
+                    std_hrs = float(base.get('standard_hours_per_day', 8.0))
+                    hourly_rate_est = (emp_gross / std_days / std_hrs) if (std_days > 0 and std_hrs > 0) else 0
+                    
+                    est_cost = sum(hrs * (pct / 100.0) * hourly_rate_est for pct, hrs in auto_buckets.items() if hrs > 0)
+                    
+                    if est_cost > 0:
+                        st.markdown(f"<div style='margin-top: 15px; margin-bottom: 15px; padding: 12px; background-color: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 4px; color: #166534;'><span style='vertical-align: middle;'>:material/payments:</span> <strong>{t('Dự tính chi phí (ước lượng):', '予想コスト (目安):')}</strong> {est_cost:,.0f} VNĐ</div>", unsafe_allow_html=True)
+                
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
                     if employee_name_proj == opt_emp:
                         st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
@@ -1029,6 +1038,15 @@ def render_project_data():
                 c_col1, c_col2 = st.columns(2)
                 with c_col1: c_mult = st.number_input(t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"), min_value=0.0, step=10.0)
                 with c_col2: c_hrs = st.number_input(t("Số giờ cho hệ số này", "時間数"), min_value=0.0, step=0.1, format="%.1f")
+            
+                std_days = float(base.get('standard_days', 22.0))
+                std_hrs = float(base.get('standard_hours_per_day', 8.0))
+                hourly_rate_est = (emp_gross / std_days / std_hrs) if (std_days > 0 and std_hrs > 0) else 0
+                
+                est_cost_manual = (h_150 * 1.5 + h_200 * 2.0 + h_270 * 2.7 + h_300 * 3.0 + h_400 * 4.0 + c_hrs * (c_mult / 100.0)) * hourly_rate_est
+                
+                if est_cost_manual > 0:
+                    st.markdown(f"<div style='margin-top: 15px; margin-bottom: 15px; padding: 12px; background-color: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 4px; color: #166534;'><span style='vertical-align: middle;'>:material/payments:</span> <strong>{t('Dự tính chi phí (ước lượng):', '予想コスト (目安):')}</strong> {est_cost_manual:,.0f} VNĐ</div>", unsafe_allow_html=True)
             
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
                     manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
