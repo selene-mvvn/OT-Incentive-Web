@@ -977,19 +977,34 @@ def render_project_data():
                     nt = t("Ngày đi làm hành chính", "平日")
                     ct = t("Cuối tuần", "週末")
                     nl = t("Ngày lễ", "祭日")
+                    with b_col1: st.metric("150%", f"{auto_buckets[150]:.1f} h", help=f"{nt}: 17h-22h")
+                    with b_col2: st.metric("200%", f"{auto_buckets[200]:.1f} h", help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
+                    with b_col3: st.metric("270%", f"{auto_buckets[270]:.1f} h", help=f"{ct}: 22h-24h")
+                    with b_col4: st.metric("300%", f"{auto_buckets[300]:.1f} h", help=f"{nl}: 17h-22h")
+                    with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h")
                     
-                    def make_metric(label, hrs, is_active, help_txt):
-                        bg = "#e8f5e9" if is_active else "#f8fafc"
-                        bc = "#4caf50" if is_active else "#e2e8f0"
-                        tc = "#2e7d32" if is_active else "#64748b"
-                        vc = "#1b5e20" if is_active else "#0f172a"
-                        return f'''<div title="{help_txt}" style="background-color: {bg}; border: 1px solid {bc}; border-radius: 8px; padding: 10px; text-align: center; margin-bottom: 15px;"><div style="font-size: 13px; font-weight: 600; color: {tc}; margin-bottom: 5px;">{label}</div><div style="font-size: 22px; font-weight: bold; color: {vc};">{hrs:.1f} h</div></div>'''
-
-                    with b_col1: st.markdown(make_metric("150%", auto_buckets[150], auto_buckets[150]>0, f"{nt}: 17h-22h"), unsafe_allow_html=True)
-                    with b_col2: st.markdown(make_metric("200%", auto_buckets[200], auto_buckets[200]>0, f"{nt}: 22h-24h&#10;{ct}: 08h-22h"), unsafe_allow_html=True)
-                    with b_col3: st.markdown(make_metric("270%", auto_buckets[270], auto_buckets[270]>0, f"{ct}: 22h-24h"), unsafe_allow_html=True)
-                    with b_col4: st.markdown(make_metric("300%", auto_buckets[300], auto_buckets[300]>0, f"{nl}: 17h-22h"), unsafe_allow_html=True)
-                    with b_col5: st.markdown(make_metric("400%", auto_buckets[400], auto_buckets[400]>0, f"{nl}: 08h-17h"), unsafe_allow_html=True)
+                    active_metrics = [f"{int(k)}%" if float(k).is_integer() else f"{k}%" for k, v in auto_buckets.items() if v > 0]
+                    if active_metrics:
+                        import json
+                        import streamlit.components.v1 as components
+                        js_list = json.dumps(active_metrics)
+                        components.html(f"""
+                        <script>
+                            const parent = window.parent.document;
+                            const activeLabels = {js_list};
+                            const labels = parent.querySelectorAll('[data-testid="stMetricLabel"]');
+                            labels.forEach(l => {{
+                                if (activeLabels.some(act => l.innerText.includes(act))) {{
+                                    let metricCard = l.closest('[data-testid="stMetric"]');
+                                    if (metricCard) {{
+                                        metricCard.style.setProperty('background-color', '#4caf50', 'important');
+                                        metricCard.style.setProperty('box-shadow', '0 4px 15px rgba(76, 175, 80, 0.4)', 'important');
+                                        metricCard.style.setProperty('border-color', '#4caf50', 'important');
+                                    }}
+                                }}
+                            }});
+                        </script>
+                        """, height=0)
                     
                     std_days = float(base.get('standard_days', 22.0))
                     hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
