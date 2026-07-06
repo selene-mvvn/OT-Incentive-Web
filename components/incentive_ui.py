@@ -341,10 +341,6 @@ def render_incentive():
                         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                         if st.button(t(":material/delete: XÓA TOÀN BỘ", ":material/delete: 全データ削除"), use_container_width=True):
                             st.session_state['incentive_records'] = []
-                            if 'last_incentive_calc' in st.session_state:
-                                del st.session_state['last_incentive_calc']
-                            if 'last_incentive_inputs' in st.session_state:
-                                del st.session_state['last_incentive_inputs']
                             st.rerun()
                 
         if True:
