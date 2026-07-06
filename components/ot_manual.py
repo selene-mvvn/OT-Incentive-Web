@@ -88,70 +88,12 @@ def render_base_data():
 
         c_dash1, c_dash2, c_dash3 = st.columns(3)
         with c_dash1:
-            st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), f"<span id='count-emp'>{emp_count}</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>"), unsafe_allow_html=True)
+            st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), f"{emp_count} <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>"), unsafe_allow_html=True)
         with c_dash2:
-            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"<span id='count-holiday'>{holiday_count}</span> <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
+            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), f"{holiday_count} <span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>"), unsafe_allow_html=True)
         with c_dash3:
             st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 16px; white-space: nowrap;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
         st.markdown("<div style='margin-bottom: -25px;'></div>", unsafe_allow_html=True)
-        
-        # Count-up animation for Mini Dashboard numbers
-        import streamlit.components.v1 as components
-        components.html("""
-        <script>
-            setTimeout(() => {
-                const doc = window.parent.document;
-                
-                const ids = ['count-emp', 'count-holiday'];
-                
-                ids.forEach(id => {
-                    const el = doc.getElementById(id);
-                    if (!el) return;
-                    
-                    const target = parseInt(el.textContent) || 0;
-                    if (target === 0) return;
-                    
-                    // Set initial to 0
-                    el.textContent = '0';
-                    
-                    const duration = 1800;
-                    let startTime = null;
-                    
-                    function easeOutExpo(t) {
-                        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-                    }
-                    
-                    function animate(currentTime) {
-                        if (!startTime) startTime = currentTime;
-                        const elapsed = currentTime - startTime;
-                        const progress = Math.min(elapsed / duration, 1);
-                        const easedProgress = easeOutExpo(progress);
-                        const currentValue = Math.round(easedProgress * target);
-                        
-                        el.textContent = currentValue;
-                        
-                        if (progress < 1) {
-                            requestAnimationFrame(animate);
-                        } else {
-                            // Pulse glow effect when done
-                            const card = el.closest('div[style*="border-radius: 50%"]');
-                            if (card) {
-                                card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-                                card.style.transform = 'scale(1.08)';
-                                card.style.boxShadow = '0 12px 25px rgba(0, 176, 240, 0.45)';
-                                setTimeout(() => {
-                                    card.style.transform = 'scale(1)';
-                                    card.style.boxShadow = '0 8px 15px rgba(0, 176, 240, 0.2)';
-                                }, 300);
-                            }
-                        }
-                    }
-                    
-                    requestAnimationFrame(animate);
-                });
-            }, 200);
-        </script>
-        """ + f"<!-- {__import__('time').time()} -->", height=0)
         # ----------------------
     
     tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG", "1. 一般情報"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
