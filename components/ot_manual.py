@@ -226,12 +226,16 @@ def render_base_data():
             with ex_col2:
                 with st.expander(t("⚡ Thêm Nhanh Nhân Sự", "⚡ スタッフをクイック追加")):
                     make_expander_blue()
-                    qa_ma_nv = st.text_input(t("Mã NV", "社員番号"), key="qa_ma_nv")
-                    qa_ten_nv = st.text_input(t("Tên NV (*)", "氏名 (*)"), key="qa_ten_nv")
+                    if 'qa_form_key' not in st.session_state:
+                        st.session_state['qa_form_key'] = 0
+                    fk = st.session_state['qa_form_key']
+                    
+                    qa_ma_nv = st.text_input(t("Mã NV", "社員番号"), key=f"qa_ma_nv_{fk}")
+                    qa_ten_nv = st.text_input(t("Tên NV (*)", "氏名 (*)"), key=f"qa_ten_nv_{fk}")
                     qa_c1, qa_c2 = st.columns(2)
-                    with qa_c1: qa_phong_ban = st.text_input(t("Phòng ban", "部署"), key="qa_phong_ban")
-                    with qa_c2: qa_chuc_vu = st.text_input(t("Chức vụ", "役職"), key="qa_chuc_vu")
-                    qa_luong_cb = st.number_input(t("Lương cơ bản", "基本給"), min_value=0, step=1000000, key="qa_luong_cb")
+                    with qa_c1: qa_phong_ban = st.text_input(t("Phòng ban", "部署"), key=f"qa_phong_ban_{fk}")
+                    with qa_c2: qa_chuc_vu = st.text_input(t("Chức vụ", "役職"), key=f"qa_chuc_vu_{fk}")
+                    qa_luong_cb = st.number_input(t("Lương cơ bản", "基本給"), min_value=0, step=1000000, key=f"qa_luong_cb_{fk}")
                     if st.button(t("Thêm Nhân Sự", "追加する"), use_container_width=True, type="primary"):
                         if not qa_ten_nv.strip():
                             st.warning(t("Vui lòng nhập Tên NV!", "氏名を入力してください！"))
@@ -246,11 +250,7 @@ def render_base_data():
                             emp_df = pd.concat([emp_df, new_df], ignore_index=True)
                             save_employees_df(emp_df)
                             st.toast(t(f"Đã thêm {qa_ten_nv} thành công!", f"{qa_ten_nv} を追加しました！"), icon="✅")
-                            st.session_state['qa_ma_nv'] = ""
-                            st.session_state['qa_ten_nv'] = ""
-                            st.session_state['qa_phong_ban'] = ""
-                            st.session_state['qa_chuc_vu'] = ""
-                            st.session_state['qa_luong_cb'] = 0
+                            st.session_state['qa_form_key'] += 1
                             import time; time.sleep(0.5)
                             st.rerun()
 
