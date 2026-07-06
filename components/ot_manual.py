@@ -645,9 +645,16 @@ def render_base_data():
                 "Tết Dương lịch": "元日",
                 "Giải phóng Miền Nam": "南部解放記念日",
                 "Quốc tế Lao động": "メーデー",
-                "Lễ Quốc khánh": "建国記念日",
+                "Lễ Quốc khánh": "建国記念日休暇",
                 "Tết Nguyên Đán": "テト（旧正月）",
-                "Giỗ Tổ Hùng Vương": "フン王の命日"
+                "Giỗ Tổ Hùng Vương": "フン王の命日",
+                "Nghỉ hoán đổi (30/4-1/5)": "振替休日（南部解放・メーデー）",
+                "Nghỉ bù Giỗ Tổ Hùng Vương": "フン王の命日（振替休日）",
+                "Nghỉ hoán đổi Quốc khánh": "建国記念日（振替休日）",
+                "Nghỉ bù Quốc tế Lao động": "メーデー（振替休日）",
+                "Nghỉ bù Tết Dương lịch": "元日（振替休日）",
+                "Nghỉ bù Giải phóng Miền Nam": "南部解放記念日（振替休日）",
+                "Nghỉ bù Lễ Quốc khánh": "建国記念日（振替休日）"
             }};
             let currentDate = new Date();
 
