@@ -990,7 +990,7 @@ def render_project_data():
                     est_cost = sum(hrs * (pct / 100.0) * hourly_rate_est for pct, hrs in auto_buckets.items() if hrs > 0)
                     
                     if est_cost > 0:
-                        st.markdown(f"<div style='margin-top: 15px; margin-bottom: 15px; padding: 12px; background-color: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 4px; color: #166534;'><span style='vertical-align: middle;'>:material/payments:</span> <strong>{t('Dự tính chi phí (ước lượng):', '予想コスト (目安):')}</strong> {est_cost:,.0f} VNĐ</div>", unsafe_allow_html=True)
+                        st.success(f":material/payments: **{t('Dự tính chi phí (ước lượng):', '予想コスト (目安):')}** {est_cost:,.0f} VNĐ")
                 
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
                     if employee_name_proj == opt_emp:
@@ -1046,7 +1046,7 @@ def render_project_data():
                 est_cost_manual = (h_150 * 1.5 + h_200 * 2.0 + h_270 * 2.7 + h_300 * 3.0 + h_400 * 4.0 + c_hrs * (c_mult / 100.0)) * hourly_rate_est
                 
                 if est_cost_manual > 0:
-                    st.markdown(f"<div style='margin-top: 15px; margin-bottom: 15px; padding: 12px; background-color: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 4px; color: #166534;'><span style='vertical-align: middle;'>:material/payments:</span> <strong>{t('Dự tính chi phí (ước lượng):', '予想コスト (目安):')}</strong> {est_cost_manual:,.0f} VNĐ</div>", unsafe_allow_html=True)
+                    st.success(f":material/payments: **{t('Dự tính chi phí (ước lượng):', '予想コスト (目安):')}** {est_cost_manual:,.0f} VNĐ")
             
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
                     manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
