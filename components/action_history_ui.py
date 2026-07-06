@@ -31,17 +31,13 @@ def render_action_history():
         st.markdown("<div style='height: 40px;'></div>", unsafe_allow_html=True)
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
-            st.markdown("""
-                <div style='text-align: center; padding: 20px; width: 100%;'>
-                    <div style='display: inline-flex; align-items: center; justify-content: center; width: 120px; height: 120px; border-radius: 50%; background-color: #00B0F0; margin-bottom: 20px; box-shadow: 0 8px 24px rgba(0, 176, 240, 0.3);'>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="64" height="64">
-                            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-                        </svg>
-                    </div>
-                    <div style='color: #2c3e50; font-family: "Times New Roman", serif; font-size: 22px; font-weight: bold; margin: 0 auto; line-height: 1.2;'>""" + t("Chưa có dữ liệu lịch sử", "操作履歴がありません") + """</div>
-                    <div style='color: #7f8c8d; font-size: 15px; margin-top: 10px; line-height: 1.5;'>""" + t("Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.", "計算やレポート出力を実行すると、ここに履歴が表示されます。") + """</div>
-                </div>
-            """, unsafe_allow_html=True)
+            from components.ui_utils import render_empty_state
+            render_empty_state(
+                text=t("Chưa có dữ liệu lịch sử", "操作履歴がありません"),
+                subtitle=t("Hãy thực hiện tính toán hoặc xuất báo cáo để xem lịch sử tại đây.", "計算やレポート出力を実行すると、ここに履歴が表示されます。"),
+                icon="history",
+                height=250
+            )
         return
         
     with st.container():

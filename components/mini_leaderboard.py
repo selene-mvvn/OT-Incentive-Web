@@ -89,7 +89,8 @@ def show_mini_edit_dialog(data_type, df):
 def render_mini_leaderboard(data_type="ot"):
     records = get_records(data_type)
     if not records:
-        st.markdown(f"<div style='text-align:center; font-size:13px; color:#7f8c8d; margin-top:50px;'>{t('Chưa có dữ liệu', 'データなし')}</div>", unsafe_allow_html=True)
+        from components.ui_utils import render_empty_state
+        render_empty_state(t('Chưa có dữ liệu', 'データなし'), icon="inbox", height=100)
         return
 
     df = pd.DataFrame(records)
@@ -160,7 +161,8 @@ def render_mini_leaderboard(data_type="ot"):
             df_filtered = df.copy()
 
         if df_filtered.empty:
-            st.markdown(f"<div style='text-align:center; font-size:13px; color:#7f8c8d; padding-bottom: 15px;'>{t('Không có dữ liệu cho năm này', 'データなし')}</div>", unsafe_allow_html=True)
+            from components.ui_utils import render_empty_state
+            render_empty_state(t('Không có dữ liệu cho năm này', 'データなし'), icon="calendar_today", height=100)
         else:
             if data_type == "ot":
                 if 'ot_hours' not in df_filtered.columns: df_filtered['ot_hours'] = 0
@@ -336,4 +338,5 @@ def render_mini_leaderboard(data_type="ot"):
                 )
                 st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
             else:
-                st.markdown(f"<div style='text-align:center; font-size:13px; color:#7f8c8d;'>{t('Chưa có dữ liệu dự án', 'プロジェクトデータなし')}</div>", unsafe_allow_html=True)
+                from components.ui_utils import render_empty_state
+                render_empty_state(t('Chưa có dữ liệu dự án', 'プロジェクトデータなし'), icon="folder_open", height=100)

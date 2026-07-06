@@ -62,7 +62,8 @@ def render_dashboard():
     st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>1. {t('XẾP HẠNG THỜI GIAN OT', '残業時間ランキング')}</h3>", unsafe_allow_html=True)
     ot_history = get_records("ot")
     if not ot_history:
-        st.info(t("Chưa có dữ liệu OT nào được lưu.", "保存されたデータがありません。"))
+        from components.ui_utils import render_empty_state
+        render_empty_state(t("Chưa có dữ liệu OT nào được lưu.", "保存されたデータがありません。"), icon="inbox")
     else:
         df_ot = pd.DataFrame(ot_history).drop_duplicates()
         df_ot['date_obj'] = pd.to_datetime(df_ot.get('ot_date'), format='%d/%m/%Y', errors='coerce')
@@ -85,7 +86,8 @@ def render_dashboard():
             df_ot_filtered = df_ot
             
         if df_ot_filtered.empty:
-            st.warning("Không có dữ liệu cho năm này.")
+            from components.ui_utils import render_empty_state
+            render_empty_state("Không có dữ liệu cho năm này.", icon="calendar_today", height=120)
         else:
             agg_ot = df_ot_filtered.groupby('employee_name').agg(
                 total_ot_hours=('ot_hours', 'sum'),
@@ -201,7 +203,8 @@ def render_dashboard():
     st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>2. {t('XẾP HẠNG INCENTIVE', 'インセンティブランキング')}</h3>", unsafe_allow_html=True)
     inc_history = get_records("incentive")
     if not inc_history:
-        st.info(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"))
+        from components.ui_utils import render_empty_state
+        render_empty_state(t("Chưa có dữ liệu Incentive nào được lưu.", "保存されたデータがありません。"), icon="inbox")
     else:
         df_inc = pd.DataFrame(inc_history).drop_duplicates()
         df_inc['date_obj'] = pd.to_datetime(df_inc.get('date'), format='%d/%m/%Y', errors='coerce')
@@ -225,7 +228,8 @@ def render_dashboard():
             df_inc_filtered = df_inc
             
         if df_inc_filtered.empty:
-            st.warning("Không có dữ liệu cho năm này.")
+            from components.ui_utils import render_empty_state
+            render_empty_state("Không có dữ liệu cho năm này.", icon="calendar_today", height=120)
         else:
             agg_inc = df_inc_filtered.groupby('employee_name').agg(
                 total_incentive=('final_incentive', 'sum'),

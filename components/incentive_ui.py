@@ -195,6 +195,7 @@ def render_incentive():
             
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
     
+        from components.ui_utils import render_empty_state
         if st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True):
             result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
             st.session_state['last_incentive_calc'] = result

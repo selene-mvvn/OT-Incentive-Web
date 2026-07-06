@@ -361,7 +361,8 @@ def render_base_data():
                         )
                         st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
                     else:
-                        st.markdown(f"<div style='height: 160px; display:flex; align-items:center; justify-content:center; color: #94a3b8;'>{t('Chưa có dữ liệu', 'データなし')}</div>", unsafe_allow_html=True)
+                        from components.ui_utils import render_empty_state
+                        render_empty_state(t('Chưa có dữ liệu', 'データなし'), icon="bar_chart", height=160)
 
                     st.markdown(f'''
                     <style>
