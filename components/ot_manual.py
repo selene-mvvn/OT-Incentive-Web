@@ -997,9 +997,9 @@ def render_project_data():
                                 if (activeLabels.some(act => l.innerText.includes(act))) {{
                                     let metricCard = l.closest('[data-testid="stMetric"]');
                                     if (metricCard) {{
-                                        metricCard.style.setProperty('background-color', '#4caf50', 'important');
-                                        metricCard.style.setProperty('box-shadow', '0 4px 15px rgba(76, 175, 80, 0.4)', 'important');
-                                        metricCard.style.setProperty('border-color', '#4caf50', 'important');
+                                        metricCard.style.setProperty('background-color', '#10b981', 'important');
+                                        metricCard.style.setProperty('box-shadow', '0 4px 15px rgba(16, 185, 129, 0.4)', 'important');
+                                        metricCard.style.setProperty('border-color', '#10b981', 'important');
                                     }}
                                 }}
                             }});
