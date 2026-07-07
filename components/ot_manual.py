@@ -182,8 +182,34 @@ def render_base_data():
         </body>
         </html>
         """
+        import streamlit.components.v1 as components
+        components.html(js_count_up, height=0)
         
-    tab1, tab2 = st.tabs(["1. THÔNG TIN CHUNG (一般情報)", "2. NGÀY NGHỈ & LỄ (休日・祭日)"])
+    tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG", "1. 一般情報"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
+    
+    # Inject JS to preserve tab state using robust selectors
+    components.html("""
+    <script>
+        const doc = window.parent.document;
+        setTimeout(() => {
+            const tabsContainers = doc.querySelectorAll('div[data-testid="stTabs"]');
+            if (tabsContainers.length > 0) {
+                const mainTabs = tabsContainers[0].querySelectorAll('button[data-testid="stTab"]');
+                mainTabs.forEach((tab, index) => {
+                    tab.addEventListener("click", () => {
+                        sessionStorage.setItem("ot_main_tab_idx", index);
+                    });
+                });
+                const saved = sessionStorage.getItem("ot_main_tab_idx");
+                if (saved !== null && saved < mainTabs.length) {
+                    if (mainTabs[saved].getAttribute("aria-selected") !== "true") {
+                        mainTabs[saved].click();
+                    }
+                }
+            }
+        }, 300);
+    </script>
+    """, height=0)
 
     with tab1:
         from logic.employee_data import get_employees_df, save_employees_df
@@ -1055,7 +1081,7 @@ def render_project_data():
                 </div>
             """, unsafe_allow_html=True)
         
-            tab_auto, tab_manual = st.tabs(["🕒 Tự động phân bổ theo Giờ (自動)", "✍️ Nhập tay Hệ số (手動)"])
+            tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
         
             with tab_auto:
                 st.info(t("Hệ thống sẽ tự động phân bổ số giờ vào các mức hệ số dựa trên loại ngày (Ngày đi làm hành chính, Cuối tuần, Ngày lễ).", "システムは日種（平日・週末・祭日）に基づいて自動配分します。"))
