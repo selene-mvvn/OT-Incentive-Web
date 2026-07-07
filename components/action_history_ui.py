@@ -19,8 +19,8 @@ def render_action_history():
             h3.history-card-title::after {
                 width: 50px !important;
             }
-            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) > button,
-            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) > button {
+            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) button,
+            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) button {
                 width: 100% !important;
                 min-width: 100% !important;
                 height: 42px !important;
@@ -343,7 +343,7 @@ def render_action_history():
             elif "sửa" in at_vn_lower: dot_color = "#f39c12"
 
             with st.container(border=True):
-                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.3, 1.4, 1.4, 1.4], vertical_alignment="center")
+                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1.5], vertical_alignment="center")
                 with c_chk:
                     st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
                 with c_head:

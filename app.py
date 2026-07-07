@@ -188,7 +188,7 @@ st.markdown("""
     }
     
     /* Buttons */
-    .stButton>button {
+    .stButton button {
         border-radius: 30px !important;
         font-weight: bold;
         text-transform: uppercase;
@@ -199,14 +199,14 @@ st.markdown("""
         color: #00B0F0 !important;
         transition: all 0.3s ease !important;
     }
-    .stButton>button:hover {
+    .stButton button:hover {
         background-color: #00B0F0 !important;
         color: white !important;
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3);
     }
 
     /* Download Buttons */
-    [data-testid="stDownloadButton"] > button {
+    [data-testid="stDownloadButton"] button {
         border-radius: 30px !important;
         font-weight: bold;
         text-transform: uppercase;
@@ -217,7 +217,7 @@ st.markdown("""
         color: #ffffff !important;
         transition: all 0.3s ease !important;
     }
-    [data-testid="stDownloadButton"] > button:hover {
+    [data-testid="stDownloadButton"] button:hover {
         background-color: #008CBA !important;
         border-color: #008CBA !important;
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.4);
@@ -560,7 +560,7 @@ st.markdown("""
         font-size: 11px !important;
         line-height: 1.2 !important;
     }
-    [data-testid="stPopover"] > button {
+    [data-testid="stPopover"] button {
         font-size: 12px !important;
         padding: 2px 10px !important;
         border-radius: 6px !important;
@@ -725,7 +725,7 @@ else:
             background: #f4f7f9 !important;
             background-color: #f4f7f9 !important;
         }
-        .stButton>button {
+        .stButton button {
             background-color: #ffffff !important;
         }
         /* Make Lang toggle background white in main app */
