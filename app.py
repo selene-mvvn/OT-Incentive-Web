@@ -357,13 +357,16 @@ st.markdown("""
         font-weight: 900 !important;
     }
 
-    /* Hide radio button circles SAFELY without killing material icons */
+    /* Hide radio button circles SAFELY without touching material icons */
+    [data-testid="stSidebar"] div[role="radiogroup"] label div:not(:has(p)):not([data-testid="stMarkdownContainer"]):not([data-testid="stMarkdownContainer"] *),
+    [data-testid="stSidebar"] div[role="radiogroup"] label span:not(:has(p)):not([data-testid="stMarkdownContainer"]):not([data-testid="stMarkdownContainer"] *):not([data-testid*="Icon"]):not([class*="Icon"]):not([class*="icon"]):not([class*="material"]),
     [data-testid="stSidebar"] div[role="radiogroup"] label input[type="radio"],
     [data-testid="stSidebar"] div[role="radiogroup"] label [data-baseweb="radio"],
-    [data-testid="stSidebar"] div[role="radiogroup"] label [data-testid="stRadioCircle"],
-    [data-testid="stSidebar"] div[role="radiogroup"] label > div:first-child:not([data-testid="stMarkdownContainer"]):not(:has(p)),
-    [data-testid="stSidebar"] div[role="radiogroup"] label > span:first-child:not([data-testid="stMarkdownContainer"]):not(:has(p)):not([data-testid*="Icon"]):not([class*="Icon"]):not([class*="icon"]):not([class*="material"]) {
+    [data-testid="stSidebar"] div[role="radiogroup"] label [data-testid="stRadioCircle"] {
         display: none !important;
+    }
+    [data-testid="stSidebar"] div[role="radiogroup"] {
+        padding-bottom: 140px !important;
     }
 
     [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p {
@@ -617,7 +620,7 @@ div[role="radiogroup"][aria-label="LangToggle_123"] {
 }
 
 /* SAFELY hide radio circles: Hide any div inside the label that is NOT the text container */
-div[role="radiogroup"][aria-label="LangToggle_123"] label > div:not(:has(p)):not([data-testid="stMarkdownContainer"]) {
+div[role="radiogroup"][aria-label="LangToggle_123"] label div:not(:has(p)):not([data-testid="stMarkdownContainer"]):not([data-testid="stMarkdownContainer"] *) {
     display: none !important;
 }
 div[role="radiogroup"][aria-label="LangToggle_123"] input[type="radio"] {
@@ -845,7 +848,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 15px;
+                    margin-top: 8px;
                 }
             </style>
             """, unsafe_allow_html=True)
@@ -872,7 +875,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 15px;
+                    margin-top: 8px;
                 }
             </style>
             """, unsafe_allow_html=True)
@@ -913,9 +916,12 @@ else:
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
-            if sel == t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"):
-                st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
-                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"))
+            if sel == options[0]:
+                st.session_state['ot_menu_expanded'] = not st.session_state.get('ot_menu_expanded', True)
+                target = st.session_state.get('prev_ot_selection', options[1])
+                if target == options[0] or target not in options:
+                    target = options[1]
+                st.session_state['menu_selection'] = target
             else:
                 st.session_state['prev_ot_selection'] = sel
             
