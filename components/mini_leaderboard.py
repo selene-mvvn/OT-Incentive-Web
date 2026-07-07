@@ -12,7 +12,7 @@ def show_mini_edit_dialog(data_type, df):
                 transform: translateY(8vh);
             }}
         </style>
-        <div style='margin-top: -45px; font-size: 1.35rem; font-weight: 700; padding-bottom: 8px; color: #2c3e50; border-bottom: 3px solid #00B0F0; width: fit-content; margin-bottom: 15px;'>
+        <div style='margin-top: -15px; font-size: 1.35rem; font-weight: 700; padding-bottom: 8px; color: #2c3e50; border-bottom: 3px solid #00B0F0; width: fit-content; margin-bottom: 15px;'>
             {t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集")}
         </div>
     """, unsafe_allow_html=True)
