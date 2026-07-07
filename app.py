@@ -188,6 +188,14 @@ st.markdown("""
     }
     
     /* Buttons */
+    /* Force tooltip hover targets around buttons to stretch */
+    .stButton > div, .stButton > span,
+    .stButton div[data-testid="stTooltipHoverTarget"],
+    [data-testid="stDownloadButton"] > div, [data-testid="stDownloadButton"] > span,
+    [data-testid="stDownloadButton"] div[data-testid="stTooltipHoverTarget"] {
+        width: 100% !important;
+        display: flex !important;
+    }
     .stButton button {
         border-radius: 30px !important;
         font-weight: bold;
@@ -725,7 +733,15 @@ else:
             background: #f4f7f9 !important;
             background-color: #f4f7f9 !important;
         }
-        .stButton button {
+        /* Force tooltip hover targets around buttons to stretch */
+    .stButton > div, .stButton > span,
+    .stButton div[data-testid="stTooltipHoverTarget"],
+    [data-testid="stDownloadButton"] > div, [data-testid="stDownloadButton"] > span,
+    [data-testid="stDownloadButton"] div[data-testid="stTooltipHoverTarget"] {
+        width: 100% !important;
+        display: flex !important;
+    }
+    .stButton button {
             background-color: #ffffff !important;
         }
         /* Make Lang toggle background white in main app */

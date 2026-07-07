@@ -19,13 +19,24 @@ def render_action_history():
             h3.history-card-title::after {
                 width: 50px !important;
             }
+            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *),
+            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) > div,
+            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) > span,
+            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) div[data-testid="stTooltipHoverTarget"],
             div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) button,
+            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *),
+            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) > div,
+            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) > span,
+            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) div[data-testid="stTooltipHoverTarget"],
             div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) button {
                 width: 100% !important;
                 min-width: 100% !important;
+                display: flex !important;
+            }
+            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) button,
+            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) button {
                 height: 42px !important;
                 min-height: 42px !important;
-                display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 padding: 0 10px !important;
@@ -375,7 +386,7 @@ def render_action_history():
                     else:
                         st.button("⚠️ " + t("Mất file", "なし"), disabled=True, key=f"dl_{log_id}", help=t("File vật lý không còn tồn tại trên hệ thống", "物理ファイルはシステムに存在しません"), use_container_width=True)
                 with c_del:
-                    if st.button(t(":material/delete: XÓA", ":material/delete: 削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
+                    if st.button(t(":material/delete: XÓA", ":material/delete: 削除"), key=f"del_{log_id}", use_container_width=True):
                         delete_action_log(log_id)
                         st.rerun()
 
