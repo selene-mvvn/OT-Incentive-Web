@@ -68,11 +68,11 @@ def render_ot_excel():
         emp_df = get_employees_df()
     
         if emp_df.empty:
-            st.warning("⚠️ " + t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước khi import file.", "一般設定でスタッフを1名以上追加してください。"))
+            st.warning(t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước khi import file.", "一般設定でスタッフを1名以上追加してください。"), icon="⚠️")
             return
         
         base = st.session_state['ot_base_data']
-        st.info("💡 " + t(f"Hệ thống sẽ sử dụng Mức lương cơ bản từ Danh sách Nhân sự và Ngày nghỉ/Lễ để tính toán tự động. (Số ngày chuẩn: {base.get('standard_days', 22.0)})", f"システムはスタッフリストの基本給と休日を使用して自動計算します。（標準日数: {base.get('standard_days', 22.0)}）"))
+        st.info(t(f"Hệ thống sẽ sử dụng Mức lương cơ bản từ Danh sách Nhân sự và Ngày nghỉ/Lễ để tính toán tự động. (Số ngày chuẩn: {base.get('standard_days', 22.0)})", f"システムはスタッフリストの基本給と休日を使用して自動計算します。（標準日数: {base.get('standard_days', 22.0)}）"), icon="💡")
     
         # Removed Project Overrides expander
 
@@ -174,10 +174,10 @@ def render_ot_excel():
                         col_map_auto["quan_ly"] = c
                     
                 if mapping_mode == t("Tự động nhận diện thông minh", "スマート自動認識"):
-                    st.info("💡 " + t(
+                    st.info(t(
                         "Hệ thống sẽ tự động quét và nhận diện các cột dữ liệu (Ngày, Tên, Số giờ OT...). Bạn chỉ cần bấm Xử lý.",
                         "システムはデータ列を自動的にスキャンして認識します。処理をクリックするだけです。"
-                    ))
+                    ), icon="💡")
                     col_map = col_map_auto
                 else:
                     col_opts = ["--- Bỏ qua ---"] + list(df.columns)

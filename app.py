@@ -48,6 +48,33 @@ st.markdown("""
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     
+    /* Fix vertical alignment of emoji/icons and text in stAlert boxes */
+    [data-testid="stAlert"] > div,
+    [data-testid="stAlertContainer"] {
+        display: flex !important;
+        align-items: center !important;
+    }
+    [data-testid="stAlert"] [data-testid="stAlertIcon"],
+    [data-testid="stAlert"] [data-testid="stIconMaterial"],
+    [data-testid="stAlert"] > div > div:first-child {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        align-self: center !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        height: auto !important;
+    }
+    [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p {
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+        line-height: 1.5 !important;
+    }
+    
     /* Adjust spacing for horizontal rules */
     hr {
         margin-top: 15px !important;

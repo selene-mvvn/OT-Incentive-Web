@@ -797,7 +797,7 @@ def render_project_data():
         base = st.session_state['ot_base_data']
     
         if emp_df.empty:
-            st.warning("⚠️ " + t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước.", "一般設定でスタッフを1名以上追加してください。"))
+            st.warning(t("Vui lòng thêm ít nhất 1 nhân sự trong phần CÀI ĐẶT CHUNG trước.", "一般設定でスタッフを1名以上追加してください。"), icon="⚠️")
             return
         
         with st.container():
