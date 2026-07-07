@@ -65,7 +65,7 @@ st.markdown("""
         box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     }
     
-    /* Metric Delta (e.g. Thưởng) */
+    /* Metric Delta (e.g. Thﾆｰ盻殤g) */
     [data-testid="stMetricDelta"] {
         margin-top: 8px !important;
     }
@@ -231,7 +231,10 @@ st.markdown("""
     /* Input Fields */
     div[data-baseweb="input"],
     div[data-baseweb="base-input"],
-    div[data-baseweb="select"] > div {
+    div[data-baseweb="select"] > div,
+    div[data-testid="stTextInput"] > div > div,
+    div[data-testid="stNumberInput"] > div > div,
+    div[data-testid="stSelectbox"] > div > div {
         border-radius: 8px !important;
         border: 1px solid #cbd5e1 !important;
         background-color: #f8fafc !important;
@@ -240,7 +243,10 @@ st.markdown("""
 
     div[data-baseweb="input"]:focus-within,
     div[data-baseweb="base-input"]:focus-within,
-    div[data-baseweb="select"] > div:focus-within {
+    div[data-baseweb="select"] > div:focus-within,
+    div[data-testid="stTextInput"] > div > div:focus-within,
+    div[data-testid="stNumberInput"] > div > div:focus-within,
+    div[data-testid="stSelectbox"] > div > div:focus-within {
         border-color: #00B0F0 !important;
         box-shadow: 0 0 0 2px rgba(0, 176, 240, 0.2) !important;
         background-color: #ffffff !important;
@@ -297,7 +303,7 @@ st.markdown("""
     }
 
     /* Radio buttons in sidebar */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label {
+    [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: transparent;
         padding: 12px 15px;
         border-radius: 8px;
@@ -307,30 +313,32 @@ st.markdown("""
         cursor: pointer;
     }
 
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
+    [data-testid="stSidebar"] div[role="radiogroup"] label:hover {
         background-color: #f8f9fa !important;
         transform: translateX(3px);
     }
 
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:hover p {
+    [data-testid="stSidebar"] div[role="radiogroup"] label:hover p {
         color: #0090d0 !important;
     }
 
     /* Selected Menu Item */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) {
+    [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) {
         background: #00a8e8 !important;
         border: none !important;
         box-shadow: 0 4px 12px rgba(0, 168, 232, 0.3) !important;
         transform: translateX(5px);
     }
 
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:has(input:checked) p {
+    [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p {
         color: #FFFFFF !important;
         font-weight: 900 !important;
     }
 
     /* Hide radio button circles */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label > div:not(:has(p)):not([data-testid="stMarkdownContainer"]) {
+    [data-testid="stSidebar"] div[role="radiogroup"] label div:not(:has(p)):not([data-testid="stMarkdownContainer"]),
+    [data-testid="stSidebar"] div[role="radiogroup"] label span:not(:has(p)):not([data-testid="stMarkdownContainer"]),
+    [data-testid="stSidebar"] div[role="radiogroup"] label input[type="radio"] {
         display: none !important;
     }
 
@@ -356,11 +364,11 @@ st.markdown("""
         /* Removed padding-left to prevent shifting */
     }
     
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] p strong {
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label div[data-testid="stMarkdownContainer"] p strong {
         display: none !important;
     }
     
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] p {
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label div[data-testid="stMarkdownContainer"] p {
         font-size: 26px !important;
         text-align: center;
         margin: 0 !important;
@@ -370,7 +378,7 @@ st.markdown("""
         align-items: center !important;
     }
 
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] span {
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label div[data-testid="stMarkdownContainer"] span {
         font-size: 26px !important;
     }
     
@@ -383,7 +391,7 @@ st.markdown("""
         align-items: center !important;
     }
 
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label {
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label {
         margin: 5px 15px !important;
         width: 70px !important;
         padding: 10px 0 !important;
@@ -394,12 +402,12 @@ st.markdown("""
         transform: none !important;
     }
     
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:hover,
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:has(input:checked) {
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:hover,
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:has(input:checked) {
         transform: none !important;
     }
     
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label div[data-testid="stMarkdownContainer"] {
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label div[data-testid="stMarkdownContainer"] {
         width: 100% !important;
         text-align: center !important;
     }
@@ -411,12 +419,12 @@ st.markdown("""
         display: none !important;
     }
 
-    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:nth-child(1) p::after {
+    [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(1) p::after {
         display: none !important;
     }
     
     /* Main category styling for the first item (now clickable) */
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):not(:has(input:checked)) {
+    [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):not(:has(input:checked)) {
         border-bottom: 1px solid rgba(0,0,0,0.1) !important;
         padding-bottom: 10px;
         margin-bottom: 10px;
@@ -426,14 +434,14 @@ st.markdown("""
         transform: none !important;
         cursor: pointer;
     }
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):not(:has(input:checked)) p {
+    [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):not(:has(input:checked)) p {
         text-shadow: none !important;
         font-size: 16px;
         color: #2c3e50 !important;
         font-weight: bold;
         transition: all 0.3s;
     }
-    [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):not(:has(input:checked)):hover p {
+    [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):not(:has(input:checked)):hover p {
         color: #00a8e8 !important;
         text-shadow: none !important;
     }
@@ -465,7 +473,7 @@ st.markdown("""
         position: relative !important;
     }
 
-    /* Đưa toàn bộ viền xanh và bo góc vào div chứa bảng thực sự bên trong (trừ Toolbar) */
+    /* ﾄ脆ｰa toﾃn b盻・vi盻］ xanh vﾃ bo gﾃｳc vﾃo div ch盻ｩa b蘯｣ng th盻ｱc s盻ｱ bﾃｪn trong (tr盻ｫ Toolbar) */
     [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]),
     [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
         background: #ffffff !important;
@@ -478,7 +486,7 @@ st.markdown("""
         transition: all 0.3s ease !important;
     }
 
-    /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
+    /* B蘯｣ng n蘯ｱm trong Expander thﾃｬ b盻・vi盻］ xanh vﾃｬ Expander ﾄ妥｣ cﾃｳ vi盻］ */
     [data-testid="stExpander"] [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]),
     [data-testid="stExpander"] [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
         border: 1px solid rgba(0,0,0,0.1) !important;
@@ -532,42 +540,42 @@ from components.welcome import render_welcome
 from components.action_history_ui import render_action_history
 from logic.i18n import t
 
-@st.dialog(t("📖 HƯỚNG DẪN SỬ DỤNG", "📖 使い方ガイド"))
+@st.dialog(t("当 Hﾆｯ盻哢G D蘯ｪN S盻ｬ D盻､NG", "当 使い方ガイド))
 def show_user_guide():
         st.markdown(t("""
 ### 1. OVERTIME
-- **Dữ liệu dự án**: Nhập thủ công thời gian tăng ca cho từng dự án. Dữ liệu nhân sự và lương được tự động đồng bộ từ Cài đặt chung.
-- **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu để hệ thống tự động nhận diện và tính toán thời gian tăng ca hàng loạt cực kỳ nhanh chóng.
+- **D盻ｯ li盻㎡ d盻ｱ ﾃ｡n**: Nh蘯ｭp th盻ｧ cﾃｴng th盻拱 gian tﾄハg ca cho t盻ｫng d盻ｱ ﾃ｡n. D盻ｯ li盻㎡ nhﾃ｢n s盻ｱ vﾃ lﾆｰﾆ｡ng ﾄ柁ｰ盻｣c t盻ｱ ﾄ黛ｻ冢g ﾄ黛ｻ渡g b盻・t盻ｫ Cﾃi ﾄ黛ｺｷt chung.
+- **Nh蘯ｭp hﾃng lo蘯｡t (Excel)**: Upload tr盻ｱc ti蘯ｿp file d盻ｯ li盻㎡ ﾄ黛ｻ・h盻・th盻創g t盻ｱ ﾄ黛ｻ冢g nh蘯ｭn di盻㌻ vﾃ tﾃｭnh toﾃ｡n th盻拱 gian tﾄハg ca hﾃng lo蘯｡t c盻ｱc k盻ｳ nhanh chﾃｳng.
 
 ### 2. INCENTIVE
-- Tự động trích xuất và gợi ý dữ liệu từ các dự án đã thực hiện.
-- Đánh giá hiệu suất làm việc dựa trên số giờ làm việc thực tế so với kế hoạch, từ đó quy đổi chính xác ra mức tiền thưởng (Incentive).
-- **Ước tính Incentive**: Kéo thanh trượt để giả lập và xem trước mức tiền thưởng thay đổi thế nào khi Giờ công thực tế thay đổi.
+- T盻ｱ ﾄ黛ｻ冢g trﾃｭch xu蘯･t vﾃ g盻｣i ﾃｽ d盻ｯ li盻㎡ t盻ｫ cﾃ｡c d盻ｱ ﾃ｡n ﾄ妥｣ th盻ｱc hi盻㌻.
+- ﾄ静｡nh giﾃ｡ hi盻㎡ su蘯･t lﾃm vi盻㌘ d盻ｱa trﾃｪn s盻・gi盻・lﾃm vi盻㌘ th盻ｱc t蘯ｿ so v盻嬖 k蘯ｿ ho蘯｡ch, t盻ｫ ﾄ妥ｳ quy ﾄ黛ｻ品 chﾃｭnh xﾃ｡c ra m盻ｩc ti盻］ thﾆｰ盻殤g (Incentive).
+- **ﾆｯ盻嫩 tﾃｭnh Incentive**: Kﾃｩo thanh trﾆｰ盻｣t ﾄ黛ｻ・gi蘯｣ l蘯ｭp vﾃ xem trﾆｰ盻嫩 m盻ｩc ti盻］ thﾆｰ盻殤g thay ﾄ黛ｻ品 th蘯ｿ nﾃo khi Gi盻・cﾃｴng th盻ｱc t蘯ｿ thay ﾄ黛ｻ品.
 
 ### 3. LỊCH SỬ THAO TÁC
-- Các file Excel dữ liệu đã xuất ra sẽ được tự động lưu trữ an toàn.
-- Dễ dàng xem lại, tải xuống file cũ hoặc xóa bỏ dữ liệu thừa.
+- Cﾃ｡c file Excel d盻ｯ li盻㎡ ﾄ妥｣ xu蘯･t ra s蘯ｽ ﾄ柁ｰ盻｣c t盻ｱ ﾄ黛ｻ冢g lﾆｰu tr盻ｯ an toﾃn.
+- D盻・dﾃng xem l蘯｡i, t蘯｣i xu盻創g file cﾅｩ ho蘯ｷc xﾃｳa b盻・d盻ｯ li盻㎡ th盻ｫa.
 
-### 4. CÀI ĐẶT CHUNG
-- Thiết lập thông tin nhân sự, mức lương cơ bản (Gross) và các cấu hình hệ thống.
-- **Lưu ý**: Vui lòng thiết lập dữ liệu tại đây trước để hệ thống có cơ sở tính toán chính xác nhất.
+### 4. CﾃI ﾄ雪ｺｶT CHUNG
+- Thi蘯ｿt l蘯ｭp thﾃｴng tin nhﾃ｢n s盻ｱ, m盻ｩc lﾆｰﾆ｡ng cﾆ｡ b蘯｣n (Gross) vﾃ cﾃ｡c c蘯･u hﾃｬnh h盻・th盻創g.
+- **Lﾆｰu ﾃｽ**: Vui lﾃｲng thi蘯ｿt l蘯ｭp d盻ｯ li盻㎡ t蘯｡i ﾄ妥｢y trﾆｰ盻嫩 ﾄ黛ｻ・h盻・th盻創g cﾃｳ cﾆ｡ s盻・tﾃｭnh toﾃ｡n chﾃｭnh xﾃ｡c nh蘯･t.
     """, """
-### 1. 残業代計算 (OVERTIME)
-- **プロジェクト**: 各プロジェクトの残業時間を手動で入力します。スタッフデータや給与情報は一般設定から自動的に同期されます。
-- **一括入力 (Excel)**: Excelデータをアップロードするだけで、システムが自動的に認識し、スマートかつ迅速に一括計算します。
+### 1. 残業代計算(OVERTIME)
+- **プロジェクト*: 蜷・・繝ｭ繧ｸ繧ｧ繧ｯ繝医・谿区･ｭ譎る俣繧呈焔蜍輔〒蜈･蜉帙＠縺ｾ縺吶ゅせ繧ｿ繝・ヵ繝・・繧ｿ繧・ｵｦ荳取ュ蝣ｱ縺ｯ荳闊ｬ險ｭ螳壹°繧芽・蜍慕噪縺ｫ蜷梧悄縺輔ｌ縺ｾ縺吶・
+- **荳諡ｬ蜈･蜉・(Excel)**: Excel繝・・繧ｿ繧偵い繝・・繝ｭ繝ｼ繝峨☆繧九□縺代〒縲√す繧ｹ繝・Β縺瑚・蜍慕噪縺ｫ隱崎ｭ倥＠縲√せ繝槭・繝医°縺､霑・溘↓荳諡ｬ險育ｮ励＠縺ｾ縺吶・
 
-### 2. インセンティブ (INCENTIVE)
-- 実行済みのプロジェクトからデータを自動的に抽出・提案します。
-- 計画工数と実績工数の差に基づいてパフォーマンスを評価し、獲得インセンティブを正確に算出します。
-- **予想インセンティブ**: スライダーを動かして、実工数の変化に伴う獲得インセンティブの変動をシミュレーションできます。
+### 2. インセンティブ(INCENTIVE)
+- 螳溯｡梧ｸ医∩縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝医°繧峨ョ繝ｼ繧ｿ繧定・蜍慕噪縺ｫ謚ｽ蜃ｺ繝ｻ謠先｡医＠縺ｾ縺吶・
+- 險育判蟾･謨ｰ縺ｨ螳溽ｸｾ蟾･謨ｰ縺ｮ蟾ｮ縺ｫ蝓ｺ縺･縺・※繝代ヵ繧ｩ繝ｼ繝槭Φ繧ｹ繧定ｩ穂ｾ｡縺励∫佐蠕励う繝ｳ繧ｻ繝ｳ繝・ぅ繝悶ｒ豁｣遒ｺ縺ｫ邂怜・縺励∪縺吶・
+- **莠域Φインセンティブ*: 繧ｹ繝ｩ繧､繝繝ｼ繧貞虚縺九＠縺ｦ縲∝ｮ溷ｷ･謨ｰ縺ｮ螟牙喧縺ｫ莨ｴ縺・佐蠕励う繝ｳ繧ｻ繝ｳ繝・ぅ繝悶・螟牙虚繧偵す繝溘Η繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ縺ｧ縺阪∪縺吶・
 
 ### 3. 操作履歴
-- 出力されたすべてのExcelファイルは自動的かつ安全に保存されます。
-- いつでも過去のファイルの確認、再ダウンロード、不要なファイルの削除が可能です。
+- 蜃ｺ蜉帙＆繧後◆縺吶∋縺ｦ縺ｮExcel繝輔ぃ繧､繝ｫ縺ｯ閾ｪ蜍慕噪縺九▽螳牙・縺ｫ菫晏ｭ倥＆繧後∪縺吶・
+- 縺・▽縺ｧ繧る℃蜴ｻ縺ｮ繝輔ぃ繧､繝ｫ縺ｮ遒ｺ隱阪∝・繝繧ｦ繝ｳ繝ｭ繝ｼ繝峨∽ｸ崎ｦ√↑繝輔ぃ繧､繝ｫ縺ｮ蜑企勁縺悟庄閭ｽ縺ｧ縺吶・
 
-### 4. 一般設定
-- スタッフ情報、基本給（Gross）、およびシステムの基本構成を設定します。
-- **注意**: 他のセクションで正確な計算を行うために、まずここで初期データを設定してください。
+### 4. 荳闊ｬ險ｭ螳・
+- 繧ｹ繧ｿ繝・ヵ諠・ｱ縲∝渕譛ｬ邨ｦ・・ross・峨√♀繧医・繧ｷ繧ｹ繝・Β縺ｮ蝓ｺ譛ｬ讒区・繧定ｨｭ螳壹＠縺ｾ縺吶・
+- **豕ｨ諢・*: 莉悶・繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｧ豁｣遒ｺ縺ｪ險育ｮ励ｒ陦後≧縺溘ａ縺ｫ縲√∪縺壹％縺薙〒蛻晄悄繝・・繧ｿ繧定ｨｭ螳壹＠縺ｦ縺上□縺輔＞縲・
     """))
 
 # --- Creative Language Switcher (Always visible) ---
@@ -736,13 +744,13 @@ else:
                     st.rerun()
             st.markdown("<br>", unsafe_allow_html=True)
         else:
-            if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
+            if st.button(t("QUAY L蘯I TRANG CH盻ｦ", "繝帙・繝縺ｫ謌ｻ繧・), use_container_width=True):
                 st.session_state['current_page'] = 'welcome'
                 st.session_state['show_page_transition'] = True
                 st.rerun()
             st.markdown("<br>", unsafe_allow_html=True)
         
-        menu_title = t("MENU", "管理メニュー")
+        menu_title = t("MENU", "邂｡逅・Γ繝九Η繝ｼ")
         st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
         st.markdown("""
@@ -756,59 +764,59 @@ else:
         """, unsafe_allow_html=True)
         
         options = [
-            t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"),
-            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
-            t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
-            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
+            t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算*"),
+            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*"),
+            t(":material/edit_document: **NH蘯ｬP HﾃNG LO蘯T (EXCEL)**", ":material/edit_document: **荳諡ｬ蜈･蜉・*"),
+            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ*"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
-            t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
+            t(":material/settings: **CﾃI ﾄ雪ｺｶT CHUNG**", ":material/settings: **荳闊ｬ險ｭ螳・*")
         ]
         
         if 'ot_menu_expanded' not in st.session_state:
             st.session_state['ot_menu_expanded'] = True
             
-        header_text = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**")
+        header_text = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算*")
         
         options = [
             header_text,
-            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
-            t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
-            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
+            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*"),
+            t(":material/edit_document: **NH蘯ｬP HﾃNG LO蘯T (EXCEL)**", ":material/edit_document: **荳諡ｬ蜈･蜉・*"),
+            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ*"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
-            t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
+            t(":material/settings: **CﾃI ﾄ雪ｺｶT CHUNG**", ":material/settings: **荳闊ｬ險ｭ螳・*")
         ]
         
         if st.session_state['ot_menu_expanded']:
             st.markdown("""
             <style>
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p::after {
-                    content: " ▼";
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1) p::after {
+                    content: " 笆ｼ";
                     color: #00a8e8 !important;
                 }
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):has(input:checked) p::after {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):has(input:checked) p::after {
                     color: #FFFFFF !important;
                 }
                 /* Sub-menu items (2, 3) */
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3) {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) {
                     margin-left: 30px;
                     padding-left: 10px;
                     border-left: 2px solid rgba(0, 0, 0, 0.1) !important;
                     border-radius: 0 8px 8px 0;
                 }
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):hover,
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):hover {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2):hover,
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3):hover {
                     border-left: 2px solid #00a8e8 !important;
                 }
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2):has(input:checked),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3):has(input:checked) {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2):has(input:checked),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3):has(input:checked) {
                     border-left: none !important;
                 }
                 /* Main items 4, 5, 6, 7 styling */
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(7) {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
                     margin-top: 15px;
                 }
             </style>
@@ -816,26 +824,26 @@ else:
         else:
             st.markdown("""
             <style>
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1) p::after {
-                    content: " ▶";
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1) p::after {
+                    content: " 笆ｶ";
                     color: #00a8e8 !important;
                 }
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(1):has(input:checked) p::after {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):has(input:checked) p::after {
                     color: #FFFFFF !important;
                 }
                 /* Hide sub-items when collapsed */
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(2),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(3),
-                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:nth-child(2),
-                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] > label:nth-child(3) {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3),
+                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(2),
+                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(3) {
                     display: none !important;
                 }
                 
                 /* Main items 4, 5, 6, 7 styling when collapsed */
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(4),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(5),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(6),
-                [data-testid="stSidebar"] div[role="radiogroup"] > label:nth-child(7) {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
                     margin-top: 15px;
                 }
             </style>
@@ -843,24 +851,24 @@ else:
             
         # We need to map English internal keys to options to persist selection across language changes
         if 'menu_selection' not in st.session_state:
-            st.session_state['menu_selection'] = t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**")
+            st.session_state['menu_selection'] = t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*")
         elif st.session_state['menu_selection'] not in options:
             old_sel = st.session_state['menu_selection']
             vn_opts = [
                 ":material/timer: **OVERTIME**",
                 ":material/folder: **DỮ LIỆU DỰ ÁN**",
-                ":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**",
+                ":material/edit_document: **NH蘯ｬP HﾃNG LO蘯T (EXCEL)**",
                 ":material/payments: **INCENTIVE**",
                 ":material/history: **LỊCH SỬ THAO TÁC**",
-                ":material/settings: **CÀI ĐẶT CHUNG**"
+                ":material/settings: **CﾃI ﾄ雪ｺｶT CHUNG**"
             ]
             jp_opts = [
-                ":material/timer: **残業代計算**",
-                ":material/folder: **プロジェクト**",
-                ":material/edit_document: **一括入力**",
-                ":material/payments: **インセンティブ**",
+                ":material/timer: **残業代計算*",
+                ":material/folder: **プロジェクト*",
+                ":material/edit_document: **荳諡ｬ蜈･蜉・*",
+                ":material/payments: **インセンティブ*",
                 ":material/history: **操作履歴**",
-                ":material/settings: **一般設定**"
+                ":material/settings: **荳闊ｬ險ｭ螳・*"
             ]
             try:
                 if old_sel in vn_opts:
@@ -876,14 +884,14 @@ else:
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
-            if sel == t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"):
+            if sel == t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算*"):
                 st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
-                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"))
+                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*"))
             else:
                 st.session_state['prev_ot_selection'] = sel
             
         st.radio(
-            "Điều hướng",
+            "ﾄ進盻「 hﾆｰ盻嬾g",
             options,
             key="menu_selection",
             on_change=on_menu_change,
@@ -979,8 +987,8 @@ else:
                             const year = now.getFullYear();
                             
                             if (currentLang === 'JP') {
-                                const daysJP = ['日', '月', '火', '水', '木', '金', '土'];
-                                dateEl.innerText = `${year}年${String(month + 1).padStart(2, '0')}月${date}日 (${daysJP[day]}) • JP`;
+                                const daysJP = ['譌･', '譛・, '轣ｫ', '豌ｴ', '譛ｨ', '驥・, '蝨・];
+                                dateEl.innerText = `${year}蟷ｴ${String(month + 1).padStart(2, '0')}譛・{date}譌･ (${daysJP[day]}) • JP`;
                             } else {
                                 const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
                                 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -1067,5 +1075,5 @@ else:
         render_action_history()
     elif menu_selection == t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**"):
         render_base_data()
-
 # force reload
+
