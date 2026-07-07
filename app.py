@@ -795,7 +795,7 @@ else:
                 st.rerun()
             st.markdown("<br>", unsafe_allow_html=True)
         
-        menu_title = t("MENU", "邂｡逅・Γ繝九Η繝ｼ")
+        menu_title = t("MENU", "メニュー")
         st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; font-size: 18px !important; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
         st.markdown("""
