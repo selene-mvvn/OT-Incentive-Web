@@ -18,8 +18,22 @@ st.markdown("""
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0');
 
     /* Global Font */
-    html, body, [class*="css"]  {
+    html, body, [class*="css"], [class*="st-"] {
         font-family: 'Times New Roman', serif !important;
+    }
+    
+    .material-symbols-rounded, .material-symbols-outlined, [class*="material-symbols"] {
+        font-family: 'Material Symbols Rounded' !important;
+    }
+    
+    /* Ensure sidebar text also gets the font correctly if classes changed */
+    [data-testid="stSidebar"] * {
+        font-family: 'Times New Roman', serif;
+    }
+    
+    [data-testid="stSidebar"] .material-symbols-rounded, 
+    [data-testid="stSidebar"] .material-symbols-outlined {
+        font-family: 'Material Symbols Rounded' !important;
     }
     
     /* Hide default streamlit elements for cleaner look */
@@ -764,33 +778,32 @@ else:
         """, unsafe_allow_html=True)
         
         options = [
-            t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算*"),
-            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*"),
-            t(":material/edit_document: **NH蘯ｬP HﾃNG LO蘯T (EXCEL)**", ":material/edit_document: **荳諡ｬ蜈･蜉・*"),
-            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ*"),
+            t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"),
+            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
+            t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
+            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
-            t(":material/settings: **CﾃI ﾄ雪ｺｶT CHUNG**", ":material/settings: **荳闊ｬ險ｭ螳・*")
+            t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
         ]
         
         if 'ot_menu_expanded' not in st.session_state:
             st.session_state['ot_menu_expanded'] = True
             
-        header_text = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算*")
+        header_text = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**")
         
         options = [
             header_text,
-            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*"),
-            t(":material/edit_document: **NH蘯ｬP HﾃNG LO蘯T (EXCEL)**", ":material/edit_document: **荳諡ｬ蜈･蜉・*"),
-            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ*"),
+            t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
+            t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
+            t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
-            t(":material/settings: **CﾃI ﾄ雪ｺｶT CHUNG**", ":material/settings: **荳闊ｬ險ｭ螳・*")
+            t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
         ]
-        
         if st.session_state['ot_menu_expanded']:
             st.markdown("""
             <style>
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1) p::after {
-                    content: " 笆ｼ";
+                    content: " ▼";
                     color: #00a8e8 !important;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):has(input:checked) p::after {
@@ -825,7 +838,7 @@ else:
             st.markdown("""
             <style>
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1) p::after {
-                    content: " 笆ｶ";
+                    content: " ▶";
                     color: #00a8e8 !important;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):has(input:checked) p::after {
@@ -850,25 +863,26 @@ else:
             """, unsafe_allow_html=True)
             
         # We need to map English internal keys to options to persist selection across language changes
+        # We need to map English internal keys to options to persist selection across language changes
         if 'menu_selection' not in st.session_state:
-            st.session_state['menu_selection'] = t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*")
+            st.session_state['menu_selection'] = t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**")
         elif st.session_state['menu_selection'] not in options:
             old_sel = st.session_state['menu_selection']
             vn_opts = [
                 ":material/timer: **OVERTIME**",
                 ":material/folder: **DỮ LIỆU DỰ ÁN**",
-                ":material/edit_document: **NH蘯ｬP HﾃNG LO蘯T (EXCEL)**",
+                ":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**",
                 ":material/payments: **INCENTIVE**",
                 ":material/history: **LỊCH SỬ THAO TÁC**",
-                ":material/settings: **CﾃI ﾄ雪ｺｶT CHUNG**"
+                ":material/settings: **CÀI ĐẶT CHUNG**"
             ]
             jp_opts = [
-                ":material/timer: **残業代計算*",
-                ":material/folder: **プロジェクト*",
-                ":material/edit_document: **荳諡ｬ蜈･蜉・*",
-                ":material/payments: **インセンティブ*",
+                ":material/timer: **残業代計算**",
+                ":material/folder: **プロジェクト**",
+                ":material/edit_document: **一括入力**",
+                ":material/payments: **インセンティブ**",
                 ":material/history: **操作履歴**",
-                ":material/settings: **荳闊ｬ險ｭ螳・*"
+                ":material/settings: **一般設定**"
             ]
             try:
                 if old_sel in vn_opts:
@@ -884,20 +898,19 @@ else:
             
         def on_menu_change():
             sel = st.session_state['menu_selection']
-            if sel == t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算*"):
+            if sel == t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"):
                 st.session_state['ot_menu_expanded'] = not st.session_state['ot_menu_expanded']
-                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト*"))
+                st.session_state['menu_selection'] = st.session_state.get('prev_ot_selection', t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"))
             else:
                 st.session_state['prev_ot_selection'] = sel
             
         st.radio(
-            "ﾄ進盻「 hﾆｰ盻嬾g",
+            "Điều hướng",
             options,
             key="menu_selection",
             on_change=on_menu_change,
             label_visibility="collapsed"
         )
-        
         menu_selection = st.session_state['menu_selection']
         
         lang = st.session_state.get('lang', 'VN')
