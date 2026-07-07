@@ -47,7 +47,7 @@ def render_welcome():
         .logo-container {
             text-align: center;
             margin-top: -20px;
-            margin-bottom: 80px;
+            margin-bottom: 30px;
         }
         .logo-container img {
             max-width: 240px;
@@ -393,12 +393,10 @@ def render_welcome():
     """
     clock_html_escaped = html.escape(clock_html.replace('\n', ' '))
     st.markdown(f"""
-        <div style="position: relative; top: -35px;">
-            <div class="title">
-                OVERTIME & INCENTIVE<br>MANAGEMENT SYSTEM
-            </div>
-            <div class="divider"></div>
+        <div class="title">
+            OVERTIME & INCENTIVE<br>MANAGEMENT SYSTEM
         </div>
+        <div class="divider"></div>
         <div style="position: relative; height: 0; width: 100%;">
             <div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center;">
                 <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 50px; border: none; overflow: hidden; background: transparent;"></iframe>
