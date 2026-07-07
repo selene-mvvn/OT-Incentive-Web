@@ -371,7 +371,7 @@ st.markdown("""
 
     [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p {
         font-weight: bold;
-        font-size: 15px;
+        font-size: 13px !important;
         text-transform: uppercase;
         letter-spacing: 0.5px;
         transition: all 0.3s ease;
@@ -463,7 +463,7 @@ st.markdown("""
     }
     [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):not(:has(input:checked)) p {
         text-shadow: none !important;
-        font-size: 16px;
+        font-size: 13.5px !important;
         color: #2c3e50 !important;
         font-weight: bold;
         transition: all 0.3s;
@@ -778,7 +778,7 @@ else:
             st.markdown("<br>", unsafe_allow_html=True)
         
         menu_title = t("MENU", "邂｡逅・Γ繝九Η繝ｼ")
-        st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
+        st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; font-size: 18px !important; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
         st.markdown("""
         <style>
@@ -787,7 +787,7 @@ else:
             [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stIcon"],
             [data-testid="stSidebar"] div[role="radiogroup"] [class*="Icon"],
             [data-testid="stSidebar"] div[role="radiogroup"] span[translate="no"] {
-                font-size: 1.4em !important;
+                font-size: 1.3em !important;
                 vertical-align: middle !important;
                 margin-right: 8px !important;
                 color: inherit !important;
@@ -826,6 +826,11 @@ else:
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):has(input:checked) p::after {
                     color: #FFFFFF !important;
+                }
+                /* Sub-items font size */
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2) p,
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) p {
+                    font-size: 12px !important;
                 }
                 /* Sub-menu items (2, 3) */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
@@ -1000,6 +1005,26 @@ else:
                             const currentLang = footer.getAttribute('data-lang') || 'VN';
                             
                             let now = new Date();
+                            if (currentLang === 'JP') {
+                                // Convert to Japan Standard Time (JST)
+                                const jstStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
+                                now = new Date(jstStr);
+                            } else {
+                                // Convert to Vietnam Time (ICT)
+                                const vnStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" });
+                                now = new Date(vnStr);
+                            }
+                            
+                            const hrs = String(now.getHours()).padStart(2, '0');
+                            const mins = String(now.getMinutes()).padStart(2, '0');
+                            const secs = String(now.getSeconds()).padStart(2, '0');
+                            timeEl.innerText = `${hrs}:${mins}:${secs}`;
+                            
+                            const day = now.getDay();
+                            const date = String(now.getDate()).padStart(2, '0');
+                            const month = now.getMonth();
+                            const year = now.getFullYear();
+                            
                             if (currentLang === 'JP') {
                                 const daysJP = ['日', '月', '火', '水', '木', '金', '土'];
                                 dateEl.innerText = `${year}年${String(month + 1).padStart(2, '0')}月${date}日 (${daysJP[day]}) • JP`;
