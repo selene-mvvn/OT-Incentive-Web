@@ -69,7 +69,7 @@ def render_base_data():
         except:
             td_disp = "06/2026"
 
-        def make_card(icon_name, title, main_val, sub_val="", is_number=False):
+        def make_card(icon_name, title, main_val, sub_val="", is_number=False, badge_html=""):
             svgs = {
                 'group': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#ffffff"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>',
                 'event_busy': '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="#ffffff"><path d="M9.31 17l2.44-2.44L14.19 17l1.06-1.06-2.44-2.44 2.44-2.44-1.06-1.06-2.44 2.44-2.44-2.44-1.06 1.06 2.44 2.44-2.44 2.44L9.31 17zM19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"/></svg>',
@@ -83,12 +83,53 @@ def render_base_data():
                 val_html = f"{main_val} {sub_val}"
                 
             return f"""
-            <div style="background-color: #00B0F0; border: 4px solid #e0f2fe; border-radius: 50%; aspect-ratio: 1/1; max-width: 180px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 8px 15px rgba(0, 176, 240, 0.2); text-align: center; padding: 10px;">
+            <div style="background-color: #00B0F0; border: 4px solid #e0f2fe; border-radius: 50%; aspect-ratio: 1/1; max-width: 180px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; box-shadow: 0 8px 15px rgba(0, 176, 240, 0.2); text-align: center; padding: 10px; position: relative;">
                 <div style="color: rgba(255, 255, 255, 0.95); font-size: 13px; font-weight: 600; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 0.5px;">
                     <div style="margin-bottom: 10px; display: flex; justify-content: center;">{icon_svg}</div>
                     {title}
                 </div>
                 <div style="color: #ffffff; font-size: 22px; font-weight: 700; line-height: 1.2;">{val_html}</div>
+                {badge_html}
+            </div>
+            """
+
+        from logic.holiday_utils import get_countdown_info
+        countdown_data = get_countdown_info()
+        badge_html = ""
+        if countdown_data:
+            if countdown_data["type"] == "upcoming":
+                days = countdown_data["days_left"]
+                msg = t(f"⏳ Còn {days} ngày", f"⏳ あと{days}日")
+                bg = "#fff3cd"
+                color = "#856404"
+            elif countdown_data["type"] == "today_single":
+                msg = t("🎉 Đang nghỉ", "🎉 休日")
+                bg = "#d4edda"
+                color = "#155724"
+            elif countdown_data["type"] == "during_block":
+                days = countdown_data["days_left"]
+                msg = t(f"🏖️ {days} ngày nữa làm", f"🏖️ 出社まで{days}日")
+                bg = "#e8f4f8"
+                color = "#0075a0"
+                
+            badge_html = f"""
+            <div style="
+                position: absolute;
+                bottom: -12px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: {bg};
+                color: {color};
+                font-size: 12px;
+                font-weight: 800;
+                text-align: center;
+                padding: 4px 12px;
+                border-radius: 20px;
+                white-space: nowrap;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                border: 2px solid white;
+            ">
+                {msg}
             </div>
             """
 
@@ -96,36 +137,7 @@ def render_base_data():
         with c_dash1:
             st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), emp_count, f"<span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>", True), unsafe_allow_html=True)
         with c_dash2:
-            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), holiday_count, f"<span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>", True), unsafe_allow_html=True)
-            from logic.holiday_utils import get_countdown_info
-            countdown_data = get_countdown_info()
-            if countdown_data:
-                if countdown_data["type"] == "upcoming":
-                    days = countdown_data["days_left"]
-                    msg = t(f"⏳ Còn {days} ngày nữa là nghỉ lễ", f"⏳ 休日まであと{days}日")
-                    bg = "#fff3cd"
-                    color = "#856404"
-                elif countdown_data["type"] == "today_single":
-                    msg = t("🎉 Nghỉ lễ hôm nay", "🎉 本日は休日です")
-                    bg = "#d4edda"
-                    color = "#155724"
-                elif countdown_data["type"] == "during_block":
-                    days = countdown_data["days_left"]
-                    msg = t(f"🏖️ Đang nghỉ - Còn {days} ngày nữa đi làm", f"🏖️ 休暇中 - 出社まで{days}日")
-                    bg = "#e8f4f8"
-                    color = "#0075a0"
-                    
-                st.markdown(f"""
-                <div style="
-                    background: {bg}; color: {color};
-                    font-size: 12px; font-weight: bold; text-align: center;
-                    padding: 4px 10px; border-radius: 20px;
-                    width: fit-content; margin: 10px auto 0 auto;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-                ">
-                    {msg}
-                </div>
-                """, unsafe_allow_html=True)
+            st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), holiday_count, f"<span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>", True, badge_html), unsafe_allow_html=True)
         with c_dash3:
             st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 16px; white-space: nowrap;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
         

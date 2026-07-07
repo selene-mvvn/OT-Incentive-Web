@@ -279,13 +279,13 @@ def render_welcome():
             days = countdown_data["days_left"]
             target = countdown_data["target_date"].strftime("%d/%m/%Y")
             reason = countdown_data["reason"]
-            msg = t(f"Chỉ còn <b>{days} ngày</b> nữa là đến <b>{reason}</b> ({target})! Cố lên nào 🚀", f"<b>{reason}</b> ({target})まであと<b>{days}日</b>！頑張りましょう🚀")
+            msg = t(f"Chỉ còn&nbsp;<b>{days} ngày</b>&nbsp;nữa là đến&nbsp;<b>{reason}</b>&nbsp;({target})! Cố lên nào 🚀", f"<b>{reason}</b>&nbsp;({target})まであと&nbsp;<b>{days}日</b>！頑張りましょう🚀")
             bg_color = "rgba(255, 140, 0, 0.15)"
             border_color = "rgba(255, 140, 0, 0.4)"
             text_color = "#d35400"
         elif countdown_data["type"] == "today_single":
             reason = countdown_data["reason"]
-            msg = t(f"Hôm nay là ngày nghỉ: <b>{reason}</b>! Chúc bạn một ngày nghỉ ngơi vui vẻ 🎉", f"本日は<b>{reason}</b>でお休みです！よい休日を🎉")
+            msg = t(f"Hôm nay là ngày nghỉ:&nbsp;<b>{reason}</b>! Chúc bạn một ngày nghỉ ngơi vui vẻ 🎉", f"本日は&nbsp;<b>{reason}</b>&nbsp;でお休みです！よい休日を🎉")
             bg_color = "rgba(46, 204, 113, 0.15)"
             border_color = "rgba(46, 204, 113, 0.4)"
             text_color = "#27ae60"
@@ -293,7 +293,7 @@ def render_welcome():
             days = countdown_data["days_left"]
             target = countdown_data["target_date"].strftime("%d/%m/%Y")
             reason = countdown_data["reason"]
-            msg = t(f"Đang trong kỳ nghỉ <b>{reason}</b>. Còn <b>{days} ngày</b> nữa là đi làm lại ({target}) 🏖️", f"<b>{reason}</b>の休暇中です。出社まで残り<b>{days}日</b> ({target}) 🏖️")
+            msg = t(f"Đang trong kỳ nghỉ&nbsp;<b>{reason}</b>. Còn&nbsp;<b>{days} ngày</b>&nbsp;nữa là đi làm lại ({target}) 🏖️", f"<b>{reason}</b>&nbsp;の休暇中です。出社まで残り&nbsp;<b>{days}日</b>&nbsp;({target}) 🏖️")
             bg_color = "rgba(0, 176, 240, 0.15)"
             border_color = "rgba(0, 176, 240, 0.4)"
             text_color = "#0075a0"
