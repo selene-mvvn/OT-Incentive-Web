@@ -19,24 +19,13 @@ def render_action_history():
             h3.history-card-title::after {
                 width: 50px !important;
             }
-            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *),
-            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) > div,
-            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) > span,
-            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) div[data-testid="stTooltipHoverTarget"],
-            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) button,
-            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *),
-            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) > div,
-            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) > span,
-            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) div[data-testid="stTooltipHoverTarget"],
-            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) button {
+                        .stButton button, [data-testid="stButton"] button,
+            .stDownloadButton button, [data-testid="stDownloadButton"] button {
                 width: 100% !important;
                 min-width: 100% !important;
-                display: flex !important;
-            }
-            div[data-testid="stButton"]:not(.custom-toolbar-wrapper *) button,
-            div[data-testid="stDownloadButton"]:not(.custom-toolbar-wrapper *) button {
                 height: 42px !important;
                 min-height: 42px !important;
+                display: flex !important;
                 align-items: center !important;
                 justify-content: center !important;
                 padding: 0 10px !important;
@@ -82,7 +71,7 @@ def render_action_history():
             type_filter = st.selectbox("📂 " + t("Lọc theo thao tác", "操作で絞り込み"), action_types)
         with col_clean:
             st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-            if st.button(t(":material/cleaning_services: Dọn file lỗi", ":material/cleaning_services: エラーをクリア"), help=t("Xóa các lịch sử bị mất file gốc", "見つからないファイルを自動削除"), use_container_width=True):
+            if st.button(t(":material/cleaning_services: Dọn file lỗi", ":material/cleaning_services: エラーをクリア"), use_container_width=True):
                 cleanup_missing_files()
                 st.rerun()
         with col_clear:
