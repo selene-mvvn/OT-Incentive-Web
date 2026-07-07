@@ -8,6 +8,8 @@ from logic.history import add_to_history
 from logic.i18n import t
 
 def render_ot_excel():
+    from components.ot_manual import init_session_state
+    init_session_state()
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
     with col_rank:
         from components.mini_leaderboard import render_mini_leaderboard

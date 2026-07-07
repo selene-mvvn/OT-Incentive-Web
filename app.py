@@ -10,6 +10,9 @@ if 'pending_toast' in st.session_state:
     st.toast(st.session_state['pending_toast'], icon=":material/check_circle:")
     del st.session_state['pending_toast']
 
+from components.ot_manual import init_session_state
+init_session_state()
+
 
 
 # Custom CSS for a beautiful corporate look (White & Blue)
@@ -49,29 +52,45 @@ st.markdown("""
     footer {visibility: hidden;}
     
     /* Fix vertical alignment of emoji/icons and text in stAlert boxes */
+    [data-testid="stAlert"] {
+        padding: 12px 16px !important;
+        display: flex !important;
+        align-items: center !important;
+    }
     [data-testid="stAlert"] > div,
     [data-testid="stAlertContainer"] {
         display: flex !important;
         align-items: center !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     [data-testid="stAlert"] [data-testid="stAlertIcon"],
     [data-testid="stAlert"] [data-testid="stIconMaterial"],
-    [data-testid="stAlert"] > div > div:first-child {
+    [data-testid="stAlert"] [data-testid*="Icon"],
+    [data-testid="stAlert"] [role="img"] {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         align-self: center !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+        margin: 0 12px 0 0 !important;
+        padding: 0 !important;
         height: auto !important;
+        line-height: 1 !important;
     }
-    [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p {
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
+    [data-testid="stAlert"] [data-testid="stAlertContent"],
+    [data-testid="stAlert"] [data-testid="stMarkdownContainer"] {
+        display: flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        flex: 1 !important;
+    }
+    [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p,
+    [data-testid="stAlert"] [data-testid="stMarkdownContainer"] > p {
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
         line-height: 1.5 !important;
     }
     
