@@ -8,19 +8,17 @@ from logic.action_log import get_action_logs, clear_all_logs, delete_action_log,
 def render_action_history():
     st.markdown("""
         <style>
-            [data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker),
-            [data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker) {
+            .custom-history-card {
                 transition: all 0.2s ease-in-out !important;
                 background-color: #ffffff !important;
                 border: 1px solid #e2e8f0 !important;
                 border-radius: 10px !important;
                 box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
             }
-            [data-testid="stVerticalBlockBorderWrapper"]:has(.timeline-marker):hover,
-            [data-testid="stVerticalBlockBorderWrapper"]:has(.missing-marker):hover {
-                box-shadow: 0 6px 16px rgba(0,0,0,0.1) !important;
-                transform: translateY(-3px) !important;
-                border-color: #3498db !important;
+            .custom-history-card:hover {
+                box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+                transform: translateY(-4px) !important;
+                border: 1px solid #3498db !important;
             }
             h3.history-card-title::after {
                 width: 50px !important;

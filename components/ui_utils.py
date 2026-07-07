@@ -17,7 +17,58 @@ def make_container_white():
     """, unsafe_allow_html=True)
 
 def make_history_cards_white():
-    pass
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+        const parent = window.parent.document;
+        
+        function styleCards(container) {
+            let cards = container.querySelectorAll('[data-testid="stVerticalBlockBorderWrapper"]');
+            cards.forEach(card => {
+                if (!card.classList.contains('custom-history-card')) {
+                    card.classList.add('custom-history-card');
+                    
+                    let timelineMarker = card.querySelector('.timeline-marker');
+                    let missingMarker = card.querySelector('.missing-marker');
+                    
+                    if (timelineMarker) {
+                        card.classList.add('has-timeline-marker');
+                        let color = timelineMarker.getAttribute('data-color') || '#00B0F0';
+                        card.style.setProperty('--timeline-color', color);
+                    }
+                    if (missingMarker) {
+                        card.classList.add('has-missing-marker');
+                        card.style.setProperty('--timeline-color', '#e74c3c');
+                    }
+                }
+            });
+        }
+
+        const frames = parent.querySelectorAll('iframe');
+        frames.forEach(frame => {
+            if (frame.contentWindow === window) {
+                let container = frame.closest('[data-testid="stVerticalBlock"]');
+                if (container) {
+                    styleCards(container);
+                    const observer = new parent.MutationObserver((mutations) => {
+                        styleCards(container);
+                    });
+                    observer.observe(container, { childList: true, subtree: true });
+                }
+            }
+        });
+
+        if (window.frameElement) {
+            window.frameElement.style.display = 'none';
+            if (window.frameElement.parentElement) {
+                window.frameElement.parentElement.style.display = 'none';
+                window.frameElement.parentElement.style.height = '0px';
+                window.frameElement.parentElement.style.margin = '0px';
+                window.frameElement.parentElement.style.padding = '0px';
+            }
+        }
+    </script>
+    """, height=0)
 
 def make_expander_blue():
     st.markdown("""
@@ -121,13 +172,14 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
             <div class='marker-history-btn' style='display: none;'></div>
             <style>
                 div.element-container:has(.marker-history-btn) + div.element-container {
-                    margin-top: -15px !important;
+                    margin-top: -20px !important;
                 }
                 div.element-container:has(.marker-history-btn) + div.element-container button {
                     text-transform: none !important;
-                    padding: 5px 16px !important;
+                    padding: 2px 10px !important;
                     min-height: 0px !important;
-                    line-height: 1.4 !important;
+                    line-height: 1.2 !important;
+                    font-size: 13px !important;
                 }
                 div.element-container:has(.marker-history-btn) + div.element-container button p::before {
                     content: "↩";
