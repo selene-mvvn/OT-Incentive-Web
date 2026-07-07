@@ -388,6 +388,7 @@ def render_base_data():
                             hoverinfo='label+value'
                         )])
                         fig.update_layout(
+                            font=dict(family="'Times New Roman', serif"),
                             margin=dict(t=15, b=0, l=0, r=0),
                             height=170,
                             showlegend=True,
@@ -626,7 +627,7 @@ def render_base_data():
             holidays_json = json.dumps(holidays_list)
             html_code = f"""
             <style>
-            body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; padding: 0; color: #334155; }}
+            body {{ font-family: 'Times New Roman', serif; margin: 0; padding: 0; color: #334155; }}
             .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 45px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
             .cal-header {{ display: flex; justify-content: space-between; align-items: center; padding: 5px 0 15px 0; }}
             .cal-header button {{ background: white; border: none; border-radius: 4px; padding: 4px 14px; cursor: pointer; color: #00B0F0; font-weight: bold; transition: all 0.2s; font-size: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}

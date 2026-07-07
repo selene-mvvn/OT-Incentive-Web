@@ -285,6 +285,7 @@ def render_mini_leaderboard(data_type="ot"):
                     )
                 ))
                 fig.update_layout(
+                    font=dict(family="'Times New Roman', serif"),
                     margin=dict(l=0, r=0, t=5, b=5),
                     height=160,
                     paper_bgcolor='rgba(0,0,0,0)',
@@ -360,6 +361,7 @@ def render_mini_leaderboard(data_type="ot"):
                              color_discrete_sequence=px.colors.qualitative.Set3)
                 fig_pie.update_traces(textposition='inside', textinfo='percent')
                 fig_pie.update_layout(
+                    font=dict(family="'Times New Roman', serif"),
                     margin=dict(t=10, b=0, l=0, r=0),
                     showlegend=True,
                     legend=dict(orientation='h', yanchor='top', y=-0.1, xanchor='center', x=0.5, font=dict(size=10)),

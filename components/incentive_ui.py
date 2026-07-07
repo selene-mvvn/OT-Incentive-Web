@@ -52,7 +52,7 @@ def render_incentive():
                     x = [t("Doanh thu", "売上"), t("Chi phí", "コスト"), t("Lợi nhuận", "利益")],
                     textposition = "outside",
                     text = [f"+{exp_rev:,.0f}", f"-{act_cost:,.0f}", f"{p_val:,.0f}"],
-                    textfont=dict(family="Arial, sans-serif", size=11, color="#333", weight="bold"),
+                    textfont=dict(family="'Times New Roman', serif", size=11, color="#333", weight="bold"),
                     y = [exp_rev, -act_cost, 0],
                     connector = {"line":{"color":"rgba(0,0,0,0.15)", "width": 1, "dash": "dot"}},
                     decreasing = {"marker":{"color":"rgba(255, 107, 107, 0.85)", "line":{"color":"#ff6b6b", "width":1}}},
@@ -62,6 +62,7 @@ def render_incentive():
                 ))
                 
                 fig.update_layout(
+                    font=dict(family="'Times New Roman', serif"),
                     showlegend=False,
                     height=260,
                     bargap=0.3,

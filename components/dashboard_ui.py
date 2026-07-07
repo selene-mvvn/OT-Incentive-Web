@@ -128,7 +128,7 @@ def render_dashboard():
                     yaxis_title=t("Số giờ (h)", "時間 (h)"),
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
-                    font={'family': "Inter, sans-serif"},
+                    font={'family': "'Times New Roman', serif"},
                     margin=dict(l=0, r=0, t=40, b=0),
                     yaxis=dict(gridcolor='#e0e0e0')
                 )
@@ -276,7 +276,7 @@ def render_dashboard():
                     yaxis_title=t("Incentive (JPY)", "インセンティブ (JPY)"),
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
-                    font={'family': "Inter, sans-serif"},
+                    font={'family': "'Times New Roman', serif"},
                     margin=dict(l=0, r=0, t=40, b=0),
                     yaxis=dict(gridcolor='#e0e0e0')
                 )

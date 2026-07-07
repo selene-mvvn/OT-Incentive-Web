@@ -689,7 +689,7 @@ div[role="radiogroup"][aria-label="LangToggle_123"] label p {
     font-size: 14px !important;
     color: #00B0F0 !important;
     margin: 0 !important;
-    font-family: 'Inter', 'Segoe UI', sans-serif !important;
+    font-family: 'Times New Roman', serif !important;
     letter-spacing: 0.5px !important;
     line-height: 1 !important;
 }
