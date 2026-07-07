@@ -96,14 +96,33 @@ def save_base_data(data_dict):
             for col in df_copy.columns:
                 if pd.api.types.is_datetime64_any_dtype(df_copy[col]):
                     df_copy[col] = df_copy[col].dt.strftime("%Y-%m-%d")
+            # Replace NaT and NaN with None so JSON encoder generates 'null' instead of invalid 'NaN'
+            df_copy = df_copy.replace({pd.NaT: None})
+            df_copy = df_copy.where(pd.notnull(df_copy), None)
             serializable['holidays_df'] = df_copy.to_dict(orient='records')
+    
+    # We also need to recursively clean any other NaNs in the dictionary to be 100% sure Firebase accepts it
+    def clean_nans(obj):
+        import math
+        if isinstance(obj, dict):
+            return {k: clean_nans(v) for k, v in obj.items()}
+        elif isinstance(obj, list):
+            return [clean_nans(v) for v in obj]
+        elif isinstance(obj, float) and math.isnan(obj):
+            return None
+        return obj
+    
+    serializable = clean_nans(serializable)
     
     try:
         firebase_url = get_firebase_url("base_data.json")
         if firebase_url:
-            requests.put(firebase_url, json=serializable, timeout=5)
-    except Exception:
-        pass
+            # Dump to string using default=str to handle any unexpected objects (like np.int64)
+            import json
+            json_str = json.dumps(serializable, ensure_ascii=False, default=str)
+            requests.put(firebase_url, data=json_str.encode('utf-8'), timeout=5, headers={'Content-Type': 'application/json'})
+    except Exception as e:
+        print(f"Firebase save error: {e}")
 
     try:
         with open(BASE_DATA_FILE, "w", encoding="utf-8") as f:

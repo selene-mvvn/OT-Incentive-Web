@@ -1,23 +1,92 @@
 {
+    "basic_salary": 1700000,
     "employee_name": "Quân",
-    "working_month": "02/2026",
-    "standard_days": 23.0,
+    "from_date": "2026-06-21",
+    "gross_salary": 1840000,
     "holidays_df": [
         {
-            "Ngày nghỉ": "2026-02-16",
-            "Lý do": "Ngày lễ"
+            "Lý do": "Tết Dương lịch",
+            "Ngày nghỉ": "2026-01-01"
         },
         {
-            "Ngày nghỉ": "2026-02-19",
-            "Lý do": "Ngày lễ"
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-14"
         },
         {
-            "Ngày nghỉ": "2026-02-20",
-            "Lý do": "Ngày lễ"
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-15"
+        },
+        {
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-16"
+        },
+        {
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-17"
+        },
+        {
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-18"
+        },
+        {
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-19"
+        },
+        {
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-20"
+        },
+        {
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-21"
+        },
+        {
+            "Lý do": "Tết Nguyên Đán",
+            "Ngày nghỉ": "2026-02-22"
+        },
+        {
+            "Lý do": "Giỗ Tổ Hùng Vương",
+            "Ngày nghỉ": "2026-04-26"
+        },
+        {
+            "Lý do": "Nghỉ bù Giỗ Tổ Hùng Vương",
+            "Ngày nghỉ": "2026-04-27"
+        },
+        {
+            "Lý do": "Giải phóng Miền Nam",
+            "Ngày nghỉ": "2026-04-30"
+        },
+        {
+            "Lý do": "Quốc tế Lao động",
+            "Ngày nghỉ": "2026-05-01"
+        },
+        {
+            "Lý do": "Lễ Quốc khánh",
+            "Ngày nghỉ": "2026-08-29"
+        },
+        {
+            "Lý do": "Lễ Quốc khánh",
+            "Ngày nghỉ": "2026-08-30"
+        },
+        {
+            "Lý do": "Nghỉ hoán đổi Quốc khánh",
+            "Ngày nghỉ": "2026-08-31"
+        },
+        {
+            "Lý do": "Lễ Quốc khánh",
+            "Ngày nghỉ": "2026-09-01"
+        },
+        {
+            "Lý do": "Lễ Quốc khánh",
+            "Ngày nghỉ": "2026-09-02"
         }
     ],
-    "basic_salary": 1700000,
+    "hours_per_day": 8.0,
     "lunch_allowance": 40000,
     "other_allowance": 100000,
-    "gross_salary": 1840000
+    "standard_days": 23.0,
+    "standard_hours_per_day": 8.0,
+    "standard_hours_per_year": 1900.0,
+    "to_date": "2026-07-20",
+    "working_month": "02/2026"
 }
