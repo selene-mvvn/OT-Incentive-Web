@@ -65,7 +65,11 @@ def render_dashboard():
         from components.ui_utils import render_empty_state
         render_empty_state(t("Chưa có dữ liệu OT nào được lưu.", "保存されたデータがありません。"), icon="inbox")
     else:
-        df_ot = pd.DataFrame(ot_history).drop_duplicates()
+        df_ot = pd.DataFrame(ot_history)
+        if all(c in df_ot.columns for c in ['ot_date', 'employee_name', 'order_name', 'ot_hours']):
+            df_ot = df_ot.drop_duplicates(subset=['ot_date', 'employee_name', 'order_name', 'ot_hours'], keep='first')
+        else:
+            df_ot = df_ot.drop_duplicates()
         df_ot['date_obj'] = pd.to_datetime(df_ot.get('ot_date'), format='%d/%m/%Y', errors='coerce')
         if 'ot_hours' not in df_ot.columns:
             df_ot['ot_hours'] = 0
@@ -138,7 +142,11 @@ def render_dashboard():
                 from components.ui_utils import make_expander_blue
                 make_expander_blue()
                 st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
-                df_ot_edit = pd.DataFrame(ot_history).drop_duplicates()
+                df_ot_edit = pd.DataFrame(ot_history)
+                if all(c in df_ot_edit.columns for c in ['ot_date', 'employee_name', 'order_name', 'ot_hours']):
+                    df_ot_edit = df_ot_edit.drop_duplicates(subset=['ot_date', 'employee_name', 'order_name', 'ot_hours'], keep='first')
+                else:
+                    df_ot_edit = df_ot_edit.drop_duplicates()
                 
                 col_order_ot = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df_ot_edit.columns if str(c).endswith("%")]
                 col_order_ot = [c for c in col_order_ot if c in df_ot_edit.columns] + [c for c in df_ot_edit.columns if c not in col_order_ot]

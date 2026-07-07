@@ -10,7 +10,7 @@
         "ot_date": "12/02/2026",
         "ot_hours": 0.5,
         "ot_reason": "Xử lý 27 bản vẽ hạn  giao sáng 13/2",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -26,7 +26,7 @@
         "ot_date": "04/03/2026",
         "ot_hours": 1.0,
         "ot_reason": "Hạn giao trong ngày",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -42,7 +42,7 @@
         "ot_date": "09/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Sửa lại các bản vẽ của Thắng và Hiển",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -58,7 +58,7 @@
         "ot_date": "10/03/2026",
         "ot_hours": 3.0,
         "ot_reason": "Kiểm tra các bản vẽ  hạn giao 11/3",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -74,7 +74,7 @@
         "ot_date": "02/03/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đẩy nhanh tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -90,7 +90,7 @@
         "ot_date": "10/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Sai nhiều cần sửa hôm sau gửi khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -106,7 +106,7 @@
         "ot_date": "11/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Thiết kế Holder",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -122,7 +122,7 @@
         "ot_date": "12/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Sửa thiết kế do làm sai phần motor",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -138,7 +138,7 @@
         "ot_date": "13/03/2026",
         "ot_hours": 1.0,
         "ot_reason": "Hoàn thiện lại cad gửi khách trong ngày",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -154,7 +154,7 @@
         "ot_date": "18/03/2026",
         "ot_hours": 3.0,
         "ot_reason": "Làm sai nên cần sửa lại lựa chọn cáp xích",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -170,7 +170,7 @@
         "ot_date": "23/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Chậm tiến độ",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -186,7 +186,7 @@
         "ot_date": "24/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Sửa lại bản vẽ do vẽ sai",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -202,7 +202,7 @@
         "ot_date": "25/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Chậm tiến độ",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -218,7 +218,7 @@
         "ot_date": "26/03/2026",
         "ot_hours": 4.0,
         "ot_reason": "Khách yêu cầu sửa lại bản vẽ",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -234,7 +234,7 @@
         "ot_date": "02/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Khách sửa CAD nên cần vẽ lại",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -250,7 +250,7 @@
         "ot_date": "09/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Chậm tiến độ",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -266,7 +266,7 @@
         "ot_date": "10/04/2026",
         "ot_hours": 3.0,
         "ot_reason": "Chậm tiến độ",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -282,7 +282,7 @@
         "ot_date": "13/04/2026",
         "ot_hours": 4.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -298,7 +298,7 @@
         "ot_date": "15/04/2026",
         "ot_hours": 3.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -314,7 +314,7 @@
         "ot_date": "16/04/2026",
         "ot_hours": 3.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -330,7 +330,7 @@
         "ot_date": "17/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -346,7 +346,7 @@
         "ot_date": "18/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": 40000.0,
         "400%": null
@@ -362,7 +362,7 @@
         "ot_date": "19/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": 40000.0,
         "400%": null
@@ -378,7 +378,7 @@
         "ot_date": "20/04/2026",
         "ot_hours": 4.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -394,7 +394,7 @@
         "ot_date": "21/04/2026",
         "ot_hours": 4.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "05/2026",
+        "payment_period": "21/04/2026 - 20/05/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -410,7 +410,7 @@
         "ot_date": "22/04/2026",
         "ot_hours": 4.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "05/2026",
+        "payment_period": "21/04/2026 - 20/05/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -426,7 +426,7 @@
         "ot_date": "23/04/2026",
         "ot_hours": 3.0,
         "ot_reason": "Hoàn thành trước khi nghỉ việc",
-        "payment_period": "05/2026",
+        "payment_period": "21/04/2026 - 20/05/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -442,7 +442,7 @@
         "ot_date": "06/02/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": null
@@ -458,7 +458,7 @@
         "ot_date": "07/02/2026",
         "ot_hours": 8.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": 160000.0,
         "400%": null
@@ -474,7 +474,7 @@
         "ot_date": "08/02/2026",
         "ot_hours": 6.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": 120000.0,
         "400%": null
@@ -490,7 +490,7 @@
         "ot_date": "11/02/2026",
         "ot_hours": 2.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": null
@@ -506,7 +506,7 @@
         "ot_date": "12/02/2026",
         "ot_hours": 2.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": null
@@ -522,7 +522,7 @@
         "ot_date": "14/02/2026",
         "ot_hours": 4.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": 80000.0,
         "400%": null
@@ -538,7 +538,7 @@
         "ot_date": "15/02/2026",
         "ot_hours": 5.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": 110000.0,
         "400%": null
@@ -554,7 +554,7 @@
         "ot_date": "16/02/2026",
         "ot_hours": 6.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": 240000.0
@@ -570,7 +570,7 @@
         "ot_date": "19/02/2026",
         "ot_hours": 8.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": 320000.0
@@ -586,7 +586,7 @@
         "ot_date": "20/02/2026",
         "ot_hours": 9.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": 360000.0
@@ -602,7 +602,7 @@
         "ot_date": "10/02/2026",
         "ot_hours": 4.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": null
@@ -618,7 +618,7 @@
         "ot_date": "12/02/2026",
         "ot_hours": 4.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": null
@@ -634,7 +634,7 @@
         "ot_date": "10/03/2026",
         "ot_hours": 0.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -650,7 +650,7 @@
         "ot_date": "11/03/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -666,7 +666,7 @@
         "ot_date": "16/03/2026",
         "ot_hours": 1.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -682,7 +682,7 @@
         "ot_date": "04/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Đẩy nhanh tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -698,7 +698,7 @@
         "ot_date": "09/03/2026",
         "ot_hours": 0.5,
         "ot_reason": "Đẩy nhanh tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -714,7 +714,7 @@
         "ot_date": "10/03/2026",
         "ot_hours": 6.0,
         "ot_reason": "Đẩy nhanh tiến độ để hôm sau họp với khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": 20000.0,
         "400%": null
@@ -730,7 +730,7 @@
         "ot_date": "11/03/2026",
         "ot_hours": 1.0,
         "ot_reason": "Chỉnh sửa theo khách hàng",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -746,7 +746,7 @@
         "ot_date": "13/03/2026",
         "ot_hours": 4.0,
         "ot_reason": "Đẩy nhanh tiến độ thiết kế chi tiết",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -762,7 +762,7 @@
         "ot_date": "16/03/2026",
         "ot_hours": 1.5,
         "ot_reason": "Kịp tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -778,7 +778,7 @@
         "ot_date": "17/03/2026",
         "ot_hours": 7.5,
         "ot_reason": "Kịp tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": 50000.0,
         "400%": null
@@ -794,7 +794,7 @@
         "ot_date": "18/03/2026",
         "ot_hours": 7.0,
         "ot_reason": "Kịp tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": 40000.0,
         "400%": null
@@ -810,7 +810,7 @@
         "ot_date": "19/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Kịp tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -826,7 +826,7 @@
         "ot_date": "20/03/2026",
         "ot_hours": 1.0,
         "ot_reason": "Kịp tiến độ",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -842,7 +842,7 @@
         "ot_date": "17/03/2026",
         "ot_hours": 4.0,
         "ot_reason": "Thiết kế dao cắt",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -858,7 +858,7 @@
         "ot_date": "18/03/2026",
         "ot_hours": 6.0,
         "ot_reason": "Thay đổi thiết kế dao",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": 20000.0,
         "400%": null
@@ -874,7 +874,7 @@
         "ot_date": "21/03/2026",
         "ot_hours": 8.0,
         "ot_reason": "Tăng ca thứ 7",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": 160000.0,
         "400%": null
@@ -890,7 +890,7 @@
         "ot_date": "25/02/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -906,7 +906,7 @@
         "ot_date": "04/03/2026",
         "ot_hours": 1.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -922,7 +922,7 @@
         "ot_date": "09/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -938,7 +938,7 @@
         "ot_date": "31/03/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -954,7 +954,7 @@
         "ot_date": "18/03/2026",
         "ot_hours": 2.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -970,7 +970,7 @@
         "ot_date": "19/03/2026",
         "ot_hours": 3.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -986,7 +986,7 @@
         "ot_date": "25/03/2026",
         "ot_hours": 5.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1002,7 +1002,7 @@
         "ot_date": "26/03/2026",
         "ot_hours": 7.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": 50000.0,
         "400%": null
@@ -1018,7 +1018,7 @@
         "ot_date": "23/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "05/2026",
+        "payment_period": "21/04/2026 - 20/05/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1034,7 +1034,7 @@
         "ot_date": "04/05/2026",
         "ot_hours": 4.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "05/2026",
+        "payment_period": "21/04/2026 - 20/05/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1050,7 +1050,7 @@
         "ot_date": "23/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "05/2026",
+        "payment_period": "21/04/2026 - 20/05/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1066,7 +1066,7 @@
         "ot_date": "10/04/2026",
         "ot_hours": 1.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1082,7 +1082,7 @@
         "ot_date": "13/04/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1098,7 +1098,7 @@
         "ot_date": "14/04/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1114,7 +1114,7 @@
         "ot_date": "15/04/2026",
         "ot_hours": 0.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1130,7 +1130,7 @@
         "ot_date": "20/04/2026",
         "ot_hours": 2.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "04/2026",
+        "payment_period": "21/03/2026 - 20/04/2026",
         "project_type": "N",
         "200%": null,
         "400%": null
@@ -1146,7 +1146,7 @@
         "ot_date": "06/02/2026",
         "ot_hours": 1.5,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": null
@@ -1162,7 +1162,7 @@
         "ot_date": "07/02/2026",
         "ot_hours": 8.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": 160000.0,
         "400%": null
@@ -1178,7 +1178,7 @@
         "ot_date": "08/02/2026",
         "ot_hours": 8.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": 160000.0,
         "400%": null
@@ -1194,7 +1194,7 @@
         "ot_date": "16/02/2026",
         "ot_hours": 6.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "02/2026",
+        "payment_period": "21/01/2026 - 20/02/2026",
         "project_type": "S",
         "200%": null,
         "400%": 240000.0
@@ -1210,23 +1210,7 @@
         "ot_date": "23/02/2026",
         "ot_hours": 1.0,
         "ot_reason": "Đáp ứng tiến độ của khách",
-        "payment_period": "03/2026",
-        "project_type": "S",
-        "200%": null,
-        "400%": null
-    },
-    {
-        "150%": 30000.0,
-        "client_order_id": "J02445",
-        "employee_name": "Nguyen Dang Hung",
-        "hourly_rate": 10000,
-        "manager_name": "Ha",
-        "order_id": "V050007",
-        "order_name": "abc",
-        "ot_date": "02/07/2026",
-        "ot_hours": 2.0,
-        "ot_reason": "Dap",
-        "payment_period": "07/2026",
+        "payment_period": "21/02/2026 - 20/03/2026",
         "project_type": "S",
         "200%": null,
         "400%": null

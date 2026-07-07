@@ -94,7 +94,16 @@ def render_mini_leaderboard(data_type="ot"):
         return
 
     df = pd.DataFrame(records)
-    df = df.drop_duplicates()
+    if data_type == 'ot':
+        if all(c in df.columns for c in ['ot_date', 'employee_name', 'order_name', 'ot_hours']):
+            df = df.drop_duplicates(subset=['ot_date', 'employee_name', 'order_name', 'ot_hours'], keep='first')
+        else:
+            df = df.drop_duplicates()
+    else:
+        if all(c in df.columns for c in ['date', 'employee_name', 'project_name', 'final_incentive']):
+            df = df.drop_duplicates(subset=['date', 'employee_name', 'project_name', 'final_incentive'], keep='first')
+        else:
+            df = df.drop_duplicates()
     
     date_col = 'ot_date' if data_type == 'ot' else 'date'
     if date_col in df.columns:
