@@ -176,10 +176,13 @@ def render_action_history():
                             display: flex !important; align-items: center !important; justify-content: center !important;
                             height: 100% !important;
                         }
+                        [data-testid="stMain"] .custom-toolbar-wrapper button,
+                        [data-testid="stMain"] .custom-toolbar-wrapper .stButton button,
+                        [data-testid="stMain"] .custom-toolbar-wrapper .stDownloadButton button,
                         .custom-toolbar-wrapper button {
                             background-color: transparent !important; color: #0284c7 !important;
                             border: none !important; box-shadow: none !important; border-radius: 50% !important;
-                            width: 32px !important; height: 32px !important; min-height: 32px !important;
+                            width: 32px !important; height: 32px !important; min-width: 32px !important; min-height: 32px !important; max-width: 32px !important; max-height: 32px !important;
                             margin: 0 !important; padding: 0 !important;
                             display: flex !important; justify-content: center !important; align-items: center !important;
                             transition: all 0.2s !important;
@@ -197,9 +200,13 @@ def render_action_history():
                         .custom-toolbar-wrapper .toolbar-hidden-container {
                             display: none !important; height: 0 !important; margin: 0 !important; padding: 0 !important;
                         }
+                        [data-testid="stMain"] .custom-toolbar-wrapper div.stButton,
+                        [data-testid="stMain"] .custom-toolbar-wrapper div[data-testid="stButton"],
+                        [data-testid="stMain"] .custom-toolbar-wrapper div.stDownloadButton,
+                        [data-testid="stMain"] .custom-toolbar-wrapper div[data-testid="stDownloadButton"],
                         .custom-toolbar-wrapper div.stButton,
                         .custom-toolbar-wrapper div[data-testid="stButton"] {
-                            margin: 0 !important; padding: 0 !important; height: 32px !important;
+                            margin: 0 !important; padding: 0 !important; height: 32px !important; width: 32px !important; min-width: 32px !important;
                             display: flex !important; align-items: center !important; justify-content: center !important;
                         }
                     `;
