@@ -205,6 +205,11 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
             with st.popover(t(f":material/delete: Quản lý Lịch sử ({len(options)})", f":material/delete: 履歴管理 ({len(options)})"), use_container_width=False):
                 st.markdown("""
                 <style>
+                /* Elevate the z-index of all baseweb popovers that contain a listbox (multiselect/selectbox dropdowns) */
+                div[data-baseweb="popover"] {
+                    z-index: 9999999 !important;
+                }
+                /* Optional: ensure the popover body doesn't clip if rendering inside */
                 div[data-testid="stPopoverBody"] {
                     overflow: visible !important;
                 }
