@@ -199,6 +199,24 @@ st.markdown("""
         display: none !important;
     }
     
+    /* Eliminate awkward top gap between dialog title bar and dialog body content */
+    [role="dialog"] > div > div:first-child,
+    [data-testid="stDialog"] > div > div:first-child,
+    [role="dialog"] [data-testid="stDialogHeader"],
+    [data-testid="stDialog"] [data-testid="stDialogHeader"] {
+        padding-bottom: 0.25rem !important;
+        margin-bottom: 0px !important;
+    }
+    [role="dialog"] > div > div:nth-child(2),
+    [data-testid="stDialog"] > div > div:nth-child(2),
+    [role="dialog"] [data-testid="stDialogBody"],
+    [data-testid="stDialog"] [data-testid="stDialogBody"],
+    [role="dialog"] div[data-testid="stVerticalBlock"],
+    [data-testid="stDialog"] div[data-testid="stVerticalBlock"] {
+        padding-top: 0.25rem !important;
+        margin-top: 0px !important;
+    }
+
     /* Enable blue horizontal underline bar under small headings (h3) inside dialogs like main UI */
     [role="dialog"] h3,
     [data-testid="stDialog"] h3 {
@@ -207,10 +225,16 @@ st.markdown("""
         font-weight: bold !important;
         position: relative !important;
         padding-bottom: 8px !important;
-        margin-top: 24px !important;
-        margin-bottom: 14px !important;
+        margin-top: 20px !important;
+        margin-bottom: 12px !important;
         width: fit-content !important;
         font-size: 18px !important;
+    }
+    [role="dialog"] [data-testid="stVerticalBlock"] > div:first-child h3,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] > div:first-child h3,
+    [role="dialog"] h3:first-of-type,
+    [data-testid="stDialog"] h3:first-of-type {
+        margin-top: 0px !important;
     }
     [role="dialog"] h3::after,
     [data-testid="stDialog"] h3::after {
@@ -236,7 +260,7 @@ st.markdown("""
         font-weight: 700 !important;
         font-size: 22px !important;
         margin-top: 0px !important;
-        margin-bottom: 25px !important;
+        margin-bottom: 5px !important;
         width: 100% !important;
         box-sizing: border-box !important;
         display: block !important;
