@@ -19,8 +19,8 @@ def render_action_history():
             h3.history-card-title::after {
                 width: 50px !important;
             }
-                        .stButton button, [data-testid="stButton"] button,
-            .stDownloadButton button, [data-testid="stDownloadButton"] button {
+                        [data-testid="stMain"] .stButton button, [data-testid="stMain"] [data-testid="stButton"] button,
+            [data-testid="stMain"] .stDownloadButton button, [data-testid="stMain"] [data-testid="stDownloadButton"] button {
                 width: 100% !important;
                 min-width: 100% !important;
                 height: 42px !important;

@@ -189,7 +189,7 @@ st.markdown("""
     
     /* Buttons */
 
-    .stButton button {
+    [data-testid="stMain"] .stButton button {
         border-radius: 30px !important;
         font-weight: bold;
         text-transform: uppercase;
@@ -200,14 +200,14 @@ st.markdown("""
         color: #00B0F0 !important;
         transition: all 0.3s ease !important;
     }
-    .stButton button:hover {
+    [data-testid="stMain"] .stButton button:hover {
         background-color: #00B0F0 !important;
         color: white !important;
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3);
     }
 
     /* Download Buttons */
-    [data-testid="stDownloadButton"] button {
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button {
         border-radius: 30px !important;
         font-weight: bold;
         text-transform: uppercase;
@@ -218,7 +218,7 @@ st.markdown("""
         color: #ffffff !important;
         transition: all 0.3s ease !important;
     }
-    [data-testid="stDownloadButton"] button:hover {
+    [data-testid="stMain"] [data-testid="stDownloadButton"] button:hover {
         background-color: #008CBA !important;
         border-color: #008CBA !important;
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.4);
@@ -727,7 +727,7 @@ else:
             background-color: #f4f7f9 !important;
         }
     
-    .stButton button {
+    [data-testid="stMain"] .stButton button {
             background-color: #ffffff !important;
         }
         /* Make Lang toggle background white in main app */
@@ -754,7 +754,7 @@ else:
                 background-size: contain;
                 background-repeat: no-repeat;
                 background-position: center;
-                height: 80px;
+                height: 80px !important; min-height: 80px !important; width: 100% !important;
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
