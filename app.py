@@ -540,42 +540,42 @@ from components.welcome import render_welcome
 from components.action_history_ui import render_action_history
 from logic.i18n import t
 
-@st.dialog(t("当 Hﾆｯ盻哢G D蘯ｪN S盻ｬ D盻､NG", "当 使い方ガイド))
+@st.dialog(t("✨ HƯỚNG DẪN SỬ DỤNG", "✨ 使い方ガイド"))
 def show_user_guide():
         st.markdown(t("""
 ### 1. OVERTIME
-- **D盻ｯ li盻㎡ d盻ｱ ﾃ｡n**: Nh蘯ｭp th盻ｧ cﾃｴng th盻拱 gian tﾄハg ca cho t盻ｫng d盻ｱ ﾃ｡n. D盻ｯ li盻㎡ nhﾃ｢n s盻ｱ vﾃ lﾆｰﾆ｡ng ﾄ柁ｰ盻｣c t盻ｱ ﾄ黛ｻ冢g ﾄ黛ｻ渡g b盻・t盻ｫ Cﾃi ﾄ黛ｺｷt chung.
-- **Nh蘯ｭp hﾃng lo蘯｡t (Excel)**: Upload tr盻ｱc ti蘯ｿp file d盻ｯ li盻㎡ ﾄ黛ｻ・h盻・th盻創g t盻ｱ ﾄ黛ｻ冢g nh蘯ｭn di盻㌻ vﾃ tﾃｭnh toﾃ｡n th盻拱 gian tﾄハg ca hﾃng lo蘯｡t c盻ｱc k盻ｳ nhanh chﾃｳng.
+- **Dữ liệu dự án**: Nhập thủ công thời gian tăng ca cho từng dự án. Dữ liệu nhân sự và lương được tự động đồng bộ từ Cài đặt chung.
+- **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu, hệ thống tự động nhận diện và tính toán thời gian tăng ca hàng loạt cực kỳ nhanh chóng.
 
 ### 2. INCENTIVE
-- T盻ｱ ﾄ黛ｻ冢g trﾃｭch xu蘯･t vﾃ g盻｣i ﾃｽ d盻ｯ li盻㎡ t盻ｫ cﾃ｡c d盻ｱ ﾃ｡n ﾄ妥｣ th盻ｱc hi盻㌻.
-- ﾄ静｡nh giﾃ｡ hi盻㎡ su蘯･t lﾃm vi盻㌘ d盻ｱa trﾃｪn s盻・gi盻・lﾃm vi盻㌘ th盻ｱc t蘯ｿ so v盻嬖 k蘯ｿ ho蘯｡ch, t盻ｫ ﾄ妥ｳ quy ﾄ黛ｻ品 chﾃｭnh xﾃ｡c ra m盻ｩc ti盻］ thﾆｰ盻殤g (Incentive).
-- **ﾆｯ盻嫩 tﾃｭnh Incentive**: Kﾃｩo thanh trﾆｰ盻｣t ﾄ黛ｻ・gi蘯｣ l蘯ｭp vﾃ xem trﾆｰ盻嫩 m盻ｩc ti盻］ thﾆｰ盻殤g thay ﾄ黛ｻ品 th蘯ｿ nﾃo khi Gi盻・cﾃｴng th盻ｱc t蘯ｿ thay ﾄ黛ｻ品.
+- Tự động trích xuất và gợi ý dữ liệu từ các dự án đã thực hiện.
+- Đánh giá hiệu suất làm việc dựa trên số giờ làm việc thực tế so với kế hoạch, từ đó quy đổi chính xác ra mức tiền thưởng (Incentive).
+- **Dự tính Incentive**: Kéo thanh trượt để giả lập và xem trước mức tiền thưởng thay đổi thế nào khi Giờ công thực tế thay đổi.
 
 ### 3. LỊCH SỬ THAO TÁC
-- Cﾃ｡c file Excel d盻ｯ li盻㎡ ﾄ妥｣ xu蘯･t ra s蘯ｽ ﾄ柁ｰ盻｣c t盻ｱ ﾄ黛ｻ冢g lﾆｰu tr盻ｯ an toﾃn.
-- D盻・dﾃng xem l蘯｡i, t蘯｣i xu盻創g file cﾅｩ ho蘯ｷc xﾃｳa b盻・d盻ｯ li盻㎡ th盻ｫa.
+- Các file Excel dữ liệu đã xuất ra sẽ được tự động lưu trữ an toàn.
+- Dễ dàng xem lại, tải xuống file cũ hoặc xóa bỏ dữ liệu thừa.
 
-### 4. CﾃI ﾄ雪ｺｶT CHUNG
-- Thi蘯ｿt l蘯ｭp thﾃｴng tin nhﾃ｢n s盻ｱ, m盻ｩc lﾆｰﾆ｡ng cﾆ｡ b蘯｣n (Gross) vﾃ cﾃ｡c c蘯･u hﾃｬnh h盻・th盻創g.
-- **Lﾆｰu ﾃｽ**: Vui lﾃｲng thi蘯ｿt l蘯ｭp d盻ｯ li盻㎡ t蘯｡i ﾄ妥｢y trﾆｰ盻嫩 ﾄ黛ｻ・h盻・th盻創g cﾃｳ cﾆ｡ s盻・tﾃｭnh toﾃ｡n chﾃｭnh xﾃ｡c nh蘯･t.
+### 4. CÀI ĐẶT CHUNG
+- Thiết lập thông tin nhân sự, mức lương cơ bản (Gross) và các cấu hình hệ thống.
+- **Lưu ý**: Vui lòng thiết lập dữ liệu tại đây trước để hệ thống có cơ sở tính toán chính xác nhất.
     """, """
 ### 1. 残業代計算(OVERTIME)
-- **プロジェクト*: 蜷・・繝ｭ繧ｸ繧ｧ繧ｯ繝医・谿区･ｭ譎る俣繧呈焔蜍輔〒蜈･蜉帙＠縺ｾ縺吶ゅせ繧ｿ繝・ヵ繝・・繧ｿ繧・ｵｦ荳取ュ蝣ｱ縺ｯ荳闊ｬ險ｭ螳壹°繧芽・蜍慕噪縺ｫ蜷梧悄縺輔ｌ縺ｾ縺吶・
-- **荳諡ｬ蜈･蜉・(Excel)**: Excel繝・・繧ｿ繧偵い繝・・繝ｭ繝ｼ繝峨☆繧九□縺代〒縲√す繧ｹ繝・Β縺瑚・蜍慕噪縺ｫ隱崎ｭ倥＠縲√せ繝槭・繝医°縺､霑・溘↓荳諡ｬ險育ｮ励＠縺ｾ縺吶・
+- **プロジェクト**: 各プロジェクトの残業時間を手動で入力します。スタッフデータや給与情報は一般設定から自動的に同期されます。
+- **一括入力(Excel)**: Excelデータをアップロードするだけで、システムが自動的に認識し、スマートかつ迅速に一括計算します。
 
 ### 2. インセンティブ(INCENTIVE)
-- 螳溯｡梧ｸ医∩縺ｮ繝励Ο繧ｸ繧ｧ繧ｯ繝医°繧峨ョ繝ｼ繧ｿ繧定・蜍慕噪縺ｫ謚ｽ蜃ｺ繝ｻ謠先｡医＠縺ｾ縺吶・
-- 險育判蟾･謨ｰ縺ｨ螳溽ｸｾ蟾･謨ｰ縺ｮ蟾ｮ縺ｫ蝓ｺ縺･縺・※繝代ヵ繧ｩ繝ｼ繝槭Φ繧ｹ繧定ｩ穂ｾ｡縺励∫佐蠕励う繝ｳ繧ｻ繝ｳ繝・ぅ繝悶ｒ豁｣遒ｺ縺ｫ邂怜・縺励∪縺吶・
-- **莠域Φインセンティブ*: 繧ｹ繝ｩ繧､繝繝ｼ繧貞虚縺九＠縺ｦ縲∝ｮ溷ｷ･謨ｰ縺ｮ螟牙喧縺ｫ莨ｴ縺・佐蠕励う繝ｳ繧ｻ繝ｳ繝・ぅ繝悶・螟牙虚繧偵す繝溘Η繝ｬ繝ｼ繧ｷ繝ｧ繝ｳ縺ｧ縺阪∪縺吶・
+- 実行済みのプロジェクトからデータを自動的に抽出・提案します。
+- 計画工数と実績工数の差に基づいてパフォーマンスを評価し、獲得インセンティブを正確に算出します。
+- **予想インセンティブ**: スライダーを動かして、実工数の変化に伴う獲得インセンティブの変動をシミュレーションできます。
 
 ### 3. 操作履歴
-- 蜃ｺ蜉帙＆繧後◆縺吶∋縺ｦ縺ｮExcel繝輔ぃ繧､繝ｫ縺ｯ閾ｪ蜍慕噪縺九▽螳牙・縺ｫ菫晏ｭ倥＆繧後∪縺吶・
-- 縺・▽縺ｧ繧る℃蜴ｻ縺ｮ繝輔ぃ繧､繝ｫ縺ｮ遒ｺ隱阪∝・繝繧ｦ繝ｳ繝ｭ繝ｼ繝峨∽ｸ崎ｦ√↑繝輔ぃ繧､繝ｫ縺ｮ蜑企勁縺悟庄閭ｽ縺ｧ縺吶・
+- 出力されたすべてのExcelファイルは自動的かつ安全に保存されます。
+- いつでも過去のファイルの確認、再ダウンロード、不要なファイルの削除が可能です。
 
-### 4. 荳闊ｬ險ｭ螳・
-- 繧ｹ繧ｿ繝・ヵ諠・ｱ縲∝渕譛ｬ邨ｦ・・ross・峨√♀繧医・繧ｷ繧ｹ繝・Β縺ｮ蝓ｺ譛ｬ讒区・繧定ｨｭ螳壹＠縺ｾ縺吶・
-- **豕ｨ諢・*: 莉悶・繧ｻ繧ｯ繧ｷ繝ｧ繝ｳ縺ｧ豁｣遒ｺ縺ｪ險育ｮ励ｒ陦後≧縺溘ａ縺ｫ縲√∪縺壹％縺薙〒蛻晄悄繝・・繧ｿ繧定ｨｭ螳壹＠縺ｦ縺上□縺輔＞縲・
+### 4. 一般設定
+- スタッフ情報、基本給（Gross）、およびシステムの基本構成を設定します。
+- **注意**: 他のセクションで正確な計算を行うために、まずここで初期データを設定してください。
     """))
 
 # --- Creative Language Switcher (Always visible) ---
@@ -744,7 +744,7 @@ else:
                     st.rerun()
             st.markdown("<br>", unsafe_allow_html=True)
         else:
-            if st.button(t("QUAY L蘯I TRANG CH盻ｦ", "繝帙・繝縺ｫ謌ｻ繧・), use_container_width=True):
+            if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
                 st.session_state['current_page'] = 'welcome'
                 st.session_state['show_page_transition'] = True
                 st.rerun()
