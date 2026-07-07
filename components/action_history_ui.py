@@ -180,14 +180,17 @@ def render_action_history():
                         [data-testid="stMain"] .custom-toolbar-wrapper .stButton button,
                         [data-testid="stMain"] .custom-toolbar-wrapper .stDownloadButton button,
                         .custom-toolbar-wrapper button {
-                            background-color: transparent !important; color: #0284c7 !important;
-                            border: none !important; box-shadow: none !important; border-radius: 50% !important;
+                            background-color: #ffffff !important; color: #00B0F0 !important;
+                            border: 1.5px solid #00B0F0 !important; box-shadow: none !important; border-radius: 50% !important;
                             width: 32px !important; height: 32px !important; min-width: 32px !important; min-height: 32px !important; max-width: 32px !important; max-height: 32px !important;
                             margin: 0 !important; padding: 0 !important;
                             display: flex !important; justify-content: center !important; align-items: center !important;
                             transition: all 0.2s !important;
                         }
-                        .custom-toolbar-wrapper button:hover { background-color: #ffffff !important; }
+                        .custom-toolbar-wrapper button:hover,
+                        [data-testid="stMain"] .custom-toolbar-wrapper button:hover { 
+                            background-color: #00B0F0 !important; color: #ffffff !important; border-color: #00B0F0 !important;
+                        }
                         .custom-toolbar-wrapper button p,
                         .custom-toolbar-wrapper button span,
                         .custom-toolbar-wrapper button div { display: none !important; }
@@ -268,19 +271,29 @@ def render_action_history():
                         }
                         wrapper.style.setProperty('background-color', infoBg, 'important');
                         
-                        let leftPos = 10;
-                        const blockContainer = parentDoc.querySelector('.block-container') || parentDoc.querySelector('div[data-testid="stAppViewBlockContainer"]');
-                        const sidebarEdge = blockContainer ? blockContainer.getBoundingClientRect().left : 0; 
-                        const whiteCard = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
-                        if (whiteCard) {
-                            const whiteCardEdge = whiteCard.getBoundingClientRect().left;
-                            leftPos = whiteCardEdge - 56;
-                            if (leftPos < sidebarEdge + 5) {
-                                leftPos = sidebarEdge + (whiteCardEdge - sidebarEdge) / 2 - 22;
+                        function updateLeftPos() {
+                            let leftPos = 10;
+                            const blockContainer = parentDoc.querySelector('.block-container') || parentDoc.querySelector('div[data-testid="stAppViewBlockContainer"]');
+                            const sidebarEdge = blockContainer ? blockContainer.getBoundingClientRect().left : 0; 
+                            const whiteCard = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
+                            if (whiteCard) {
+                                const whiteCardEdge = whiteCard.getBoundingClientRect().left;
+                                leftPos = whiteCardEdge - 56;
+                                if (leftPos < sidebarEdge + 5) {
+                                    leftPos = sidebarEdge + (whiteCardEdge - sidebarEdge) / 2 - 22;
+                                }
                             }
+                            if (leftPos < sidebarEdge + 2) leftPos = sidebarEdge + 2; 
+                            wrapper.style.setProperty('left', `${leftPos}px`, 'important');
                         }
-                        if (leftPos < sidebarEdge + 2) leftPos = sidebarEdge + 2; 
-                        wrapper.style.setProperty('left', `${leftPos}px`, 'important');
+                        updateLeftPos();
+                        const posInterval = setInterval(() => {
+                            if (!parentDoc.contains(wrapper)) {
+                                clearInterval(posInterval);
+                            } else {
+                                updateLeftPos();
+                            }
+                        }, 50);
 
                         const count = marker.getAttribute('data-count') || '0';
                         let badge = wrapper.querySelector('.selection-badge');
