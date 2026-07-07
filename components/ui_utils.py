@@ -17,74 +17,7 @@ def make_container_white():
     """, unsafe_allow_html=True)
 
 def make_history_cards_white():
-    st.markdown("""
-    <style>
-        .custom-history-card {
-            background-color: #ffffff !important;
-            border: 1px solid #e2e8f0 !important;
-            border-radius: 10px !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
-        }
-        .custom-history-card.has-timeline-marker {
-            --timeline-shadow: 0 0 0 4px color-mix(in srgb, var(--timeline-color) 15%, transparent);
-        }
-        .custom-history-card.has-missing-marker {
-            --timeline-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
-        }
-    </style>
-    """, unsafe_allow_html=True)
-    import streamlit.components.v1 as components
-    components.html("""
-    <script>
-        const parent = window.parent.document;
-        
-        function styleCards(container) {
-            let cards = container.querySelectorAll('[data-testid="stVerticalBlockBorderWrapper"]');
-            cards.forEach(card => {
-                if (!card.classList.contains('custom-history-card')) {
-                    card.classList.add('custom-history-card');
-                    
-                    let timelineMarker = card.querySelector('.timeline-marker');
-                    let missingMarker = card.querySelector('.missing-marker');
-                    
-                    if (timelineMarker) {
-                        card.classList.add('has-timeline-marker');
-                        let color = timelineMarker.getAttribute('data-color') || '#00B0F0';
-                        card.style.setProperty('--timeline-color', color);
-                    }
-                    if (missingMarker) {
-                        card.classList.add('has-missing-marker');
-                        card.style.setProperty('--timeline-color', '#e74c3c');
-                    }
-                }
-            });
-        }
-
-        const frames = parent.querySelectorAll('iframe');
-        frames.forEach(frame => {
-            if (frame.contentWindow === window) {
-                let container = frame.closest('[data-testid="stVerticalBlock"]');
-                if (container) {
-                    styleCards(container);
-                    const observer = new parent.MutationObserver((mutations) => {
-                        styleCards(container);
-                    });
-                    observer.observe(container, { childList: true, subtree: true });
-                }
-            }
-        });
-
-        if (window.frameElement) {
-            window.frameElement.style.display = 'none';
-            if (window.frameElement.parentElement) {
-                window.frameElement.parentElement.style.display = 'none';
-                window.frameElement.parentElement.style.height = '0px';
-                window.frameElement.parentElement.style.margin = '0px';
-                window.frameElement.parentElement.style.padding = '0px';
-            }
-        }
-    </script>
-    """, height=0)
+    pass
 
 def make_expander_blue():
     st.markdown("""
