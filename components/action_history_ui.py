@@ -10,15 +10,11 @@ def render_action_history():
         <style>
             .custom-history-card {
                 transition: all 0.2s ease-in-out !important;
-                background-color: #ffffff !important;
-                border: 1px solid #e2e8f0 !important;
-                border-radius: 10px !important;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
             }
             .custom-history-card:hover {
-                box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
-                transform: translateY(-4px) !important;
-                border: 1px solid #3498db !important;
+                box-shadow: 0 6px 16px rgba(0,0,0,0.1) !important;
+                transform: translateY(-2px) !important;
+                border-color: #3498db !important;
             }
             h3.history-card-title::after {
                 width: 50px !important;

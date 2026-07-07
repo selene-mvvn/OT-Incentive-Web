@@ -19,6 +19,20 @@ def make_container_white():
 def make_history_cards_white():
     import streamlit.components.v1 as components
     components.html("""
+    <style>
+        .custom-history-card {
+            background-color: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+        }
+        .custom-history-card.has-timeline-marker {
+            --timeline-shadow: 0 0 0 4px color-mix(in srgb, var(--timeline-color) 15%, transparent);
+        }
+        .custom-history-card.has-missing-marker {
+            --timeline-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
+        }
+    </style>
     <script>
         const parent = window.parent.document;
         
@@ -172,14 +186,13 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
             <div class='marker-history-btn' style='display: none;'></div>
             <style>
                 div.element-container:has(.marker-history-btn) + div.element-container {
-                    margin-top: -20px !important;
+                    margin-top: -15px !important;
                 }
                 div.element-container:has(.marker-history-btn) + div.element-container button {
                     text-transform: none !important;
-                    padding: 2px 10px !important;
+                    padding: 5px 16px !important;
                     min-height: 0px !important;
-                    line-height: 1.2 !important;
-                    font-size: 13px !important;
+                    line-height: 1.4 !important;
                 }
                 div.element-container:has(.marker-history-btn) + div.element-container button p::before {
                     content: "↩";
