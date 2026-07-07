@@ -710,8 +710,7 @@ def show_user_guide():
     [data-testid="stDialog"] h2:first-of-type * {
         color: #ffffff !important;
     }
-    </style>""", unsafe_allow_html=True)
-        st.markdown(t("""
+    </style>""" + t("""
 ### 1. OVERTIME
 - **Dữ liệu dự án**: Nhập thủ công thời gian tăng ca cho từng dự án. Dữ liệu nhân sự và lương được tự động đồng bộ từ Cài đặt chung.
 - **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu, hệ thống tự động nhận diện và tính toán thời gian tăng ca hàng loạt cực kỳ nhanh chóng.
@@ -745,7 +744,7 @@ def show_user_guide():
 ### 4. 一般設定
 - スタッフ情報、基本給（Gross）、およびシステムの基本構成を設定します。
 - **注意**: 他のセクションで正確な計算を行うために、まずここで初期データを設定してください。
-    """))
+    """), unsafe_allow_html=True)
 
 # --- Creative Language Switcher (Always visible) ---
 st.markdown("""
