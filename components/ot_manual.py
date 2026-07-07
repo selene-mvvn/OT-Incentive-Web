@@ -735,7 +735,7 @@ def render_base_data():
             .other-month {{ background: #f1f5f9 !important; color: #94a3b8 !important; }}
             .other-month .day-number {{ color: #94a3b8 !important; }}
             .today {{ background: #f0f9ff !important; }}
-            .today .day-number {{ background: #00B0F0; color: white !important; font-weight: bold; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; display: inline-block; float: right; box-shadow: 0 2px 4px rgba(0, 176, 240, 0.4); margin-bottom: 4px; }}
+            .today .day-number {{ background: #00B0F0; color: white !important; font-weight: bold; border-radius: 50%; width: 22px; height: 22px; line-height: 22px; text-align: center; display: block; margin-left: auto; box-shadow: 0 2px 4px rgba(0, 176, 240, 0.4); margin-bottom: 4px; }}
             .legend-container {{ margin-top: 15px; display: flex; gap: 15px; justify-content: center; font-size: 13px; color: white; font-weight: 500; flex-wrap: wrap; }}
             .legend-item {{ display: flex; align-items: center; gap: 6px; }}
             .legend-color {{ width: 14px; height: 14px; border-radius: 3px; border: 1.5px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.2); }}
