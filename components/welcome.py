@@ -76,6 +76,9 @@ def render_welcome():
             justify-content: center;
         }
         
+        [data-testid="stApp"] [data-testid="stMain"] div.stButton button,
+        [data-testid="stApp"] [data-testid="stMain"] div[data-testid="stButton"] button,
+        [data-testid="stMain"] div.stButton button,
         div.stButton > button {
             background-color: #ffffff !important;
             color: #00B0F0 !important;
@@ -89,9 +92,15 @@ def render_welcome():
             transition: transform 0.3s ease, box-shadow 0.3s ease !important;
         }
         
+        [data-testid="stApp"] [data-testid="stMain"] div.stButton button:hover,
+        [data-testid="stApp"] [data-testid="stMain"] div[data-testid="stButton"] button:hover,
+        [data-testid="stMain"] div.stButton button:hover,
         div.stButton > button:hover {
             transform: translateY(-3px) !important;
             box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
+            background-color: #ffffff !important;
+            color: #0075a0 !important;
+            border: none !important;
         }
         
         div.stButton > button p {

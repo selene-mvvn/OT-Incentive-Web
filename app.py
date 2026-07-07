@@ -127,9 +127,9 @@ st.markdown("""
         box-shadow: none !important;
     }
     
-    [data-testid="stTabs"] div[role="tablist"] button,
-    [data-testid="stTabs"] button[role="tab"],
-    [data-testid="stTabs"] button[data-baseweb="tab"] {
+    [data-testid="stTabs"] div[role="tablist"] > *,
+    [data-testid="stTabs"] [role="tab"],
+    [data-testid="stTabs"] [data-baseweb="tab"] {
         background-color: #ffffff !important;
         border: 1px solid #cbd5e1 !important;
         border-bottom: none !important;
@@ -141,18 +141,19 @@ st.markdown("""
         transition: all 0.2s ease !important;
         margin-bottom: -3px !important;
         height: auto !important;
+        cursor: pointer !important;
     }
     
-    [data-testid="stTabs"] div[role="tablist"] button:hover,
-    [data-testid="stTabs"] button[role="tab"]:hover,
-    [data-testid="stTabs"] button[data-baseweb="tab"]:hover {
+    [data-testid="stTabs"] div[role="tablist"] > *:hover,
+    [data-testid="stTabs"] [role="tab"]:hover,
+    [data-testid="stTabs"] [data-baseweb="tab"]:hover {
         color: #00B0F0 !important;
         background-color: #f1f5f9 !important;
     }
     
-    [data-testid="stTabs"] div[role="tablist"] button[aria-selected="true"],
-    [data-testid="stTabs"] button[role="tab"][aria-selected="true"],
-    [data-testid="stTabs"] button[data-baseweb="tab"][aria-selected="true"] {
+    [data-testid="stTabs"] div[role="tablist"] > *[aria-selected="true"],
+    [data-testid="stTabs"] [role="tab"][aria-selected="true"],
+    [data-testid="stTabs"] [data-baseweb="tab"][aria-selected="true"] {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
         border: 1px solid #00B0F0 !important;
