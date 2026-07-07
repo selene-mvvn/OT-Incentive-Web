@@ -174,8 +174,23 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
         val_to_show = default_value if default_value not in options else ""
         result = st.text_input(label, value=val_to_show, key=f"txt_{key}")
         if len(options) > 0:
+            st.markdown("""
+            <div class='marker-history-btn' style='display: none;'></div>
+            <style>
+                div.element-container:has(.marker-history-btn) + div.element-container button {
+                    text-transform: none !important;
+                }
+                div.element-container:has(.marker-history-btn) + div.element-container button p::before {
+                    content: "↩";
+                    margin-right: 6px;
+                    display: inline-block;
+                    transform: translateY(1px);
+                    font-size: 1.1em;
+                }
+            </style>
+            """, unsafe_allow_html=True)
             st.button(
-                t("↩ Chọn từ lịch sử", "↩ 履歴から選択"), 
+                t("Chọn từ lịch sử", "履歴から選択"), 
                 key=f"back_{key}", 
                 type="secondary",
                 on_click=_switch_to_select,
