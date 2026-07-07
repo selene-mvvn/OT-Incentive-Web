@@ -17,8 +17,7 @@ def make_container_white():
     """, unsafe_allow_html=True)
 
 def make_history_cards_white():
-    import streamlit.components.v1 as components
-    components.html("""
+    st.markdown("""
     <style>
         .custom-history-card {
             background-color: #ffffff !important;
@@ -33,6 +32,9 @@ def make_history_cards_white():
             --timeline-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
         }
     </style>
+    """, unsafe_allow_html=True)
+    import streamlit.components.v1 as components
+    components.html("""
     <script>
         const parent = window.parent.document;
         
