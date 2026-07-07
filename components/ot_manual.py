@@ -647,15 +647,14 @@ def render_base_data():
                 key=editor_key
             )
 
-            if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
+            # Auto-save mechanism
+            if not holidays_df.equals(display_df):
+                _save_df = holidays_df.copy()
                 if st.session_state.get('lang', 'VN') == 'JP':
-                    holidays_df['Lý do'] = holidays_df['Lý do'].apply(lambda x: reverse_holiday_translations.get(str(x).strip(), x))
-                st.session_state['ot_base_data']['holidays_df'] = holidays_df
+                    _save_df['Lý do'] = _save_df['Lý do'].apply(lambda x: reverse_holiday_translations.get(str(x).strip(), x))
+                st.session_state['ot_base_data']['holidays_df'] = _save_df
                 save_base_data(st.session_state['ot_base_data'])
-                st.toast(t("Đã lưu ngày lễ thành công!", "休日を保存しました！"), icon=":material/check_circle:")
-                import time
-                time.sleep(0.5)
-                st.rerun()
+                # No toast here to avoid spamming the user on every keystroke/edit, just silently save
 
         with c2:
             st.markdown("<div style='margin-top: 45px;'></div>", unsafe_allow_html=True)
