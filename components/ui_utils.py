@@ -102,6 +102,19 @@ def make_expander_blue():
                 fill: #ffffff;
                 color: #ffffff;
             }
+            [data-testid="stExpander"]:has(.custom-expander-marker) [data-testid="stExpanderDetails"] {
+                padding-top: 0.5rem !important;
+                padding-bottom: 1rem !important;
+            }
+            [data-testid="stExpander"]:has(.custom-expander-marker) .element-container:has(.custom-expander-marker),
+            [data-testid="stExpander"]:has(.custom-expander-marker) [data-testid="stVerticalBlock"] > div:has(.custom-expander-marker) {
+                position: absolute !important;
+                height: 0 !important;
+                width: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+            }
         </style>
     """, unsafe_allow_html=True)
 
