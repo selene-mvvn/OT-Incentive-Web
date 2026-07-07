@@ -185,18 +185,54 @@ def render_base_data():
         import streamlit.components.v1 as components
         components.html(js_count_up, height=0)
         
-    st.markdown('<div id="marker-main-tabs"></div>', unsafe_allow_html=True)
-    tab1, tab2 = st.tabs(["1. THÔNG TIN CHUNG", "2. NGÀY NGHỈ & LỄ"])
+    tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG", "1. 一般情報"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
     
-    if st.session_state.get('lang', 'vn') == 'jp':
-        st.markdown("""
-        <style>
-        div.element-container:has(#marker-main-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > * { font-size: 0px !important; }
-        div.element-container:has(#marker-main-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > * * { font-size: 0px !important; }
-        div.element-container:has(#marker-main-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > :nth-child(1)::after { content: "1. 一般情報"; font-size: 16px !important; }
-        div.element-container:has(#marker-main-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > :nth-child(2)::after { content: "2. 休日・祭日"; font-size: 16px !important; }
-        </style>
-        """, unsafe_allow_html=True)
+    components.html("""
+    <script>
+        const doc = window.parent.document;
+        setTimeout(() => {
+            const tabsContainers = doc.querySelectorAll('[data-testid="stTabs"]');
+            
+            // Main Tabs
+            if (tabsContainers.length > 0) {
+                const tablist = tabsContainers[0].querySelector('div[role="tablist"]');
+                if (tablist) {
+                    const mainTabs = tablist.children;
+                    Array.from(mainTabs).forEach((tab, index) => {
+                        tab.addEventListener("click", () => {
+                            sessionStorage.setItem("ot_main_tab_idx", index);
+                        });
+                    });
+                    const saved = sessionStorage.getItem("ot_main_tab_idx");
+                    if (saved !== null && saved < mainTabs.length) {
+                        if (mainTabs[saved].getAttribute("aria-selected") !== "true") {
+                            mainTabs[saved].click();
+                        }
+                    }
+                }
+            }
+            
+            // Inner Tabs
+            if (tabsContainers.length > 1) {
+                const tablist = tabsContainers[1].querySelector('div[role="tablist"]');
+                if (tablist) {
+                    const innerTabs = tablist.children;
+                    Array.from(innerTabs).forEach((tab, index) => {
+                        tab.addEventListener("click", () => {
+                            sessionStorage.setItem("ot_inner_tab_idx", index);
+                        });
+                    });
+                    const saved = sessionStorage.getItem("ot_inner_tab_idx");
+                    if (saved !== null && saved < innerTabs.length) {
+                        if (innerTabs[saved].getAttribute("aria-selected") !== "true") {
+                            innerTabs[saved].click();
+                        }
+                    }
+                }
+            }
+        }, 300);
+    </script>
+    """, height=0)
 
     with tab1:
         from logic.employee_data import get_employees_df, save_employees_df
@@ -1068,18 +1104,7 @@ def render_project_data():
                 </div>
             """, unsafe_allow_html=True)
         
-            st.markdown('<div id="marker-inner-tabs"></div>', unsafe_allow_html=True)
-            tab_auto, tab_manual = st.tabs(["🕒 Tự động phân bổ theo Giờ", "✍️ Nhập tay Hệ số"])
-            
-            if st.session_state.get('lang', 'vn') == 'jp':
-                st.markdown("""
-                <style>
-                div.element-container:has(#marker-inner-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > * { font-size: 0px !important; }
-                div.element-container:has(#marker-inner-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > * * { font-size: 0px !important; }
-                div.element-container:has(#marker-inner-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > :nth-child(1)::after { content: "🕒 時間で自動配分"; font-size: 16px !important; }
-                div.element-container:has(#marker-inner-tabs) + div.element-container [data-testid="stTabs"] div[role="tablist"] > :nth-child(2)::after { content: "✍️ 係数手動入力"; font-size: 16px !important; }
-                </style>
-                """, unsafe_allow_html=True)
+            tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
         
             with tab_auto:
                 st.info(t("Hệ thống sẽ tự động phân bổ số giờ vào các mức hệ số dựa trên loại ngày (Ngày đi làm hành chính, Cuối tuần, Ngày lễ).", "システムは日種（平日・週末・祭日）に基づいて自動配分します。"))
