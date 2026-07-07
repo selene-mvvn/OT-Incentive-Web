@@ -197,21 +197,38 @@ st.markdown("""
     
     /* Buttons */
 
-    [data-testid="stMain"] .stButton button {
+    [data-testid="stMain"] .stButton button,
+    div[role="dialog"] .stButton button,
+    div[role="dialog"] div[data-testid="stButton"] button,
+    div[data-testid="stModal"] .stButton button,
+    div[data-testid="stDialog"] .stButton button {
         border-radius: 30px !important;
-        font-weight: bold;
-        text-transform: uppercase;
-        padding: 10px 30px;
+        font-weight: bold !important;
+        text-transform: uppercase !important;
+        padding: 10px 30px !important;
         font-size: 13px !important;
         border: 2px solid #00B0F0 !important;
-        background-color: transparent !important;
+        background-color: #ffffff !important;
         color: #00B0F0 !important;
         transition: all 0.3s ease !important;
     }
-    [data-testid="stMain"] .stButton button:hover {
+    [data-testid="stMain"] .stButton button:hover,
+    div[role="dialog"] .stButton button:hover,
+    div[role="dialog"] div[data-testid="stButton"] button:hover,
+    div[data-testid="stModal"] .stButton button:hover,
+    div[data-testid="stDialog"] .stButton button:hover {
         background-color: #00B0F0 !important;
-        color: white !important;
-        box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3);
+        color: #ffffff !important;
+        border-color: #00B0F0 !important;
+        box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3) !important;
+    }
+    [data-testid="stMain"] .stButton button p,
+    div[role="dialog"] .stButton button p,
+    div[role="dialog"] div[data-testid="stButton"] button p,
+    div[data-testid="stModal"] .stButton button p,
+    div[data-testid="stDialog"] .stButton button p {
+        color: inherit !important;
+        font-weight: bold !important;
     }
 
     /* Download Buttons */
@@ -735,7 +752,11 @@ else:
             background-color: #f4f7f9 !important;
         }
     
-    [data-testid="stMain"] .stButton button {
+    [data-testid="stMain"] .stButton button,
+    div[role="dialog"] .stButton button,
+    div[role="dialog"] div[data-testid="stButton"] button,
+    div[data-testid="stModal"] .stButton button,
+    div[data-testid="stDialog"] .stButton button {
             background-color: #ffffff !important;
         }
         /* Make Lang toggle background white in main app */

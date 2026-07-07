@@ -11,6 +11,37 @@ def show_mini_edit_dialog(data_type, df):
             div[role="dialog"] {{
                 transform: translateY(8vh);
             }}
+            div[role="dialog"] .stButton button,
+            div[role="dialog"] div[data-testid="stButton"] button,
+            div[data-testid="stModal"] .stButton button,
+            div[data-testid="stDialog"] .stButton button {{
+                border-radius: 30px !important;
+                font-weight: bold !important;
+                text-transform: uppercase !important;
+                padding: 10px 30px !important;
+                font-size: 13px !important;
+                border: 2px solid #00B0F0 !important;
+                background-color: #ffffff !important;
+                color: #00B0F0 !important;
+                transition: all 0.3s ease !important;
+            }}
+            div[role="dialog"] .stButton button:hover,
+            div[role="dialog"] div[data-testid="stButton"] button:hover,
+            div[data-testid="stModal"] .stButton button:hover,
+            div[data-testid="stDialog"] .stButton button:hover {{
+                background-color: #00B0F0 !important;
+                color: #ffffff !important;
+                border-color: #00B0F0 !important;
+                box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3) !important;
+                transform: translateY(-2px) !important;
+            }}
+            div[role="dialog"] .stButton button p,
+            div[role="dialog"] div[data-testid="stButton"] button p,
+            div[data-testid="stModal"] .stButton button p,
+            div[data-testid="stDialog"] .stButton button p {{
+                color: inherit !important;
+                font-weight: bold !important;
+            }}
         </style>
         <div style='margin-top: -15px; font-size: 1.35rem; font-weight: 700; padding-bottom: 8px; color: #2c3e50; border-bottom: 3px solid #00B0F0; width: fit-content; margin-bottom: 15px;'>
             {t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集")}
