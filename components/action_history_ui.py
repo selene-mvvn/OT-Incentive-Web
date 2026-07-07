@@ -146,11 +146,12 @@ def render_action_history():
             setTimeout(() => {
                 const parentDoc = window.parent.document;
                 
-                // 1. Inject Global CSS if not exists
-                if (!parentDoc.getElementById('custom-toolbar-style')) {
-                    const style = parentDoc.createElement('style');
-                    style.id = 'custom-toolbar-style';
-                    style.innerHTML = `                        
+                // 1. Inject Global CSS
+                let style = parentDoc.getElementById('custom-toolbar-style');
+                if (style) { style.remove(); }
+                style = parentDoc.createElement('style');
+                style.id = 'custom-toolbar-style';
+                style.innerHTML = `                        
                         .custom-toolbar-wrapper {
                             border-radius: 50px !important;
                             padding: 10px 6px !important;
@@ -213,7 +214,11 @@ def render_action_history():
                             display: flex !important; align-items: center !important; justify-content: center !important;
                         }
                     `;
-                    parentDoc.head.appendChild(style);
+                parentDoc.head.appendChild(style);
+                
+                // Only setup observers if not already set by another iframe instance
+                if (!window.customToolbarObserverSetup) {
+                    window.customToolbarObserverSetup = true;
                     // Setup cleanup logic when the iframe unmounts (e.g., page navigation)
                     const cleanup = () => {
                         parentDoc.querySelectorAll('.custom-toolbar-wrapper').forEach(el => {
@@ -275,12 +280,20 @@ def render_action_history():
                             let leftPos = 10;
                             const blockContainer = parentDoc.querySelector('.block-container') || parentDoc.querySelector('div[data-testid="stAppViewBlockContainer"]');
                             const sidebarEdge = blockContainer ? blockContainer.getBoundingClientRect().left : 0; 
-                            const whiteCard = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
+                            
+                            // Grab the first history card to align precisely with it!
+                            const whiteCard = parentDoc.querySelector('.custom-history-card');
                             if (whiteCard) {
                                 const whiteCardEdge = whiteCard.getBoundingClientRect().left;
                                 leftPos = whiteCardEdge - 56;
                                 if (leftPos < sidebarEdge + 5) {
                                     leftPos = sidebarEdge + (whiteCardEdge - sidebarEdge) / 2 - 22;
+                                }
+                            } else {
+                                // Fallback
+                                const wrapperParent = wrapper.parentElement.closest('[data-testid="stVerticalBlock"]');
+                                if (wrapperParent) {
+                                    leftPos = wrapperParent.getBoundingClientRect().left - 56;
                                 }
                             }
                             if (leftPos < sidebarEdge + 2) leftPos = sidebarEdge + 2; 
