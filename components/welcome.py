@@ -373,7 +373,7 @@ def render_welcome():
     with col1:
         if st.button(t("TÍNH LƯƠNG TĂNG CA", "残業代計算"), key="btn_ot"):
             st.session_state['current_page'] = 'ot_calc'
-            st.session_state['menu_selection'] = t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**")
+            st.session_state['menu_selection'] = t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**")
             st.session_state['ot_menu_expanded'] = True
             st.session_state['show_page_transition'] = True
             st.rerun()
