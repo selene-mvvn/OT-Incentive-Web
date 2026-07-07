@@ -46,8 +46,8 @@ def render_welcome():
         
         .logo-container {
             text-align: center;
-            margin-top: -30px;
-            margin-bottom: 0px;
+            margin-top: -20px;
+            margin-bottom: 50px;
         }
         .logo-container img {
             max-width: 240px;
@@ -61,7 +61,6 @@ def render_welcome():
             line-height: 1.3;
             letter-spacing: 1px;
             margin-bottom: 10px;
-            margin-top: -20px;
         }
         
         .divider {
@@ -116,7 +115,7 @@ def render_welcome():
             color: #ffffff;
             text-align: center;
             font-size: 14px;
-            margin-top: 14vh;
+            margin-top: 9vh;
             line-height: 1.5;
             letter-spacing: 0.5px;
         }
