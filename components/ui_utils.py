@@ -89,12 +89,12 @@ def make_expander_blue():
                 background-color: #00B0F0;
                 color: #ffffff;
                 font-weight: bold;
-                font-size: 18px !important;
+                font-size: 15.5px !important;
                 border-radius: 5px 5px 0 0;
             }
             [data-testid="stExpander"]:has(.custom-expander-marker) summary p,
             [data-testid="stExpander"]:has(.custom-expander-marker) summary span {
-                font-size: 18px !important;
+                font-size: 15.5px !important;
                 color: #ffffff !important;
                 font-weight: bold !important;
             }
