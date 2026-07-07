@@ -177,8 +177,14 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
             st.markdown("""
             <div class='marker-history-btn' style='display: none;'></div>
             <style>
+                div.element-container:has(.marker-history-btn) + div.element-container {
+                    margin-top: -15px !important;
+                }
                 div.element-container:has(.marker-history-btn) + div.element-container button {
                     text-transform: none !important;
+                    padding: 5px 16px !important;
+                    min-height: 0px !important;
+                    line-height: 1.4 !important;
                 }
                 div.element-container:has(.marker-history-btn) + div.element-container button p::before {
                     content: "↩";
