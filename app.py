@@ -179,6 +179,14 @@ st.markdown("""
         background-color: #00B0F0;
     }
     
+    /* Disable global blue line on Streamlit dialog titles and modal headings */
+    [role="dialog"] h1::after,
+    [role="dialog"] h2::after,
+    [role="dialog"] h3::after,
+    [data-testid="stDialogTitle"]::after {
+        display: none !important;
+    }
+    
     /* Buttons */
     .stButton>button {
         border-radius: 30px !important;

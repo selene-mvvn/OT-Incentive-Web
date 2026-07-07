@@ -12,9 +12,9 @@ def show_mini_edit_dialog(data_type, df):
                 transform: translateY(8vh);
             }}
         </style>
-        <h3 style='margin-top: -50px; font-size: 1.25rem; font-weight: 600; padding-bottom: 15px; color: inherit;'>
+        <div style='margin-top: -45px; font-size: 1.35rem; font-weight: 700; padding-bottom: 8px; color: #2c3e50; border-bottom: 3px solid #00B0F0; width: fit-content; margin-bottom: 15px;'>
             {t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集")}
-        </h3>
+        </div>
     """, unsafe_allow_html=True)
     st.caption(t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。"))
     
