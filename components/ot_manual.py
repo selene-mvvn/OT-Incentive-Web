@@ -97,6 +97,35 @@ def render_base_data():
             st.markdown(make_card("group", t("Tổng nhân sự", "総スタッフ数"), emp_count, f"<span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('người', '人')}</span>", True), unsafe_allow_html=True)
         with c_dash2:
             st.markdown(make_card("event_busy", t("Ngày nghỉ lễ", "休日・祭日"), holiday_count, f"<span style='font-size: 15px; color: rgba(255,255,255,0.8); font-weight: normal;'>{t('ngày', '日')}</span>", True), unsafe_allow_html=True)
+            from logic.holiday_utils import get_countdown_info
+            countdown_data = get_countdown_info()
+            if countdown_data:
+                if countdown_data["type"] == "upcoming":
+                    days = countdown_data["days_left"]
+                    msg = t(f"⏳ Còn {days} ngày nữa là nghỉ lễ", f"⏳ 休日まであと{days}日")
+                    bg = "#fff3cd"
+                    color = "#856404"
+                elif countdown_data["type"] == "today_single":
+                    msg = t("🎉 Nghỉ lễ hôm nay", "🎉 本日は休日です")
+                    bg = "#d4edda"
+                    color = "#155724"
+                elif countdown_data["type"] == "during_block":
+                    days = countdown_data["days_left"]
+                    msg = t(f"🏖️ Đang nghỉ - Còn {days} ngày nữa đi làm", f"🏖️ 休暇中 - 出社まで{days}日")
+                    bg = "#e8f4f8"
+                    color = "#0075a0"
+                    
+                st.markdown(f"""
+                <div style="
+                    background: {bg}; color: {color};
+                    font-size: 12px; font-weight: bold; text-align: center;
+                    padding: 4px 10px; border-radius: 20px;
+                    width: fit-content; margin: 10px auto 0 auto;
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                ">
+                    {msg}
+                </div>
+                """, unsafe_allow_html=True)
         with c_dash3:
             st.markdown(make_card("calendar_month", t("Kỳ tính lương", "給与計算期間"), f"<span style='font-size: 16px; white-space: nowrap;'>{fd_disp} - {td_disp}</span>"), unsafe_allow_html=True)
         

@@ -231,6 +231,7 @@ def render_welcome():
     import html
     import random
     import json
+    from logic.holiday_utils import get_countdown_info
     
     if 'daily_quotes_jp' not in st.session_state:
         quotes_jp = [
@@ -271,6 +272,53 @@ def render_welcome():
     lang = st.session_state.get('lang', 'VN')
 
     
+    countdown_data = get_countdown_info()
+    countdown_html = ""
+    if countdown_data:
+        if countdown_data["type"] == "upcoming":
+            days = countdown_data["days_left"]
+            target = countdown_data["target_date"].strftime("%d/%m/%Y")
+            reason = countdown_data["reason"]
+            msg = t(f"Chỉ còn <b>{days} ngày</b> nữa là đến <b>{reason}</b> ({target})! Cố lên nào 🚀", f"<b>{reason}</b> ({target})まであと<b>{days}日</b>！頑張りましょう🚀")
+            bg_color = "rgba(255, 140, 0, 0.15)"
+            border_color = "rgba(255, 140, 0, 0.4)"
+            text_color = "#d35400"
+        elif countdown_data["type"] == "today_single":
+            reason = countdown_data["reason"]
+            msg = t(f"Hôm nay là ngày nghỉ: <b>{reason}</b>! Chúc bạn một ngày nghỉ ngơi vui vẻ 🎉", f"本日は<b>{reason}</b>でお休みです！よい休日を🎉")
+            bg_color = "rgba(46, 204, 113, 0.15)"
+            border_color = "rgba(46, 204, 113, 0.4)"
+            text_color = "#27ae60"
+        elif countdown_data["type"] == "during_block":
+            days = countdown_data["days_left"]
+            target = countdown_data["target_date"].strftime("%d/%m/%Y")
+            reason = countdown_data["reason"]
+            msg = t(f"Đang trong kỳ nghỉ <b>{reason}</b>. Còn <b>{days} ngày</b> nữa là đi làm lại ({target}) 🏖️", f"<b>{reason}</b>の休暇中です。出社まで残り<b>{days}日</b> ({target}) 🏖️")
+            bg_color = "rgba(0, 176, 240, 0.15)"
+            border_color = "rgba(0, 176, 240, 0.4)"
+            text_color = "#0075a0"
+            
+        countdown_html = f'''
+        <div style="position: absolute; top: calc(-13vh + 65px); width: 100%; display: flex; justify-content: center; z-index: 500; pointer-events: none;">
+            <div style="
+                background: {bg_color};
+                border: 1px solid {border_color};
+                backdrop-filter: blur(4px);
+                color: {text_color};
+                padding: 6px 16px;
+                border-radius: 20px;
+                font-size: 0.9rem;
+                font-family: 'Times New Roman', serif;
+                font-weight: 500;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+                display: flex;
+                align-items: center;
+                pointer-events: auto;
+            ">
+                {msg}
+            </div>
+        </div>
+        '''
     clock_html = f"""
     <!DOCTYPE html>
     <html>
@@ -353,6 +401,7 @@ def render_welcome():
             <div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center;">
                 <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 50px; border: none; overflow: hidden; background: transparent;"></iframe>
             </div>
+            {countdown_html}
         </div>
         <div class="info-card">
             <div style="font-size: 0.95rem; line-height: 1.6; color: #555; text-align: justify; font-family: 'Times New Roman', serif; font-style: italic; padding-bottom: 30px;">
