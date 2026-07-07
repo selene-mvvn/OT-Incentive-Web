@@ -45,7 +45,7 @@ def render_action_history():
         make_container_white()
         make_history_cards_white()
         # 1. Search and Filter
-        col_search, col_filter, col_clean, col_clear = st.columns([3, 2, 2, 2])
+        col_search, col_filter, col_clean, col_clear = st.columns([3.2, 1.8, 2.2, 2.2])
         with col_search:
             search_query = st.text_input("🔍 " + t("Tìm kiếm (tên file, mô tả)...", "検索（ファイル名、説明）..."))
         with col_filter:
@@ -60,7 +60,7 @@ def render_action_history():
             type_filter = st.selectbox("📂 " + t("Lọc theo thao tác", "操作で絞り込み"), action_types)
         with col_clean:
             st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-            if st.button("🧹 " + t("Dọn file lỗi", "エラーをクリア"), help=t("Xóa các lịch sử bị mất file gốc", "見つからないファイルを自動削除"), use_container_width=True):
+            if st.button(t(":material/cleaning_services: Dọn file lỗi", ":material/cleaning_services: エラーをクリア"), help=t("Xóa các lịch sử bị mất file gốc", "見つからないファイルを自動削除"), use_container_width=True):
                 cleanup_missing_files()
                 st.rerun()
         with col_clear:
@@ -332,7 +332,7 @@ def render_action_history():
             elif "sửa" in at_vn_lower: dot_color = "#f39c12"
 
             with st.container(border=True):
-                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1], vertical_alignment="center")
+                c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.0, 1.5, 1.5, 1.5], vertical_alignment="center")
                 with c_chk:
                     st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
                 with c_head:
@@ -353,7 +353,7 @@ def render_action_history():
                     if not is_missing:
                         file_bytes = base64.b64decode(file_b64)
                         st.download_button(
-                            label=t("TẢI LẠI", "再DL"),
+                            label=t(":material/download: TẢI LẠI", ":material/download: 再DL"),
                             data=file_bytes,
                             file_name=log.get("original_filename"),
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -364,7 +364,7 @@ def render_action_history():
                     else:
                         st.button("⚠️ " + t("Mất file", "なし"), disabled=True, key=f"dl_{log_id}", help=t("File vật lý không còn tồn tại trên hệ thống", "物理ファイルはシステムに存在しません"), use_container_width=True)
                 with c_del:
-                    if st.button(t("XÓA", "削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
+                    if st.button(t(":material/delete: XÓA", ":material/delete: 削除"), key=f"del_{log_id}", help=t("Xóa mục này", "削除"), use_container_width=True):
                         delete_action_log(log_id)
                         st.rerun()
 
