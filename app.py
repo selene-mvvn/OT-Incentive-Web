@@ -248,30 +248,7 @@ st.markdown("""
         display: block !important;
     }
 
-    /* Style big dialog title with blue frame and white text */
-    [role="dialog"] [data-testid="stDialogTitle"],
-    [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    [role="dialog"] h2:first-of-type,
-    [data-testid="stDialog"] h2:first-of-type {
-        background-color: #00B0F0 !important;
-        color: #ffffff !important;
-        padding: 14px 22px !important;
-        border-radius: 8px !important;
-        font-weight: 700 !important;
-        font-size: 22px !important;
-        margin-top: 0px !important;
-        margin-bottom: 5px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        display: block !important;
-        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
-    }
-    [role="dialog"] [data-testid="stDialogTitle"] *,
-    [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
-    [role="dialog"] h2:first-of-type *,
-    [data-testid="stDialog"] h2:first-of-type * {
-        color: #ffffff !important;
-    }
+    /* Big dialog title CSS moved to show_user_guide to avoid affecting other dialogs */
     
     /* Dialog close button styled as clean circle to stand out against blue banner */
     [role="dialog"] button[aria-label="Close"],
@@ -708,6 +685,32 @@ from logic.i18n import t
 
 @st.dialog(t("✨ HƯỚNG DẪN SỬ DỤNG", "✨ 使い方ガイド"))
 def show_user_guide():
+        st.markdown("""<style>
+    /* Style big dialog title with blue frame and white text specifically for this dialog */
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        padding: 14px 22px !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 22px !important;
+        margin-top: 0px !important;
+        margin-bottom: 5px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    }
+    [role="dialog"] [data-testid="stDialogTitle"] *,
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
+    [role="dialog"] h2:first-of-type *,
+    [data-testid="stDialog"] h2:first-of-type * {
+        color: #ffffff !important;
+    }
+    </style>""", unsafe_allow_html=True)
         st.markdown(t("""
 ### 1. OVERTIME
 - **Dữ liệu dự án**: Nhập thủ công thời gian tăng ca cho từng dự án. Dữ liệu nhân sự và lương được tự động đồng bộ từ Cài đặt chung.
