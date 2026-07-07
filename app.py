@@ -192,12 +192,88 @@ st.markdown("""
         background-color: #00B0F0;
     }
     
-    /* Disable global blue line on Streamlit dialog titles and modal headings */
+    /* Disable global blue line on Streamlit dialog main title, but keep on h3 section headings */
     [role="dialog"] h1::after,
     [role="dialog"] h2::after,
-    [role="dialog"] h3::after,
     [data-testid="stDialogTitle"]::after {
         display: none !important;
+    }
+    
+    /* Enable blue horizontal underline bar under small headings (h3) inside dialogs like main UI */
+    [role="dialog"] h3,
+    [data-testid="stDialog"] h3 {
+        color: #2c3e50 !important;
+        text-transform: uppercase !important;
+        font-weight: bold !important;
+        position: relative !important;
+        padding-bottom: 8px !important;
+        margin-top: 24px !important;
+        margin-bottom: 14px !important;
+        width: fit-content !important;
+        font-size: 18px !important;
+    }
+    [role="dialog"] h3::after,
+    [data-testid="stDialog"] h3::after {
+        content: "" !important;
+        position: absolute !important;
+        left: 0 !important;
+        bottom: 0 !important;
+        height: 3px !important;
+        width: calc(100% - 5px) !important;
+        background-color: #00B0F0 !important;
+        display: block !important;
+    }
+
+    /* Style big dialog title with blue frame and white text */
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        padding: 14px 22px !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 22px !important;
+        margin-top: 0px !important;
+        margin-bottom: 25px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    }
+    [role="dialog"] [data-testid="stDialogTitle"] *,
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
+    [role="dialog"] h2:first-of-type *,
+    [data-testid="stDialog"] h2:first-of-type * {
+        color: #ffffff !important;
+    }
+    
+    /* Dialog close button styled as clean circle to stand out against blue banner */
+    [role="dialog"] button[aria-label="Close"],
+    [data-testid="stDialog"] button[aria-label="Close"],
+    [role="dialog"] [data-testid="stDialogCloseButton"],
+    [data-testid="stDialog"] [data-testid="stDialogCloseButton"] {
+        color: #2c3e50 !important;
+        background-color: #ffffff !important;
+        border: 2px solid #00B0F0 !important;
+        border-radius: 50% !important;
+        width: 32px !important;
+        height: 32px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        top: 12px !important;
+        right: 12px !important;
+        z-index: 9999 !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+    }
+    [role="dialog"] button[aria-label="Close"] svg,
+    [data-testid="stDialog"] button[aria-label="Close"] svg,
+    [role="dialog"] [data-testid="stDialogCloseButton"] svg,
+    [data-testid="stDialog"] [data-testid="stDialogCloseButton"] svg {
+        fill: #00B0F0 !important;
+        color: #00B0F0 !important;
     }
     
     /* Buttons */
