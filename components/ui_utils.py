@@ -203,6 +203,13 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
         # Popover for deleting history
         if len(options) > 0:
             with st.popover(t(f":material/delete: Quản lý Lịch sử ({len(options)})", f":material/delete: 履歴管理 ({len(options)})"), use_container_width=False):
+                st.markdown("""
+                <style>
+                div[data-testid="stPopoverBody"] {
+                    overflow: visible !important;
+                }
+                </style>
+                """, unsafe_allow_html=True)
                 st.caption(t("Chọn nhiều mục để xóa hoặc xóa tất cả.", "複数選択して削除、またはすべて削除。"))
                 
                 items_to_delete = st.multiselect(
