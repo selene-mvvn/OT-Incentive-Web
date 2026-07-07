@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import io
 from logic.ot_calculator import calculate_ot_pay, export_ot_to_excel, get_payroll_period
@@ -65,41 +66,95 @@ def render_ot_excel():
         stepper_placeholder = st.empty()
     
         st.divider()
-        st.markdown("""
-            <style>
-                /* Align emoji icon in perfect vertical balance with text in Batch Import alert boxes */
-                [data-testid="stAlert"] {
-                    display: flex !important;
-                    align-items: center !important;
+        components.html("""
+            <script>
+                function alignExcelAlerts() {
+                    try {
+                        const parentDoc = window.parent.document;
+                        if (!parentDoc) return;
+                        
+                        // 1. Inject static stylesheet to parent head if not exists
+                        if (!parentDoc.getElementById('excel-alert-style')) {
+                            const style = parentDoc.createElement('style');
+                            style.id = 'excel-alert-style';
+                            style.innerHTML = `
+                                [data-testid="stAlert"] {
+                                    display: flex !important;
+                                    align-items: center !important;
+                                }
+                                [data-testid="stAlert"] > div {
+                                    display: flex !important;
+                                    align-items: center !important;
+                                }
+                                [data-testid="stAlert"] > div:first-child:not([data-testid="stAlertContent"]),
+                                [data-testid="stAlert"] [role="img"],
+                                [data-testid="stAlert"] [data-testid*="Emoji"],
+                                [data-testid="stAlert"] [data-testid*="Icon"] {
+                                    display: flex !important;
+                                    align-items: center !important;
+                                    justify-content: center !important;
+                                    padding-top: 0 !important;
+                                    margin-top: 0 !important;
+                                    transform: translateY(-4px) !important;
+                                    font-family: "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", sans-serif !important;
+                                }
+                                [data-testid="stAlert"] [data-testid="stAlertContent"],
+                                [data-testid="stAlert"] [data-testid="stMarkdownContainer"] {
+                                    display: flex !important;
+                                    align-items: center !important;
+                                }
+                                [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p {
+                                    margin: 0 !important;
+                                    padding: 0 !important;
+                                }
+                            `;
+                            parentDoc.head.appendChild(style);
+                        }
+                        
+                        // 2. Direct DOM manipulation with highest specificity inline styles
+                        const alerts = parentDoc.querySelectorAll('[data-testid="stAlert"]');
+                        alerts.forEach(alert => {
+                            alert.style.setProperty('display', 'flex', 'important');
+                            alert.style.setProperty('align-items', 'center', 'important');
+                            
+                            const children = Array.from(alert.children);
+                            if (children.length >= 2) {
+                                const iconDiv = children[0];
+                                const contentDiv = children[1];
+                                
+                                iconDiv.style.setProperty('display', 'flex', 'important');
+                                iconDiv.style.setProperty('align-items', 'center', 'important');
+                                iconDiv.style.setProperty('justify-content', 'center', 'important');
+                                iconDiv.style.setProperty('margin-top', '0', 'important');
+                                iconDiv.style.setProperty('padding-top', '0', 'important');
+                                iconDiv.style.setProperty('transform', 'translateY(-4px)', 'important');
+                                iconDiv.style.setProperty('font-family', '"Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", sans-serif', 'important');
+                                
+                                contentDiv.style.setProperty('display', 'flex', 'important');
+                                contentDiv.style.setProperty('align-items', 'center', 'important');
+                                contentDiv.style.setProperty('margin-top', '0', 'important');
+                                contentDiv.style.setProperty('padding-top', '0', 'important');
+                                
+                                const ps = contentDiv.querySelectorAll('p');
+                                ps.forEach(p => {
+                                    p.style.setProperty('margin', '0', 'important');
+                                    p.style.setProperty('padding', '0', 'important');
+                                });
+                            }
+                        });
+                    } catch(e) {}
                 }
-                [data-testid="stAlert"] > div {
-                    display: flex !important;
-                    align-items: center !important;
+                alignExcelAlerts();
+                setTimeout(alignExcelAlerts, 50);
+                setTimeout(alignExcelAlerts, 200);
+                setTimeout(alignExcelAlerts, 500);
+                setTimeout(alignExcelAlerts, 1000);
+                const observer = new MutationObserver(alignExcelAlerts);
+                if (window.parent && window.parent.document && window.parent.document.body) {
+                    observer.observe(window.parent.document.body, { childList: true, subtree: true });
                 }
-                [data-testid="stAlert"] > div:first-child:not([data-testid="stAlertContent"]),
-                [data-testid="stAlert"] [data-testid*="Icon"],
-                [data-testid="stAlert"] [data-testid*="Emoji"],
-                [data-testid="stAlert"] [role="img"],
-                [data-testid="stAlert"] > span:first-child {
-                    display: flex !important;
-                    align-items: center !important;
-                    justify-content: center !important;
-                    padding-top: 0 !important;
-                    margin-top: 0 !important;
-                    transform: translateY(-3.5px) !important;
-                }
-                [data-testid="stAlert"] [data-testid="stAlertContent"],
-                [data-testid="stAlert"] [data-testid="stMarkdownContainer"] {
-                    display: flex !important;
-                    align-items: center !important;
-                }
-                [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p,
-                [data-testid="stAlert"] [data-testid="stMarkdownContainer"] > p {
-                    margin: 0 !important;
-                    padding: 0 !important;
-                }
-            </style>
-        """, unsafe_allow_html=True)
+            </script>
+        """, height=0, width=0)
     
         from logic.employee_data import get_employees_df
         emp_df = get_employees_df()
