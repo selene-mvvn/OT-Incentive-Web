@@ -110,6 +110,32 @@ def render_ot_excel():
                     animation: bounceCloud 1.5s infinite ease-in-out !important;
                     color: #2980b9 !important;
                 }
+                /* Align emoji icon in perfect vertical balance with text in Batch Import alert boxes */
+                [data-testid="stAlert"] {
+                    display: flex !important;
+                    align-items: center !important;
+                }
+                [data-testid="stAlert"] > div {
+                    display: flex !important;
+                    align-items: center !important;
+                }
+                [data-testid="stAlert"] [data-testid="stAlertIcon"] {
+                    display: flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+                    padding-top: 0 !important;
+                    margin-top: 0 !important;
+                    transform: translateY(-1.5px) !important;
+                }
+                [data-testid="stAlert"] [data-testid="stAlertContent"],
+                [data-testid="stAlert"] [data-testid="stMarkdownContainer"] {
+                    display: flex !important;
+                    align-items: center !important;
+                }
+                [data-testid="stAlert"] [data-testid="stMarkdownContainer"] p {
+                    margin: 0 !important;
+                    padding: 0 !important;
+                }
             </style>
         """, unsafe_allow_html=True)
         uploaded_file = st.file_uploader(t("Upload File Dữ Liệu Tăng Ca", "残業データファイルをアップロード"), type=['xlsx', 'xls'])
