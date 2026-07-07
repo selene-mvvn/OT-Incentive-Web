@@ -16,24 +16,32 @@ if 'pending_toast' in st.session_state:
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0');
+@import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
-    /* Global Font */
-    html, body, [class*="css"], [class*="st-"] {
+    /* Global Font - DO NOT OVERRIDE MATERIAL ICONS */
+    html, body, [class*="css"], [class*="st-"]:not([data-testid*="Icon"]):not([class*="icon"]):not([class*="Icon"]) {
         font-family: 'Times New Roman', serif !important;
     }
     
-    .material-symbols-rounded, .material-symbols-outlined, [class*="material-symbols"] {
-        font-family: 'Material Symbols Rounded' !important;
+    /* COMPREHENSIVE MATERIAL ICON PROTECTION */
+    [data-testid="stIconMaterial"], [data-testid="stIcon"], [data-testid*="Icon"], [class*="Icon"], [class*="icon"], .material-symbols-rounded, .material-symbols-outlined, .material-icons, [class*="material-symbols"], [class*="material-icons"], span[translate="no"] {
+        font-family: 'Material Symbols Rounded', 'Material Symbols Outlined', 'Material Icons', 'Material Icons Round', sans-serif !important;
+        font-weight: normal !important;
+        font-style: normal !important;
+        letter-spacing: normal !important;
+        text-transform: none !important;
+        display: inline-block !important;
+        white-space: nowrap !important;
+        word-wrap: normal !important;
+        direction: ltr !important;
+        -webkit-font-feature-settings: 'liga' !important;
+        -webkit-font-smoothing: antialiased !important;
     }
     
-    /* Ensure sidebar text also gets the font correctly if classes changed */
-    [data-testid="stSidebar"] * {
+    /* Ensure sidebar typography gets Times New Roman without touching icons */
+    [data-testid="stSidebar"] *:not([data-testid*="Icon"]):not([class*="icon"]):not([class*="Icon"]):not([class*="material"]):not(span[translate="no"]) {
         font-family: 'Times New Roman', serif;
-    }
-    
-    [data-testid="stSidebar"] .material-symbols-rounded, 
-    [data-testid="stSidebar"] .material-symbols-outlined {
-        font-family: 'Material Symbols Rounded' !important;
     }
     
     /* Hide default streamlit elements for cleaner look */
@@ -769,10 +777,15 @@ else:
         
         st.markdown("""
         <style>
-            [data-testid="stSidebar"] div[role="radiogroup"] span.material-symbols-rounded {
+            [data-testid="stSidebar"] div[role="radiogroup"] span.material-symbols-rounded,
+            [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stIconMaterial"],
+            [data-testid="stSidebar"] div[role="radiogroup"] [data-testid="stIcon"],
+            [data-testid="stSidebar"] div[role="radiogroup"] [class*="Icon"],
+            [data-testid="stSidebar"] div[role="radiogroup"] span[translate="no"] {
                 font-size: 1.4em !important;
                 vertical-align: middle !important;
-                margin-right: 4px;
+                margin-right: 8px !important;
+                color: inherit !important;
             }
         </style>
         """, unsafe_allow_html=True)
