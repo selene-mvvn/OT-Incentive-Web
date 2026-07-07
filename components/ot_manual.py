@@ -183,6 +183,7 @@ def render_base_data():
         </html>
         """
         
+    tab1, tab2 = st.tabs(["1. THÔNG TIN CHUNG (一般情報)", "2. NGÀY NGHỈ & LỄ (休日・祭日)"])
 
     with tab1:
         from logic.employee_data import get_employees_df, save_employees_df
