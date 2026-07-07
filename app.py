@@ -357,10 +357,12 @@ st.markdown("""
         font-weight: 900 !important;
     }
 
-    /* Hide radio button circles */
-    [data-testid="stSidebar"] div[role="radiogroup"] label div:not(:has(p)):not([data-testid="stMarkdownContainer"]),
-    [data-testid="stSidebar"] div[role="radiogroup"] label span:not(:has(p)):not([data-testid="stMarkdownContainer"]),
-    [data-testid="stSidebar"] div[role="radiogroup"] label input[type="radio"] {
+    /* Hide radio button circles SAFELY without killing material icons */
+    [data-testid="stSidebar"] div[role="radiogroup"] label input[type="radio"],
+    [data-testid="stSidebar"] div[role="radiogroup"] label [data-baseweb="radio"],
+    [data-testid="stSidebar"] div[role="radiogroup"] label [data-testid="stRadioCircle"],
+    [data-testid="stSidebar"] div[role="radiogroup"] label > div:first-child:not([data-testid="stMarkdownContainer"]):not(:has(p)),
+    [data-testid="stSidebar"] div[role="radiogroup"] label > span:first-child:not([data-testid="stMarkdownContainer"]):not(:has(p)):not([data-testid*="Icon"]):not([class*="Icon"]):not([class*="icon"]):not([class*="material"]) {
         display: none !important;
     }
 
@@ -993,28 +995,8 @@ else:
                             
                             let now = new Date();
                             if (currentLang === 'JP') {
-                                // Convert to Japan Standard Time (JST)
-                                const jstStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Tokyo" });
-                                now = new Date(jstStr);
-                            } else {
-                                // Convert to Vietnam Time (ICT)
-                                const vnStr = new Date().toLocaleString("en-US", { timeZone: "Asia/Ho_Chi_Minh" });
-                                now = new Date(vnStr);
-                            }
-                            
-                            const hrs = String(now.getHours()).padStart(2, '0');
-                            const mins = String(now.getMinutes()).padStart(2, '0');
-                            const secs = String(now.getSeconds()).padStart(2, '0');
-                            timeEl.innerText = `${hrs}:${mins}:${secs}`;
-                            
-                            const day = now.getDay();
-                            const date = String(now.getDate()).padStart(2, '0');
-                            const month = now.getMonth();
-                            const year = now.getFullYear();
-                            
-                            if (currentLang === 'JP') {
-                                const daysJP = ['譌･', '譛・, '轣ｫ', '豌ｴ', '譛ｨ', '驥・, '蝨・];
-                                dateEl.innerText = `${year}蟷ｴ${String(month + 1).padStart(2, '0')}譛・{date}譌･ (${daysJP[day]}) • JP`;
+                                const daysJP = ['日', '月', '火', '水', '木', '金', '土'];
+                                dateEl.innerText = `${year}年${String(month + 1).padStart(2, '0')}月${date}日 (${daysJP[day]}) • JP`;
                             } else {
                                 const days = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
                                 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
