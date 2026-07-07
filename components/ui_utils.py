@@ -19,6 +19,20 @@ def make_container_white():
 def make_history_cards_white():
     import streamlit.components.v1 as components
     components.html("""
+    <style>
+        .custom-history-card {
+            background-color: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 10px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+        }
+        .custom-history-card.has-timeline-marker {
+            --timeline-shadow: 0 0 0 4px color-mix(in srgb, var(--timeline-color) 15%, transparent);
+        }
+        .custom-history-card.has-missing-marker {
+            --timeline-shadow: 0 0 0 4px rgba(231, 76, 60, 0.15);
+        }
+    </style>
     <script>
         const parent = window.parent.document;
         
@@ -27,10 +41,6 @@ def make_history_cards_white():
             cards.forEach(card => {
                 if (!card.classList.contains('custom-history-card')) {
                     card.classList.add('custom-history-card');
-                    card.style.backgroundColor = '#ffffff';
-                    card.style.border = '1px solid #e2e8f0';
-                    card.style.borderRadius = '10px';
-                    card.style.boxShadow = '0 2px 4px rgba(0,0,0,0.02)';
                     
                     let timelineMarker = card.querySelector('.timeline-marker');
                     let missingMarker = card.querySelector('.missing-marker');
@@ -39,12 +49,10 @@ def make_history_cards_white():
                         card.classList.add('has-timeline-marker');
                         let color = timelineMarker.getAttribute('data-color') || '#00B0F0';
                         card.style.setProperty('--timeline-color', color);
-                        card.style.setProperty('--timeline-shadow', `0 0 0 4px ${color}26`); // 15% opacity hex
                     }
                     if (missingMarker) {
                         card.classList.add('has-missing-marker');
                         card.style.setProperty('--timeline-color', '#e74c3c');
-                        card.style.setProperty('--timeline-shadow', `0 0 0 4px rgba(231, 76, 60, 0.15)`);
                     }
                 }
             });
