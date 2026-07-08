@@ -831,6 +831,11 @@ with col_lang:
         val = st.session_state['lang_radio']
         st.session_state['lang'] = 'VN' if 'VN' in val else 'JP'
         
+        # Reset filename inputs to force default_value to update according to language
+        for key in ['ot_manual_filename', 'ot_excel_filename', 'incentive_filename_v2']:
+            if key in st.session_state:
+                del st.session_state[key]
+        
     st.radio(
         "LangToggle_123", 
         options=["VN", "JP"], 
