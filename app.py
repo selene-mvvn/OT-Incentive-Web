@@ -850,45 +850,53 @@ with col_lang:
         lang_top_pos = "45px"
         st.markdown(f"""
         <style>
+        /* Hide the anchor container */
         div.element-container:has(.settings-btn-anchor) {{
             display: none !important;
         }}
+        
+        /* Make the parent column a flex row so button and radio sit side-by-side */
+        div[data-testid="stVerticalBlock"]:has(div[aria-label="LangToggle_123"]) {{
+            display: flex !important;
+            flex-direction: row !important;
+            justify-content: flex-end !important;
+            align-items: center !important;
+            gap: 15px !important;
+        }}
+        
+        /* Ensure containers only take needed width */
+        div.element-container:has(div[aria-label="LangToggle_123"]),
         div.element-container:has(.settings-btn-anchor) + div.element-container {{
-            position: fixed !important;
-            top: {lang_top_pos} !important;
-            right: 125px !important;
-            z-index: 9999 !important;
-            width: 40px !important;
-            height: 40px !important;
+            width: auto !important;
+            flex: 0 0 auto !important;
         }}
-        div.element-container:has(.settings-btn-anchor) + div.element-container > div {{
-            width: 100% !important;
-            height: 100% !important;
-        }}
+
+        /* Style the settings button */
         div.element-container:has(.settings-btn-anchor) + div.element-container button {{
-            background-color: rgba(0, 176, 240, 0.08) !important;
+            background-color: #00B0F0 !important;
             border-radius: 50% !important;
             width: 40px !important;
             height: 40px !important;
             min-height: 40px !important;
             padding: 0 !important;
             border: none !important;
-            color: #00B0F0 !important;
+            color: #ffffff !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1) !important;
             transition: all 0.3s ease !important;
         }}
+        
         div.element-container:has(.settings-btn-anchor) + div.element-container button:hover {{
-            background-color: #00B0F0 !important;
-            color: white !important;
-            box-shadow: 0 3px 10px rgba(0, 176, 240, 0.4) !important;
+            background-color: #0099D1 !important;
+            box-shadow: 0 4px 12px rgba(0, 176, 240, 0.5) !important;
             transform: translateY(-2px);
         }}
+        
         div.element-container:has(.settings-btn-anchor) + div.element-container button p {{
             margin: 0 !important;
-            font-size: 20px !important;
+            font-size: 22px !important;
             display: flex !important;
             align-items: center !important;
             justify-content: center !important;
