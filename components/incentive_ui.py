@@ -308,7 +308,9 @@ def render_incentive():
                     st.markdown("---")
                     c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                     with c_name:
-                        export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="incentive_filename_v2")
+                        export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key=f"incentive_filename_v2_{st.session_state.get('lang', 'VN')}")
+                        if not export_name.endswith(".xlsx"):
+                            export_name += ".xlsx"
                     with c_save:
                         st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                         if st.button(t("💾 LƯU DỮ LIỆU", "💾 データ保存"), use_container_width=True, type="primary", key="save_inc_data"):
@@ -316,8 +318,6 @@ def render_incentive():
                             add_records("incentive", st.session_state['incentive_records'])
                             st.session_state['pending_toast'] = t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！")
                             st.rerun()
-                        if not export_name.endswith(".xlsx"):
-                            export_name += ".xlsx"
                             
                     title_for_excel = export_name.replace(".xlsx", "").upper()
                     excel_buffer = generate_incentive_excel(st.session_state['incentive_records'], title=title_for_excel)

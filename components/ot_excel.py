@@ -492,7 +492,7 @@ def render_ot_excel():
             c_name, c_btn = st.columns([6, 4])
             with c_name:
                 default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業集計表_OT.xlsx")
-                export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="ot_excel_filename")
+                export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key=f"ot_excel_filename_{st.session_state.get('lang', 'VN')}")
                 if not export_name.endswith(".xlsx"):
                     export_name += ".xlsx"
                 

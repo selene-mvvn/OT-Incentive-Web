@@ -1272,7 +1272,7 @@ def render_project_data():
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                 with c_name:
                     default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
-                    export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key="ot_manual_filename")
+                    export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key=f"ot_manual_filename_{st.session_state.get('lang', 'VN')}")
                     if not export_name.endswith(".xlsx"):
                         export_name += ".xlsx"
                 with c_save:
