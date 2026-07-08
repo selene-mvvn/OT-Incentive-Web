@@ -845,6 +845,50 @@ with col_lang:
         on_change=update_lang,
         label_visibility="hidden"
     )
+    
+    if st.session_state.get('current_page', 'welcome') == 'welcome':
+        lang_top_pos = "45px"
+        st.markdown(f"""
+        <style>
+        .settings-btn-anchor + div.element-container {{
+            position: fixed !important;
+            top: {lang_top_pos} !important;
+            right: 120px !important;
+            z-index: 9999 !important;
+            width: 40px !important;
+        }}
+        .settings-btn-anchor + div.element-container button {{
+            background-color: rgba(0, 176, 240, 0.08) !important;
+            border-radius: 50% !important;
+            width: 40px !important;
+            height: 40px !important;
+            padding: 0 !important;
+            border: none !important;
+            color: #00B0F0 !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
+            transition: all 0.3s ease !important;
+        }}
+        .settings-btn-anchor + div.element-container button:hover {{
+            background-color: #00B0F0 !important;
+            color: white !important;
+            box-shadow: 0 3px 10px rgba(0, 176, 240, 0.4) !important;
+            transform: translateY(-2px);
+        }}
+        .settings-btn-anchor + div.element-container button p {{
+            margin: 0 !important;
+            font-size: 20px !important;
+        }}
+        </style>
+        <div class='settings-btn-anchor'></div>
+        """, unsafe_allow_html=True)
+        if st.button(":material/settings:", key="welcome_settings_btn", help=t("Cài đặt chung", "一般設定")):
+            st.session_state['current_page'] = 'main'
+            st.session_state['menu_selection'] = t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
+            st.rerun()
+            
     st.markdown("</div>", unsafe_allow_html=True)
 
 
