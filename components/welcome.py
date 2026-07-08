@@ -233,42 +233,83 @@ def render_welcome():
     import json
     from logic.holiday_utils import get_countdown_info
     
-    if 'daily_quotes_jp' not in st.session_state:
-        quotes_jp = [
-            {"text": "継続は力なり", "author": "日本のことわざ"},
-            {"text": "千里の道も一歩から", "author": "老子"},
-            {"text": "石の上にも三年", "author": "日本のことわざ"},
-            {"text": "七転び八起き", "author": "日本のことわざ"},
-            {"text": "初心忘るべからず", "author": "世阿弥"},
-            {"text": "努力は必ず報われる", "author": "王貞治"},
-            {"text": "為せば成る、為さねば成らぬ何事も", "author": "上杉鷹山"}
-        ]
-        selected_jp = random.sample(quotes_jp, 3)
-        st.session_state['daily_quotes_jp'] = {
-            "morning": f"「{selected_jp[0]['text']}」 - {selected_jp[0]['author']}",
-            "afternoon": f"「{selected_jp[1]['text']}」 - {selected_jp[1]['author']}",
-            "evening": f"「{selected_jp[2]['text']}」 - {selected_jp[2]['author']}"
-        }
+    quotes_jp = [
+        "「継続は力なり」 - 日本のことわざ",
+        "「千里の道も一歩から」 - 老子",
+        "「石の上にも三年」 - 日本のことわざ",
+        "「七転び八起き」 - 日本のことわざ",
+        "「初心忘るべからず」 - 世阿弥",
+        "「努力は必ず報われる」 - 王貞治",
+        "「為せば成る、為さねば成らぬ何事も」 - 上杉鷹山",
+        "「動機善なりや、私心なかりしか」 - 稲盛和夫",
+        "「企業は人なり」 - 松下幸之助",
+        "「成功にとらわれるな、成長にとらわれろ」 - 本田宗一郎",
+        "「ちりも積もれば山となる」 - 日本のことわざ",
+        "「一期一会」 - 千利休",
+        "「温故知新」 - 孔子",
+        "「急がば回れ」 - 日本のことわざ",
+        "「雨降って地固まる」 - 日本のことわざ",
+        "「改善に終わりなし」 - トヨタ生産方式",
+        "「目先の利益より信頼を積め」 - 松下幸之助",
+        "「健康管理も重要な仕事の一部です。水分補給と適度な休息を！」 - 健康アドバイス",
+        "「20分おきに遠くを見て、目の疲れを和らげましょう。」 - 健康アドバイス",
+        "「素晴らしい仕事をする唯一の方法は、自分の仕事を愛することだ。」 - スティーブ・ジョブズ",
+        "「失敗を恐れるな、挑戦しないことを恐れよ。」 - 稲盛和夫",
+        "「小さなことを重ねることが、とんでもないところに行くただひとつの道。」 - イチロー",
+        "「明日やろうは馬鹿野郎。今できることに全力を尽くそう。」 - 日本のことわざ",
+        "「品質とは、誰も見ていないときに正しく行うことである。」 - ヘンリー・フォード",
+        "「仕事を楽しむ者は、どんな困難も乗り越えられる。」 - 孔子",
+        "「チームの和が、最大の目標を達成させる。」 - 日本のことわざ",
+        "「準備よし、結果よし。入念な準備が成功の8割を決定する。」 - ビジネス訓",
+        "「整理・整頓・清掃・清潔・躾（5S）は環境づくりの基本。」 - 5S精神",
+        "「今日も一日、笑顔と前向きな心で仕事に取り組みましょう！」 - VIET.MOS",
+        "「ひとつの成功は、毎日の粘り強い努力の結晶である。」 - 稲盛和夫",
+        "「感謝の心が、最大のモチベーションを生む。」 - 経営哲学",
+        "「逆境こそが、人を鍛え大きくする最良の道場である。」 - 稲盛和夫",
+        "「姿勢を正しく、深呼吸をしてリフレッシュしましょう！」 - 健康アドバイス",
+        "「時間こそが最も貴重な資源である。」 - ピーター・ドラッカー",
+        "「お互いを尊重し助け合うことで、チームの力は無限大になる。」 - チームワーク"
+    ]
+    quotes_vn = [
+        "Thành công không đến từ những gì bạn thỉnh thoảng làm, mà từ những gì bạn kiên trì làm mỗi ngày. (Marie Forleo)",
+        "Đừng làm việc chăm chỉ hơn, hãy làm việc thông minh và có chiến lược hơn. (Khuyết danh)",
+        "Cách tốt nhất để dự đoán tương lai là tự mình tạo ra nó. (Peter Drucker)",
+        "Chất lượng là làm đúng mọi việc ngay cả khi không có ai đang nhìn. (Henry Ford)",
+        "Mẹo sức khỏe: Áp dụng quy tắc 20-20-20! Mỗi 20 phút làm việc, hãy nhìn xa 6m trong 20 giây để thư giãn mắt nhé. (Góc sức khỏe)",
+        "Uống đủ nước chưa bạn ơi? Hãy đứng lên vươn vai và uống một cốc nước ấm để nạp lại năng lượng nào! (Góc sức khỏe)",
+        "Tư thế ngồi chuẩn: Giữ lưng thẳng, vai thả lỏng và màn hình ngang tầm mắt để bảo vệ cột sống nhé. (Góc sức khỏe)",
+        "Một ngày làm việc hiệu quả bắt đầu từ việc sắp xếp thứ tự ưu tiên rõ ràng cho từng nhiệm vụ. (Brian Tracy)",
+        "Hợp tác là triết lý dẫn lối cho những thành công vượt trội của một tập thể. (Andrew Carnegie)",
+        "Những điều vĩ đại trong kinh doanh không bao giờ được làm bởi một người, chúng được làm bởi một đội ngũ. (Steve Jobs)",
+        "Hoàn thành tốt hơn là hoàn hảo. Hãy tiếp tục tiến lên từng bước mỗi ngày! (Sheryl Sandberg)",
+        "Sự tập trung là chìa khóa mở ra cánh cửa của năng suất và sáng tạo vượt trội. (Khuyết danh)",
+        "Không có áp lực thì không có kim cương. Mọi thử thách đều là cơ hội rèn giũa bản lĩnh. (Thomas Carlyle)",
+        "Hãy yêu công việc bạn làm, bạn sẽ không phải làm việc ngày nào trong đời. (Khổng Tử)",
+        "Người kiên nhẫn là người có thể xoay chuyển cả thế giới. (Benjamin Franklin)",
+        "Thái độ tích cực là nguồn năng lượng mạnh mẽ nhất để giải quyết mọi bài toán khó. (Khuyết danh)",
+        "Hãy lắng nghe khách hàng bằng cả trái tim và giải quyết bằng cả trí tuệ. (Konosuke Matsushita)",
+        "Nỗ lực thầm lặng hôm nay chính là nền tảng cho sự bứt phá ngoạn mục ngày mai. (Kazuo Inamori)",
+        "Đừng sợ thất bại, hãy sợ việc giậm chân tại chỗ và không dám thử thách mới. (Khuyết danh)",
+        "Thời gian là tài sản quý giá nhất, hãy đầu tư nó vào những giá trị bền vững. (Khuyết danh)",
+        "Code sạch là code được viết bởi một người quan tâm đến từng chi tiết nhỏ. (Robert C. Martin)",
+        "Kiểm tra kỹ lưỡng trước khi bàn giao là dấu ấn của một người chuyên nghiệp. (Khuyết danh)",
+        "Một nụ cười và tinh thần sẵn sàng giúp đỡ đồng nghiệp sẽ làm bừng sáng cả văn phòng. (Góc văn phòng)",
+        "Hãy nghỉ giải lao 5 phút mỗi hai giờ để não bộ tái tạo sự sáng tạo vượt trội. (Góc năng suất)",
+        "Đừng chỉ giải quyết vấn đề, hãy tìm tận gốc rễ để nó không bao giờ lặp lại. (Triết lý Kaizen)",
+        "Cải tiến liên tục 1% mỗi ngày sẽ mang lại sức mạnh tăng trưởng gấp 37 lần sau một năm! (James Clear)",
+        "Uy tín của công ty được xây dựng từ cam kết chất lượng trong từng dự án nhỏ nhất. (Khuyết danh)",
+        "Hãy trân trọng thời gian làm việc cùng nhau, bởi đồng đội chính là sức mạnh lớn nhất. (Khuyết danh)",
+        "Thực tế luôn là người thầy vĩ đại nhất. Hãy luôn giữ tinh thần học hỏi với tâm thế ly nước rỗng. (Khuyết danh)",
+        "Khi bạn cảm thấy mệt mỏi, hãy nhớ lý do vì sao bạn bắt đầu. (Khuyết danh)",
+        "Sự chuẩn bị chu đáo quyết định 80% thắng lợi của mọi kế hoạch. (Khuyết danh)",
+        "Hôm nay là một cơ hội tuyệt vời để tạo nên những bước đột phá mới! (Khuyết danh)",
+        "Hãy giữ cho tinh thần luôn lạc quan, trí tuệ luôn minh mẫn và trái tim luôn nhiệt huyết. (Khuyết danh)",
+        "Chúc bạn một ngày làm việc tràn đầy cảm hứng và gặt hái nhiều thành công tốt đẹp! (VIET.MOS)",
+        "Sự thấu hiểu và sẻ chia giữa các thành viên tạo nên một tập thể vững mạnh không thể phá vỡ. (Khuyết danh)"
+    ]
         
-    if 'daily_quotes_vn' not in st.session_state:
-        quotes_vn = [
-            {"text": "Mẹo nhỏ: Hãy áp dụng quy tắc 20-20-20! Mỗi 20 phút, nhìn xa 6m trong 20 giây để bảo vệ mắt nhé.", "author": "Góc sức khỏe"},
-            {"text": "Đừng làm việc chăm chỉ, hãy làm việc thông minh.", "author": "Khuyết danh"},
-            {"text": "Uống đủ nước chưa? Hãy đứng lên vươn vai và uống một ngụm nước đi nào!", "author": "Góc sức khỏe"},
-            {"text": "Code không có bug chỉ là code chưa được test đủ thôi!", "author": "Châm ngôn Dev"},
-            {"text": "OT là nghệ thuật, người làm OT chắc chắn là người rất kiên nhẫn.", "author": "Góc giải trí"},
-            {"text": "Thành công không đến từ những gì bạn thỉnh thoảng làm, mà từ những gì bạn kiên trì làm mỗi ngày.", "author": "Marie Forleo"},
-            {"text": "Hôm nay là một ngày tuyệt vời để bug tự nhiên biến mất.", "author": "Góc giải trí"}
-        ]
-        selected_vn = random.sample(quotes_vn, 3)
-        st.session_state['daily_quotes_vn'] = {
-            "morning": f"{selected_vn[0]['text']} ({selected_vn[0]['author']})",
-            "afternoon": f"{selected_vn[1]['text']} ({selected_vn[1]['author']})",
-            "evening": f"{selected_vn[2]['text']} ({selected_vn[2]['author']})"
-        }
-        
-    daily_quotes_jp_js = json.dumps(st.session_state['daily_quotes_jp'])
-    daily_quotes_vn_js = json.dumps(st.session_state['daily_quotes_vn'])
+    daily_quotes_jp_js = json.dumps(quotes_jp, ensure_ascii=False)
+    daily_quotes_vn_js = json.dumps(quotes_vn, ensure_ascii=False)
     lang = st.session_state.get('lang', 'VN')
 
     
@@ -356,6 +397,7 @@ def render_welcome():
     }}
     .greeting-text {{
         font-style: italic;
+        transition: opacity 0.4s ease;
     }}
     </style>
     </head>
@@ -369,24 +411,34 @@ def render_welcome():
             const quotes_vn = {daily_quotes_vn_js};
             const lang = "{lang}";
             const offset = lang === "JP" ? 9 : 7;
+            let currentQuoteIdx = -1;
+            function updateQuote() {{
+                const list = lang === "JP" ? quotes_jp : quotes_vn;
+                if (!list || list.length === 0) return;
+                let nextIdx = Math.floor(Math.random() * list.length);
+                if (list.length > 1 && nextIdx === currentQuoteIdx) {{
+                    nextIdx = (nextIdx + 1) % list.length;
+                }}
+                currentQuoteIdx = nextIdx;
+                const el = document.getElementById("greeting");
+                el.style.opacity = 0;
+                setTimeout(() => {{
+                    el.innerText = list[nextIdx];
+                    el.style.opacity = 1;
+                }}, 400);
+            }}
             function updateTime() {{
                 const now = new Date();
                 const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
                 const local = new Date(utc + (3600000 * offset));
                 let h = local.getHours(); let m = local.getMinutes(); let s = local.getSeconds();
-                
-                let quotes = lang === "JP" ? quotes_jp : quotes_vn;
-                let greeting = "";
-                if (h >= 5 && h < 12) greeting = quotes["morning"];
-                else if (h >= 12 && h < 18) greeting = quotes["afternoon"];
-                else greeting = quotes["evening"];
-                
                 h = h < 10 ? "0" + h : h; m = m < 10 ? "0" + m : m; s = s < 10 ? "0" + s : s;
                 document.getElementById("time").innerText = h + ":" + m + ":" + s;
-                document.getElementById("greeting").innerText = greeting;
             }}
             setInterval(updateTime, 1000);
             updateTime();
+            updateQuote();
+            setInterval(updateQuote, 18000);
         </script>
     </body>
     </html>
