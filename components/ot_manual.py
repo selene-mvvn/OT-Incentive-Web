@@ -1124,7 +1124,7 @@ def render_project_data():
                     ct = t("Cuối tuần", "週末")
                     nl = t("Ngày lễ", "祭日")
                     def get_val(h):
-                        return f"➡ {h:.1f} h" if h > 0 else f"{h:.1f} h"
+                        return f"{h:.1f} h" + (" ←" if h > 0 else "")
 
                     with b_col1: st.metric("150%", get_val(auto_buckets[150]), help=f"{nt}: 17h-22h")
                     with b_col2: st.metric("200%", get_val(auto_buckets[200]), help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
