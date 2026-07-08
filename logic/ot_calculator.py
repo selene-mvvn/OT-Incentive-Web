@@ -188,11 +188,11 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
                 end_date_str = period.split(" - ")[1].strip()
                 import datetime
                 dt = datetime.datetime.strptime(end_date_str, "%d/%m/%Y")
-                short_period = dt.strftime("%m/%y")
+                short_period = dt.strftime("%m/%Y")
             elif "/" in period and len(period.split("/")) == 2:
                 # Dạng "06/2026"
                 m, y = period.split("/")
-                short_period = f"{m}/{y[-2:]}"
+                short_period = f"{m}/{y}"
         except Exception:
             pass
                 
