@@ -855,33 +855,20 @@ with col_lang:
             display: none !important;
         }}
         
-        /* Change the column's vertical block to block display so float works */
-        div[data-testid="column"]:has(.settings-btn-anchor) div[data-testid="stVerticalBlock"] {{
-            display: block !important;
-        }}
-        
-        /* Float the language toggle right */
-        div.element-container:has(div[aria-label="LangToggle_123"]) {{
-            display: inline-block !important;
-            float: right !important;
-            width: auto !important;
-            clear: none !important;
-        }}
-
-        /* Float the settings button right, so it sits to the left of the toggle */
+        /* Position the settings button container fixed, next to the language toggle */
         div.element-container:has(.settings-btn-anchor) + div.element-container {{
-            display: inline-block !important;
-            float: right !important;
-            width: auto !important;
-            clear: none !important;
-            margin-right: 15px !important;
-            margin-top: 0px !important;
+            position: fixed !important;
+            top: {lang_top_pos} !important;
+            right: 105px !important;
+            z-index: 9999 !important;
+            width: 40px !important;
+            height: 40px !important;
         }}
         
         /* Ensure the inner button div takes the size */
         div.element-container:has(.settings-btn-anchor) + div.element-container > div {{
-            width: 40px !important;
-            height: 40px !important;
+            width: 100% !important;
+            height: 100% !important;
         }}
 
         /* Style the settings button */
