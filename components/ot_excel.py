@@ -463,12 +463,13 @@ def render_ot_excel():
                             col_cfg[key] = st.column_config.TextColumn(f"{t('Tiền', '金額')} {key}")
                         
                 import copy
+                import math
                 display_records = copy.deepcopy(st.session_state['ot_excel_records'])
                 for r in display_records:
-                    if 'hourly_rate' in r and r['hourly_rate']:
+                    if 'hourly_rate' in r and r['hourly_rate'] is not None and not (isinstance(r['hourly_rate'], float) and math.isnan(r['hourly_rate'])):
                         r['hourly_rate'] = f"{int(r['hourly_rate']):,}"
                     for key in r.keys():
-                        if key.endswith('%') and r[key]:
+                        if key.endswith('%') and r[key] is not None and not (isinstance(r[key], float) and math.isnan(r[key])):
                             r[key] = f"{int(r[key]):,}"
 
                 df_display_records = pd.DataFrame(display_records)
@@ -481,9 +482,9 @@ def render_ot_excel():
                     key="ot_excel_records_editor_v2",
                     column_config=col_cfg
                 )
-                
-                edited_records = edited_df_raw.to_dict('records')
+                edited_records = edited_df_raw.where(pd.notnull(edited_df_raw), None).to_dict('records')
                 # Clean commas and save back
+                import math
                 for r in edited_records:
                     if 'hourly_rate' in r and isinstance(r['hourly_rate'], str):
                         r['hourly_rate'] = int(r['hourly_rate'].replace(',', ''))

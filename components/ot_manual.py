@@ -1280,7 +1280,7 @@ def render_project_data():
                     key="ot_records_editor",
                     column_config=col_cfg
                 )
-                st.session_state['ot_records'] = edited_df.to_dict('records')
+                st.session_state['ot_records'] = edited_df.where(pd.notnull(edited_df), None).to_dict('records')
             
                 st.markdown("---")
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
