@@ -350,6 +350,8 @@ def render_incentive():
                                 del st.session_state['last_incentive_inputs']
                             st.rerun()
                 
+                st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
+                
         if True:
             info_text = t(
                 "Công thức sử dụng:\n- Lợi Nhuận = (Kế hoạch * Đơn giá) - (Thực tế * Charge)\n- Incentive Tiêu Chuẩn = (Đơn giá - Charge) * 0.3\n- Nhận Được = (Kế hoạch - Thực tế) * Incentive Tiêu Chuẩn",

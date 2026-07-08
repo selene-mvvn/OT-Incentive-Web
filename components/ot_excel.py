@@ -541,6 +541,8 @@ def render_ot_excel():
                     on_click=download_and_save_ot_excel,
                     args=("OT Excel (Hàng Loạt)", "残業代一括計算 (Excel)", f"Tính OT hàng loạt ({len(st.session_state['ot_excel_records'])} bản ghi)", f"残業一括計算 ({len(st.session_state['ot_excel_records'])} レコード)", excel_buffer, export_name)
                 )
+            
+            st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì dữ liệu mới được lưu và Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「結果ファイルダウンロード」ボタンを押してください。"))
         
         # Update stepper UI placeholder at the end
         current_step = 1
