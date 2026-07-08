@@ -145,7 +145,7 @@ def render_incentive():
             with col_info2:
                 opt_choose_proj = t("--- Chọn dự án ---", "--- 案件名を選択 ---")
                 proj_opts = [opt_choose_proj] + combined_projects
-                sel_proj = st.selectbox(t(":material/work: Tên dự án", ":material/work: 案件名"), proj_opts)
+                sel_proj = st.selectbox(t(":material/work: Tên dự án", ":material/work: 案件名"), proj_opts, key="inc_sel_proj")
             
                 if sel_proj == opt_choose_proj:
                     project_name = ""
@@ -160,7 +160,7 @@ def render_incentive():
             with col_info3:
                 opt_choose_emp = t("--- Chọn nhân viên ---", "--- 担当者を選択 ---")
                 emp_opts = [opt_choose_emp] + combined_employees
-                sel_emp = st.selectbox(t(":material/person: Người thực hiện", ":material/person: 担当者"), emp_opts)
+                sel_emp = st.selectbox(t(":material/person: Người thực hiện", ":material/person: 担当者"), emp_opts, key="inc_sel_emp")
             
                 if sel_emp == opt_choose_emp:
                     employee_name = ""
@@ -256,11 +256,21 @@ def render_incentive():
                 pass
 
             # Add to List button
-            if st.button(t("➕ Thêm vào Danh sách Chờ xuất", "➕ リストに追加")):
-                if not inputs['project_name'] or not inputs['employee_name']:
+            if st.button(t("➕ Thêm vào Danh sách Chờ xuất", "➕ リストに追加"), key="btn_add_waiting_inc"):
+                latest_inputs = {
+                    "date": record_date.strftime("%d/%m/%Y"),
+                    "project_name": clean_project_name,
+                    "employee_name": employee_name,
+                    "target_hours": target_hours,
+                    "actual_hours": actual_hours,
+                    "unit_price": unit_price,
+                    "company_charge": company_charge
+                }
+                latest_result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
+                if not latest_inputs['project_name'] or not latest_inputs['employee_name']:
                     st.error(t("Vui lòng nhập Tên dự án và Người thực hiện!", "案件名と担当者を入力してください！"))
                 else:
-                    st.session_state['incentive_records'].append({**inputs, **result})
+                    st.session_state['incentive_records'].append({**latest_inputs, **latest_result})
                     st.session_state['pending_toast'] = t("Đã thêm vào danh sách!", "リストに追加しました！")
                     st.rerun()
                 
