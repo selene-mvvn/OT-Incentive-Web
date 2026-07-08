@@ -78,7 +78,9 @@ def show_mini_edit_dialog(data_type, df):
             "order_name": st.column_config.TextColumn(t("Tên dự án", "注文名")),
             "client_order_id": st.column_config.TextColumn(t("Mã đơn khách", "客先注文番号")),
             "hourly_rate": st.column_config.NumberColumn(t("Lương/h", "時給"), format="%,.0f"),
-            "payment_period": st.column_config.TextColumn(t("Kỳ thanh toán", "支払期間"))
+            "payment_period": st.column_config.TextColumn(t("Kỳ thanh toán", "支払期間")),
+            "standard_days": st.column_config.NumberColumn(t("Số ngày chuẩn", "基準日数")),
+            "gross_salary": st.column_config.NumberColumn(t("Lương Gross", "総支給額"))
         }
         for c in df.columns:
             if str(c).endswith("%"):

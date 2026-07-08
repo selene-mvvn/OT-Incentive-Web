@@ -1123,11 +1123,14 @@ def render_project_data():
                     nt = t("Ngày đi làm hành chính", "平日")
                     ct = t("Cuối tuần", "週末")
                     nl = t("Ngày lễ", "祭日")
-                    with b_col1: st.metric("150%", f"{auto_buckets[150]:.1f} h", help=f"{nt}: 17h-22h")
-                    with b_col2: st.metric("200%", f"{auto_buckets[200]:.1f} h", help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
-                    with b_col3: st.metric("270%", f"{auto_buckets[270]:.1f} h", help=f"{ct}: 22h-24h")
-                    with b_col4: st.metric("300%", f"{auto_buckets[300]:.1f} h", help=f"{nl}: 17h-22h")
-                    with b_col5: st.metric("400%", f"{auto_buckets[400]:.1f} h", help=f"{nl}: 08h-17h")
+                    def fmt_h(h):
+                        return f"{h:.1f} h" + (" ◄" if h > 0 else "")
+
+                    with b_col1: st.metric("150%", fmt_h(auto_buckets[150]), help=f"{nt}: 17h-22h")
+                    with b_col2: st.metric("200%", fmt_h(auto_buckets[200]), help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
+                    with b_col3: st.metric("270%", fmt_h(auto_buckets[270]), help=f"{ct}: 22h-24h")
+                    with b_col4: st.metric("300%", fmt_h(auto_buckets[300]), help=f"{nl}: 17h-22h")
+                    with b_col5: st.metric("400%", fmt_h(auto_buckets[400]), help=f"{nl}: 08h-17h")
                 
                     std_days = float(base.get('standard_days', 22.0))
                     std_hrs = float(base.get('standard_hours_per_day', 8.0))
@@ -1253,6 +1256,8 @@ def render_project_data():
                     "ot_date": t("Ngày OT", "残業日"),
                     "ot_hours": t("Tổng Giờ OT", "総残業時間"),
                     "hourly_rate": st.column_config.NumberColumn(t("Số Lương/H (VND)", "時給"), format="%,.0f"),
+                    "standard_days": st.column_config.NumberColumn(t("Số ngày chuẩn", "基準日数")),
+                    "gross_salary": st.column_config.NumberColumn(t("Lương Gross", "総支給額")),
                 }
             
                 for key in df.columns:
