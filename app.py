@@ -855,20 +855,20 @@ with col_lang:
             display: none !important;
         }}
         
-        /* Make the parent column a flex row so button and radio sit side-by-side */
-        div[data-testid="stVerticalBlock"]:has(div[aria-label="LangToggle_123"]) {{
-            display: flex !important;
-            flex-direction: row !important;
-            justify-content: flex-end !important;
-            align-items: center !important;
-            gap: 15px !important;
+        /* Position the settings button container fixed, next to the language toggle */
+        div.element-container:has(.settings-btn-anchor) + div.element-container {{
+            position: fixed !important;
+            top: {lang_top_pos} !important;
+            right: 105px !important;
+            z-index: 9999 !important;
+            width: 40px !important;
+            height: 40px !important;
         }}
         
-        /* Ensure containers only take needed width */
-        div.element-container:has(div[aria-label="LangToggle_123"]),
-        div.element-container:has(.settings-btn-anchor) + div.element-container {{
-            width: auto !important;
-            flex: 0 0 auto !important;
+        /* Ensure the inner button div takes the size */
+        div.element-container:has(.settings-btn-anchor) + div.element-container > div {{
+            width: 100% !important;
+            height: 100% !important;
         }}
 
         /* Style the settings button */
