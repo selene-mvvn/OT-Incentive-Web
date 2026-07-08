@@ -850,14 +850,22 @@ with col_lang:
         lang_top_pos = "45px"
         st.markdown(f"""
         <style>
-        .settings-btn-anchor + div.element-container {{
+        div.element-container:has(.settings-btn-anchor) {
+            display: none !important;
+        }
+        div.element-container:has(.settings-btn-anchor) + div.element-container {
             position: fixed !important;
             top: {lang_top_pos} !important;
-            right: 120px !important;
+            right: 125px !important;
             z-index: 9999 !important;
             width: 40px !important;
-        }}
-        .settings-btn-anchor + div.element-container button {{
+            height: 40px !important;
+        }
+        div.element-container:has(.settings-btn-anchor) + div.element-container > div {
+            width: 100% !important;
+            height: 100% !important;
+        }
+        div.element-container:has(.settings-btn-anchor) + div.element-container button {
             background-color: rgba(0, 176, 240, 0.08) !important;
             border-radius: 50% !important;
             width: 40px !important;
