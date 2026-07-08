@@ -99,6 +99,9 @@ def show_mini_edit_dialog(data_type, df):
             "final_incentive": st.column_config.NumberColumn(t("Nhận được", "受取額"), format="%,.0f"),
             "notes": st.column_config.TextColumn(t("Ghi chú", "備考"))
         }
+        
+    col_cfg["date_obj"] = None
+    col_cfg["date_obj_edit"] = None
 
     edited_df = st.data_editor(edit_df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
     if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
