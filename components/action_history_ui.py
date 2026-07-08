@@ -168,6 +168,7 @@ def render_action_history():
                             box-shadow: none !important;
                             position: fixed !important;
                             top: 50% !important;
+                            left: 30px !important;
                             transform: translateY(-50%) !important;
                             z-index: 999999 !important;
                         }

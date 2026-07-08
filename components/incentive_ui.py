@@ -306,6 +306,7 @@ def render_incentive():
                     default_name = f"{t('Bảng tổng hợp Incentive', 'インセンティブ集計表')}.xlsx"
 
                     st.markdown("---")
+                    st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                     c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                     with c_name:
                         export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key=f"incentive_filename_v2_{st.session_state.get('lang', 'VN')}")
@@ -348,9 +349,8 @@ def render_incentive():
                                 del st.session_state['last_incentive_calc']
                             if 'last_incentive_inputs' in st.session_state:
                                 del st.session_state['last_incentive_inputs']
+                            st.session_state['pending_toast'] = t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！")
                             st.rerun()
-                
-                st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                 
         if True:
             info_text = t(

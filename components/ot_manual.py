@@ -1258,9 +1258,22 @@ def render_project_data():
                 for key in df.columns:
                     if key.endswith("%"):
                         col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="%,.0f")
+                def color_ot_cols(s):
+                    name = str(s.name)
+                    if "150" in name:
+                        return ['background-color: #e8f5e9; color: #2e7d32; font-weight: bold;'] * len(s)
+                    elif "200" in name:
+                        return ['background-color: #fff3e0; color: #ef6c00; font-weight: bold;'] * len(s)
+                    elif "270" in name:
+                        return ['background-color: #ffe0b2; color: #e65100; font-weight: bold;'] * len(s)
+                    elif "300" in name or "400" in name:
+                        return ['background-color: #ffebee; color: #c62828; font-weight: bold;'] * len(s)
+                    return [''] * len(s)
+                
+                styled_df = df.style.apply(color_ot_cols, axis=0)
                         
                 edited_df = st.data_editor(
-                    df,
+                    styled_df,
                     num_rows="dynamic",
                     use_container_width=True,
                     key="ot_records_editor",
@@ -1269,6 +1282,7 @@ def render_project_data():
                 st.session_state['ot_records'] = edited_df.to_dict('records')
             
                 st.markdown("---")
+                st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                 with c_name:
                     default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
@@ -1314,8 +1328,6 @@ def render_project_data():
                         st.session_state['ot_records'] = []
                         st.session_state['pending_toast'] = t("Đã xóa toàn bộ dữ liệu dự án!", "全プロジェクトデータをクリアしました！")
                         st.rerun()
-                
-                st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
             else:
                 st.info(t("Chưa có bản ghi nào. Vui lòng nhập thông tin ở trên và nhấn 'THÊM VÀO BẢNG CHỜ XUẤT'.", "レコードがありません。上記に情報を入力して「追加」を押してください。"))
 
