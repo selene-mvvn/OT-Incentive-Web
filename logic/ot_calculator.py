@@ -261,7 +261,7 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
         # Write Title
         title_format = workbook.add_format({
             'bold': True,
-            'font_size': 16,
+            'font_size': 18,
             'align': 'center',
             'valign': 'vcenter',
             'font_name': 'Times New Roman'
@@ -281,7 +281,7 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
                 'align': 'center',
                 'valign': 'vcenter',
                 'italic': True,
-                'font_size': 11,
+                'font_size': 12,
                 'font_name': 'Times New Roman'
             })
             worksheet.merge_range(1, 0, 1, len(all_columns) - 1, f"{t('Kỳ tính lương', '給与計算期間')}: {general_period}", subtitle_format)
