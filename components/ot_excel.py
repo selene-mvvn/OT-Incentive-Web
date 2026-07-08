@@ -466,23 +466,28 @@ def render_ot_excel():
                 import math
                 display_records = copy.deepcopy(st.session_state['ot_excel_records'])
                 for r in display_records:
-                    if 'hourly_rate' in r and r['hourly_rate'] is not None and not (isinstance(r['hourly_rate'], float) and math.isnan(r['hourly_rate'])):
-                        r['hourly_rate'] = f"{int(r['hourly_rate']):,}"
+                    if 'hourly_rate' in r and pd.notna(r['hourly_rate']) and str(r['hourly_rate']).strip() != '':
+                        try:
+                            r['hourly_rate'] = f"{int(r['hourly_rate']):,}"
+                        except ValueError:
+                            pass
                     for key in r.keys():
-                        if key.endswith('%') and r[key] is not None and not (isinstance(r[key], float) and math.isnan(r[key])):
-                            r[key] = f"{int(r[key]):,}"
+                        if key.endswith('%') and pd.notna(r[key]) and str(r[key]).strip() != '':
+                            try:
+                                r[key] = f"{int(r[key]):,}"
+                            except ValueError:
+                                pass
 
                 df_display_records = pd.DataFrame(display_records)
-                styled_edit_df = df_display_records.style.apply(color_ot_cols, axis=0)
 
                 edited_df_raw = st.data_editor(
-                    styled_edit_df,
+                    df_display_records,
                     num_rows="dynamic",
                     use_container_width=True,
                     key="ot_excel_records_editor_v2",
                     column_config=col_cfg
                 )
-                edited_records = edited_df_raw.where(pd.notnull(edited_df_raw), None).to_dict('records')
+                edited_records = edited_df_raw.to_dict('records')
                 # Clean commas and save back
                 import math
                 for r in edited_records:
