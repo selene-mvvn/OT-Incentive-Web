@@ -340,7 +340,7 @@ def render_welcome():
             text_color = "#0075a0"
             
         countdown_html = f'''
-        <div style="position: absolute; top: calc(-13vh + 65px); width: 100%; display: flex; justify-content: center; z-index: 500; pointer-events: none;">
+        <div style="position: absolute; top: calc(-13vh + 54px); width: 100%; display: flex; justify-content: center; z-index: 500; pointer-events: none;">
             <div style="
                 background: {bg_color};
                 border: 1px solid {border_color};
