@@ -850,26 +850,27 @@ with col_lang:
         lang_top_pos = "45px"
         st.markdown(f"""
         <style>
-        div.element-container:has(.settings-btn-anchor) {
+        div.element-container:has(.settings-btn-anchor) {{
             display: none !important;
-        }
-        div.element-container:has(.settings-btn-anchor) + div.element-container {
+        }}
+        div.element-container:has(.settings-btn-anchor) + div.element-container {{
             position: fixed !important;
             top: {lang_top_pos} !important;
             right: 125px !important;
             z-index: 9999 !important;
             width: 40px !important;
             height: 40px !important;
-        }
-        div.element-container:has(.settings-btn-anchor) + div.element-container > div {
+        }}
+        div.element-container:has(.settings-btn-anchor) + div.element-container > div {{
             width: 100% !important;
             height: 100% !important;
-        }
-        div.element-container:has(.settings-btn-anchor) + div.element-container button {
+        }}
+        div.element-container:has(.settings-btn-anchor) + div.element-container button {{
             background-color: rgba(0, 176, 240, 0.08) !important;
             border-radius: 50% !important;
             width: 40px !important;
             height: 40px !important;
+            min-height: 40px !important;
             padding: 0 !important;
             border: none !important;
             color: #00B0F0 !important;
@@ -879,15 +880,18 @@ with col_lang:
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
             transition: all 0.3s ease !important;
         }}
-        .settings-btn-anchor + div.element-container button:hover {{
+        div.element-container:has(.settings-btn-anchor) + div.element-container button:hover {{
             background-color: #00B0F0 !important;
             color: white !important;
             box-shadow: 0 3px 10px rgba(0, 176, 240, 0.4) !important;
             transform: translateY(-2px);
         }}
-        .settings-btn-anchor + div.element-container button p {{
+        div.element-container:has(.settings-btn-anchor) + div.element-container button p {{
             margin: 0 !important;
             font-size: 20px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }}
         </style>
         <div class='settings-btn-anchor'></div>
