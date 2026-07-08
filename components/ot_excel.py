@@ -471,22 +471,27 @@ def render_ot_excel():
                         if key.endswith('%') and r[key]:
                             r[key] = f"{int(r[key]):,}"
 
-                edited_df = st.data_editor(
-                    display_records,
+                df_display_records = pd.DataFrame(display_records)
+                styled_edit_df = df_display_records.style.apply(color_ot_cols, axis=0)
+
+                edited_df_raw = st.data_editor(
+                    styled_edit_df,
                     num_rows="dynamic",
                     use_container_width=True,
                     key="ot_excel_records_editor_v2",
                     column_config=col_cfg
                 )
+                
+                edited_records = edited_df_raw.to_dict('records')
                 # Clean commas and save back
-                for r in edited_df:
+                for r in edited_records:
                     if 'hourly_rate' in r and isinstance(r['hourly_rate'], str):
                         r['hourly_rate'] = int(r['hourly_rate'].replace(',', ''))
                     for key in r.keys():
                         if key.endswith('%') and isinstance(r[key], str):
                             r[key] = int(r[key].replace(',', ''))
                         
-                st.session_state['ot_excel_records'] = edited_df
+                st.session_state['ot_excel_records'] = edited_records
         
             st.markdown("---")
             c_name, c_btn = st.columns([6, 4])

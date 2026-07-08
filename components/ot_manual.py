@@ -1259,14 +1259,28 @@ def render_project_data():
                     if key.endswith("%"):
                         col_cfg[key] = st.column_config.NumberColumn(f"{t('Tiền', '金額')} {key}", format="%,.0f")
                         
+                def color_ot_cols(s):
+                    name = str(s.name)
+                    if "150" in name:
+                        return ['background-color: #e8f5e9; color: #2e7d32; font-weight: bold; text-align: right;'] * len(s)
+                    elif "200" in name:
+                        return ['background-color: #fff3e0; color: #ef6c00; font-weight: bold; text-align: right;'] * len(s)
+                    elif "270" in name:
+                        return ['background-color: #ffe0b2; color: #e65100; font-weight: bold; text-align: right;'] * len(s)
+                    elif "300" in name or "400" in name:
+                        return ['background-color: #ffebee; color: #c62828; font-weight: bold; text-align: right;'] * len(s)
+                    return [''] * len(s)
+                
+                styled_df = df.style.apply(color_ot_cols, axis=0)
+
                 edited_df = st.data_editor(
-                    st.session_state['ot_records'],
+                    styled_df,
                     num_rows="dynamic",
                     use_container_width=True,
                     key="ot_records_editor",
                     column_config=col_cfg
                 )
-                st.session_state['ot_records'] = edited_df
+                st.session_state['ot_records'] = edited_df.to_dict('records')
             
                 st.markdown("---")
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
