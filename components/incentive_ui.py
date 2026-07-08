@@ -215,8 +215,18 @@ def render_incentive():
             st.rerun()
         
         if 'last_incentive_calc' in st.session_state:
-            result = st.session_state['last_incentive_calc']
-            inputs = st.session_state['last_incentive_inputs']
+            inputs = {
+                "date": record_date.strftime("%d/%m/%Y"),
+                "project_name": clean_project_name,
+                "employee_name": employee_name,
+                "target_hours": target_hours,
+                "actual_hours": actual_hours,
+                "unit_price": unit_price,
+                "company_charge": company_charge
+            }
+            result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
+            st.session_state['last_incentive_calc'] = result
+            st.session_state['last_incentive_inputs'] = inputs
         
             col_title, col_clear = st.columns([7.5, 2.5])
             with col_title:
