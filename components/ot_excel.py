@@ -500,7 +500,7 @@ def render_ot_excel():
                 st.session_state['ot_excel_records'] = edited_records
         
             st.markdown("---")
-            st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「計算結果Excelダウンロード」ボタンを押してください。"))
+            st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「結果ファイルダウンロード」ボタンを押してください。"))
             c_name, c_btn = st.columns([6, 4])
             with c_name:
                 default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業集計表_OT.xlsx")
