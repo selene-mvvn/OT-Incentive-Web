@@ -1010,6 +1010,49 @@ def show_sticky_note_exit_modal():
             st.rerun()
 
 
+@st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
+def show_sticky_note_editor_modal():
+    st.markdown("""<style>
+    /* Ensure blue title banner with white text */
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        padding: 14px 22px !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 20px !important;
+        margin-top: 0px !important;
+        margin-bottom: 5px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    }
+    </style>""", unsafe_allow_html=True)
+
+    st.markdown(f"<div style='font-size: 14px; color: #475569; margin-bottom: 8px;'>{t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')}</div>", unsafe_allow_html=True)
+    note_val = st.text_area(
+        t("Nội dung ghi chú", "メモ内容"),
+        value=st.session_state.get('sidebar_sticky_note', ''),
+        key="txt_popup_sticky_note",
+        placeholder=t("Nhập việc cần nhớ (VD: Kiểm tra OT dự án V050010)...", "メモを入力..."),
+        height=140,
+        label_visibility="collapsed"
+    )
+    st.session_state['sidebar_sticky_note'] = note_val
+
+    col_save, col_exit = st.columns(2, gap="small")
+    with col_save:
+        if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
+            st.rerun()
+    with col_exit:
+        if st.button(t("🚪 Kiểm tra trước khi tắt web", "🚪 終了前チェック"), key="btn_popup_check_exit", use_container_width=True):
+            show_sticky_note_exit_modal()
+
+
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = 'welcome'
 
@@ -1252,31 +1295,31 @@ else:
         )
         menu_selection = st.session_state['menu_selection']
         
+        has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
+        btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
         st.markdown("""
         <style>
-            [data-testid="stSidebar"] [data-testid="stExpander"] {
-                border: 1px solid #e2e8f0;
-                border-radius: 8px;
-                background-color: #ffffff;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-                margin-top: 12px;
-                margin-bottom: 12px;
+            [data-testid="stSidebar"] button[key="btn_open_sticky_note_popup"] {
+                background-color: #f8fafc !important;
+                border: 1px dashed #0284c7 !important;
+                color: #0369a1 !important;
+                font-weight: 600 !important;
+                font-size: 13.5px !important;
+                border-radius: 8px !important;
+                margin-top: 6px !important;
+                padding: 6px 12px !important;
+                min-height: 36px !important;
+                height: 36px !important;
+            }
+            [data-testid="stSidebar"] button[key="btn_open_sticky_note_popup"]:hover {
+                background-color: #e0f2fe !important;
+                border-color: #00a8e8 !important;
+                color: #00a8e8 !important;
             }
         </style>
         """, unsafe_allow_html=True)
-        with st.expander(t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ"), expanded=True):
-            st.markdown(f"<div style='font-size: 11.5px; color: #64748b; margin-bottom: 4px;'>{t('Ghi chú nhanh (lưu tự động):', '自動保存メモ:')}</div>", unsafe_allow_html=True)
-            note_val = st.text_area(
-                t("Ghi chú", "メモ"),
-                value=st.session_state.get('sidebar_sticky_note', ''),
-                key="txt_sidebar_sticky_note",
-                placeholder=t("Nhập việc cần nhớ trước khi thoát...", "メモを入力..."),
-                height=75,
-                label_visibility="collapsed"
-            )
-            st.session_state['sidebar_sticky_note'] = note_val
-            if st.button(t("🚪 Kiểm tra trước khi tắt", "🚪 終了前チェック"), key="btn_check_note_exit", use_container_width=True):
-                show_sticky_note_exit_modal()
+        if st.button(btn_label, key="btn_open_sticky_note_popup", use_container_width=True):
+            show_sticky_note_editor_modal()
         
         lang = st.session_state.get('lang', 'VN')
         st.markdown(f"""
