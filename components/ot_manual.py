@@ -1054,6 +1054,45 @@ def render_project_data():
                 ot_reason = text_input_with_history(t("LÝ DO TĂNG CA", "残業理由"), "reason", "reasons", "")
             
             clean_order_name = pure_name if 'pure_name' in locals() else order_name
+            
+            if clean_order_name:
+                proj_recs = [r for r in st.session_state.get('ot_records', []) if str(r.get('order_name', '')).strip() == str(clean_order_name).strip()]
+                total_proj_hrs = sum(float(r.get('ot_hours', 0)) for r in proj_recs)
+                total_proj_cost = 0
+                for r in proj_recs:
+                    for k, v in r.items():
+                        if str(k).endswith('%'):
+                            try: total_proj_cost += float(v)
+                            except: pass
+                emp_set = len(set(str(r.get('employee_name', '')) for r in proj_recs if r.get('employee_name')))
+                
+                border_color = "#00B0F0"
+                card_title = f"{t('NGÂN SÁCH OT DỰ ÁN ĐANG CHỌN', '選択中の案件OT予算集計')}: {clean_order_name}"
+                st.markdown(f"""
+                    <div style='
+                        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                        border-radius: 8px;
+                        border-left: 5px solid {border_color};
+                        padding: 12px 18px;
+                        margin-top: 15px;
+                        margin-bottom: 5px;
+                        box-shadow: 0 2px 4px rgba(0, 176, 240, 0.1);
+                    '>
+                        <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;'>
+                            <div style='font-size: 14.5px; font-weight: 700; color: #0369a1;'>
+                                <span class="material-symbols-rounded" style="vertical-align: middle; color: #00B0F0; margin-right: 6px; font-size: 20px;">analytics</span>
+                                <span style="vertical-align: middle;">{card_title}</span>
+                            </div>
+                            <div style='display: flex; gap: 18px; font-size: 13.5px; color: #334155; align-items: center;'>
+                                <div><b>{total_proj_hrs:,.1f}</b> {t('giờ OT', 'OT時間')} ({len(proj_recs)} {t('bản ghi', '件')})</div>
+                                <div style='color: #cbd5e1;'>•</div>
+                                <div><b>{emp_set}</b> {t('nhân sự', '名')}</div>
+                                <div style='color: #cbd5e1;'>•</div>
+                                <div>{t('Chi phí ước tính', '予想支給額')}: <b style='color: #0284c7; font-size: 15px;'>{total_proj_cost:,.0f} VNĐ</b></div>
+                            </div>
+                        </div>
+                    </div>
+                """, unsafe_allow_html=True)
         
             st.divider()
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CHI TIẾT TĂNG CA', '残業詳細')}</h3>", unsafe_allow_html=True)
@@ -1063,46 +1102,108 @@ def render_project_data():
             else:
                 st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
             
-            ot_date = st.date_input(t("NGÀY THÁNG TĂNG CA", "残業日"))
-            # Auto-calculate the period based on OT date
-            calculated_period = get_payroll_period(ot_date)
-        
-            is_holiday = False
-            holiday_reason = ""
-            if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
-                try:
-                    holidays_list = pd.to_datetime(base['holidays_df']["Ngày nghỉ"], format='mixed', dayfirst=True).dt.date.tolist()
-                    if ot_date in holidays_list:
-                        is_holiday = True
-                        reason_row = base['holidays_df'][pd.to_datetime(base['holidays_df']["Ngày nghỉ"], format='mixed', dayfirst=True).dt.date == ot_date]
-                        if not reason_row.empty:
-                            holiday_reason = str(reason_row.iloc[0].get("Lý do", ""))
-                except:
-                    pass
-                
-            is_weekend = ot_date.weekday() >= 5
-            if ot_date.weekday() == 5:
-                next_week = ot_date + datetime.timedelta(days=7)
-                if next_week.month != ot_date.month:
-                    is_weekend = False
-
-            if is_holiday:
-                tag_html = f"<span style='background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🏖️ {t('Ngày lễ', '祭日')} ({holiday_reason}) (3.0x - 4.0x)</span>"
-            elif is_weekend:
-                tag_html = f"<span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span>"
-            else:
-                if ot_date.weekday() == 5:
-                    label = t('Ngày đi làm hành chính (Thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')
+            date_mode = st.radio(
+                t("Chế độ nhập ngày OT", "残業日入力モード"),
+                [t("📌 1 ngày đơn lẻ", "📌 単日入力"), t("📅 Nhập liên tục nhiều ngày (Dải ngày)", "📅 期間・連続入力")],
+                horizontal=True,
+                key="ot_date_entry_mode"
+            )
+            
+            target_dates = []
+            if date_mode == t("📅 Nhập liên tục nhiều ngày (Dải ngày)", "📅 期間・連続入力"):
+                date_range_val = st.date_input(
+                    t("CHỌN DẢI NGÀY TĂNG CA (TỪ NGÀY - ĐẾN NGÀY)", "残業期間を選択 (開始日 - 終了日)"),
+                    value=[datetime.date.today(), datetime.date.today() + datetime.timedelta(days=2)],
+                    key="ot_date_range_picker"
+                )
+                if isinstance(date_range_val, (list, tuple)) and len(date_range_val) == 2:
+                    start_date, end_date = date_range_val[0], date_range_val[1]
+                elif isinstance(date_range_val, (list, tuple)) and len(date_range_val) == 1:
+                    start_date = end_date = date_range_val[0]
                 else:
-                    label = t('Ngày đi làm hành chính', '平日')
-                tag_html = f"<span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {label} (1.5x - 2.0x)</span>"
+                    start_date = end_date = date_range_val if isinstance(date_range_val, datetime.date) else datetime.date.today()
+                
+                if start_date > end_date:
+                    start_date, end_date = end_date, start_date
+                
+                raw_range_dates = [start_date + datetime.timedelta(days=i) for i in range((end_date - start_date).days + 1)]
+                
+                only_workdays = st.checkbox(
+                    t("💼 Chỉ tạo cho Ngày đi làm hành chính (Bỏ qua Thứ 7, Chủ nhật & Ngày lễ)", "平日の残業のみ作成（土日・祝日を除外）"),
+                    value=True,
+                    key="ot_range_workdays_only"
+                )
+                
+                holidays_list = []
+                if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
+                    try:
+                        holidays_list = pd.to_datetime(base['holidays_df']["Ngày nghỉ"], format='mixed', dayfirst=True).dt.date.tolist()
+                    except:
+                        pass
+                
+                for d in raw_range_dates:
+                    is_h = (d in holidays_list)
+                    is_w = (d.weekday() >= 5)
+                    if d.weekday() == 5:
+                        next_week = d + datetime.timedelta(days=7)
+                        if next_week.month != d.month:
+                            is_w = False
+                    if only_workdays and (is_h or is_w):
+                        continue
+                    target_dates.append(d)
+                
+                if not target_dates:
+                    target_dates = [start_date]
+                ot_date = start_date
+                calculated_period = get_payroll_period(start_date)
+                
+                date_preview_str = ", ".join(d.strftime("%d/%m") for d in target_dates[:8]) + ("..." if len(target_dates) > 8 else "")
+                st.markdown(f"""
+                    <div style='background-color: #f0f9ff; border: 1px dashed #00B0F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 15px; font-size: 13.5px; color: #0369a1;'>
+                        <b>📅 {t('Sẽ tạo tự động cho', '自動作成対象')}: <span style='color: #00B0F0;'>{len(target_dates)} {t('ngày', '日')}</span></b> ({date_preview_str})
+                    </div>
+                """, unsafe_allow_html=True)
+            else:
+                ot_date = st.date_input(t("NGÀY THÁNG TĂNG CA", "残業日"))
+                target_dates = [ot_date]
+                calculated_period = get_payroll_period(ot_date)
+            
+                is_holiday = False
+                holiday_reason = ""
+                if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
+                    try:
+                        holidays_list = pd.to_datetime(base['holidays_df']["Ngày nghỉ"], format='mixed', dayfirst=True).dt.date.tolist()
+                        if ot_date in holidays_list:
+                            is_holiday = True
+                            reason_row = base['holidays_df'][pd.to_datetime(base['holidays_df']["Ngày nghỉ"], format='mixed', dayfirst=True).dt.date == ot_date]
+                            if not reason_row.empty:
+                                holiday_reason = str(reason_row.iloc[0].get("Lý do", ""))
+                    except:
+                        pass
+                    
+                is_weekend = ot_date.weekday() >= 5
+                if ot_date.weekday() == 5:
+                    next_week = ot_date + datetime.timedelta(days=7)
+                    if next_week.month != ot_date.month:
+                        is_weekend = False
 
-            st.markdown(f"""
-                <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 15px; margin-top: -5px;'>
-                    <span style='color: rgba(49, 51, 63, 0.6); font-size: 14px;'>{t('Thuộc kỳ lương', '給与計算期間')}: <strong>{calculated_period}</strong></span>
-                    {tag_html}
-                </div>
-            """, unsafe_allow_html=True)
+                if is_holiday:
+                    tag_html = f"<span style='background-color: #ffebee; color: #c62828; border: 1px solid #ffcdd2; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🏖️ {t('Ngày lễ', '祭日')} ({holiday_reason}) (3.0x - 4.0x)</span>"
+                elif is_weekend:
+                    tag_html = f"<span style='background-color: #fff8e1; color: #f57f17; border: 1px solid #ffecb3; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>🌴 {t('Cuối tuần', '週末')} (2.0x - 2.7x)</span>"
+                else:
+                    if ot_date.weekday() == 5:
+                        label = t('Ngày đi làm hành chính (Thứ 7 cuối tháng đi làm)', '平日（最終土曜日は出勤）')
+                    else:
+                        label = t('Ngày đi làm hành chính', '平日')
+                    tag_html = f"<span style='background-color: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 13px;'>💼 {label} (1.5x - 2.0x)</span>"
+
+                st.markdown(f"""
+                    <div style='display: flex; align-items: center; gap: 15px; margin-bottom: 15px; margin-top: -5px;'>
+                        <span style='color: rgba(49, 51, 63, 0.6); font-size: 14px;'>{t('Thuộc kỳ lương', '給与計算期間')}: <strong>{calculated_period}</strong></span>
+                        {tag_html}
+                    </div>
+                """, unsafe_allow_html=True)
         
             tab_auto, tab_manual = st.tabs([t("🕒 Tự động phân bổ theo Giờ", "🕒 時間で自動配分"), t("✍️ Nhập tay Hệ số", "✍️ 係数手動入力")])
         
@@ -1152,28 +1253,41 @@ def render_project_data():
                         std_days = float(base.get('standard_days', 22.0))
                         hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
                     
-                        entry = {
-                            "payment_period": calculated_period,
-                            "project_type": project_type,
-                            "order_id": order_id,
-                            "client_order_id": client_order_id,
-                            "order_name": clean_order_name,
-                            "manager_name": manager_name,
-                            "employee_name": employee_name_proj,
-                            "ot_reason": ot_reason,
-                            "ot_date": ot_date.strftime("%d/%m/%Y"),
-                            "ot_hours": total_hours_auto,
-                            "hourly_rate": hourly_rate,
-                        }
-                    
-                        for mult, hrs in auto_buckets.items():
-                            if hrs > 0:
-                                res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
-                                k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
-                                entry[k_name] = int(res["ot_pay"])
-                            
-                        st.session_state['ot_records'].append(entry)
-                        st.toast(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})", icon=":material/check_circle:")
+                        holidays_for_loop = []
+                        if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
+                            try:
+                                holidays_for_loop = base['holidays_df']['Ngày nghỉ'].tolist()
+                            except:
+                                pass
+                        
+                        for d_i in target_dates:
+                            d_buckets = breakdown_ot_hours(d_i, total_hours_auto, holidays_for_loop)
+                            d_period = get_payroll_period(d_i)
+                            entry = {
+                                "payment_period": d_period,
+                                "project_type": project_type,
+                                "order_id": order_id,
+                                "client_order_id": client_order_id,
+                                "order_name": clean_order_name,
+                                "manager_name": manager_name,
+                                "employee_name": employee_name_proj,
+                                "ot_reason": ot_reason,
+                                "ot_date": d_i.strftime("%d/%m/%Y"),
+                                "ot_hours": total_hours_auto,
+                                "hourly_rate": hourly_rate,
+                            }
+                            for mult, hrs in d_buckets.items():
+                                if hrs > 0:
+                                    res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
+                                    k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
+                                    entry[k_name] = int(res["ot_pay"])
+                            st.session_state['ot_records'].append(entry)
+                        
+                        if len(target_dates) > 1:
+                            st.toast(f"{t('Đã thêm thành công', '追加完了！')} {len(target_dates)} {t('bản ghi OT liên tiếp!', '件の連続残業データ')}", icon=":material/check_circle:")
+                        else:
+                            st.toast(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})", icon=":material/check_circle:")
+                        st.rerun()
                     
             with tab_manual:
                 st.warning(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0または空白で。"))
@@ -1210,32 +1324,36 @@ def render_project_data():
                         std_days = float(base.get('standard_days', 22.0))
                         hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
                     
-                        entry = {
-                            "payment_period": calculated_period,
-                            "project_type": project_type,
-                            "order_id": order_id,
-                            "client_order_id": client_order_id,
-                            "order_name": clean_order_name,
-                            "manager_name": manager_name,
-                            "employee_name": employee_name_proj,
-                            "ot_reason": ot_reason,
-                            "ot_date": ot_date.strftime("%d/%m/%Y"),
-                            "ot_hours": manual_total,
-                            "hourly_rate": hourly_rate,
-                        }
-                    
-                        bucket_inputs = {150: h_150, 200: h_200, 270: h_270, 300: h_300, 400: h_400}
-                        if c_hrs > 0 and c_mult > 0:
-                            bucket_inputs[c_mult] = c_hrs
+                        for d_i in target_dates:
+                            d_period = get_payroll_period(d_i)
+                            entry = {
+                                "payment_period": d_period,
+                                "project_type": project_type,
+                                "order_id": order_id,
+                                "client_order_id": client_order_id,
+                                "order_name": clean_order_name,
+                                "manager_name": manager_name,
+                                "employee_name": employee_name_proj,
+                                "ot_reason": ot_reason,
+                                "ot_date": d_i.strftime("%d/%m/%Y"),
+                                "ot_hours": manual_total,
+                                "hourly_rate": hourly_rate,
+                            }
+                            bucket_inputs = {150: h_150, 200: h_200, 270: h_270, 300: h_300, 400: h_400}
+                            if c_hrs > 0 and c_mult > 0:
+                                bucket_inputs[c_mult] = c_hrs
+                            for mult, hrs in bucket_inputs.items():
+                                if hrs > 0:
+                                    res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
+                                    k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
+                                    entry[k_name] = int(res["ot_pay"])
+                            st.session_state['ot_records'].append(entry)
                         
-                        for mult, hrs in bucket_inputs.items():
-                            if hrs > 0:
-                                res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
-                                k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
-                                entry[k_name] = int(res["ot_pay"])
-                            
-                        st.session_state['ot_records'].append(entry)
-                        st.toast(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"), icon=":material/check_circle:")
+                        if len(target_dates) > 1:
+                            st.toast(f"{t('Đã thêm thủ công', '手動追加完了！')} {len(target_dates)} {t('bản ghi cho dải ngày!', '件の連続残業データ')}", icon=":material/check_circle:")
+                        else:
+                            st.toast(t("Đã thêm bản ghi thủ công!", "手動レコード追加完了！"), icon=":material/check_circle:")
+                        st.rerun()
 
             if len(st.session_state['ot_records']) > 0:
                 st.markdown("---")
