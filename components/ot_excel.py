@@ -211,6 +211,59 @@ def render_ot_excel():
                 st.markdown("<hr style='margin: 10px 0 5px 0;'>", unsafe_allow_html=True)
                 st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 5px;'>{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>", unsafe_allow_html=True)
             
+                # Render Smart AI Scanner & Live Mapping Preview Card
+                is_auto = (mapping_mode == t("Tự động nhận diện thông minh", "スマート自動認識"))
+                preview_ngay = col_map_auto.get("ngay") if is_auto else (sel_ngay if sel_ngay != "--- Bỏ qua ---" else None)
+                preview_ten = col_map_auto.get("ten") if is_auto else (sel_ten if sel_ten != "--- Bỏ qua ---" else None)
+                preview_ot = col_map_auto.get("ot") if is_auto else (sel_ot if sel_ot != "--- Bỏ qua ---" else None)
+                preview_lydo = col_map_auto.get("lydo") if is_auto else (sel_lydo if sel_lydo != "--- Bỏ qua ---" else None)
+                
+                badge_ok = f'<span style="background: #e6f4ea; color: #137333; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("🟢 Khớp chính xác", "🟢 一致")}</span>'
+                badge_missing = f'<span style="background: #fce8e6; color: #c5221f; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("⚠️ Cần kiểm tra", "⚠️ 要確認")}</span>'
+                badge_opt = f'<span style="background: #e8f0fe; color: #1a73e8; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("ℹ️ Tùy chọn", "ℹ️ オプション")}</span>'
+                
+                card_title = t("SMART AI SCANNER — XEM TRƯỚC NHẬN DIỆN CỘT DỮ LIỆU", "AIスマートスキャン — 列自動認識プレビュー") if is_auto else t("XEM TRƯỚC CẤU HÌNH GHÉP CỘT DỮ LIỆU", "列マッピング設定プレビュー")
+                
+                st.markdown(f"""
+                <div style="background: linear-gradient(135deg, #f8fbff 0%, #f1f8ff 100%); border: 1px solid #cce5ff; border-radius: 14px; padding: 16px 20px; margin: 12px 0 16px 0; box-shadow: 0 4px 14px rgba(0, 123, 255, 0.06);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px dashed #b8daff; padding-bottom: 10px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="font-size: 20px;">🤖</span>
+                            <span style="font-weight: 700; font-size: 14.5px; color: #004085;">{card_title}</span>
+                        </div>
+                        <div style="background: #007bff; color: white; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                            📦 {t('Sẵn sàng xử lý:', '処理準備完了:')} {len(df)} {t('dòng dữ liệu', '行のデータ')}
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
+                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📅 {t('Cột Ngày Tăng Ca', '残業日列')}</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ngay or t('Chưa nhận diện', '未検出')}</div>
+                            <div>{badge_ok if preview_ngay else badge_missing}</div>
+                        </div>
+                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">👤 {t('Cột Tên Nhân Viên', 'スタッフ名列')}</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ten or t('Chưa nhận diện', '未検出')}</div>
+                            <div>{badge_ok if preview_ten else badge_missing}</div>
+                        </div>
+                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">⏱️ {t('Cột Số Giờ OT', '残業時間列')}</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ot or t('Chưa nhận diện', '未検出')}</div>
+                            <div>{badge_ok if preview_ot else badge_missing}</div>
+                        </div>
+                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📝 {t('Cột Lý Do OT', '残業理由列')}</div>
+                            <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_lydo or t('Mặc định (Trống)', 'デフォルト/空')}</div>
+                            <div>{badge_ok if preview_lydo else badge_opt}</div>
+                        </div>
+                    </div>
+                    <div style="font-size: 12.5px; color: #475569; margin-top: 12px; display: flex; align-items: center; gap: 6px;">
+                        <span>💡</span>
+                        <span>{t('Hệ thống đã sẵn sàng quét và tự động đối chiếu mức lương từ Danh sách nhân sự. Vui lòng kiểm tra các cột nhận diện phía trên và nhấn nút <b>Xử Lý Dữ Liệu Tăng Ca</b> bên dưới.', '列認識をご確認の上、下の <b>データ処理</b> ボタンを押して計算を開始してください。')}</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+            
                 if st.button(t("Xử Lý Dữ Liệu Tăng Ca", "データ処理"), type="primary"):
                     if mapping_mode == t("Ghép cột thủ công", "手動マッピング"):
                         # Update map based on user selection
@@ -224,11 +277,10 @@ def render_ot_excel():
                         col_map["ma_dh_kh"] = sel_ma_dh_kh if sel_ma_dh_kh != "--- Bỏ qua ---" else None
                         col_map["quan_ly"] = sel_quan_ly if sel_quan_ly != "--- Bỏ qua ---" else None
                     else:
-                        # In auto mode, we also show the result of mapping
                         st.success(t(
-                            f"Đã tự động nhận diện: Ngày -> `{col_map['ngay']}`, Tên -> `{col_map['ten']}`, OT -> `{col_map['ot']}`, Lý do -> `{col_map['lydo']}`",
+                            f"Đã tự động nhận diện thành công: Ngày -> `{col_map['ngay']}`, Tên -> `{col_map['ten']}`, OT -> `{col_map['ot']}`, Lý do -> `{col_map['lydo']}`",
                             f"自動認識成功：日付 -> `{col_map['ngay']}`、名前 -> `{col_map['ten']}`、OT -> `{col_map['ot']}`、理由 -> `{col_map['lydo']}`"
-                        ))
+                        ), icon="✅")
                 
                 
                     # Prepare holidays list
