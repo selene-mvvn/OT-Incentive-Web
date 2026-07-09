@@ -1347,7 +1347,9 @@ else:
                 padding-bottom: 240px !important;
             }
             div.element-container:has(#hidden-sticky-note-trigger-anchor),
-            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container {
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) ~ div.element-container:has(button),
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container,
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container + div.element-container {
                 display: none !important;
                 height: 0px !important;
                 margin: 0px !important;
@@ -1373,16 +1375,19 @@ else:
     <div class='sidebar-footer-container' data-lang='{lang}' data-has-note='{note_attr}'>
         <div id='sidebar-sticky-note-btn' style='
             margin: 0 auto 15px auto;
-            width: 70%;
+            width: 86%;
             background: #f8fafc;
             border: 1px dashed #0284c7;
             color: #0369a1;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 12.8px;
             border-radius: 8px;
-            padding: 7px 10px;
+            padding: 7px 4px;
             cursor: pointer;
             text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             box-shadow: 0 1px 3px rgba(0, 168, 232, 0.1);
             transition: all 0.2s ease;
         '>
@@ -1475,19 +1480,23 @@ else:
                         }
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
-                            window.parent.document.addEventListener('mouseleave', (e) => {
-                                if (e.clientY <= 15 && !window.parent._otExitModalFired) {
-                                    const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                    if (activeNote) {
-                                        window.parent._otExitModalFired = true;
-                                        const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
-                                        stBtns.forEach(b => {
-                                            if (b.innerText && b.innerText.includes('open_sticky_note_exit_trigger')) {
-                                                b.click();
-                                            }
-                                        });
-                                    }
+                            const triggerExitCheck = () => {
+                                const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
+                                if (activeNote && !window.parent._otExitModalFired) {
+                                    window.parent._otExitModalFired = true;
+                                    const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
+                                    stBtns.forEach(b => {
+                                        if (b.innerText && b.innerText.includes('open_sticky_note_exit_trigger')) {
+                                            b.click();
+                                        }
+                                    });
                                 }
+                            };
+                            window.parent.document.addEventListener('mouseleave', (e) => {
+                                if (e.clientY <= 50) triggerExitCheck();
+                            });
+                            window.parent.document.addEventListener('mouseout', (e) => {
+                                if (!e.relatedTarget && e.clientY <= 50) triggerExitCheck();
                             });
                             window.parent.onbeforeunload = function(e) {
                                 const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
@@ -1497,6 +1506,14 @@ else:
                                     return e.returnValue;
                                 }
                             };
+                            window.parent.addEventListener('beforeunload', function(e) {
+                                const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
+                                if (activeNote && !window.parent._otExitModalFired) {
+                                    e.preventDefault();
+                                    e.returnValue = 'Bạn có Ghi chú nhắc việc cá nhân chưa hoàn thành! Bạn có chắc chắn muốn thoát web không?';
+                                    return e.returnValue;
+                                }
+                            });
                         }
                         
                         // Clock Logic
