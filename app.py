@@ -980,6 +980,58 @@ def show_sticky_note_exit_modal():
         display: block !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
+    /* Style exit check dialog buttons to match exact design of ảnh 2 */
+    [role="dialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(1) button,
+    [data-testid="stDialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(1) button {
+        background: #0284c7 !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 11px 8px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 3px 6px rgba(2, 132, 199, 0.25) !important;
+    }
+    [role="dialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(1) button p,
+    [data-testid="stDialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(1) button p {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        font-size: 13.5px !important;
+        white-space: normal !important;
+    }
+    [role="dialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(2) button,
+    [data-testid="stDialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(2) button {
+        background: #f59e0b !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 11px 8px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 3px 6px rgba(245, 158, 11, 0.25) !important;
+    }
+    [role="dialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(2) button p,
+    [data-testid="stDialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(2) button p {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        font-size: 13.5px !important;
+        white-space: normal !important;
+    }
+    [role="dialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(3) button,
+    [data-testid="stDialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(3) button {
+        background: #64748b !important;
+        color: #ffffff !important;
+        border: none !important;
+        border-radius: 6px !important;
+        padding: 11px 8px !important;
+        font-weight: 600 !important;
+        box-shadow: 0 3px 6px rgba(100, 116, 139, 0.25) !important;
+    }
+    [role="dialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(3) button p,
+    [data-testid="stDialog"] div[data-testid="stHorizontalBlock"] > div:nth-child(3) button p {
+        color: #ffffff !important;
+        font-weight: 600 !important;
+        font-size: 13.5px !important;
+        white-space: normal !important;
+    }
     </style>""", unsafe_allow_html=True)
 
     note_content = st.session_state.get('sidebar_sticky_note', '').strip()
