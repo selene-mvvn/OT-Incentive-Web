@@ -276,16 +276,19 @@ def export_ot_to_excel(data: list, allow_merge: bool = True, filename: str = "",
         worksheet.set_row(0, 30)  # Make title row taller
         
         # Add payroll period as subtitle
+        subtitle_format = workbook.add_format({
+            'align': 'center',
+            'valign': 'vcenter',
+            'italic': True,
+            'font_size': 12,
+            'font_name': 'Times New Roman'
+        })
         if general_period:
-            subtitle_format = workbook.add_format({
-                'align': 'center',
-                'valign': 'vcenter',
-                'italic': True,
-                'font_size': 12,
-                'font_name': 'Times New Roman'
-            })
-            worksheet.merge_range(1, 0, 1, len(all_columns) - 1, f"{t('Kỳ tính lương', '給与計算期間')}: {general_period}", subtitle_format)
-            worksheet.set_row(1, 20)
+            subtitle_text = f"{t('Kỳ tính lương', '給与計算期間')}: {general_period}"
+        else:
+            subtitle_text = f"{t('Kỳ tính lương', '給与計算期間')}: "
+        worksheet.merge_range(1, 0, 1, len(all_columns) - 1, subtitle_text, subtitle_format)
+        worksheet.set_row(1, 20)
         
         # Write headers
         try:
