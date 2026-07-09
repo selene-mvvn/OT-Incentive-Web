@@ -1054,8 +1054,19 @@ def render_project_data():
                 ot_reason = text_input_with_history(t("LÝ DO TĂNG CA", "残業理由"), "reason", "reasons", "")
             
             clean_order_name = pure_name if 'pure_name' in locals() else order_name
+            current_order_id = str(order_id).strip() if 'order_id' in locals() and order_id else ""
             
-            proj_recs = [r for r in st.session_state.get('ot_records', []) if str(r.get('order_name', '')).strip() == str(clean_order_name).strip()] if clean_order_name else st.session_state.get('ot_records', [])
+            if clean_order_name:
+                if current_order_id:
+                    proj_recs = [r for r in st.session_state.get('ot_records', []) if str(r.get('order_name', '')).strip() == str(clean_order_name).strip() and str(r.get('order_id', '')).strip() == current_order_id]
+                    display_proj_label = f"[{current_order_id}] {clean_order_name}"
+                else:
+                    proj_recs = [r for r in st.session_state.get('ot_records', []) if str(r.get('order_name', '')).strip() == str(clean_order_name).strip()]
+                    display_proj_label = clean_order_name
+                card_title = f"{t('NGÂN SÁCH OT DỰ ÁN ĐANG CHỌN', '選択中の案件OT予算集計')}: {display_proj_label}"
+            else:
+                proj_recs = st.session_state.get('ot_records', [])
+                card_title = t('TỔNG NGÂN SÁCH OT TRONG BẢNG CHỜ XUẤT', '待機リスト全体のOT予算集計')
             total_proj_hrs = sum(float(r.get('ot_hours', 0)) for r in proj_recs)
             total_proj_cost = 0
             for r in proj_recs:
@@ -1066,7 +1077,6 @@ def render_project_data():
             emp_set = len(set(str(r.get('employee_name', '')) for r in proj_recs if r.get('employee_name')))
             
             border_color = "#00B0F0"
-            card_title = f"{t('NGÂN SÁCH OT DỰ ÁN ĐANG CHỌN', '選択中の案件OT予算集計')}: {clean_order_name}" if clean_order_name else t('TỔNG NGÂN SÁCH OT TRONG BẢNG CHỜ XUẤT', '待機リスト全体のOT予算集計')
             st.markdown(f"""
                 <div style='
                     background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
