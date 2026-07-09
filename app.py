@@ -980,6 +980,20 @@ def show_sticky_note_exit_modal():
         display: block !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
+    /* Beautiful rectangular buttons */
+    [role="dialog"] button,
+    [data-testid="stDialog"] button {
+        border-radius: 8px !important;
+        padding: 10px 12px !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        border: 1px solid transparent !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        min-height: 44px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
     </style>""", unsafe_allow_html=True)
 
     note_content = st.session_state.get('sidebar_sticky_note', '').strip()
@@ -1362,7 +1376,9 @@ else:
         if st.button("open_sticky_note_trigger", key="btn_hidden_open_sticky_note"):
             show_sticky_note_editor_modal()
         if st.button("open_sticky_note_exit_trigger", key="btn_hidden_open_exit_check"):
-            show_sticky_note_exit_modal()
+            if not st.session_state.get('exit_check_modal_opened', False):
+                st.session_state['exit_check_modal_opened'] = True
+                show_sticky_note_exit_modal()
         
         if 'sidebar_sticky_note' not in st.session_state:
             st.session_state['sidebar_sticky_note'] = load_sticky_note()
@@ -1482,8 +1498,8 @@ else:
                             window.parent._otStickyNoteExitAttached = true;
                             const triggerExitCheck = () => {
                                 const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                if (activeNote && !window.parent._otExitModalFired) {
-                                    window.parent._otExitModalFired = true;
+                                if (activeNote && !window.top._otExitModalFired) {
+                                    window.top._otExitModalFired = true;
                                     const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
                                     stBtns.forEach(b => {
                                         if (b.innerText && b.innerText.includes('open_sticky_note_exit_trigger')) {
