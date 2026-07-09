@@ -224,39 +224,39 @@ def render_ot_excel():
                 
                 st.markdown(f"""
                 <h4 style="font-size: 18px; font-weight: 600; color: #444; margin: 0 0 6px 0;">{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>
-                <div style="background: #ffffff; border: 1px solid #cdeafd; border-radius: 12px; padding: 18px 22px; margin: 0 0 20px 0; box-shadow: 0 4px 16px rgba(0, 176, 240, 0.06);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #e8f0f6; padding-bottom: 12px;">
+                <div style="background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 18px 22px; margin: 0 0 20px 0; box-shadow: 0 6px 18px rgba(0, 176, 240, 0.25);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 12px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <span style="font-size: 19px;">📋</span>
-                            <span style="font-weight: 700; font-size: 14.5px; color: #1e293b;">{card_title}</span>
+                            <span style="font-weight: 700; font-size: 14.5px; color: #ffffff;">{card_title}</span>
                         </div>
-                        <div style="background: #e6f7ff; color: #0075a0; border: 1px solid #b5e3fb; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                        <div style="background: rgba(255,255,255,0.2); color: #ffffff; border: 1px solid rgba(255,255,255,0.4); padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;">
                             ✓ {t('Dữ liệu hợp lệ:', '有効データ:')} {len(df)} {t('bản ghi', 'レコード')}
                         </div>
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
-                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📅 {t('Cột Ngày Tăng Ca', '残業日列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ngay or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ngay else badge_missing}</div>
                         </div>
-                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">👤 {t('Cột Tên Nhân Viên', 'スタッフ名列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ten or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ten else badge_missing}</div>
                         </div>
-                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">⏱️ {t('Cột Số Giờ OT', '残業時間列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ot or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ot else badge_missing}</div>
                         </div>
-                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
+                        <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📝 {t('Cột Lý Do OT', '残業理由列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_lydo or t('Mặc định (Trống)', 'デフォルト/空')}</div>
                             <div>{badge_ok if preview_lydo else badge_opt}</div>
                         </div>
                     </div>
-                    <div style="font-size: 12.5px; color: #475569; margin-top: 14px; display: flex; align-items: center; gap: 6px;">
+                    <div style="font-size: 12.5px; color: #ffffff; margin-top: 14px; display: flex; align-items: center; gap: 6px;">
                         <span>💡</span>
                         <span>{t('Hệ thống đã đối chiếu dữ liệu thành công. Vui lòng kiểm tra thông tin cột phía trên và nhấn nút <b>Xử Lý Dữ Liệu Tăng Ca</b> bên dưới.', '列認識をご確認の上、下の <b>データ処理</b> ボタンを押して計算を開始してください。')}</span>
                     </div>
