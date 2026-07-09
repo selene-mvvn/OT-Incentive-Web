@@ -1554,63 +1554,8 @@ else:
                             }
                         };
                         updateClock();
-                        setInterval(updateClock, 1000);
-
-                        // Sticky Note Exit Intent Interceptor
-                        const docP = window.parent.document;
-                        if (!window.parent._otStickyExitListenerInstalled) {
-                            window.parent._otStickyExitListenerInstalled = true;
-                            docP.addEventListener('mouseleave', (e) => {
-                                if (e.clientY <= 5) {
-                                    const noteText = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                    if (noteText && noteText.trim() !== '') {
-                                        let overlay = docP.getElementById('sticky-note-exit-overlay');
-                                        if (!overlay) {
-                                            overlay = docP.createElement('div');
-                                            overlay.id = 'sticky-note-exit-overlay';
-                                            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:999999;display:flex;align-items:center;justify-content:center;font-family:sans-serif;';
-                                            docP.body.appendChild(overlay);
-                                        }
-                                        const cleanNote = noteText.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-                                        overlay.innerHTML = `
-                                            <div style="background:#fff;border-radius:10px;width:520px;max-width:90vw;box-shadow:0 15px 35px rgba(0,0,0,0.3);overflow:hidden;">
-                                                <div style="background:#00B0F0;color:#fff;padding:14px 20px;font-weight:700;font-size:18px;">
-                                                    📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT
-                                                </div>
-                                                <div style="padding:20px;">
-                                                    <div style="background:#fef9c3;border-left:5px solid #eab308;padding:14px;border-radius:6px;margin-bottom:15px;color:#713f12;">
-                                                        <div style="font-weight:bold;margin-bottom:6px;color:#854d0e;">📌 Nội dung ghi chú hiện tại của bạn:</div>
-                                                        <div style="white-space:pre-wrap;font-size:14.5px;color:#1e293b;">${cleanNote}</div>
-                                                    </div>
-                                                    <div style="font-size:15px;font-weight:600;color:#1e293b;margin-bottom:18px;">
-                                                        Bạn đã thực hiện xong công việc trong ghi chú này chưa?
-                                                    </div>
-                                                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                                                        <button id="btn-note-done-exit" style="flex:1;background:#0284c7;color:#fff;border:none;padding:11px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13.5px;">✅ Xong rồi (Xóa & Tắt web)</button>
-                                                        <button id="btn-note-later-exit" style="flex:1;background:#f59e0b;color:#fff;border:none;padding:11px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13.5px;">⏳ Để hôm sau (Tắt web)</button>
-                                                        <button id="btn-note-stay-exit" style="flex:1;background:#64748b;color:#fff;border:none;padding:11px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13.5px;">🛑 Chưa (Ở lại trang web)</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        `;
-                                        overlay.style.display = 'flex';
-
-                                        docP.getElementById('btn-note-done-exit').onclick = () => {
-                                            window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
-                                            overlay.style.display = 'none';
-                                            window.parent.close();
-                                        };
-                                        docP.getElementById('btn-note-later-exit').onclick = () => {
-                                            overlay.style.display = 'none';
-                                            window.parent.close();
-                                        };
-                                        docP.getElementById('btn-note-stay-exit').onclick = () => {
-                                            overlay.style.display = 'none';
-                                        };
-                                    }
-                                }
-                            });
-                        }
+                        const oldOverlay = window.parent.document.getElementById('sticky-note-exit-overlay');
+                        if (oldOverlay) oldOverlay.remove();
                     }
                 }
             });
