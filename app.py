@@ -1013,14 +1013,6 @@ def show_sticky_note_exit_modal():
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
     st.markdown("""<style>
-/* Make modal wider so 50-50 buttons fit all text without overflowing */
-[role="dialog"],
-[data-testid="stDialog"],
-div[data-modal-container="true"] > div {
-    min-width: 550px !important;
-    width: 550px !important;
-    max-width: 95vw !important;
-}
 /* Ensure blue title banner with white text */
 [role="dialog"] [data-testid="stDialogTitle"],
 [data-testid="stDialog"] [data-testid="stDialogTitle"] {
@@ -1052,7 +1044,7 @@ div[data-modal-container="true"] > div {
 /* Keep dialog buttons balanced and strictly on 1 line */
 [role="dialog"] button,
 [data-testid="stDialog"] button {
-    padding: 6px 8px !important;
+    padding: 6px 4px !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -1060,7 +1052,7 @@ div[data-modal-container="true"] > div {
 [role="dialog"] button p,
 [data-testid="stDialog"] button p {
     white-space: nowrap !important;
-    font-size: 13px !important;
+    font-size: 12.5px !important;
     font-weight: 600 !important;
     text-align: center !important;
     margin: 0 !important;
@@ -1080,7 +1072,7 @@ div[data-modal-container="true"] > div {
     )
     st.session_state['sidebar_sticky_note'] = note_val
 
-    col_save, col_exit = st.columns(2, gap="small")
+    col_save, col_exit = st.columns([3.6, 6.4], gap="small")
     with col_save:
         if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
             st.rerun()
