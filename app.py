@@ -959,7 +959,7 @@ def save_sticky_note(note_text):
         pass
 
 
-@st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
+@st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"), width="large")
 def show_sticky_note_exit_modal():
     st.markdown("""<style>
     /* Full-screen backdrop overlay filling entire viewport */
@@ -976,6 +976,7 @@ def show_sticky_note_exit_modal():
         height: 100vh !important;
     }
     /* Expand modal dialog window so all 3 columns fit perfectly */
+    div[data-testid="stModal"] > div:nth-child(2),
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
