@@ -1012,39 +1012,54 @@ def show_sticky_note_exit_modal():
 
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
-    st.markdown("""<style>
+    st.markdown(f"""<style>
     /* Ensure blue title banner with white text */
     [role="dialog"] [data-testid="stDialogTitle"],
-    [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    [role="dialog"] h2:first-of-type,
-    [data-testid="stDialog"] h2:first-of-type {
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] {{
         background-color: #00B0F0 !important;
         color: #ffffff !important;
-        padding: 14px 22px !important;
+        padding: 12px 20px !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
-        font-size: 20px !important;
+        font-size: 18px !important;
         margin-top: 0px !important;
-        margin-bottom: 5px !important;
+        margin-bottom: 0px !important;
         width: 100% !important;
         box-sizing: border-box !important;
         display: block !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
-    }
-    </style>""", unsafe_allow_html=True)
+    }}
+    /* Eliminate white space below dialog title */
+    [role="dialog"] [data-testid="stVerticalBlock"] > div:first-child,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] > div:first-child {{
+        margin-bottom: -10px !important;
+    }}
+    [role="dialog"] div[data-testid="stDialogContent"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] {{
+        padding-top: 4px !important;
+    }}
+    /* Keep dialog buttons strictly on 1 single line */
+    [role="dialog"] button p,
+    [data-testid="stDialog"] button p {{
+        white-space: nowrap !important;
+        font-size: 13px !important;
+        font-weight: 600 !important;
+    }}
+    </style>
+    <div style='font-size: 13.5px; color: #475569; margin-top: 2px; margin-bottom: 6px;'>{t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')}</div>
+    """, unsafe_allow_html=True)
 
-    st.markdown(f"<div style='font-size: 14px; color: #475569; margin-bottom: 8px;'>{t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')}</div>", unsafe_allow_html=True)
     note_val = st.text_area(
         t("Nội dung ghi chú", "メモ内容"),
         value=st.session_state.get('sidebar_sticky_note', ''),
         key="txt_popup_sticky_note",
         placeholder=t("Nhập việc cần nhớ (VD: Kiểm tra OT dự án V050010)...", "メモを入力..."),
-        height=140,
+        height=130,
         label_visibility="collapsed"
     )
     st.session_state['sidebar_sticky_note'] = note_val
 
-    col_save, col_exit = st.columns(2, gap="small")
+    col_save, col_exit = st.columns([1, 1.45], gap="small")
     with col_save:
         if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
             st.rerun()
