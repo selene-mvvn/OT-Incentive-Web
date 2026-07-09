@@ -962,7 +962,19 @@ def save_sticky_note(note_text):
 @st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
 def show_sticky_note_exit_modal():
     st.markdown("""<style>
-    /* Ensure blue title banner with white text */
+    /* Center dialog vertically and horizontally in the middle of screen */
+    div[data-testid="stModal"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    [role="dialog"],
+    [data-testid="stDialog"] {
+        width: 760px !important;
+        max-width: 95vw !important;
+        margin: auto !important;
+    }
+    /* Ensure blue title banner with white text and no wrap */
     [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"],
     [role="dialog"] h2:first-of-type,
@@ -972,13 +984,30 @@ def show_sticky_note_exit_modal():
         padding: 14px 22px !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
-        font-size: 20px !important;
+        font-size: 19px !important;
         margin-top: 0px !important;
-        margin-bottom: 5px !important;
+        margin-bottom: 8px !important;
         width: 100% !important;
         box-sizing: border-box !important;
         display: block !important;
+        white-space: nowrap !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    }
+    /* Keep dialog buttons strictly on 1 line without wrapping */
+    [role="dialog"] button,
+    [data-testid="stDialog"] button {
+        padding: 8px 6px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+    }
+    [role="dialog"] button p,
+    [data-testid="stDialog"] button p {
+        white-space: nowrap !important;
+        font-size: 13.5px !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        margin: 0 !important;
     }
     </style>""", unsafe_allow_html=True)
 
@@ -1035,6 +1064,18 @@ def show_sticky_note_exit_modal():
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
     st.markdown("""<style>
+/* Center dialog vertically and horizontally in the middle of screen */
+div[data-testid="stModal"] {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+[role="dialog"],
+[data-testid="stDialog"] {
+    width: 650px !important;
+    max-width: 95vw !important;
+    margin: auto !important;
+}
 /* Ensure blue title banner with white text */
 [role="dialog"] [data-testid="stDialogTitle"],
 [data-testid="stDialog"] [data-testid="stDialogTitle"] {
@@ -1049,6 +1090,7 @@ def show_sticky_note_editor_modal():
     width: 100% !important;
     box-sizing: border-box !important;
     display: block !important;
+    white-space: nowrap !important;
     box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
 }
 /* Eliminate white space below dialog title */
