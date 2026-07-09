@@ -207,9 +207,7 @@ def render_ot_excel():
                         sel_ma_dh_kh = st.selectbox(t("Cột Mã đơn hàng khách", "顧客注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh_kh"]))
                     with m_col8:
                         sel_quan_ly = st.selectbox(t("Cột Người quản lý", "管理者列"), col_opts, index=get_idx(col_map_auto["quan_ly"]))
-            
-                st.markdown("<hr style='margin: 10px 0 5px 0;'>", unsafe_allow_html=True)
-                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin: 0 0 0 0;'>{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>", unsafe_allow_html=True)
+                st.markdown("<hr style='margin: 10px 0 15px 0;'>", unsafe_allow_html=True)
             
                 # Render Smart AI Scanner & Live Mapping Preview Card
                 is_auto = (mapping_mode == t("Tự động nhận diện thông minh", "スマート自動認識"))
@@ -225,7 +223,8 @@ def render_ot_excel():
                 card_title = t("BẢNG KIỂM TRA & ĐỐI CHIẾU CỘT DỮ LIỆU TỰ ĐỘNG", "データ列自動認識・検証プレビュー") if is_auto else t("BẢNG KIỂM TRA CẤU HÌNH GHÉP CỘT DỮ LIỆU", "列マッピング設定検証プレビュー")
                 
                 st.markdown(f"""
-                <div style="background: #ffffff; border: 1px solid #cdeafd; border-radius: 12px; padding: 18px 22px; margin: 14px 0 6px 0; box-shadow: 0 4px 16px rgba(0, 176, 240, 0.06);">
+                <h4 style="font-size: 18px; font-weight: 600; color: #444; margin: 0 0 16px 0;">{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>
+                <div style="background: #ffffff; border: 1px solid #cdeafd; border-radius: 12px; padding: 18px 22px; margin: 0 0 16px 0; box-shadow: 0 4px 16px rgba(0, 176, 240, 0.06);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #e8f0f6; padding-bottom: 12px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <span style="font-size: 19px;">📋</span>
