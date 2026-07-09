@@ -4,12 +4,35 @@ import plotly.graph_objects as go
 from logic.history_records import get_records, save_all_records
 from logic.i18n import t
 
-@st.dialog(" ", width="large")
+@st.dialog(t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集"), width="large")
 def show_mini_edit_dialog(data_type, df):
     st.markdown(f"""
         <style>
             div[role="dialog"] {{
                 transform: translateY(8vh);
+            }}
+            [role="dialog"] [data-testid="stDialogTitle"],
+            [data-testid="stDialog"] [data-testid="stDialogTitle"],
+            [role="dialog"] h2:first-of-type,
+            [data-testid="stDialog"] h2:first-of-type {{
+                background-color: #00B0F0 !important;
+                color: #ffffff !important;
+                padding: 14px 22px !important;
+                border-radius: 8px !important;
+                font-weight: 700 !important;
+                font-size: 22px !important;
+                margin-top: 0px !important;
+                margin-bottom: 12px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+                display: block !important;
+                box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+            }}
+            [role="dialog"] [data-testid="stDialogTitle"] *,
+            [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
+            [role="dialog"] h2:first-of-type *,
+            [data-testid="stDialog"] h2:first-of-type * {{
+                color: #ffffff !important;
             }}
             div[role="dialog"] .stButton button,
             div[role="dialog"] div[data-testid="stButton"] button,
@@ -43,9 +66,6 @@ def show_mini_edit_dialog(data_type, df):
                 font-weight: bold !important;
             }}
         </style>
-        <div style='margin-top: -15px; font-size: 1.35rem; font-weight: 700; padding-bottom: 8px; color: #2c3e50; border-bottom: 3px solid #00B0F0; width: fit-content; margin-bottom: 15px;'>
-            {t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集")}
-        </div>
     """, unsafe_allow_html=True)
     st.caption(t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。"))
     

@@ -248,7 +248,30 @@ st.markdown("""
         display: block !important;
     }
 
-    /* Big dialog title CSS moved to show_user_guide to avoid affecting other dialogs */
+    /* Style all dialog popup titles with blue frame and white text */
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        padding: 14px 22px !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 22px !important;
+        margin-top: 0px !important;
+        margin-bottom: 12px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    }
+    [role="dialog"] [data-testid="stDialogTitle"] *,
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
+    [role="dialog"] h2:first-of-type *,
+    [data-testid="stDialog"] h2:first-of-type * {
+        color: #ffffff !important;
+    }
     
     /* Dialog close button styled as clean circle to stand out against blue banner */
     [role="dialog"] button[aria-label="Close"],
