@@ -935,6 +935,81 @@ with col_lang:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+@st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
+def show_sticky_note_exit_modal():
+    st.markdown("""<style>
+    /* Ensure blue title banner with white text */
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        padding: 14px 22px !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 20px !important;
+        margin-top: 0px !important;
+        margin-bottom: 5px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    }
+    </style>""", unsafe_allow_html=True)
+
+    note_content = st.session_state.get('sidebar_sticky_note', '').strip()
+    if not note_content:
+        st.info(t("Hiện tại bạn không có ghi chú nhắc việc nào chưa hoàn thành.", "現在、未完了のメモはありません。"))
+        if st.button(t("Đóng", "閉じる"), use_container_width=True):
+            st.rerun()
+        return
+
+    st.markdown(f"""
+        <div style='
+            background: #fef9c3;
+            border-left: 5px solid #eab308;
+            padding: 14px 18px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            color: #713f12;
+            font-size: 14.5px;
+            line-height: 1.6;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        '>
+            <div style='font-weight: bold; margin-bottom: 6px; color: #854d0e;'>📌 {t('Nội dung ghi chú hiện tại của bạn:', '現在のメモ内容:')}</div>
+            <div style='white-space: pre-wrap; font-size: 15px; color: #1e293b;'>{note_content}</div>
+        </div>
+        <p style='font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 15px;'>
+            {t('Bạn đã thực hiện xong công việc trong ghi chú này chưa?', 'こちらの作業は完了しましたか？')}
+        </p>
+    """, unsafe_allow_html=True)
+
+    col_done, col_later, col_stay = st.columns(3, gap="small")
+    with col_done:
+        if st.button(t("✅ Xong rồi (Xóa & Tắt web)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
+            st.session_state['sidebar_sticky_note'] = ""
+            import streamlit.components.v1 as components
+            components.html("""
+                <script>
+                    window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                    window.parent.close();
+                </script>
+            """, height=0)
+            st.rerun()
+    with col_later:
+        if st.button(t("⏳ Để hôm sau (Tiếp tục tắt web)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
+            import streamlit.components.v1 as components
+            components.html("""
+                <script>
+                    window.parent.close();
+                </script>
+            """, height=0)
+    with col_stay:
+        if st.button(t("🛑 Chưa (Ở lại trang web)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
+            st.rerun()
+
+
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = 'welcome'
 
@@ -1177,6 +1252,32 @@ else:
         )
         menu_selection = st.session_state['menu_selection']
         
+        st.markdown("""
+        <style>
+            [data-testid="stSidebar"] [data-testid="stExpander"] {
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                background-color: #ffffff;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+                margin-top: 12px;
+                margin-bottom: 12px;
+            }
+        </style>
+        """, unsafe_allow_html=True)
+        with st.expander(t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ"), expanded=True):
+            st.markdown(f"<div style='font-size: 11.5px; color: #64748b; margin-bottom: 4px;'>{t('Ghi chú nhanh (lưu tự động):', '自動保存メモ:')}</div>", unsafe_allow_html=True)
+            note_val = st.text_area(
+                t("Ghi chú", "メモ"),
+                value=st.session_state.get('sidebar_sticky_note', ''),
+                key="txt_sidebar_sticky_note",
+                placeholder=t("Nhập việc cần nhớ trước khi thoát...", "メモを入力..."),
+                height=75,
+                label_visibility="collapsed"
+            )
+            st.session_state['sidebar_sticky_note'] = note_val
+            if st.button(t("🚪 Kiểm tra trước khi tắt", "🚪 終了前チェック"), key="btn_check_note_exit", use_container_width=True):
+                show_sticky_note_exit_modal()
+        
         lang = st.session_state.get('lang', 'VN')
         st.markdown(f"""
     <div class='sidebar-footer-container' data-lang='{lang}'>
@@ -1274,6 +1375,62 @@ else:
                         };
                         updateClock();
                         setInterval(updateClock, 1000);
+
+                        // Sticky Note Exit Intent Interceptor
+                        const docP = window.parent.document;
+                        if (!window.parent._otStickyExitListenerInstalled) {
+                            window.parent._otStickyExitListenerInstalled = true;
+                            docP.addEventListener('mouseleave', (e) => {
+                                if (e.clientY <= 5) {
+                                    const noteText = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
+                                    if (noteText && noteText.trim() !== '') {
+                                        let overlay = docP.getElementById('sticky-note-exit-overlay');
+                                        if (!overlay) {
+                                            overlay = docP.createElement('div');
+                                            overlay.id = 'sticky-note-exit-overlay';
+                                            overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.55);z-index:999999;display:flex;align-items:center;justify-content:center;font-family:sans-serif;';
+                                            docP.body.appendChild(overlay);
+                                        }
+                                        const cleanNote = noteText.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+                                        overlay.innerHTML = `
+                                            <div style="background:#fff;border-radius:10px;width:520px;max-width:90vw;box-shadow:0 15px 35px rgba(0,0,0,0.3);overflow:hidden;">
+                                                <div style="background:#00B0F0;color:#fff;padding:14px 20px;font-weight:700;font-size:18px;">
+                                                    📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT
+                                                </div>
+                                                <div style="padding:20px;">
+                                                    <div style="background:#fef9c3;border-left:5px solid #eab308;padding:14px;border-radius:6px;margin-bottom:15px;color:#713f12;">
+                                                        <div style="font-weight:bold;margin-bottom:6px;color:#854d0e;">📌 Nội dung ghi chú hiện tại của bạn:</div>
+                                                        <div style="white-space:pre-wrap;font-size:14.5px;color:#1e293b;">${cleanNote}</div>
+                                                    </div>
+                                                    <div style="font-size:15px;font-weight:600;color:#1e293b;margin-bottom:18px;">
+                                                        Bạn đã thực hiện xong công việc trong ghi chú này chưa?
+                                                    </div>
+                                                    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                                                        <button id="btn-note-done-exit" style="flex:1;background:#0284c7;color:#fff;border:none;padding:11px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13.5px;">✅ Xong rồi (Xóa & Tắt web)</button>
+                                                        <button id="btn-note-later-exit" style="flex:1;background:#f59e0b;color:#fff;border:none;padding:11px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13.5px;">⏳ Để hôm sau (Tắt web)</button>
+                                                        <button id="btn-note-stay-exit" style="flex:1;background:#64748b;color:#fff;border:none;padding:11px;border-radius:6px;font-weight:600;cursor:pointer;font-size:13.5px;">🛑 Chưa (Ở lại trang web)</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+                                        overlay.style.display = 'flex';
+
+                                        docP.getElementById('btn-note-done-exit').onclick = () => {
+                                            window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                                            overlay.style.display = 'none';
+                                            window.parent.close();
+                                        };
+                                        docP.getElementById('btn-note-later-exit').onclick = () => {
+                                            overlay.style.display = 'none';
+                                            window.parent.close();
+                                        };
+                                        docP.getElementById('btn-note-stay-exit').onclick = () => {
+                                            overlay.style.display = 'none';
+                                        };
+                                    }
+                                }
+                            });
+                        }
                     }
                 }
             });
