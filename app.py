@@ -935,6 +935,30 @@ with col_lang:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+import json
+import os
+
+STICKY_NOTE_FILE = "data/sticky_note.json"
+
+def load_sticky_note():
+    if os.path.exists(STICKY_NOTE_FILE):
+        try:
+            with open(STICKY_NOTE_FILE, "r", encoding="utf-8") as f:
+                d = json.load(f)
+                return d.get("note", "")
+        except Exception:
+            pass
+    return ""
+
+def save_sticky_note(note_text):
+    os.makedirs("data", exist_ok=True)
+    try:
+        with open(STICKY_NOTE_FILE, "w", encoding="utf-8") as f:
+            json.dump({"note": note_text}, f, ensure_ascii=False, indent=2)
+    except Exception:
+        pass
+
+
 @st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
 def show_sticky_note_exit_modal():
     st.markdown("""<style>
@@ -960,10 +984,7 @@ def show_sticky_note_exit_modal():
 
     note_content = st.session_state.get('sidebar_sticky_note', '').strip()
     if not note_content:
-        st.info(t("Hiện tại bạn không có ghi chú nhắc việc nào chưa hoàn thành.", "現在、未完了のメモはありません。"))
-        if st.button(t("Đóng", "閉じる"), use_container_width=True):
-            st.rerun()
-        return
+        note_content = load_sticky_note().strip()
 
     st.markdown(f"""
         <div style='
@@ -988,6 +1009,7 @@ def show_sticky_note_exit_modal():
     col_done, col_later, col_stay = st.columns(3, gap="small")
     with col_done:
         if st.button(t("✅ Xong rồi (Xóa & Tắt web)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
+            save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
             components.html("""
@@ -1073,6 +1095,8 @@ def show_sticky_note_editor_modal():
     st.session_state['sidebar_sticky_note'] = note_val
 
     if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
+        save_sticky_note(note_val)
+        st.session_state['sidebar_sticky_note'] = note_val
         st.rerun()
 
 
@@ -1338,11 +1362,15 @@ else:
         if st.button("open_sticky_note_exit_trigger", key="btn_hidden_open_exit_check"):
             show_sticky_note_exit_modal()
         
-        has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
+        if 'sidebar_sticky_note' not in st.session_state:
+            st.session_state['sidebar_sticky_note'] = load_sticky_note()
+        current_note_val = st.session_state['sidebar_sticky_note']
+        has_note = bool(current_note_val.strip())
         btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
         lang = st.session_state.get('lang', 'VN')
+        note_attr = "true" if has_note else ""
         st.markdown(f"""
-    <div class='sidebar-footer-container' data-lang='{lang}'>
+    <div class='sidebar-footer-container' data-lang='{lang}' data-has-note='{note_attr}'>
         <div id='sidebar-sticky-note-btn' style='
             margin: 0 auto 15px auto;
             width: 70%;
@@ -1439,12 +1467,18 @@ else:
                         }
                         
                         // Automatic Exit Check when intending to leave / close web
+                        const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
+                        if (hasNoteAttr) {
+                            window.parent.localStorage.setItem('ot_sidebar_sticky_note', 'active');
+                        } else {
+                            window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                        }
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
                             window.parent.document.addEventListener('mouseleave', (e) => {
-                                if (e.clientY <= 10 && !window.parent._otExitModalFired) {
-                                    const hasNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note') || '';
-                                    if (hasNote.trim().length > 0) {
+                                if (e.clientY <= 15 && !window.parent._otExitModalFired) {
+                                    const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
+                                    if (activeNote) {
                                         window.parent._otExitModalFired = true;
                                         const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
                                         stBtns.forEach(b => {
@@ -1455,6 +1489,14 @@ else:
                                     }
                                 }
                             });
+                            window.parent.onbeforeunload = function(e) {
+                                const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
+                                if (activeNote && !window.parent._otExitModalFired) {
+                                    e.preventDefault();
+                                    e.returnValue = 'Bạn có Ghi chú nhắc việc cá nhân chưa hoàn thành! Bạn có chắc chắn muốn thoát web không?';
+                                    return e.returnValue;
+                                }
+                            };
                         }
                         
                         // Clock Logic
