@@ -962,21 +962,30 @@ def save_sticky_note(note_text):
 @st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
 def show_sticky_note_exit_modal():
     st.markdown("""<style>
-    /* Center dialog vertically and horizontally in the middle of screen */
+    /* Full-screen backdrop overlay filling entire viewport */
     div[data-testid="stModal"] {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
     }
-    div[data-testid="stModal"] > div,
-    [role="dialog"],
-    [data-testid="stDialog"] {
-        width: 780px !important;
-        min-width: 780px !important;
+    div[data-testid="stModal"] > div:first-child {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+    }
+    /* Expand modal dialog window so all 3 columns fit perfectly */
+    div[data-testid="stModal"] [role="dialog"],
+    div[data-testid="stModal"] [data-testid="stDialog"],
+    [role="dialog"] {
+        width: 860px !important;
+        min-width: 860px !important;
         max-width: 95vw !important;
         margin: auto !important;
         overflow: visible !important;
     }
+    [role="dialog"] > div,
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         width: 100% !important;
