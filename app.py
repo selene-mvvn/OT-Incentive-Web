@@ -1135,17 +1135,6 @@ else:
         
         menu_title = t("MENU", "メニュー")
         st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; font-size: 18px !important; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
-        
-        st.markdown("""
-        <style>
-            [data-testid="stSidebar"] button[key="btn_hidden_open_sticky_note"] {
-                display: none !important;
-            }
-        </style>
-        """, unsafe_allow_html=True)
-        if st.button("open_sticky_note_trigger", key="btn_hidden_open_sticky_note"):
-            show_sticky_note_editor_modal()
-        
         st.markdown("""
         <style>
             [data-testid="stSidebar"] div[role="radiogroup"] span.material-symbols-rounded,
@@ -1304,6 +1293,25 @@ else:
             label_visibility="collapsed"
         )
         menu_selection = st.session_state['menu_selection']
+        
+        st.markdown("""
+        <style>
+            [data-testid="stSidebarContent"] {
+                padding-bottom: 240px !important;
+            }
+            div.element-container:has(#hidden-sticky-note-trigger-anchor),
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container {
+                display: none !important;
+                height: 0px !important;
+                margin: 0px !important;
+                padding: 0px !important;
+                overflow: hidden !important;
+            }
+        </style>
+        <div id="hidden-sticky-note-trigger-anchor"></div>
+        """, unsafe_allow_html=True)
+        if st.button("open_sticky_note_trigger", key="btn_hidden_open_sticky_note"):
+            show_sticky_note_editor_modal()
         
         has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
         btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
