@@ -1174,7 +1174,7 @@ def render_project_data():
                 date_preview_str = ", ".join(d.strftime("%d/%m") for d in target_dates[:8]) + ("..." if len(target_dates) > 8 else "")
                 st.markdown(f"""
                     <div style='background-color: #f0f9ff; border: 1px dashed #00B0F0; border-radius: 6px; padding: 10px 14px; margin-bottom: 15px; font-size: 13.5px; color: #0369a1;'>
-                        <b>📅 {t('Sẽ tạo tự động cho', '自動作成対象')}: <span style='color: #00B0F0;'>{len(target_dates)} {t('ngày', '日')}</span></b> ({date_preview_str})
+                        <b>{t('Sẽ tạo tự động cho', '自動作成対象')}: <span style='color: #00B0F0;'>{len(target_dates)} {t('ngày', '日')}</span></b> ({date_preview_str})
                     </div>
                 """, unsafe_allow_html=True)
             else:
