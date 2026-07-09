@@ -1095,22 +1095,22 @@ else:
             ext = "png" if logo_path.endswith(".png") else "jpeg"
             st.markdown(f"""
             <style>
-            [data-testid="stSidebar"] .stButton:first-of-type button {{
-                background-image: url("data:image/{ext};base64,{encoded}");
-                background-size: contain;
-                background-repeat: no-repeat;
-                background-position: center;
+            [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button {{
+                background-image: url("data:image/{ext};base64,{encoded}") !important;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
                 height: 80px !important; min-height: 80px !important; width: 100% !important;
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
             }}
-            [data-testid="stSidebar"] .stButton:first-of-type button p {{
-                visibility: hidden;
+            [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button p {{
+                visibility: hidden !important;
             }}
-            [data-testid="stSidebar"] .stButton:first-of-type button:hover {{
-                transform: scale(1.05);
-                transition: transform 0.3s;
+            [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button:hover {{
+                transform: scale(1.05) !important;
+                transition: transform 0.3s !important;
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
@@ -1299,8 +1299,9 @@ else:
         btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
         st.markdown("""
         <style>
-            [data-testid="stSidebar"] button[key="btn_open_sticky_note_popup"] {
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button {
                 background-color: #f8fafc !important;
+                background-image: none !important;
                 border: 1px dashed #0284c7 !important;
                 color: #0369a1 !important;
                 font-weight: 600 !important;
@@ -1310,13 +1311,22 @@ else:
                 padding: 6px 12px !important;
                 min-height: 36px !important;
                 height: 36px !important;
+                box-shadow: none !important;
             }
-            [data-testid="stSidebar"] button[key="btn_open_sticky_note_popup"]:hover {
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button p {
+                visibility: visible !important;
+                color: #0369a1 !important;
+            }
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover {
                 background-color: #e0f2fe !important;
                 border-color: #00a8e8 !important;
                 color: #00a8e8 !important;
             }
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover p {
+                color: #00a8e8 !important;
+            }
         </style>
+        <div id="sticky-note-btn-anchor"></div>
         """, unsafe_allow_html=True)
         if st.button(btn_label, key="btn_open_sticky_note_popup", use_container_width=True):
             show_sticky_note_editor_modal()
