@@ -209,7 +209,7 @@ def render_ot_excel():
                         sel_quan_ly = st.selectbox(t("Cột Người quản lý", "管理者列"), col_opts, index=get_idx(col_map_auto["quan_ly"]))
             
                 st.markdown("<hr style='margin: 10px 0 5px 0;'>", unsafe_allow_html=True)
-                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 5px;'>{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin: 0 0 0 0;'>{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>", unsafe_allow_html=True)
             
                 # Render Smart AI Scanner & Live Mapping Preview Card
                 is_auto = (mapping_mode == t("Tự động nhận diện thông minh", "スマート自動認識"))
@@ -218,48 +218,48 @@ def render_ot_excel():
                 preview_ot = col_map_auto.get("ot") if is_auto else (sel_ot if sel_ot != "--- Bỏ qua ---" else None)
                 preview_lydo = col_map_auto.get("lydo") if is_auto else (sel_lydo if sel_lydo != "--- Bỏ qua ---" else None)
                 
-                badge_ok = f'<span style="background: #e6f4ea; color: #137333; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("🟢 Khớp chính xác", "🟢 一致")}</span>'
-                badge_missing = f'<span style="background: #fce8e6; color: #c5221f; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("⚠️ Cần kiểm tra", "⚠️ 要確認")}</span>'
-                badge_opt = f'<span style="background: #e8f0fe; color: #1a73e8; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("ℹ️ Tùy chọn", "ℹ️ オプション")}</span>'
+                badge_ok = f'<span style="background: #ebfbee; color: #1b7a3d; border: 1px solid #b7ebd1; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("🟢 Khớp chính xác", "🟢 一致")}</span>'
+                badge_missing = f'<span style="background: #fef3f2; color: #b91c1c; border: 1px solid #fecdd3; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("⚠️ Cần kiểm tra", "⚠️ 要確認")}</span>'
+                badge_opt = f'<span style="background: #f0f9ff; color: #0369a1; border: 1px solid #bae6fd; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("ℹ️ Tùy chọn", "ℹ️ オプション")}</span>'
                 
-                card_title = t("SMART AI SCANNER — XEM TRƯỚC NHẬN DIỆN CỘT DỮ LIỆU", "AIスマートスキャン — 列自動認識プレビュー") if is_auto else t("XEM TRƯỚC CẤU HÌNH GHÉP CỘT DỮ LIỆU", "列マッピング設定プレビュー")
+                card_title = t("BẢNG KIỂM TRA & ĐỐI CHIẾU CỘT DỮ LIỆU TỰ ĐỘNG", "データ列自動認識・検証プレビュー") if is_auto else t("BẢNG KIỂM TRA CẤU HÌNH GHÉP CỘT DỮ LIỆU", "列マッピング設定検証プレビュー")
                 
                 st.markdown(f"""
-                <div style="background: linear-gradient(135deg, #f8fbff 0%, #f1f8ff 100%); border: 1px solid #cce5ff; border-radius: 14px; padding: 16px 20px; margin: 12px 0 16px 0; box-shadow: 0 4px 14px rgba(0, 123, 255, 0.06);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px dashed #b8daff; padding-bottom: 10px;">
+                <div style="background: #ffffff; border: 1px solid #cdeafd; border-radius: 12px; padding: 18px 22px; margin: 14px 0 6px 0; box-shadow: 0 4px 16px rgba(0, 176, 240, 0.06);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #e8f0f6; padding-bottom: 12px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 20px;">🤖</span>
-                            <span style="font-weight: 700; font-size: 14.5px; color: #004085;">{card_title}</span>
+                            <span style="font-size: 19px;">📋</span>
+                            <span style="font-weight: 700; font-size: 14.5px; color: #1e293b;">{card_title}</span>
                         </div>
-                        <div style="background: #007bff; color: white; padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;">
-                            📦 {t('Sẵn sàng xử lý:', '処理準備完了:')} {len(df)} {t('dòng dữ liệu', '行のデータ')}
+                        <div style="background: #e6f7ff; color: #0075a0; border: 1px solid #b5e3fb; padding: 4px 14px; border-radius: 20px; font-size: 12px; font-weight: 600;">
+                            ✓ {t('Dữ liệu hợp lệ:', '有効データ:')} {len(df)} {t('bản ghi', 'レコード')}
                         </div>
                     </div>
-                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;">
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
+                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📅 {t('Cột Ngày Tăng Ca', '残業日列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ngay or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ngay else badge_missing}</div>
                         </div>
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">👤 {t('Cột Tên Nhân Viên', 'スタッフ名列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ten or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ten else badge_missing}</div>
                         </div>
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">⏱️ {t('Cột Số Giờ OT', '残業時間列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ot or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ot else badge_missing}</div>
                         </div>
-                        <div style="background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.02);">
+                        <div style="background: #f8fafc; border: 1px solid #e8f0f6; border-radius: 10px; padding: 12px 14px;">
                             <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📝 {t('Cột Lý Do OT', '残業理由列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_lydo or t('Mặc định (Trống)', 'デフォルト/空')}</div>
                             <div>{badge_ok if preview_lydo else badge_opt}</div>
                         </div>
                     </div>
-                    <div style="font-size: 12.5px; color: #475569; margin-top: 12px; display: flex; align-items: center; gap: 6px;">
+                    <div style="font-size: 12.5px; color: #475569; margin-top: 14px; display: flex; align-items: center; gap: 6px;">
                         <span>💡</span>
-                        <span>{t('Hệ thống đã sẵn sàng quét và tự động đối chiếu mức lương từ Danh sách nhân sự. Vui lòng kiểm tra các cột nhận diện phía trên và nhấn nút <b>Xử Lý Dữ Liệu Tăng Ca</b> bên dưới.', '列認識をご確認の上、下の <b>データ処理</b> ボタンを押して計算を開始してください。')}</span>
+                        <span>{t('Hệ thống đã đối chiếu dữ liệu thành công. Vui lòng kiểm tra thông tin cột phía trên và nhấn nút <b>Xử Lý Dữ Liệu Tăng Ca</b> bên dưới.', '列認識をご確認の上、下の <b>データ処理</b> ボタンを押して計算を開始してください。')}</span>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
