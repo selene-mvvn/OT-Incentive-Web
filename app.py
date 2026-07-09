@@ -1136,42 +1136,14 @@ else:
         menu_title = t("MENU", "メニュー")
         st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; font-size: 18px !important; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
-        has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
-        btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
         st.markdown("""
         <style>
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button {
-                background-color: #f8fafc !important;
-                background-image: none !important;
-                border: 1px dashed #0284c7 !important;
-                color: #0369a1 !important;
-                font-weight: 600 !important;
-                font-size: 13.5px !important;
-                border-radius: 8px !important;
-                margin-top: 4px !important;
-                margin-bottom: 8px !important;
-                padding: 6px 12px !important;
-                min-height: 36px !important;
-                height: 36px !important;
-                box-shadow: none !important;
-            }
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button p {
-                visibility: visible !important;
-                color: #0369a1 !important;
-                margin: 0 !important;
-            }
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover {
-                background-color: #e0f2fe !important;
-                border-color: #00a8e8 !important;
-                color: #00a8e8 !important;
-            }
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover p {
-                color: #00a8e8 !important;
+            [data-testid="stSidebar"] button[key="btn_hidden_open_sticky_note"] {
+                display: none !important;
             }
         </style>
-        <div id="sticky-note-btn-anchor"></div>
         """, unsafe_allow_html=True)
-        if st.button(btn_label, key="btn_open_sticky_note_popup", use_container_width=True):
+        if st.button("open_sticky_note_trigger", key="btn_hidden_open_sticky_note"):
             show_sticky_note_editor_modal()
         
         st.markdown("""
@@ -1333,17 +1305,36 @@ else:
         )
         menu_selection = st.session_state['menu_selection']
         
+        has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
+        btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
         lang = st.session_state.get('lang', 'VN')
         st.markdown(f"""
     <div class='sidebar-footer-container' data-lang='{lang}'>
+        <div id='sidebar-sticky-note-btn' style='
+            margin: 0 auto 15px auto;
+            width: 70%;
+            background: #f8fafc;
+            border: 1px dashed #0284c7;
+            color: #0369a1;
+            font-weight: 600;
+            font-size: 13px;
+            border-radius: 8px;
+            padding: 7px 10px;
+            cursor: pointer;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0, 168, 232, 0.1);
+            transition: all 0.2s ease;
+        '>
+            {btn_label}
+        </div>
         <div id='sidebar-clock' style='
             text-align: center;
-            margin: 0 auto 30px auto; /* Increased bottom margin from 20px to 30px to shift it up */
-            width: 65%; /* Reduced width from 80% */
+            margin: 0 auto 25px auto;
+            width: 65%;
             background: linear-gradient(145deg, #ffffff, #f0f8ff);
             border: 1px solid rgba(0, 168, 232, 0.3);
-            border-radius: 12px; /* Smaller border radius */
-            padding: 8px 8px; /* Reduced padding */
+            border-radius: 12px;
+            padding: 8px 8px;
             box-shadow: 0 3px 10px rgba(0, 168, 232, 0.1);
             color: #00a8e8;
             transition: all 0.3s ease;
@@ -1371,7 +1362,7 @@ else:
                     }
                     if(elContainer && elContainer.classList.contains('element-container')) {
                         elContainer.style.position = 'fixed';
-                        elContainer.style.bottom = '40px'; /* Raised from 20px */
+                        elContainer.style.bottom = '30px';
                         elContainer.style.zIndex = '999';
                         
                         const updateWidth = () => {
@@ -1390,6 +1381,29 @@ else:
                             updateWidth();
                         });
                         resizeObserver.observe(sidebar);
+                        
+                        // Sticky Note Button Logic
+                        const noteBtn = doc.getElementById('sidebar-sticky-note-btn');
+                        if (noteBtn) {
+                            noteBtn.onmouseenter = () => {
+                                noteBtn.style.background = '#e0f2fe';
+                                noteBtn.style.borderColor = '#00a8e8';
+                                noteBtn.style.color = '#00a8e8';
+                            };
+                            noteBtn.onmouseleave = () => {
+                                noteBtn.style.background = '#f8fafc';
+                                noteBtn.style.borderColor = '#0284c7';
+                                noteBtn.style.color = '#0369a1';
+                            };
+                            noteBtn.onclick = () => {
+                                const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
+                                stBtns.forEach(b => {
+                                    if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
+                                        b.click();
+                                    }
+                                });
+                            };
+                        }
                         
                         // Clock Logic
                         const timeEl = doc.getElementById('clock-time');
