@@ -1072,13 +1072,8 @@ def show_sticky_note_editor_modal():
     )
     st.session_state['sidebar_sticky_note'] = note_val
 
-    col_save, col_exit = st.columns([3.6, 6.4], gap="small")
-    with col_save:
-        if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
-            st.rerun()
-    with col_exit:
-        if st.button(t("🚪 Kiểm tra trước khi tắt web", "🚪 終了前チェック"), key="btn_popup_check_exit", use_container_width=True):
-            show_sticky_note_exit_modal()
+    if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
+        st.rerun()
 
 
 if 'current_page' not in st.session_state:
@@ -1340,6 +1335,8 @@ else:
         """, unsafe_allow_html=True)
         if st.button("open_sticky_note_trigger", key="btn_hidden_open_sticky_note"):
             show_sticky_note_editor_modal()
+        if st.button("open_sticky_note_exit_trigger", key="btn_hidden_open_exit_check"):
+            show_sticky_note_exit_modal()
         
         has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
         btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
@@ -1439,6 +1436,25 @@ else:
                                     }
                                 });
                             };
+                        }
+                        
+                        // Automatic Exit Check when intending to leave / close web
+                        if (!window.parent._otStickyNoteExitAttached) {
+                            window.parent._otStickyNoteExitAttached = true;
+                            window.parent.document.addEventListener('mouseleave', (e) => {
+                                if (e.clientY <= 10 && !window.parent._otExitModalFired) {
+                                    const hasNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note') || '';
+                                    if (hasNote.trim().length > 0) {
+                                        window.parent._otExitModalFired = true;
+                                        const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
+                                        stBtns.forEach(b => {
+                                            if (b.innerText && b.innerText.includes('open_sticky_note_exit_trigger')) {
+                                                b.click();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
                         }
                         
                         // Clock Logic
