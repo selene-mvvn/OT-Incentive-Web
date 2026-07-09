@@ -224,7 +224,7 @@ def render_ot_excel():
                 
                 st.markdown(f"""
                 <h4 style="font-size: 18px; font-weight: 600; color: #444; margin: 0 0 6px 0;">{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>
-                <div style="background: linear-gradient(135deg, #00b0f0 0%, #0088cc 100%); border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 18px 22px; margin: 0 0 20px 0; box-shadow: 0 6px 18px rgba(0, 176, 240, 0.25);">
+                <div style="background: #00b0f0; border: 1px solid rgba(255,255,255,0.3); border-radius: 12px; padding: 18px 22px; margin: 0 0 20px 0; box-shadow: 0 6px 18px rgba(0, 176, 240, 0.25);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 12px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <span style="font-size: 19px;">📋</span>
