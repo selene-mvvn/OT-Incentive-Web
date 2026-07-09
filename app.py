@@ -975,18 +975,18 @@ def show_sticky_note_exit_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    /* Lock modal width to a balanced 530px compact size */
+    /* Lock modal width to a balanced 520px compact size */
     div[data-testid="stModal"] > div:nth-child(2),
     div[data-testid="stModal"] > div:nth-child(2) > div,
     div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
-        width: 530px !important;
-        min-width: 530px !important;
+        width: 520px !important;
+        min-width: 520px !important;
         max-width: 95vw !important;
         margin: auto !important;
-        overflow: visible !important;
+        box-sizing: border-box !important;
     }
     [role="dialog"] > div,
     [role="dialog"] div[data-testid="stDialogContent"],
@@ -994,7 +994,6 @@ def show_sticky_note_exit_modal():
         width: 100% !important;
         max-width: 100% !important;
         box-sizing: border-box !important;
-        overflow: visible !important;
     }
     /* Ensure blue title banner stretches 100% across dialog header */
     [role="dialog"] header[data-testid="stDialogHeader"],
@@ -1005,6 +1004,7 @@ def show_sticky_note_exit_modal():
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
+        box-sizing: border-box !important;
     }
     [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"],
@@ -1033,11 +1033,12 @@ def show_sticky_note_exit_modal():
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
+        box-sizing: border-box !important;
     }
     [role="dialog"] button p,
     [data-testid="stDialog"] button p {
         white-space: nowrap !important;
-        font-size: 13.2px !important;
+        font-size: 13px !important;
         font-weight: 600 !important;
         text-align: center !important;
         margin: 0 !important;
@@ -1054,11 +1055,14 @@ def show_sticky_note_exit_modal():
             border-left: 5px solid #eab308;
             padding: 14px 18px;
             border-radius: 8px;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
             color: #713f12;
             font-size: 14.5px;
             line-height: 1.6;
             box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+            width: 100%;
+            box-sizing: border-box;
+            word-break: break-word;
         '>
             <div style='font-weight: bold; margin-bottom: 6px; color: #854d0e;'>📌 {t('Nội dung ghi chú hiện tại của bạn:', '現在のメモ内容:')}</div>
             <div style='white-space: pre-wrap; font-size: 15px; color: #1e293b;'>{note_content}</div>
@@ -1070,7 +1074,7 @@ def show_sticky_note_exit_modal():
 
     col_done, col_later = st.columns(2, gap="small")
     with col_done:
-        if st.button(t("✅ Xong rồi (Xóa & Tắt web)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
+        if st.button(t("✅ Xong (Xóa & Tắt)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
@@ -1082,7 +1086,7 @@ def show_sticky_note_exit_modal():
             """, height=0)
             st.rerun()
     with col_later:
-        if st.button(t("⏳ Để hôm sau (Tắt web)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
+        if st.button(t("⏳ Để hôm sau (Tắt)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
@@ -1090,7 +1094,7 @@ def show_sticky_note_exit_modal():
                 </script>
             """, height=0)
 
-    if st.button(t("🛑 Chưa xong (Ở lại làm tiếp)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
+    if st.button(t("🛑 Chưa xong (Ở lại trang)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
         st.rerun()
 
 
