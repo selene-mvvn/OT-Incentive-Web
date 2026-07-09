@@ -968,11 +968,21 @@ def show_sticky_note_exit_modal():
         align-items: center !important;
         justify-content: center !important;
     }
+    div[data-testid="stModal"] > div,
     [role="dialog"],
     [data-testid="stDialog"] {
-        width: 760px !important;
+        width: 780px !important;
+        min-width: 780px !important;
         max-width: 95vw !important;
         margin: auto !important;
+        overflow: visible !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: visible !important;
     }
     /* Ensure blue title banner with white text and no wrap */
     [role="dialog"] [data-testid="stDialogTitle"],
@@ -981,10 +991,10 @@ def show_sticky_note_exit_modal():
     [data-testid="stDialog"] h2:first-of-type {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
-        padding: 14px 22px !important;
+        padding: 14px 20px !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
-        font-size: 19px !important;
+        font-size: 18.5px !important;
         margin-top: 0px !important;
         margin-bottom: 8px !important;
         width: 100% !important;
@@ -996,7 +1006,8 @@ def show_sticky_note_exit_modal():
     /* Keep dialog buttons strictly on 1 line without wrapping */
     [role="dialog"] button,
     [data-testid="stDialog"] button {
-        padding: 8px 6px !important;
+        padding: 9px 4px !important;
+        width: 100% !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
@@ -1004,7 +1015,7 @@ def show_sticky_note_exit_modal():
     [role="dialog"] button p,
     [data-testid="stDialog"] button p {
         white-space: nowrap !important;
-        font-size: 13.5px !important;
+        font-size: 13px !important;
         font-weight: 600 !important;
         text-align: center !important;
         margin: 0 !important;
@@ -1049,7 +1060,7 @@ def show_sticky_note_exit_modal():
             """, height=0)
             st.rerun()
     with col_later:
-        if st.button(t("⏳ Để hôm sau (Tiếp tục tắt web)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
+        if st.button(t("⏳ Để hôm sau (Tắt web)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
