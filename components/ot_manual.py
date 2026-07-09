@@ -1055,44 +1055,43 @@ def render_project_data():
             
             clean_order_name = pure_name if 'pure_name' in locals() else order_name
             
-            if clean_order_name:
-                proj_recs = [r for r in st.session_state.get('ot_records', []) if str(r.get('order_name', '')).strip() == str(clean_order_name).strip()]
-                total_proj_hrs = sum(float(r.get('ot_hours', 0)) for r in proj_recs)
-                total_proj_cost = 0
-                for r in proj_recs:
-                    for k, v in r.items():
-                        if str(k).endswith('%'):
-                            try: total_proj_cost += float(v)
-                            except: pass
-                emp_set = len(set(str(r.get('employee_name', '')) for r in proj_recs if r.get('employee_name')))
-                
-                border_color = "#00B0F0"
-                card_title = f"{t('NGÂN SÁCH OT DỰ ÁN ĐANG CHỌN', '選択中の案件OT予算集計')}: {clean_order_name}"
-                st.markdown(f"""
-                    <div style='
-                        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-                        border-radius: 8px;
-                        border-left: 5px solid {border_color};
-                        padding: 12px 18px;
-                        margin-top: 15px;
-                        margin-bottom: 5px;
-                        box-shadow: 0 2px 4px rgba(0, 176, 240, 0.1);
-                    '>
-                        <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;'>
-                            <div style='font-size: 14.5px; font-weight: 700; color: #0369a1;'>
-                                <span class="material-symbols-rounded" style="vertical-align: middle; color: #00B0F0; margin-right: 6px; font-size: 20px;">analytics</span>
-                                <span style="vertical-align: middle;">{card_title}</span>
-                            </div>
-                            <div style='display: flex; gap: 18px; font-size: 13.5px; color: #334155; align-items: center;'>
-                                <div><b>{total_proj_hrs:,.1f}</b> {t('giờ OT', 'OT時間')} ({len(proj_recs)} {t('bản ghi', '件')})</div>
-                                <div style='color: #cbd5e1;'>•</div>
-                                <div><b>{emp_set}</b> {t('nhân sự', '名')}</div>
-                                <div style='color: #cbd5e1;'>•</div>
-                                <div>{t('Chi phí ước tính', '予想支給額')}: <b style='color: #0284c7; font-size: 15px;'>{total_proj_cost:,.0f} VNĐ</b></div>
-                            </div>
+            proj_recs = [r for r in st.session_state.get('ot_records', []) if str(r.get('order_name', '')).strip() == str(clean_order_name).strip()] if clean_order_name else st.session_state.get('ot_records', [])
+            total_proj_hrs = sum(float(r.get('ot_hours', 0)) for r in proj_recs)
+            total_proj_cost = 0
+            for r in proj_recs:
+                for k, v in r.items():
+                    if str(k).endswith('%'):
+                        try: total_proj_cost += float(v)
+                        except: pass
+            emp_set = len(set(str(r.get('employee_name', '')) for r in proj_recs if r.get('employee_name')))
+            
+            border_color = "#00B0F0"
+            card_title = f"{t('NGÂN SÁCH OT DỰ ÁN ĐANG CHỌN', '選択中の案件OT予算集計')}: {clean_order_name}" if clean_order_name else t('TỔNG NGÂN SÁCH OT TRONG BẢNG CHỜ XUẤT', '待機リスト全体のOT予算集計')
+            st.markdown(f"""
+                <div style='
+                    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                    border-radius: 8px;
+                    border-left: 5px solid {border_color};
+                    padding: 12px 18px;
+                    margin-top: 15px;
+                    margin-bottom: 10px;
+                    box-shadow: 0 2px 4px rgba(0, 176, 240, 0.1);
+                '>
+                    <div style='display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;'>
+                        <div style='font-size: 14.5px; font-weight: 700; color: #0369a1;'>
+                            <span class="material-symbols-rounded" style="vertical-align: middle; color: #00B0F0; margin-right: 6px; font-size: 20px;">analytics</span>
+                            <span style="vertical-align: middle;">{card_title}</span>
+                        </div>
+                        <div style='display: flex; gap: 18px; font-size: 13.5px; color: #334155; align-items: center;'>
+                            <div><b>{total_proj_hrs:,.1f}</b> {t('giờ OT', 'OT時間')} ({len(proj_recs)} {t('bản ghi', '件')})</div>
+                            <div style='color: #cbd5e1;'>•</div>
+                            <div><b>{emp_set}</b> {t('nhân sự', '名')}</div>
+                            <div style='color: #cbd5e1;'>•</div>
+                            <div>{t('Chi phí ước tính', '予想支給額')}: <b style='color: #0284c7; font-size: 15px;'>{total_proj_cost:,.0f} VNĐ</b></div>
                         </div>
                     </div>
-                """, unsafe_allow_html=True)
+                </div>
+            """, unsafe_allow_html=True)
         
             st.divider()
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CHI TIẾT TĂNG CA', '残業詳細')}</h3>", unsafe_allow_html=True)

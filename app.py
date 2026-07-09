@@ -1343,7 +1343,10 @@ else:
         st.session_state['last_rendered_tab'] = menu_selection
     
     if "OVERTIME" in menu_selection or "残業代計算" in menu_selection or menu_selection == t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"):
-        render_project_data()
+        import importlib
+        import components.ot_manual
+        importlib.reload(components.ot_manual)
+        components.ot_manual.render_project_data()
     elif menu_selection == t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"):
         render_ot_excel()
     elif menu_selection == t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"):
