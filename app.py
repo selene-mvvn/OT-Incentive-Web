@@ -1013,6 +1013,14 @@ def show_sticky_note_exit_modal():
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
     st.markdown("""<style>
+/* Make modal wider so 50-50 buttons fit all text without overflowing */
+[role="dialog"],
+[data-testid="stDialog"],
+div[data-modal-container="true"] > div {
+    min-width: 550px !important;
+    width: 550px !important;
+    max-width: 95vw !important;
+}
 /* Ensure blue title banner with white text */
 [role="dialog"] [data-testid="stDialogTitle"],
 [data-testid="stDialog"] [data-testid="stDialogTitle"] {
@@ -1030,18 +1038,21 @@ def show_sticky_note_editor_modal():
     box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
 }
 /* Eliminate white space below dialog title */
-[role="dialog"] [data-testid="stVerticalBlock"] > div:first-child,
-[data-testid="stDialog"] [data-testid="stVerticalBlock"] > div:first-child {
-    margin-bottom: -10px !important;
-}
 [role="dialog"] div[data-testid="stDialogContent"],
 [data-testid="stDialog"] div[data-testid="stDialogContent"] {
-    padding-top: 4px !important;
+    padding-top: 0px !important;
+}
+[role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
+[data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
+    display: none !important;
+    height: 0px !important;
+    margin: 0px !important;
+    padding: 0px !important;
 }
 /* Keep dialog buttons balanced and strictly on 1 line */
 [role="dialog"] button,
 [data-testid="stDialog"] button {
-    padding: 6px 4px !important;
+    padding: 6px 8px !important;
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
@@ -1049,7 +1060,7 @@ def show_sticky_note_editor_modal():
 [role="dialog"] button p,
 [data-testid="stDialog"] button p {
     white-space: nowrap !important;
-    font-size: 12.5px !important;
+    font-size: 13px !important;
     font-weight: 600 !important;
     text-align: center !important;
     margin: 0 !important;
@@ -1057,7 +1068,7 @@ def show_sticky_note_editor_modal():
 </style>""", unsafe_allow_html=True)
 
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
-    st.markdown(f"<div style='font-size: 13.5px; color: #475569; margin-top: 2px; margin-bottom: 6px;'>{desc_text}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size: 13.5px; color: #475569; margin-top: -8px; margin-bottom: 6px;'>{desc_text}</div>", unsafe_allow_html=True)
 
     note_val = st.text_area(
         t("Nội dung ghi chú", "メモ内容"),
