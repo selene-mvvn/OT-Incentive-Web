@@ -975,16 +975,16 @@ def show_sticky_note_exit_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    /* Lock modal width to exactly 600px compact size */
+    /* Lock modal width to a balanced 530px compact size */
     div[data-testid="stModal"] > div:nth-child(2),
     div[data-testid="stModal"] > div:nth-child(2) > div,
     div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
-        width: 600px !important;
-        min-width: 600px !important;
-        max-width: 600px !important;
+        width: 530px !important;
+        min-width: 530px !important;
+        max-width: 95vw !important;
         margin: auto !important;
         overflow: visible !important;
     }
@@ -1028,7 +1028,7 @@ def show_sticky_note_exit_modal():
     /* Keep dialog buttons strictly on 1 line without wrapping */
     [role="dialog"] button,
     [data-testid="stDialog"] button {
-        padding: 8px 2px !important;
+        padding: 9px 6px !important;
         width: 100% !important;
         display: flex !important;
         justify-content: center !important;
@@ -1037,7 +1037,7 @@ def show_sticky_note_exit_modal():
     [role="dialog"] button p,
     [data-testid="stDialog"] button p {
         white-space: nowrap !important;
-        font-size: 12.8px !important;
+        font-size: 13.2px !important;
         font-weight: 600 !important;
         text-align: center !important;
         margin: 0 !important;
@@ -1063,14 +1063,14 @@ def show_sticky_note_exit_modal():
             <div style='font-weight: bold; margin-bottom: 6px; color: #854d0e;'>📌 {t('Nội dung ghi chú hiện tại của bạn:', '現在のメモ内容:')}</div>
             <div style='white-space: pre-wrap; font-size: 15px; color: #1e293b;'>{note_content}</div>
         </div>
-        <p style='font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 15px;'>
+        <p style='font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 14px;'>
             {t('Bạn đã thực hiện xong công việc trong ghi chú này chưa?', 'こちらの作業は完了しましたか？')}
         </p>
     """, unsafe_allow_html=True)
 
-    col_done, col_later, col_stay = st.columns(3, gap="small")
+    col_done, col_later = st.columns(2, gap="small")
     with col_done:
-        if st.button(t("✅ Xong rồi (Xóa)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
+        if st.button(t("✅ Xong rồi (Xóa & Tắt web)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
@@ -1082,16 +1082,16 @@ def show_sticky_note_exit_modal():
             """, height=0)
             st.rerun()
     with col_later:
-        if st.button(t("⏳ Để hôm sau", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
+        if st.button(t("⏳ Để hôm sau (Tắt web)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
                     window.parent.close();
                 </script>
             """, height=0)
-    with col_stay:
-        if st.button(t("🛑 Chưa (Ở lại)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
-            st.rerun()
+
+    if st.button(t("🛑 Chưa xong (Ở lại làm tiếp)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
+        st.rerun()
 
 
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
