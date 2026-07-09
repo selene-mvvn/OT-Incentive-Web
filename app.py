@@ -1136,6 +1136,44 @@ else:
         menu_title = t("MENU", "メニュー")
         st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; font-size: 18px !important; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
         
+        has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
+        btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
+        st.markdown("""
+        <style>
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button {
+                background-color: #f8fafc !important;
+                background-image: none !important;
+                border: 1px dashed #0284c7 !important;
+                color: #0369a1 !important;
+                font-weight: 600 !important;
+                font-size: 13.5px !important;
+                border-radius: 8px !important;
+                margin-top: 4px !important;
+                margin-bottom: 8px !important;
+                padding: 6px 12px !important;
+                min-height: 36px !important;
+                height: 36px !important;
+                box-shadow: none !important;
+            }
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button p {
+                visibility: visible !important;
+                color: #0369a1 !important;
+                margin: 0 !important;
+            }
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover {
+                background-color: #e0f2fe !important;
+                border-color: #00a8e8 !important;
+                color: #00a8e8 !important;
+            }
+            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover p {
+                color: #00a8e8 !important;
+            }
+        </style>
+        <div id="sticky-note-btn-anchor"></div>
+        """, unsafe_allow_html=True)
+        if st.button(btn_label, key="btn_open_sticky_note_popup", use_container_width=True):
+            show_sticky_note_editor_modal()
+        
         st.markdown("""
         <style>
             [data-testid="stSidebar"] div[role="radiogroup"] span.material-symbols-rounded,
@@ -1294,42 +1332,6 @@ else:
             label_visibility="collapsed"
         )
         menu_selection = st.session_state['menu_selection']
-        
-        has_note = bool(st.session_state.get('sidebar_sticky_note', '').strip())
-        btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
-        st.markdown("""
-        <style>
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button {
-                background-color: #f8fafc !important;
-                background-image: none !important;
-                border: 1px dashed #0284c7 !important;
-                color: #0369a1 !important;
-                font-weight: 600 !important;
-                font-size: 13.5px !important;
-                border-radius: 8px !important;
-                margin-top: 6px !important;
-                padding: 6px 12px !important;
-                min-height: 36px !important;
-                height: 36px !important;
-                box-shadow: none !important;
-            }
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button p {
-                visibility: visible !important;
-                color: #0369a1 !important;
-            }
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover {
-                background-color: #e0f2fe !important;
-                border-color: #00a8e8 !important;
-                color: #00a8e8 !important;
-            }
-            div.element-container:has(#sticky-note-btn-anchor) + div.element-container button:hover p {
-                color: #00a8e8 !important;
-            }
-        </style>
-        <div id="sticky-note-btn-anchor"></div>
-        """, unsafe_allow_html=True)
-        if st.button(btn_label, key="btn_open_sticky_note_popup", use_container_width=True):
-            show_sticky_note_editor_modal()
         
         lang = st.session_state.get('lang', 'VN')
         st.markdown(f"""
