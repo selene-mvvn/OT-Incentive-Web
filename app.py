@@ -994,6 +994,10 @@ def show_sticky_note_exit_modal():
         justify-content: center !important;
         align-items: center !important;
     }
+    /* Guarantee only 1 modal window is ever displayed */
+    div[data-testid="stModal"] ~ div[data-testid="stModal"] {
+        display: none !important;
+    }
     </style>""", unsafe_allow_html=True)
 
     note_content = st.session_state.get('sidebar_sticky_note', '').strip()
@@ -1043,6 +1047,13 @@ def show_sticky_note_exit_modal():
             """, height=0)
     with col_stay:
         if st.button(t("🛑 Chưa (Ở lại trang web)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
+            st.session_state['exit_check_modal_opened'] = False
+            import streamlit.components.v1 as components
+            components.html("""
+                <script>
+                    window.parent.sessionStorage.removeItem('ot_exit_modal_fired');
+                </script>
+            """, height=0)
             st.rerun()
 
 
@@ -1498,14 +1509,16 @@ else:
                             window.parent._otStickyNoteExitAttached = true;
                             const triggerExitCheck = () => {
                                 const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                if (activeNote && !window.top._otExitModalFired) {
-                                    window.top._otExitModalFired = true;
+                                const alreadyFired = window.parent.sessionStorage.getItem('ot_exit_modal_fired');
+                                if (activeNote && !alreadyFired) {
+                                    window.parent.sessionStorage.setItem('ot_exit_modal_fired', 'true');
                                     const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
-                                    stBtns.forEach(b => {
+                                    for (let b of stBtns) {
                                         if (b.innerText && b.innerText.includes('open_sticky_note_exit_trigger')) {
                                             b.click();
+                                            break;
                                         }
-                                    });
+                                    }
                                 }
                             };
                             window.parent.document.addEventListener('mouseleave', (e) => {
