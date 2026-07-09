@@ -11,6 +11,11 @@ def show_mini_edit_dialog(data_type, df):
             div[role="dialog"] {{
                 transform: translateY(8vh);
             }}
+            [role="dialog"] [data-testid="stDialogHeader"],
+            [data-testid="stDialog"] [data-testid="stDialogHeader"] {{
+                padding-bottom: 0px !important;
+                margin-bottom: 0px !important;
+            }}
             [role="dialog"] [data-testid="stDialogTitle"],
             [data-testid="stDialog"] [data-testid="stDialogTitle"],
             [role="dialog"] h2:first-of-type,
@@ -22,7 +27,7 @@ def show_mini_edit_dialog(data_type, df):
                 font-weight: 700 !important;
                 font-size: 22px !important;
                 margin-top: 0px !important;
-                margin-bottom: 12px !important;
+                margin-bottom: 0px !important;
                 width: 100% !important;
                 box-sizing: border-box !important;
                 display: block !important;
@@ -60,14 +65,21 @@ def show_mini_edit_dialog(data_type, df):
             }}
             div[role="dialog"] .stButton button p,
             div[role="dialog"] div[data-testid="stButton"] button p,
+            [role="dialog"] [data-testid="stDialogBody"] > div > div:first-child,
+            [data-testid="stDialog"] [data-testid="stDialogBody"] > div > div:first-child {{
+                margin-top: -10px !important;
+                padding-top: 0px !important;
+            }}
             div[data-testid="stModal"] .stButton button p,
             div[data-testid="stDialog"] .stButton button p {{
                 color: inherit !important;
                 font-weight: bold !important;
             }}
         </style>
+        <div style="margin-top: 4px; margin-bottom: 8px; color: #64748b; font-size: 13.5px;">
+            {t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。")}
+        </div>
     """, unsafe_allow_html=True)
-    st.caption(t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。"))
     
     date_col = 'ot_date' if data_type == 'ot' else 'date'
     if date_col in df.columns:
