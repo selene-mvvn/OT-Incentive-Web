@@ -959,7 +959,7 @@ def save_sticky_note(note_text):
         pass
 
 
-@st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"), width="large")
+@st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
 def show_sticky_note_exit_modal():
     st.markdown("""<style>
     /* Full-screen backdrop overlay filling entire viewport */
@@ -975,13 +975,13 @@ def show_sticky_note_exit_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    /* Expand modal dialog window so all 3 columns fit perfectly */
+    /* Set dialog window width to 680px matching title banner perfectly */
     div[data-testid="stModal"] > div:nth-child(2),
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
-        width: 860px !important;
-        min-width: 860px !important;
+        width: 680px !important;
+        min-width: 680px !important;
         max-width: 95vw !important;
         margin: auto !important;
         overflow: visible !important;
@@ -1004,7 +1004,7 @@ def show_sticky_note_exit_modal():
         padding: 14px 20px !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
-        font-size: 18.5px !important;
+        font-size: 18px !important;
         margin-top: 0px !important;
         margin-bottom: 8px !important;
         width: 100% !important;
@@ -1016,7 +1016,7 @@ def show_sticky_note_exit_modal():
     /* Keep dialog buttons strictly on 1 line without wrapping */
     [role="dialog"] button,
     [data-testid="stDialog"] button {
-        padding: 9px 4px !important;
+        padding: 8px 2px !important;
         width: 100% !important;
         display: flex !important;
         justify-content: center !important;
@@ -1025,7 +1025,7 @@ def show_sticky_note_exit_modal():
     [role="dialog"] button p,
     [data-testid="stDialog"] button p {
         white-space: nowrap !important;
-        font-size: 13px !important;
+        font-size: 12.8px !important;
         font-weight: 600 !important;
         text-align: center !important;
         margin: 0 !important;
@@ -1058,7 +1058,7 @@ def show_sticky_note_exit_modal():
 
     col_done, col_later, col_stay = st.columns(3, gap="small")
     with col_done:
-        if st.button(t("✅ Xong rồi (Xóa & Tắt web)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
+        if st.button(t("✅ Xong rồi (Xóa & Tắt)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
@@ -1078,7 +1078,7 @@ def show_sticky_note_exit_modal():
                 </script>
             """, height=0)
     with col_stay:
-        if st.button(t("🛑 Chưa (Ở lại trang web)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
+        if st.button(t("🛑 Chưa (Ở lại trang)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
             st.rerun()
 
 
