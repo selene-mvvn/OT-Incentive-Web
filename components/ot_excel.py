@@ -223,8 +223,8 @@ def render_ot_excel():
                 card_title = t("BẢNG KIỂM TRA & ĐỐI CHIẾU CỘT DỮ LIỆU TỰ ĐỘNG", "データ列自動認識・検証プレビュー") if is_auto else t("BẢNG KIỂM TRA CẤU HÌNH GHÉP CỘT DỮ LIỆU", "列マッピング設定検証プレビュー")
                 
                 st.markdown(f"""
-                <h4 style="font-size: 18px; font-weight: 600; color: #444; margin: 0 0 16px 0;">{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>
-                <div style="background: #ffffff; border: 1px solid #cdeafd; border-radius: 12px; padding: 18px 22px; margin: 0 0 16px 0; box-shadow: 0 4px 16px rgba(0, 176, 240, 0.06);">
+                <h4 style="font-size: 18px; font-weight: 600; color: #444; margin: 0 0 6px 0;">{t('BƯỚC 2: XỬ LÝ', 'ステップ 2: 処理')}</h4>
+                <div style="background: #ffffff; border: 1px solid #cdeafd; border-radius: 12px; padding: 18px 22px; margin: 0 0 20px 0; box-shadow: 0 4px 16px rgba(0, 176, 240, 0.06);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid #e8f0f6; padding-bottom: 12px;">
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <span style="font-size: 19px;">📋</span>
