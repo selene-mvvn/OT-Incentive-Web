@@ -1111,12 +1111,17 @@ def render_project_data():
             else:
                 st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
             
-            date_mode = st.radio(
-                t("Chế độ nhập ngày OT", "残業日入力モード"),
-                [t("📌 1 ngày đơn lẻ", "📌 単日入力"), t("📅 Nhập liên tục nhiều ngày (Dải ngày)", "📅 期間・連続入力")],
-                horizontal=True,
-                key="ot_date_entry_mode"
-            )
+            col_dlbl, col_dopt = st.columns([2.3, 7.7], gap="small")
+            with col_dlbl:
+                st.markdown(f"<div style='padding-top: 8px; font-weight: 600; color: #1e293b; font-size: 14.5px;'>{t('Chế độ nhập ngày OT:', '残業日入力モード:')}</div>", unsafe_allow_html=True)
+            with col_dopt:
+                date_mode = st.radio(
+                    t("Chế độ nhập ngày OT", "残業日入力モード"),
+                    [t("📌 1 ngày đơn lẻ", "📌 単日入力"), t("📅 Nhập liên tục nhiều ngày (Dải ngày)", "📅 期間・連続入力")],
+                    horizontal=True,
+                    label_visibility="collapsed",
+                    key="ot_date_entry_mode"
+                )
             
             target_dates = []
             if date_mode == t("📅 Nhập liên tục nhiều ngày (Dải ngày)", "📅 期間・連続入力"):
