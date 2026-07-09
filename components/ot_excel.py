@@ -279,7 +279,7 @@ def render_ot_excel():
                         st.success(t(
                             f"Đã tự động nhận diện thành công: Ngày -> `{col_map['ngay']}`, Tên -> `{col_map['ten']}`, OT -> `{col_map['ot']}`, Lý do -> `{col_map['lydo']}`",
                             f"自動認識成功：日付 -> `{col_map['ngay']}`、名前 -> `{col_map['ten']}`、OT -> `{col_map['ot']}`、理由 -> `{col_map['lydo']}`"
-                        ), icon="✅")
+                        ), icon=":material/check_circle:")
                 
                 
                     # Prepare holidays list
