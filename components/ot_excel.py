@@ -147,26 +147,63 @@ def render_ot_excel():
                     horizontal=True
                 )
             
-                # Define column mapping heuristics immediately
+                # Multi-tier prioritized intelligent column detection
                 col_map_auto = {
                     "ot": None, "ngay": None, "ten": None, "lydo": None,
                     "loai_da": None, "ma_dh": None, "ma_dh_kh": None, "ten_dh": None, "quan_ly": None
                 }
-                for c in df.columns:
+                cols = df.columns
+
+                # 1. Cột Ngày OT (P1: Ngày OT/tăng ca/làm việc/thực hiện -> P2: Ngày/Date loại trừ ngày sinh, ngày tạo...)
+                for c in cols:
                     c_low = str(c).strip().lower()
-                    if col_map_auto["ngay"] is None and ("ngày" in c_low or "date" in c_low):
+                    if any(k in c_low for k in ["ngày ot", "ngày tăng ca", "ot date", "overtime date", "ngày làm việc", "ngày thực hiện"]):
                         col_map_auto["ngay"] = c
-                    elif col_map_auto["ten"] is None and (
-                        ("người" in c_low or "nhân viên" in c_low or "nhân sự" in c_low or "employee" in c_low or "tên" in c_low)
-                        and "mã" not in c_low and "code" not in c_low and "id" not in c_low
-                        and "đơn" not in c_low and "dự án" not in c_low and "quản lý" not in c_low and "khách" not in c_low
-                    ):
-                        col_map_auto["ten"] = c
-                    elif col_map_auto["lydo"] is None and ("lý do" in c_low or "reason" in c_low):
-                        col_map_auto["lydo"] = c
-                    elif col_map_auto["ot"] is None and ("ot" in c_low or "tăng ca" in c_low or "overtime" in c_low) and "lý do" not in c_low and "ngày" not in c_low:
+                        break
+                if col_map_auto["ngay"] is None:
+                    for c in cols:
+                        c_low = str(c).strip().lower()
+                        if ("ngày" in c_low or "date" in c_low) and not any(ex in c_low for ex in ["sinh", "tạo", "cập nhật", "vào làm", "bắt đầu", "kết thúc", "lý do"]):
+                            col_map_auto["ngay"] = c
+                            break
+
+                # 2. Cột Số giờ OT (P1: Số giờ OT/Giờ OT/Tăng ca -> P2: OT/Overtime loại trừ ngày, lý do)
+                for c in cols:
+                    c_low = str(c).strip().lower()
+                    if any(k in c_low for k in ["số giờ ot", "giờ ot", "giờ tăng ca", "ot hours", "tổng giờ ot"]):
                         col_map_auto["ot"] = c
-                    elif col_map_auto["loai_da"] is None and "loại" in c_low and "dự án" in c_low:
+                        break
+                if col_map_auto["ot"] is None:
+                    for c in cols:
+                        c_low = str(c).strip().lower()
+                        if ("ot" in c_low or "tăng ca" in c_low or "overtime" in c_low) and not any(ex in c_low for ex in ["lý do", "ngày", "date", "reason", "loại"]):
+                            col_map_auto["ot"] = c
+                            break
+
+                # 3. Cột Tên nhân viên
+                for c in cols:
+                    c_low = str(c).strip().lower()
+                    if any(k in c_low for k in ["tên nhân viên", "họ và tên", "người thực hiện", "staff name", "employee name"]):
+                        col_map_auto["ten"] = c
+                        break
+                if col_map_auto["ten"] is None:
+                    for c in cols:
+                        c_low = str(c).strip().lower()
+                        if any(k in c_low for k in ["người", "nhân viên", "nhân sự", "employee", "tên"]) and not any(ex in c_low for ex in ["mã", "code", "id", "đơn", "dự án", "quản lý", "khách", "file"]):
+                            col_map_auto["ten"] = c
+                            break
+
+                # 4. Cột Lý do OT
+                for c in cols:
+                    c_low = str(c).strip().lower()
+                    if any(k in c_low for k in ["lý do", "reason", "ghi chú", "note", "mô tả"]):
+                        col_map_auto["lydo"] = c
+                        break
+
+                # 5. Các cột dự án bổ sung
+                for c in cols:
+                    c_low = str(c).strip().lower()
+                    if col_map_auto["loai_da"] is None and "loại" in c_low and "dự án" in c_low:
                         col_map_auto["loai_da"] = c
                     elif col_map_auto["ma_dh_kh"] is None and "mã" in c_low and "đơn" in c_low and "khách" in c_low:
                         col_map_auto["ma_dh_kh"] = c
