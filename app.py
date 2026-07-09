@@ -975,15 +975,15 @@ def show_sticky_note_exit_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    /* Unlock large modal and lock width to exactly 680px matching title banner perfectly */
+    /* Lock modal width to exactly 580px compact size */
     div[data-testid="stModal"] > div:nth-child(2),
     div[data-testid="stModal"] > div:nth-child(2) > div,
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
-        width: 680px !important;
-        min-width: 680px !important;
-        max-width: 680px !important;
+        width: 580px !important;
+        min-width: 580px !important;
+        max-width: 580px !important;
         margin: auto !important;
         overflow: visible !important;
     }
@@ -995,19 +995,29 @@ def show_sticky_note_exit_modal():
         box-sizing: border-box !important;
         overflow: visible !important;
     }
-    /* Ensure blue title banner with white text and no wrap */
+    /* Ensure blue title banner stretches 100% across dialog header */
+    [role="dialog"] header[data-testid="stDialogHeader"],
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"],
+    [role="dialog"] div[data-testid="stDialogHeader"],
+    [data-testid="stDialog"] div[data-testid="stDialogHeader"] {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+    }
     [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"],
     [role="dialog"] h2:first-of-type,
     [data-testid="stDialog"] h2:first-of-type {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
-        padding: 14px 20px !important;
+        padding: 12px 16px !important;
         border-radius: 8px !important;
         font-weight: 700 !important;
-        font-size: 18px !important;
+        font-size: 17px !important;
         margin-top: 0px !important;
         margin-bottom: 8px !important;
+        flex: 1 1 auto !important;
         width: 100% !important;
         box-sizing: border-box !important;
         display: block !important;
@@ -1059,7 +1069,7 @@ def show_sticky_note_exit_modal():
 
     col_done, col_later, col_stay = st.columns(3, gap="small")
     with col_done:
-        if st.button(t("✅ Xong rồi (Xóa & Tắt)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
+        if st.button(t("✅ Xong rồi (Xóa)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
@@ -1071,7 +1081,7 @@ def show_sticky_note_exit_modal():
             """, height=0)
             st.rerun()
     with col_later:
-        if st.button(t("⏳ Để hôm sau (Tắt web)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
+        if st.button(t("⏳ Để hôm sau", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
@@ -1079,7 +1089,7 @@ def show_sticky_note_exit_modal():
                 </script>
             """, height=0)
     with col_stay:
-        if st.button(t("🛑 Chưa (Ở lại trang)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
+        if st.button(t("🛑 Chưa (Ở lại)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
             st.rerun()
 
 
