@@ -991,6 +991,7 @@ def show_sticky_note_exit_modal():
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         width: 100% !important;
+        padding-right: 18px !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] [data-testid="stDialogTitle"],
@@ -1145,6 +1146,7 @@ def show_sticky_note_editor_modal():
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         width: 100% !important;
+        padding-right: 18px !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] [data-testid="stDialogTitle"],
