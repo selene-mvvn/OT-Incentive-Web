@@ -318,7 +318,8 @@ def render_base_data():
                     adv_working_days += 1
                 curr_adv += datetime.timedelta(days=1)
 
-            adv_c1, adv_c2 = st.columns([7.8, 2.2])
+            st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
+            adv_c1, adv_c2 = st.columns([8.2, 1.8])
             with adv_c1:
                 st.markdown(f"""
                 <div style="
@@ -330,8 +331,8 @@ def render_base_data():
                     border: 1px solid #e2e8f0;
                     border-left: 3px solid #0ea5e9;
                     border-radius: 6px;
-                    padding: 5px 12px;
-                    margin-top: 8px;
+                    padding: 4px 12px;
+                    height: 34px;
                     font-size: 12.5px;
                     color: #334155;
                 ">
@@ -350,15 +351,16 @@ def render_base_data():
                 if abs(float(adv_working_days) - float(std_days_mo)) > 0.01 and adv_working_days > 0:
                     st.markdown("""
                     <style>
-                    div[data-testid='stHorizontalBlock'] button[key='btn_apply_adv_days'] {
-                        height: 30px !important;
-                        min-height: 30px !important;
+                    div.element-container:has(#apply-adv-anchor) + div.element-container button {
+                        height: 34px !important;
+                        min-height: 34px !important;
                         padding: 2px 10px !important;
                         font-size: 12px !important;
-                        border-radius: 14px !important;
-                        margin-top: 8px !important;
+                        border-radius: 17px !important;
+                        font-weight: 600 !important;
                     }
                     </style>
+                    <span id="apply-adv-anchor"></span>
                     """, unsafe_allow_html=True)
                     if st.button(t(f"⚡ Áp dụng {adv_working_days} ngày", f"⚡ {adv_working_days}日を適用"), key="btn_apply_adv_days", type="secondary", use_container_width=True):
                         st.session_state['ot_base_data']['standard_days'] = float(adv_working_days)
