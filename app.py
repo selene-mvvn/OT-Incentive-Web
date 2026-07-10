@@ -1474,12 +1474,13 @@ else:
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
+                transform: translateY(-20px) !important;
             }}
             [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button p {{
                 visibility: hidden !important;
             }}
             [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button:hover {{
-                transform: scale(1.05) !important;
+                transform: translateY(-20px) scale(1.05) !important;
                 transition: transform 0.3s !important;
                 background-color: transparent !important;
                 border: none !important;
