@@ -1101,64 +1101,99 @@ def show_sticky_note_exit_modal():
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
     st.markdown("""<style>
-/* Center dialog vertically and horizontally in the middle of screen */
-div[data-testid="stModal"] {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-[role="dialog"],
-[data-testid="stDialog"] {
-    width: 650px !important;
-    max-width: 95vw !important;
-    margin: auto !important;
-}
-/* Ensure blue title banner with white text */
-[role="dialog"] [data-testid="stDialogTitle"],
-[data-testid="stDialog"] [data-testid="stDialogTitle"] {
-    background-color: #00B0F0 !important;
-    color: #ffffff !important;
-    padding: 12px 20px !important;
-    border-radius: 8px !important;
-    font-weight: 700 !important;
-    font-size: 18px !important;
-    margin-top: 0px !important;
-    margin-bottom: 0px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    display: block !important;
-    white-space: nowrap !important;
-    box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
-}
-/* Eliminate white space below dialog title */
-[role="dialog"] div[data-testid="stDialogContent"],
-[data-testid="stDialog"] div[data-testid="stDialogContent"] {
-    padding-top: 0px !important;
-}
-[role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
-[data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
-    display: none !important;
-    height: 0px !important;
-    margin: 0px !important;
-    padding: 0px !important;
-}
-/* Keep dialog buttons balanced and strictly on 1 line */
-[role="dialog"] button,
-[data-testid="stDialog"] button {
-    padding: 6px 4px !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-[role="dialog"] button p,
-[data-testid="stDialog"] button p {
-    white-space: nowrap !important;
-    font-size: 12.5px !important;
-    font-weight: 600 !important;
-    text-align: center !important;
-    margin: 0 !important;
-}
-</style>""", unsafe_allow_html=True)
+    /* Full-screen backdrop overlay filling entire viewport */
+    div[data-testid="stModal"] {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    div[data-testid="stModal"] > div:first-child {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+    }
+    /* Lock modal width to a balanced 520px compact size */
+    div[data-testid="stModal"] > div:nth-child(2),
+    div[data-testid="stModal"] > div:nth-child(2) > div,
+    div[data-testid="stModal"] > div:nth-child(2) > div > div,
+    div[data-testid="stModal"] [role="dialog"],
+    div[data-testid="stModal"] [data-testid="stDialog"],
+    [role="dialog"] {
+        width: 520px !important;
+        min-width: 520px !important;
+        max-width: 95vw !important;
+        margin: auto !important;
+        box-sizing: border-box !important;
+    }
+    [role="dialog"] > div,
+    [role="dialog"] div[data-testid="stDialogContent"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] {
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    /* Ensure blue title banner stretches 100% across dialog header */
+    [role="dialog"] header[data-testid="stDialogHeader"],
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"],
+    [role="dialog"] div[data-testid="stDialogHeader"],
+    [data-testid="stDialog"] div[data-testid="stDialogHeader"] {
+        width: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        box-sizing: border-box !important;
+    }
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
+        background-color: #00B0F0 !important;
+        color: #ffffff !important;
+        padding: 12px 16px !important;
+        border-radius: 8px !important;
+        font-weight: 700 !important;
+        font-size: 17px !important;
+        margin-top: 0px !important;
+        margin-bottom: 8px !important;
+        flex: 1 1 auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        display: block !important;
+        white-space: nowrap !important;
+        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    }
+    /* Eliminate white space below dialog title */
+    [role="dialog"] div[data-testid="stDialogContent"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] {
+        padding-top: 0px !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
+        display: none !important;
+        height: 0px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
+    /* Keep dialog buttons balanced and strictly on 1 line */
+    [role="dialog"] button,
+    [data-testid="stDialog"] button {
+        padding: 8px 12px !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+    }
+    [role="dialog"] button p,
+    [data-testid="stDialog"] button p {
+        white-space: nowrap !important;
+        font-size: 13.2px !important;
+        font-weight: 600 !important;
+        text-align: center !important;
+        margin: 0 !important;
+    }
+    </style>""", unsafe_allow_html=True)
 
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
     st.markdown(f"<div style='font-size: 13.5px; color: #475569; margin-top: -8px; margin-bottom: 6px;'>{desc_text}</div>", unsafe_allow_html=True)
