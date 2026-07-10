@@ -286,6 +286,94 @@ def render_base_data():
             with c4:
                 std_hrs = st.number_input(t("SỐ GIỜ CHUẨN / NGÀY", "1日の標準労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0)), step=0.5)
 
+            # Smart Workload Advisor Widget
+            holidays_list_adv = []
+            if 'holidays_df' in st.session_state['ot_base_data']:
+                hdf_adv = st.session_state['ot_base_data']['holidays_df']
+                if not hdf_adv.empty and 'Ngày nghỉ' in hdf_adv.columns:
+                    try:
+                        holidays_list_adv = pd.to_datetime(hdf_adv['Ngày nghỉ'], format='mixed', dayfirst=True).dt.date.tolist()
+                    except:
+                        holidays_list_adv = []
+
+            adv_total_days = max(0, (to_date - from_date).days + 1)
+            adv_weekend_days = 0
+            adv_holiday_days = 0
+            adv_working_days = 0
+
+            curr_adv = from_date
+            while curr_adv <= to_date:
+                is_wk = False
+                if curr_adv.weekday() < 5:
+                    is_wk = True
+                elif curr_adv.weekday() == 5:
+                    next_wk = curr_adv + datetime.timedelta(days=7)
+                    if next_wk.month != curr_adv.month:
+                        is_wk = True
+                if curr_adv in holidays_list_adv:
+                    adv_holiday_days += 1
+                elif not is_wk:
+                    adv_weekend_days += 1
+                else:
+                    adv_working_days += 1
+                curr_adv += datetime.timedelta(days=1)
+
+            st.markdown(f"""
+            <div style="
+                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+                border: 1px solid #e2e8f0;
+                border-left: 4px solid #0ea5e9;
+                border-radius: 10px;
+                padding: 14px 18px;
+                margin-top: 14px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            ">
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <span class="material-symbols-rounded" style="color: #0ea5e9; font-size: 20px; margin-right: 8px;">calendar_month</span>
+                    <span style="font-size: 13.5px; font-weight: 700; color: #0f172a;">
+                        {t("TRỢ LÝ THÔNG MINH: PHÂN TÍCH LỊCH LÀM VIỆC KỲ NÀY", "スマートアシスタント: 期間労働カレンダー分析")}
+                    </span>
+                </div>
+                <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 10px; font-size: 13px;">
+                    <div style="background: #ffffff; padding: 6px 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        📅 {t("Tổng thời gian:", "全期間:")} <b>{adv_total_days} {t('ngày', '日')}</b>
+                    </div>
+                    <div style="background: #ffffff; padding: 6px 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        🏖️ {t("Cuối tuần:", "休日:")} <b>{adv_weekend_days} {t('ngày', '日')}</b>
+                    </div>
+                    <div style="background: #ffffff; padding: 6px 12px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        🎊 {t("Ngày lễ:", "祭日:")} <b>{adv_holiday_days} {t('ngày', '日')}</b>
+                    </div>
+                    <div style="background: #eff6ff; padding: 6px 12px; border-radius: 6px; border: 1px solid #bfdbfe; color: #1e40af;">
+                        💼 {t("Làm việc thực tế:", "実労働日数:")} <b style="font-size: 14px;">{adv_working_days} {t('ngày', '日')}</b>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            adv_c1, adv_c2 = st.columns([7.5, 2.5])
+            with adv_c1:
+                if abs(float(adv_working_days) - float(std_days_mo)) > 0.01:
+                    st.markdown(f"""
+                    <div style="font-size: 12.8px; color: #475569; padding: 4px 0;">
+                        💡 <b>{t("Gợi ý định mức:", "提案:")}</b> {t(f"Kỳ từ <b>{from_date.strftime('%d/%m/%Y')}</b> đến <b>{to_date.strftime('%d/%m/%Y')}</b> có thực tế <b>{adv_working_days} ngày</b> làm việc (hiện nhập {std_days_mo} ngày).", f"選択期間は実労働 <b>{adv_working_days}日</b> です (現在設定: {std_days_mo}日)。")}
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div style="font-size: 12.8px; color: #15803d; padding: 4px 0;">
+                        ✅ <b>{t("Định mức hoàn hảo:", "完璧な設定:")}</b> {t(f"Số ngày chuẩn nhập vào ({std_days_mo} ngày) khớp 100% với lịch làm việc thực tế của kỳ này!", f"標準日数 ({std_days_mo}日) はカレンダーの実労働日数と完全に一致しています。")}
+                    </div>
+                    """, unsafe_allow_html=True)
+            with adv_c2:
+                if abs(float(adv_working_days) - float(std_days_mo)) > 0.01 and adv_working_days > 0:
+                    st.markdown("<style>div[data-testid='stHorizontalBlock'] button[key='btn_apply_adv_days'] { height: 32px !important; min-height: 32px !important; padding: 2px 10px !important; font-size: 12.5px !important; border-radius: 16px !important; }</style>", unsafe_allow_html=True)
+                    if st.button(t(f"⚡ Áp dụng chuẩn {adv_working_days} ngày", f"⚡ {adv_working_days}日を適用"), key="btn_apply_adv_days", type="secondary", use_container_width=True):
+                        st.session_state['ot_base_data']['standard_days'] = float(adv_working_days)
+                        save_base_data(st.session_state['ot_base_data'])
+                        st.session_state['pending_toast'] = t(f"Đã cập nhật số ngày chuẩn thành {adv_working_days} ngày!", f"標準日数を {adv_working_days}日 に更新しました！")
+                        st.rerun()
+
             st.markdown("<br>", unsafe_allow_html=True)
             head_col1, head_col2 = st.columns([7.8, 2.2])
             with head_col1:
