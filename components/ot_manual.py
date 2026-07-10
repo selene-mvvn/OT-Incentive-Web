@@ -339,6 +339,7 @@ def render_base_data():
                         font-size: 13.5px;
                         color: #0f4c64;
                         margin-top: 8px;
+                        margin-bottom: 16px;
                         box-shadow: 0 1px 3px rgba(0, 176, 240, 0.08);
                     ">
                         <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #0c5873;">
