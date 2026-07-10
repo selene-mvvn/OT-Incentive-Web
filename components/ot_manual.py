@@ -323,16 +323,21 @@ def render_base_data():
             div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] {
                 align-items: center !important;
             }
-            div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] button {
-                height: 38px !important;
-                min-height: 38px !important;
-                max-height: 38px !important;
-                padding: 0px 16px !important;
-                font-size: 12.8px !important;
-                border-radius: 19px !important;
+            div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] button,
+            div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] div[data-testid="stBaseButton-secondary"] button {
+                height: 40px !important;
+                min-height: 40px !important;
+                max-height: 40px !important;
+                padding: 0px 18px !important;
+                font-size: 13px !important;
+                border-radius: 20px !important;
                 font-weight: 600 !important;
                 margin: 0 !important;
                 white-space: nowrap !important;
+                line-height: 40px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
             }
             </style>
             <span id="adv-row-anchor"></span>
@@ -345,13 +350,13 @@ def render_base_data():
                     display: flex;
                     align-items: center;
                     flex-wrap: wrap;
-                    gap: 12px;
+                    gap: 14px;
                     background: #f8fafc;
                     border: 1px solid #e2e8f0;
-                    border-left: 3.5px solid #0ea5e9;
-                    border-radius: 8px;
-                    padding: 0 16px;
-                    height: 38px;
+                    border-left: 4px solid #0ea5e9;
+                    border-radius: 20px;
+                    padding: 0 18px;
+                    height: 40px;
                     font-size: 13px;
                     color: #334155;
                     margin: 0;
