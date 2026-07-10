@@ -1355,13 +1355,13 @@ def show_sticky_note_editor_modal():
 
     col_save, col_delete = st.columns(2, gap="small")
     with col_save:
-        if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
+        if st.button(t("Lưu & Đóng", "保存して閉じる"), icon=":material/save:", key="btn_save_close_note", use_container_width=True, type="primary"):
             save_sticky_note(note_val)
             st.session_state['sidebar_sticky_note'] = note_val
             st.session_state['pending_toast'] = t("Đã lưu ghi chú thành công!", "メモを保存しました！")
             st.rerun()
     with col_delete:
-        if st.button(t("🗑️ Xóa ghi chú", "🗑️ メモを削除"), key="btn_delete_sticky_note", use_container_width=True):
+        if st.button(t("Xóa ghi chú", "メモを削除"), icon=":material/delete:", key="btn_delete_sticky_note", use_container_width=True):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             st.session_state['pending_toast'] = t("Đã xóa ghi chú thành công!", "メモを削除しました！")
