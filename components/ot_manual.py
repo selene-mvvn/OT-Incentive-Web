@@ -461,19 +461,19 @@ def render_base_data():
             if st.session_state.get('mask_salary_mode', True):
                 st.markdown(f"""
                 <div style='
-                    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-                    border: 1px solid #93c5fd;
-                    border-left: 4px solid #2563eb;
+                    background: linear-gradient(135deg, #fffcf5 0%, #fff7ed 100%);
+                    border: 1px solid #fed7aa;
+                    border-left: 4px solid #f97316;
                     border-radius: 8px;
-                    padding: 8px 14px;
+                    padding: 9px 14px;
                     margin-bottom: 12px;
                     display: flex;
                     align-items: center;
-                    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.05);
+                    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.08);
                 '>
-                    <span class="material-symbols-rounded" style="color: #2563eb; font-size: 20px; margin-right: 10px;">lock</span>
-                    <div style='font-size: 13px; color: #1e40af;'>
-                        <b>{t("CHẾ ĐỘ BẢO MẬT TIỀN LƯƠNG ĐANG BẬT:", "給与プライバシーモード有効:")}</b> {t("Toàn bộ Lương cơ bản, Phụ cấp & Lương Gross đang được ẩn an toàn dưới dạng •••••• VNĐ. Bấm nút 'Hiện lương thực tế' ở trên để xem.", "基本給・手当・総支給額は •••••• VNĐ として安全に非表示化されています。上のボタンで表示できます。")}
+                    <span class="material-symbols-rounded" style="color: #ea580c; font-size: 20px; margin-right: 10px;">lock</span>
+                    <div style='font-size: 13px; color: #9a3412;'>
+                        <b style='color: #c2410c;'>{t("CHẾ ĐỘ BẢO MẬT TIỀN LƯƠNG ĐANG BẬT:", "給与プライバシーモード有効:")}</b> {t("Toàn bộ Lương cơ bản, Phụ cấp & Lương Gross đang được ẩn an toàn dưới dạng •••••• VNĐ. Bấm nút 'Hiện lương thực tế' ở trên để xem.", "基本給・手当・総支給額は •••••• VNĐ として安全に非表示化されています。上のボタンで表示できます。")}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
