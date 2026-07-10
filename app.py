@@ -1157,17 +1157,36 @@ def show_sticky_note_exit_modal():
             import streamlit.components.v1 as components
             components.html("""
                 <script>
-                    window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
-                    window.parent.close();
+                    try {
+                        window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                        window.parent._otExitModalFired = true;
+                        window.parent.onbeforeunload = null;
+                        window.top.onbeforeunload = null;
+                        window.top.open('', '_self', '');
+                        window.top.close();
+                        window.parent.close();
+                    } catch(e) {}
+                    setTimeout(function() {
+                        window.top.location.href = "about:blank";
+                    }, 150);
                 </script>
             """, height=0)
-            st.rerun()
     with col_later:
         if st.button(t("⏳ Để hôm sau (Tắt)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
-                    window.parent.close();
+                    try {
+                        window.parent._otExitModalFired = true;
+                        window.parent.onbeforeunload = null;
+                        window.top.onbeforeunload = null;
+                        window.top.open('', '_self', '');
+                        window.top.close();
+                        window.parent.close();
+                    } catch(e) {}
+                    setTimeout(function() {
+                        window.top.location.href = "about:blank";
+                    }, 150);
                 </script>
             """, height=0)
 
