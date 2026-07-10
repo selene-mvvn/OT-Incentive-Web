@@ -324,19 +324,22 @@ def render_base_data():
                 align-items: center !important;
             }
             div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] button {
-                height: 36px !important;
-                min-height: 36px !important;
-                padding: 0px 12px !important;
+                height: 30px !important;
+                min-height: 30px !important;
+                max-height: 30px !important;
+                padding: 0px 14px !important;
                 font-size: 12px !important;
-                border-radius: 18px !important;
+                border-radius: 15px !important;
                 font-weight: 600 !important;
                 margin: 0 !important;
+                white-space: nowrap !important;
+                line-height: 1 !important;
             }
             </style>
             <span id="adv-row-anchor"></span>
             """, unsafe_allow_html=True)
 
-            adv_c1, adv_c2 = st.columns([8.2, 1.8], vertical_alignment="center")
+            adv_c1, adv_c2 = st.columns([7.7, 2.3], vertical_alignment="center")
             with adv_c1:
                 st.markdown(f"""
                 <div style="
@@ -349,7 +352,7 @@ def render_base_data():
                     border-left: 3px solid #0ea5e9;
                     border-radius: 6px;
                     padding: 0 14px;
-                    height: 36px;
+                    height: 30px;
                     font-size: 12.5px;
                     color: #334155;
                     margin: 0;
