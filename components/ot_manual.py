@@ -318,7 +318,7 @@ def render_base_data():
                     adv_working_days += 1
                 curr_adv += datetime.timedelta(days=1)
 
-            adv_c1, adv_c2 = st.columns([7.7, 2.3], vertical_alignment="center")
+            adv_c1, adv_c2 = st.columns([7.7, 2.3])
             with adv_c1:
                 st.markdown(f"""
                 <div style="
@@ -366,7 +366,7 @@ def render_base_data():
                         font-size: 13px !important;
                         border-radius: 20px !important;
                         font-weight: 600 !important;
-                        margin: 0 !important;
+                        margin-top: 6px !important;
                         white-space: nowrap !important;
                         line-height: 40px !important;
                     }
