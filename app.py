@@ -1138,6 +1138,7 @@ def show_sticky_note_exit_modal():
         justify-content: center !important;
         margin: 0 !important;
         padding: 0 !important;
+        color: #ef4444 !important;
     }
     /* Icon in Xong button -> Green */
     [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button [data-testid="stIconMaterial"],
@@ -1152,13 +1153,6 @@ def show_sticky_note_exit_modal():
     [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded {
         color: #f59e0b !important;
-    }
-    /* Icon in Chưa xong button -> Red */
-    [role="dialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) [data-testid="stIconMaterial"],
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) [data-testid="stIconMaterial"],
-    [role="dialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) .material-symbols-rounded,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) .material-symbols-rounded {
-        color: #ef4444 !important;
     }
     </style>""", unsafe_allow_html=True)
 
