@@ -461,7 +461,7 @@ def render_base_data():
             if st.session_state.get('mask_salary_mode', True):
                 st.markdown(f"""
                 <div style='
-                    background: linear-gradient(135deg, #fffcfc 0%, #fef2f2 100%);
+                    background: #fef2f2;
                     border: 1px solid #fecaca;
                     border-left: 4px solid #ef4444;
                     border-radius: 8px;
