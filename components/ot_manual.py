@@ -318,31 +318,6 @@ def render_base_data():
                     adv_working_days += 1
                 curr_adv += datetime.timedelta(days=1)
 
-            st.markdown("""
-            <style>
-            div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] {
-                align-items: center !important;
-            }
-            div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] button,
-            div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] div[data-testid="stBaseButton-secondary"] button {
-                height: 40px !important;
-                min-height: 40px !important;
-                max-height: 40px !important;
-                padding: 0px 18px !important;
-                font-size: 13px !important;
-                border-radius: 20px !important;
-                font-weight: 600 !important;
-                margin: 0 !important;
-                white-space: nowrap !important;
-                line-height: 40px !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-            }
-            </style>
-            <span id="adv-row-anchor"></span>
-            """, unsafe_allow_html=True)
-
             adv_c1, adv_c2 = st.columns([7.7, 2.3], vertical_alignment="center")
             with adv_c1:
                 st.markdown(f"""
@@ -374,6 +349,30 @@ def render_base_data():
 
             with adv_c2:
                 if abs(float(adv_working_days) - float(std_days_mo)) > 0.01 and adv_working_days > 0:
+                    st.markdown("""
+                    <style>
+                    div.element-container:has(#apply-adv-anchor) {
+                        display: none !important;
+                    }
+                    div.element-container:has(#apply-adv-anchor) + div.element-container {
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+                    div.element-container:has(#apply-adv-anchor) + div.element-container button {
+                        height: 40px !important;
+                        min-height: 40px !important;
+                        max-height: 40px !important;
+                        padding: 0px 18px !important;
+                        font-size: 13px !important;
+                        border-radius: 20px !important;
+                        font-weight: 600 !important;
+                        margin: 0 !important;
+                        white-space: nowrap !important;
+                        line-height: 40px !important;
+                    }
+                    </style>
+                    <span id="apply-adv-anchor"></span>
+                    """, unsafe_allow_html=True)
                     if st.button(t(f"⚡ Áp dụng {adv_working_days} ngày", f"⚡ {adv_working_days}日を適用"), key="btn_apply_adv_days", type="secondary", use_container_width=True):
                         st.session_state['ot_base_data']['standard_days'] = float(adv_working_days)
                         save_base_data(st.session_state['ot_base_data'])
