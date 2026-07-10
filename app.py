@@ -1803,24 +1803,28 @@ else:
                             window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
                             window.parent._otExitModalFired = true;
                         }
+                        
+                        window.parent._otTriggerExitCheck = () => {
+                            const liveFooter = doc.querySelector('.sidebar-footer-container');
+                            const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
+                            if (isLiveActive && !window.parent._otExitModalFired) {
+                                window.parent._otExitModalFired = true;
+                                const stBtns = doc.querySelectorAll('button');
+                                stBtns.forEach(b => {
+                                    const txt = (b.innerText || b.textContent || '');
+                                    if (txt.includes('open_sticky_note_exit_trigger')) {
+                                        b.click();
+                                    }
+                                });
+                            }
+                        };
+
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
-                            const triggerExitCheck = () => {
-                                const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                const liveFooter = doc.querySelector('.sidebar-footer-container');
-                                const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
-                                if (activeNote && isLiveActive && !window.parent._otExitModalFired) {
-                                    window.parent._otExitModalFired = true;
-                                    const stBtns = doc.querySelectorAll('button');
-                                    stBtns.forEach(b => {
-                                        if (b.innerText && b.innerText.includes('open_sticky_note_exit_trigger')) {
-                                            b.click();
-                                        }
-                                    });
-                                }
-                            };
                             window.parent.document.addEventListener('mousemove', (e) => {
-                                if (e.clientY > 100) {
+                                if (e.clientY <= 25) {
+                                    if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
+                                } else if (e.clientY > 80) {
                                     const liveFooter = doc.querySelector('.sidebar-footer-container');
                                     const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
                                     if (isLiveActive) {
@@ -1829,31 +1833,26 @@ else:
                                 }
                             });
                             window.parent.document.addEventListener('mouseleave', (e) => {
-                                if (e.clientY <= 50) triggerExitCheck();
+                                if (e.clientY <= 50) {
+                                    if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
+                                }
                             });
                             window.parent.document.addEventListener('mouseout', (e) => {
-                                if (!e.relatedTarget && e.clientY <= 50) triggerExitCheck();
+                                if (!e.relatedTarget && e.clientY <= 50) {
+                                    if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
+                                }
                             });
-                            window.parent.onbeforeunload = function(e) {
-                                const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
+                            const checkUnload = function(e) {
                                 const liveFooter = doc.querySelector('.sidebar-footer-container');
                                 const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
-                                if (activeNote && isLiveActive && !window.parent._otExitModalFired) {
+                                if (isLiveActive && !window.parent._otExitModalFired) {
                                     e.preventDefault();
                                     e.returnValue = 'Bạn có Ghi chú nhắc việc cá nhân chưa hoàn thành! Bạn có chắc chắn muốn thoát web không?';
                                     return e.returnValue;
                                 }
                             };
-                            window.parent.addEventListener('beforeunload', function(e) {
-                                const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                const liveFooter = doc.querySelector('.sidebar-footer-container');
-                                const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
-                                if (activeNote && isLiveActive && !window.parent._otExitModalFired) {
-                                    e.preventDefault();
-                                    e.returnValue = 'Bạn có Ghi chú nhắc việc cá nhân chưa hoàn thành! Bạn có chắc chắn muốn thoát web không?';
-                                    return e.returnValue;
-                                }
-                            });
+                            window.parent.onbeforeunload = checkUnload;
+                            window.parent.addEventListener('beforeunload', checkUnload);
                         }
                         
                         // Clock Logic
