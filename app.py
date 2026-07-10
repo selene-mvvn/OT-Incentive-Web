@@ -1783,6 +1783,37 @@ else:
                                     return e.returnValue;
                                 }
                             });
+                            window.parent.document.addEventListener('click', (e) => {
+                                const targetBtn = e.target.closest('button');
+                                if (!targetBtn) return;
+                                const txt = targetBtn.innerText || '';
+                                if (txt.includes('XÓA & TẮT') || txt.includes('完了 (終了)')) {
+                                    window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                                    window.parent._otExitModalFired = true;
+                                    window.parent.onbeforeunload = null;
+                                    window.top.onbeforeunload = null;
+                                    try {
+                                        window.top.open('', '_self', '');
+                                        window.top.close();
+                                        window.parent.close();
+                                    } catch(err) {}
+                                    setTimeout(() => {
+                                        window.top.location.href = "about:blank";
+                                    }, 120);
+                                } else if (txt.includes('ĐỂ HÔM SAU (TẮT)') || txt.includes('明日に回す (終了)')) {
+                                    window.parent._otExitModalFired = true;
+                                    window.parent.onbeforeunload = null;
+                                    window.top.onbeforeunload = null;
+                                    try {
+                                        window.top.open('', '_self', '');
+                                        window.top.close();
+                                        window.parent.close();
+                                    } catch(err) {}
+                                    setTimeout(() => {
+                                        window.top.location.href = "about:blank";
+                                    }, 120);
+                                }
+                            }, true);
                         }
                         
                         // Clock Logic
