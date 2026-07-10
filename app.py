@@ -1050,21 +1050,29 @@ def show_sticky_note_exit_modal():
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        max-width: 100% !important;
         gap: 12px !important;
-        width: 100% !important;
-        padding: 0 !important;
         margin: 0 0 12px 0 !important;
-    }
-    [role="dialog"] [data-testid="stHorizontalBlock"] > div,
-    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div,
-    [role="dialog"] [data-testid="stColumn"],
-    [data-testid="stDialog"] [data-testid="stColumn"] {
-        flex: 1 1 0% !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: none !important;
         padding: 0 !important;
+    }
+    [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+        width: calc(50% - 6px) !important;
+        min-width: calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
+        flex: 0 0 calc(50% - 6px) !important;
         margin: 0 !important;
+        padding: 0 !important;
+    }
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div,
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
@@ -1250,21 +1258,29 @@ def show_sticky_note_editor_modal():
         display: flex !important;
         flex-direction: row !important;
         flex-wrap: nowrap !important;
+        justify-content: space-between !important;
+        align-items: stretch !important;
+        width: 100% !important;
+        max-width: 100% !important;
         gap: 12px !important;
-        width: 100% !important;
-        padding: 0 !important;
         margin: 0 0 12px 0 !important;
-    }
-    [role="dialog"] [data-testid="stHorizontalBlock"] > div,
-    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div,
-    [role="dialog"] [data-testid="stColumn"],
-    [data-testid="stDialog"] [data-testid="stColumn"] {
-        flex: 1 1 0% !important;
-        width: 100% !important;
-        min-width: 0 !important;
-        max-width: none !important;
         padding: 0 !important;
+    }
+    [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+        width: calc(50% - 6px) !important;
+        min-width: calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
+        flex: 0 0 calc(50% - 6px) !important;
         margin: 0 !important;
+        padding: 0 !important;
+    }
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div,
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
