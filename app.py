@@ -1044,11 +1044,21 @@ def show_sticky_note_exit_modal():
         stroke: #ffffff !important;
         color: #ffffff !important;
     }
-    /* Ensure 2 columns for buttons have exactly equal 50% width and balance */
+    /* Ensure 2 columns for buttons sit side-by-side on 1 row with equal 50% width */
+    [role="dialog"] [data-testid="stHorizontalBlock"],
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
     [role="dialog"] [data-testid="stHorizontalBlock"] > div,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
         flex: 1 1 0% !important;
-        width: 50% !important;
+        width: calc(50% - 6px) !important;
+        min-width: calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
@@ -1071,7 +1081,7 @@ def show_sticky_note_exit_modal():
     [role="dialog"] [data-testid="stVerticalBlock"] button *,
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button * {
         white-space: nowrap !important;
-        font-size: 13.5px !important;
+        font-size: 13.2px !important;
         font-weight: 700 !important;
         text-align: center !important;
         margin: 0 !important;
@@ -1228,11 +1238,21 @@ def show_sticky_note_editor_modal():
         stroke: #ffffff !important;
         color: #ffffff !important;
     }
-    /* Ensure 2 columns for buttons have exactly equal 50% width and balance */
+    /* Ensure 2 columns for buttons sit side-by-side on 1 row with equal 50% width */
+    [role="dialog"] [data-testid="stHorizontalBlock"],
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] {
+        display: flex !important;
+        flex-direction: row !important;
+        flex-wrap: nowrap !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
     [role="dialog"] [data-testid="stHorizontalBlock"] > div,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
         flex: 1 1 0% !important;
-        width: 50% !important;
+        width: calc(50% - 6px) !important;
+        min-width: calc(50% - 6px) !important;
+        max-width: calc(50% - 6px) !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
@@ -1255,7 +1275,7 @@ def show_sticky_note_editor_modal():
     [role="dialog"] [data-testid="stVerticalBlock"] button *,
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button * {
         white-space: nowrap !important;
-        font-size: 13.5px !important;
+        font-size: 13.2px !important;
         font-weight: 700 !important;
         text-align: center !important;
         margin: 0 !important;
