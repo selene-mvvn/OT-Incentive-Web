@@ -192,30 +192,14 @@ st.markdown("""
         background-color: #00B0F0;
     }
     
-    /* FORCE ALL STREAMLIT DIALOG MODALS TO BE EXACTLY CENTERED VERTICALLY AND HORIZONTALLY */
-    div[data-testid="stModal"] {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
+    /* Center Streamlit dialog modal card vertically and horizontally */
     div[data-testid="stModal"] > div:nth-child(2) {
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        padding: 0 !important;
-        margin: 0 !important;
     }
-    div[data-testid="stModal"] > div:nth-child(2) > div,
-    div[data-testid="stModal"] [role="dialog"],
-    div[data-testid="stModal"] [data-testid="stDialog"] {
+    div[data-testid="stModal"] > div:nth-child(2) > div {
         margin: auto !important;
-        align-self: center !important;
-        top: auto !important;
-        bottom: auto !important;
-        transform: none !important;
-        position: relative !important;
     }
 
     /* Disable global blue line on Streamlit dialog main title, but keep on h3 section headings */
@@ -987,34 +971,9 @@ def save_sticky_note(note_text):
 
 @st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
 def show_sticky_note_exit_modal():
-    import streamlit.components.v1 as components
-    components.html("""
-        <script>
-            function centerDialog() {
-                try {
-                    const dialogs = window.parent.document.querySelectorAll('[role="dialog"], [data-testid="stDialog"]');
-                    dialogs.forEach(dlg => {
-                        dlg.style.setProperty('position', 'fixed', 'important');
-                        dlg.style.setProperty('top', '50%', 'important');
-                        dlg.style.setProperty('left', '50%', 'important');
-                        dlg.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
-                        dlg.style.setProperty('margin', '0', 'important');
-                    });
-                } catch(e) {}
-            }
-            centerDialog();
-            setTimeout(centerDialog, 50);
-            setTimeout(centerDialog, 200);
-        </script>
-    """, height=0)
     st.markdown("""<style>
     /* Full-screen backdrop overlay and flex centering in middle of viewport */
     div[data-testid="stModal"] {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -1030,25 +989,15 @@ def show_sticky_note_exit_modal():
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        margin: 0 !important;
-        padding: 0 !important;
     }
-    /* Lock modal width to a balanced 530px compact size centered vertically & horizontally */
+    /* Lock modal width to a balanced 530px compact size */
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
-        position: fixed !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
         width: 530px !important;
         min-width: 530px !important;
         max-width: 95vw !important;
-        margin: 0 !important;
-        max-height: 90vh !important;
-        overflow-y: auto !important;
+        margin: auto !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"],
@@ -1269,34 +1218,9 @@ def show_sticky_note_exit_modal():
 
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
-    import streamlit.components.v1 as components
-    components.html("""
-        <script>
-            function centerDialog() {
-                try {
-                    const dialogs = window.parent.document.querySelectorAll('[role="dialog"], [data-testid="stDialog"]');
-                    dialogs.forEach(dlg => {
-                        dlg.style.setProperty('position', 'fixed', 'important');
-                        dlg.style.setProperty('top', '50%', 'important');
-                        dlg.style.setProperty('left', '50%', 'important');
-                        dlg.style.setProperty('transform', 'translate(-50%, -50%)', 'important');
-                        dlg.style.setProperty('margin', '0', 'important');
-                    });
-                } catch(e) {}
-            }
-            centerDialog();
-            setTimeout(centerDialog, 50);
-            setTimeout(centerDialog, 200);
-        </script>
-    """, height=0)
     st.markdown("""<style>
     /* Full-screen backdrop overlay and flex centering in middle of viewport */
     div[data-testid="stModal"] {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -1312,25 +1236,15 @@ def show_sticky_note_editor_modal():
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        margin: 0 !important;
-        padding: 0 !important;
     }
-    /* Lock modal width to a balanced 530px compact size centered vertically & horizontally */
+    /* Lock modal width to a balanced 530px compact size */
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
-        position: fixed !important;
-        top: 50% !important;
-        left: 50% !important;
-        transform: translate(-50%, -50%) !important;
         width: 530px !important;
         min-width: 530px !important;
         max-width: 95vw !important;
-        margin: 0 !important;
-        max-height: 90vh !important;
-        overflow-y: auto !important;
+        margin: auto !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"],
