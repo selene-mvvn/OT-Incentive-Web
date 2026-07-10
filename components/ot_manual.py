@@ -461,23 +461,23 @@ def render_base_data():
             if st.session_state.get('mask_salary_mode', True):
                 st.markdown(f"""
                 <div style='
-                    background: linear-gradient(135deg, #fffcf5 0%, #fff7ed 100%);
-                    border: 1px solid #fed7aa;
-                    border-left: 4px solid #f97316;
+                    background: linear-gradient(135deg, #fffcfc 0%, #fef2f2 100%);
+                    border: 1px solid #fecaca;
+                    border-left: 4px solid #ef4444;
                     border-radius: 8px;
                     padding: 9px 14px;
                     margin-bottom: 12px;
                     display: flex;
                     align-items: center;
-                    box-shadow: 0 2px 6px rgba(249, 115, 22, 0.08);
+                    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.08);
                 '>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="min-width: 22px; margin-right: 10px;">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="#ffedd5"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="min-width: 22px; margin-right: 10px;">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" fill="#fee2e2"/>
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        <circle cx="12" cy="16.5" r="1.2" fill="#ea580c"/>
+                        <circle cx="12" cy="16.5" r="1.2" fill="#dc2626"/>
                     </svg>
-                    <div style='font-size: 13px; color: #9a3412;'>
-                        <b style='color: #c2410c;'>{t("CHẾ ĐỘ BẢO MẬT TIỀN LƯƠNG ĐANG BẬT:", "給与プライバシーモード有効:")}</b> {t("Toàn bộ Lương cơ bản, Phụ cấp & Lương Gross đang được ẩn an toàn dưới dạng •••••• VNĐ. Bấm nút 'Hiện lương thực tế' ở trên để xem.", "基本給・手当・総支給額は •••••• VNĐ として安全に非表示化されています。上のボタンで表示できます。")}
+                    <div style='font-size: 13px; color: #991b1b;'>
+                        <b style='color: #b91c1c;'>{t("CHẾ ĐỘ BẢO MẬT TIỀN LƯƠNG ĐANG BẬT:", "給与プライバシーモード有効:")}</b> {t("Toàn bộ Lương cơ bản, Phụ cấp & Lương Gross đang được ẩn an toàn dưới dạng •••••• VNĐ. Bấm nút 'Hiện lương thực tế' ở trên để xem.", "基本給・手当・総支給額は •••••• VNĐ として安全に非表示化されています。上のボタンで表示できます。")}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
