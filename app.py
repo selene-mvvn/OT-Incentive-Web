@@ -989,9 +989,11 @@ def show_sticky_note_exit_modal():
         box-sizing: border-box !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"],
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] {
+    [data-testid="stDialog"] div[data-testid="stDialogContent"],
+    [role="dialog"] [data-testid="stVerticalBlock"],
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] {
         width: 100% !important;
-        padding-right: 18px !important;
+        padding-right: 24px !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] [data-testid="stDialogTitle"],
@@ -1144,9 +1146,11 @@ def show_sticky_note_editor_modal():
         box-sizing: border-box !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"],
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] {
+    [data-testid="stDialog"] div[data-testid="stDialogContent"],
+    [role="dialog"] [data-testid="stVerticalBlock"],
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] {
         width: 100% !important;
-        padding-right: 18px !important;
+        padding-right: 24px !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] [data-testid="stDialogTitle"],
