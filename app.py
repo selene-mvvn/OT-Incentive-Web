@@ -1152,45 +1152,44 @@ def show_sticky_note_exit_modal():
     import streamlit.components.v1 as components
     components.html("""
         <script>
-            window.parent.requestAnimationFrame(() => {
-                const doc = window.parent.document;
-                const modal = doc.querySelector('[role="dialog"]');
-                if (!modal) return;
-                const btns = modal.querySelectorAll('button');
-                btns.forEach(btn => {
-                    const txt = btn.innerText || '';
-                    if (txt.includes('XÓA & TẮT') || txt.includes('完了 (終了)')) {
-                        btn.onclick = (e) => {
-                            window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
-                            window.parent._otExitModalFired = true;
-                            window.parent.onbeforeunload = null;
-                            window.top.onbeforeunload = null;
-                            try {
-                                window.top.open('', '_self', '');
-                                window.top.close();
-                                window.parent.close();
-                            } catch(err) {}
-                            setTimeout(() => {
-                                window.top.location.href = "about:blank";
-                            }, 100);
-                        };
-                    } else if (txt.includes('ĐỂ HÔM SAU (TẮT)') || txt.includes('明日に回す (終了)')) {
-                        btn.onclick = (e) => {
-                            window.parent._otExitModalFired = true;
-                            window.parent.onbeforeunload = null;
-                            window.top.onbeforeunload = null;
-                            try {
-                                window.top.open('', '_self', '');
-                                window.top.close();
-                                window.parent.close();
-                            } catch(err) {}
-                            setTimeout(() => {
-                                window.top.location.href = "about:blank";
-                            }, 100);
-                        };
+            if (!window.parent._otExitModalListenerV4) {
+                window.parent._otExitModalListenerV4 = true;
+                window.parent.document.addEventListener('click', (e) => {
+                    const targetBtn = e.target.closest('button');
+                    if (!targetBtn) return;
+                    const txtUpper = (targetBtn.innerText || targetBtn.textContent || '').toUpperCase();
+                    if ((txtUpper.includes('XONG') && txtUpper.includes('TẮT')) || txtUpper.includes('完了')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                        window.parent._otExitModalFired = true;
+                        window.parent.onbeforeunload = null;
+                        window.top.onbeforeunload = null;
+                        try {
+                            window.top.open('', '_self', '');
+                            window.top.close();
+                            window.parent.close();
+                        } catch(err) {}
+                        setTimeout(() => {
+                            window.top.location.href = "about:blank";
+                        }, 50);
+                    } else if (txtUpper.includes('ĐỂ HÔM SAU') || txtUpper.includes('明日に回す')) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.parent._otExitModalFired = true;
+                        window.parent.onbeforeunload = null;
+                        window.top.onbeforeunload = null;
+                        try {
+                            window.top.open('', '_self', '');
+                            window.top.close();
+                            window.parent.close();
+                        } catch(err) {}
+                        setTimeout(() => {
+                            window.top.location.href = "about:blank";
+                        }, 50);
                     }
-                });
-            });
+                }, true);
+            }
         </script>
     """, height=0)
 
@@ -1831,8 +1830,10 @@ else:
                             window.parent.document.addEventListener('click', (e) => {
                                 const targetBtn = e.target.closest('button');
                                 if (!targetBtn) return;
-                                const txt = targetBtn.innerText || '';
-                                if (txt.includes('XÓA & TẮT') || txt.includes('完了 (終了)')) {
+                                const txtUpper = (targetBtn.innerText || targetBtn.textContent || '').toUpperCase();
+                                if ((txtUpper.includes('XONG') && txtUpper.includes('TẮT')) || txtUpper.includes('完了')) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
                                     window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
                                     window.parent._otExitModalFired = true;
                                     window.parent.onbeforeunload = null;
@@ -1844,8 +1845,10 @@ else:
                                     } catch(err) {}
                                     setTimeout(() => {
                                         window.top.location.href = "about:blank";
-                                    }, 120);
-                                } else if (txt.includes('ĐỂ HÔM SAU (TẮT)') || txt.includes('明日に回す (終了)')) {
+                                    }, 50);
+                                } else if (txtUpper.includes('ĐỂ HÔM SAU') || txtUpper.includes('明日に回す')) {
+                                    e.preventDefault();
+                                    e.stopPropagation();
                                     window.parent._otExitModalFired = true;
                                     window.parent.onbeforeunload = null;
                                     window.top.onbeforeunload = null;
@@ -1856,7 +1859,7 @@ else:
                                     } catch(err) {}
                                     setTimeout(() => {
                                         window.top.location.href = "about:blank";
-                                    }, 120);
+                                    }, 50);
                                 }
                             }, true);
                         }
