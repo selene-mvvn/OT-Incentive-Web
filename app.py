@@ -1465,9 +1465,6 @@ else:
             ext = "png" if logo_path.endswith(".png") else "jpeg"
             st.markdown(f"""
             <style>
-            [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type {{
-                margin-top: -28px !important;
-            }}
             [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button {{
                 background-image: url("data:image/{ext};base64,{encoded}") !important;
                 background-size: contain !important;
