@@ -192,32 +192,6 @@ st.markdown("""
         background-color: #00B0F0;
     }
     
-    /* Center Streamlit dialog modal card vertically and horizontally */
-    div[data-testid="stModal"] {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    div[data-testid="stModal"] > div:nth-child(2) {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 100vw !important;
-        height: 100vh !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        z-index: 999999 !important;
-    }
-    div[data-testid="stModal"] > div:nth-child(2) > div {
-        margin: auto !important;
-        align-self: center !important;
-        max-height: 92vh !important;
-        overflow-y: auto !important;
-    }
-
     /* Disable global blue line on Streamlit dialog main title, but keep on h3 section headings */
     [role="dialog"] h1::after,
     [role="dialog"] h2::after,
@@ -987,36 +961,8 @@ def save_sticky_note(note_text):
 
 @st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
 def show_sticky_note_exit_modal():
-    import streamlit.components.v1 as components
-    components.html("""
-        <script>
-            function centerModalWrapper() {
-                try {
-                    const modals = window.parent.document.querySelectorAll('div[data-testid="stModal"]');
-                    modals.forEach(m => {
-                        const wrapper = m.children[1];
-                        if (wrapper) {
-                            wrapper.style.setProperty('position', 'fixed', 'important');
-                            wrapper.style.setProperty('top', '0', 'important');
-                            wrapper.style.setProperty('left', '0', 'important');
-                            wrapper.style.setProperty('width', '100vw', 'important');
-                            wrapper.style.setProperty('height', '100vh', 'important');
-                            wrapper.style.setProperty('display', 'flex', 'important');
-                            wrapper.style.setProperty('align-items', 'center', 'important');
-                            wrapper.style.setProperty('justify-content', 'center', 'important');
-                            wrapper.style.setProperty('margin', '0', 'important');
-                            wrapper.style.setProperty('padding', '0', 'important');
-                        }
-                    });
-                } catch(e) {}
-            }
-            centerModalWrapper();
-            setTimeout(centerModalWrapper, 30);
-            setTimeout(centerModalWrapper, 150);
-        </script>
-    """, height=0)
     st.markdown("""<style>
-    /* Full-screen backdrop overlay and flex centering in middle of viewport */
+    /* Full-screen backdrop overlay filling entire viewport */
     div[data-testid="stModal"] {
         display: flex !important;
         align-items: center !important;
@@ -1029,12 +975,10 @@ def show_sticky_note_exit_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    div[data-testid="stModal"] > div:nth-child(2) {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    /* Lock modal width to a balanced 530px compact size */
+    /* Lock modal width to a balanced 520px compact size */
+    div[data-testid="stModal"] > div:nth-child(2),
+    div[data-testid="stModal"] > div:nth-child(2) > div,
+    div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
@@ -1262,36 +1206,8 @@ def show_sticky_note_exit_modal():
 
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
-    import streamlit.components.v1 as components
-    components.html("""
-        <script>
-            function centerModalWrapper() {
-                try {
-                    const modals = window.parent.document.querySelectorAll('div[data-testid="stModal"]');
-                    modals.forEach(m => {
-                        const wrapper = m.children[1];
-                        if (wrapper) {
-                            wrapper.style.setProperty('position', 'fixed', 'important');
-                            wrapper.style.setProperty('top', '0', 'important');
-                            wrapper.style.setProperty('left', '0', 'important');
-                            wrapper.style.setProperty('width', '100vw', 'important');
-                            wrapper.style.setProperty('height', '100vh', 'important');
-                            wrapper.style.setProperty('display', 'flex', 'important');
-                            wrapper.style.setProperty('align-items', 'center', 'important');
-                            wrapper.style.setProperty('justify-content', 'center', 'important');
-                            wrapper.style.setProperty('margin', '0', 'important');
-                            wrapper.style.setProperty('padding', '0', 'important');
-                        }
-                    });
-                } catch(e) {}
-            }
-            centerModalWrapper();
-            setTimeout(centerModalWrapper, 30);
-            setTimeout(centerModalWrapper, 150);
-        </script>
-    """, height=0)
     st.markdown("""<style>
-    /* Full-screen backdrop overlay and flex centering in middle of viewport */
+    /* Full-screen backdrop overlay filling entire viewport */
     div[data-testid="stModal"] {
         display: flex !important;
         align-items: center !important;
@@ -1304,12 +1220,9 @@ def show_sticky_note_editor_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    div[data-testid="stModal"] > div:nth-child(2) {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    /* Lock modal width to a balanced 530px compact size */
+    /* Lock modal width to a balanced 520px compact size */
+    div[data-testid="stModal"] > div:nth-child(2) > div,
+    div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
