@@ -781,6 +781,7 @@ div[role="radiogroup"][aria-label="LangToggle_123"] {
     gap: 0 !important;
     box-shadow: inset 0 2px 4px rgba(0,0,0,0.05) !important;
     float: right;
+    transform: translateX(40px) !important;
 }
 
 /* SAFELY hide radio circles: Hide any div inside the label that is NOT the text container */
