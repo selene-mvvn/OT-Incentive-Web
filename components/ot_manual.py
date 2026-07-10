@@ -331,8 +331,9 @@ def render_base_data():
                     border: 1px solid #b3e8fb;
                     border-left: 4px solid #00B0F0;
                     border-radius: 12px;
-                    padding: 9px 18px;
-                    min-height: 44px;
+                    padding: 0 18px;
+                    min-height: 42px;
+                    box-sizing: border-box;
                     font-size: 13.5px;
                     color: #0f4c64;
                     margin-top: 8px;
@@ -370,8 +371,9 @@ def render_base_data():
                         border: 1px solid #b3e8fb;
                         border-left: 4px solid #00B0F0;
                         border-radius: 12px;
-                        padding: 9px 18px;
+                        padding: 0 18px;
                         height: 42px;
+                        box-sizing: border-box;
                         font-size: 13.5px;
                         color: #0f4c64;
                         margin-top: 8px;
