@@ -1021,6 +1021,11 @@ def show_sticky_note_exit_modal():
         padding-top: 0px !important;
         margin-top: -10px !important;
     }
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] {
+        margin-top: -18px !important;
+        gap: 0.5rem !important;
+    }
     [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
         display: none !important;
@@ -1126,7 +1131,8 @@ def show_sticky_note_exit_modal():
             border-left: 5px solid #eab308;
             padding: 14px 18px;
             border-radius: 8px;
-            margin-bottom: 16px;
+            margin-top: -14px;
+            margin-bottom: 12px;
             color: #713f12;
             font-size: 14.5px;
             line-height: 1.6;
@@ -1138,7 +1144,7 @@ def show_sticky_note_exit_modal():
             <div style='font-weight: bold; margin-bottom: 6px; color: #854d0e;'>📌 {t('Nội dung ghi chú hiện tại của bạn:', '現在のメモ内容:')}</div>
             <div style='white-space: pre-wrap; font-size: 15px; color: #1e293b;'>{note_content}</div>
         </div>
-        <p style='font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 14px;'>
+        <p style='font-size: 15px; font-weight: 600; color: #1e293b; margin-bottom: 8px;'>
             {t('Bạn đã thực hiện xong công việc trong ghi chú này chưa?', 'こちらの作業は完了しましたか？')}
         </p>
     """, unsafe_allow_html=True)
