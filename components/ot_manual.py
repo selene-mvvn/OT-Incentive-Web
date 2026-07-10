@@ -324,16 +324,15 @@ def render_base_data():
                 align-items: center !important;
             }
             div.element-container:has(#adv-row-anchor) + div[data-testid="stHorizontalBlock"] button {
-                height: 30px !important;
-                min-height: 30px !important;
-                max-height: 30px !important;
-                padding: 0px 14px !important;
-                font-size: 12px !important;
-                border-radius: 15px !important;
+                height: 38px !important;
+                min-height: 38px !important;
+                max-height: 38px !important;
+                padding: 0px 16px !important;
+                font-size: 12.8px !important;
+                border-radius: 19px !important;
                 font-weight: 600 !important;
                 margin: 0 !important;
                 white-space: nowrap !important;
-                line-height: 1 !important;
             }
             </style>
             <span id="adv-row-anchor"></span>
@@ -346,14 +345,14 @@ def render_base_data():
                     display: flex;
                     align-items: center;
                     flex-wrap: wrap;
-                    gap: 10px;
+                    gap: 12px;
                     background: #f8fafc;
                     border: 1px solid #e2e8f0;
-                    border-left: 3px solid #0ea5e9;
-                    border-radius: 6px;
-                    padding: 0 14px;
-                    height: 30px;
-                    font-size: 12.5px;
+                    border-left: 3.5px solid #0ea5e9;
+                    border-radius: 8px;
+                    padding: 0 16px;
+                    height: 38px;
+                    font-size: 13px;
                     color: #334155;
                     margin: 0;
                 ">
