@@ -1149,6 +1149,51 @@ def show_sticky_note_exit_modal():
         </p>
     """, unsafe_allow_html=True)
 
+    import streamlit.components.v1 as components
+    components.html("""
+        <script>
+            window.parent.requestAnimationFrame(() => {
+                const doc = window.parent.document;
+                const modal = doc.querySelector('[role="dialog"]');
+                if (!modal) return;
+                const btns = modal.querySelectorAll('button');
+                btns.forEach(btn => {
+                    const txt = btn.innerText || '';
+                    if (txt.includes('XÓA & TẮT') || txt.includes('完了 (終了)')) {
+                        btn.onclick = (e) => {
+                            window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                            window.parent._otExitModalFired = true;
+                            window.parent.onbeforeunload = null;
+                            window.top.onbeforeunload = null;
+                            try {
+                                window.top.open('', '_self', '');
+                                window.top.close();
+                                window.parent.close();
+                            } catch(err) {}
+                            setTimeout(() => {
+                                window.top.location.href = "about:blank";
+                            }, 100);
+                        };
+                    } else if (txt.includes('ĐỂ HÔM SAU (TẮT)') || txt.includes('明日に回す (終了)')) {
+                        btn.onclick = (e) => {
+                            window.parent._otExitModalFired = true;
+                            window.parent.onbeforeunload = null;
+                            window.top.onbeforeunload = null;
+                            try {
+                                window.top.open('', '_self', '');
+                                window.top.close();
+                                window.parent.close();
+                            } catch(err) {}
+                            setTimeout(() => {
+                                window.top.location.href = "about:blank";
+                            }, 100);
+                        };
+                    }
+                });
+            });
+        </script>
+    """, height=0)
+
     col_done, col_later = st.columns(2, gap="small")
     with col_done:
         if st.button(t("✅ Xong (Xóa & Tắt)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
