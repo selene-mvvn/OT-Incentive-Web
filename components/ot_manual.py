@@ -327,32 +327,32 @@ def render_base_data():
                     align-items: center;
                     flex-wrap: wrap;
                     gap: 12px;
-                    background: #eef8ff;
-                    border: 1px solid #bae6fd;
-                    border-left: 4px solid #0ea5e9;
+                    background: #f4fcff;
+                    border: 1px solid #b3e8fb;
+                    border-left: 4px solid #00B0F0;
                     border-radius: 12px;
                     padding: 9px 18px;
                     min-height: 44px;
                     font-size: 13.5px;
-                    color: #0c4a6e;
+                    color: #0f4c64;
                     margin-top: 8px;
-                    box-shadow: 0 1px 3px rgba(14, 165, 233, 0.08);
+                    box-shadow: 0 1px 3px rgba(0, 176, 240, 0.08);
                 ">
-                    <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #0369a1;">
+                    <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #0c5873;">
                         💡 {t('Lịch thực tế kỳ chọn:', '選択期間の実労働カレンダー:')}
-                        <span style="background: #ffffff; color: #0ea5e9; border: 1px solid #7dd3fc; padding: 2px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 700;">
+                        <span style="background: #ffffff; color: #00B0F0; border: 1px solid #80d7f7; padding: 2px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 700;">
                             📅 {adv_total_days} {t('ngày', '日')} (~{avg_months} {t('tháng', 'ヶ月')})
                         </span>
                     </span>
-                    <span style="color: #7dd3fc;">|</span>
-                    <span style="color: #0369a1;">🏖️ {t('Cuối tuần', '休日')}: <b style="color: #0c4a6e;">{adv_weekend_days}</b></span>
-                    <span style="color: #7dd3fc;">•</span>
-                    <span style="color: #0369a1;">🎊 {t('Lễ', '祭日')}: <b style="color: #0c4a6e;">{adv_holiday_days}</b></span>
-                    <span style="color: #7dd3fc;">|</span>
-                    <span style="display: inline-flex; align-items: center; gap: 5px; background: #e0f2fe; border: 1px solid #38bdf8; color: #0369a1; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: 13px;">
+                    <span style="color: #80d7f7;">|</span>
+                    <span style="color: #0c5873;">🏖️ {t('Cuối tuần', '休日')}: <b style="color: #0f4c64;">{adv_weekend_days}</b></span>
+                    <span style="color: #80d7f7;">•</span>
+                    <span style="color: #0c5873;">🎊 {t('Lễ', '祭日')}: <b style="color: #0f4c64;">{adv_holiday_days}</b></span>
+                    <span style="color: #80d7f7;">|</span>
+                    <span style="display: inline-flex; align-items: center; gap: 5px; background: #e6f7ff; border: 1.5px solid #00B0F0; color: #0088ba; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: 13px;">
                         💼 {t('Tổng làm việc:', '実労働合計:')} {adv_working_days} {t('ngày', '日')}
                     </span>
-                    <span style="display: inline-flex; align-items: center; gap: 5px; background: #0ea5e9; color: #ffffff; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; box-shadow: 0 2px 4px rgba(14, 165, 233, 0.25);">
+                    <span style="display: inline-flex; align-items: center; gap: 5px; background: #00B0F0; color: #ffffff; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; box-shadow: 0 2px 4px rgba(0, 176, 240, 0.3);">
                         📊 {t('Trung bình:', '月平均:')} ~{avg_work_per_month} {t('ngày/tháng', '日/月')}
                     </span>
                 </div>
@@ -366,29 +366,29 @@ def render_base_data():
                         align-items: center;
                         flex-wrap: wrap;
                         gap: 12px;
-                        background: #eef8ff;
-                        border: 1px solid #bae6fd;
-                        border-left: 4px solid #0ea5e9;
+                        background: #f4fcff;
+                        border: 1px solid #b3e8fb;
+                        border-left: 4px solid #00B0F0;
                         border-radius: 12px;
                         padding: 9px 18px;
                         height: 42px;
                         font-size: 13.5px;
-                        color: #0c4a6e;
+                        color: #0f4c64;
                         margin-top: 8px;
-                        box-shadow: 0 1px 3px rgba(14, 165, 233, 0.08);
+                        box-shadow: 0 1px 3px rgba(0, 176, 240, 0.08);
                     ">
-                        <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #0369a1;">
+                        <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #0c5873;">
                             💡 {t('Lịch thực tế:', '実労働カレンダー:')}
-                            <span style="background: #ffffff; color: #0ea5e9; border: 1px solid #7dd3fc; padding: 2px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 700;">
+                            <span style="background: #ffffff; color: #00B0F0; border: 1px solid #80d7f7; padding: 2px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 700;">
                                 📅 {adv_total_days} {t('ngày', '日')}
                             </span>
                         </span>
-                        <span style="color: #7dd3fc;">|</span>
-                        <span style="color: #0369a1;">🏖️ {t('Cuối tuần', '休日')}: <b style="color: #0c4a6e;">{adv_weekend_days}</b></span>
-                        <span style="color: #7dd3fc;">•</span>
-                        <span style="color: #0369a1;">🎊 {t('Lễ', '祭日')}: <b style="color: #0c4a6e;">{adv_holiday_days}</b></span>
-                        <span style="color: #7dd3fc;">|</span>
-                        <span style="display: inline-flex; align-items: center; gap: 5px; background: #0ea5e9; color: #ffffff; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; box-shadow: 0 2px 4px rgba(14, 165, 233, 0.25);">
+                        <span style="color: #80d7f7;">|</span>
+                        <span style="color: #0c5873;">🏖️ {t('Cuối tuần', '休日')}: <b style="color: #0f4c64;">{adv_weekend_days}</b></span>
+                        <span style="color: #80d7f7;">•</span>
+                        <span style="color: #0c5873;">🎊 {t('Lễ', '祭日')}: <b style="color: #0f4c64;">{adv_holiday_days}</b></span>
+                        <span style="color: #80d7f7;">|</span>
+                        <span style="display: inline-flex; align-items: center; gap: 5px; background: #00B0F0; color: #ffffff; padding: 4px 14px; border-radius: 20px; font-weight: 700; font-size: 13px; box-shadow: 0 2px 4px rgba(0, 176, 240, 0.3);">
                             💼 {t('Làm việc:', '実労働:')} {adv_working_days} {t('ngày', '日')}
                         </span>
                     </div>
