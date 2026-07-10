@@ -1044,23 +1044,38 @@ def show_sticky_note_exit_modal():
         stroke: #ffffff !important;
         color: #ffffff !important;
     }
-    /* Keep dialog content buttons strictly on 1 line without wrapping */
+    /* Ensure 2 columns for buttons have exactly equal 50% width and balance */
+    [role="dialog"] [data-testid="stHorizontalBlock"] > div,
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
+        flex: 1 1 0% !important;
+        width: 50% !important;
+    }
+    /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button {
-        padding: 9px 6px !important;
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button,
+    [role="dialog"] [data-testid="stVerticalBlock"] button,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button {
+        padding: 10px 4px !important;
         width: 100% !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         box-sizing: border-box !important;
-    }
-    [role="dialog"] div[data-testid="stDialogContent"] button p,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button p {
         white-space: nowrap !important;
-        font-size: 13px !important;
-        font-weight: 600 !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"] button *,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button *,
+    [role="dialog"] [data-testid="stVerticalBlock"] button *,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button * {
+        white-space: nowrap !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
         text-align: center !important;
         margin: 0 !important;
+        padding: 0 !important;
     }
     </style>""", unsafe_allow_html=True)
 
@@ -1213,22 +1228,38 @@ def show_sticky_note_editor_modal():
         stroke: #ffffff !important;
         color: #ffffff !important;
     }
-    /* Keep dialog content buttons balanced and strictly on 1 line */
+    /* Ensure 2 columns for buttons have exactly equal 50% width and balance */
+    [role="dialog"] [data-testid="stHorizontalBlock"] > div,
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
+        flex: 1 1 0% !important;
+        width: 50% !important;
+    }
+    /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button {
-        padding: 8px 12px !important;
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button,
+    [role="dialog"] [data-testid="stVerticalBlock"] button,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button {
+        padding: 10px 4px !important;
+        width: 100% !important;
+        height: 44px !important;
+        min-height: 44px !important;
+        max-height: 44px !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         box-sizing: border-box !important;
-    }
-    [role="dialog"] div[data-testid="stDialogContent"] button p,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button p {
         white-space: nowrap !important;
-        font-size: 13.2px !important;
-        font-weight: 600 !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"] button *,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button *,
+    [role="dialog"] [data-testid="stVerticalBlock"] button *,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button * {
+        white-space: nowrap !important;
+        font-size: 13.5px !important;
+        font-weight: 700 !important;
         text-align: center !important;
         margin: 0 !important;
+        padding: 0 !important;
     }
     </style>""", unsafe_allow_html=True)
 
