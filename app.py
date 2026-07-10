@@ -989,12 +989,12 @@ def show_sticky_note_exit_modal():
         box-sizing: border-box !important;
         padding: 20px 24px 22px 24px !important;
     }
-    [role="dialog"] > div,
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 14px !important;
         margin: 0 !important;
         box-sizing: border-box !important;
     }
@@ -1162,12 +1162,12 @@ def show_sticky_note_editor_modal():
         box-sizing: border-box !important;
         padding: 20px 24px 22px 24px !important;
     }
-    [role="dialog"] > div,
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         width: 100% !important;
         max-width: 100% !important;
-        padding: 0 !important;
+        padding-left: 0 !important;
+        padding-right: 14px !important;
         margin: 0 !important;
         box-sizing: border-box !important;
     }
