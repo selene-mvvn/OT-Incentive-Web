@@ -1667,7 +1667,7 @@ else:
         st.markdown("""
         <style>
             [data-testid="stSidebarContent"] {
-                padding-bottom: 240px !important;
+                padding-bottom: 20px !important;
             }
             div.element-container:has(#hidden-sticky-note-trigger-anchor),
             div.element-container:has(#hidden-sticky-note-trigger-anchor) ~ div.element-container:has(button),
@@ -1695,7 +1695,7 @@ else:
         lang = st.session_state.get('lang', 'VN')
         note_attr = "true" if has_note else ""
         st.markdown(f"""
-    <div class='sidebar-footer-container' data-lang='{lang}' data-has-note='{note_attr}'>
+    <div class='sidebar-footer-container' data-lang='{lang}' data-has-note='{note_attr}' style='margin-top: 25px;'>
         <div id='sidebar-sticky-note-btn' style='
             margin: 0 auto 15px auto;
             width: 86%;
@@ -1750,26 +1750,10 @@ else:
                         if(elContainer && elContainer.tagName === 'BODY') break;
                     }
                     if(elContainer && elContainer.classList.contains('element-container')) {
-                        elContainer.style.position = 'fixed';
-                        elContainer.style.bottom = '30px';
-                        elContainer.style.zIndex = '999';
-                        
-                        const updateWidth = () => {
-                            const rect = sidebar.getBoundingClientRect();
-                            if (rect.width < 200) {
-                                elContainer.style.display = 'none';
-                            } else {
-                                elContainer.style.display = 'block';
-                                elContainer.style.width = rect.width + 'px';
-                                elContainer.style.left = rect.left + 'px';
-                            }
-                        };
-                        
-                        updateWidth();
-                        const resizeObserver = new window.parent.ResizeObserver(() => {
-                            updateWidth();
-                        });
-                        resizeObserver.observe(sidebar);
+                        elContainer.style.position = 'relative';
+                        elContainer.style.width = '100%';
+                        elContainer.style.marginTop = '25px';
+                        elContainer.style.marginBottom = '15px';
                         
                         // Sticky Note Button Logic
                         const noteBtn = doc.getElementById('sidebar-sticky-note-btn');
