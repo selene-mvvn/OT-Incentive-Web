@@ -318,8 +318,9 @@ def render_base_data():
                     adv_working_days += 1
                 curr_adv += datetime.timedelta(days=1)
 
-            adv_c1, adv_c2 = st.columns([7.7, 2.3])
-            with adv_c1:
+            if adv_total_days > 35:
+                avg_months = round(adv_total_days / 30.4375, 1)
+                avg_work_per_month = round(adv_working_days / avg_months, 1) if avg_months > 0 else adv_working_days
                 st.markdown(f"""
                 <div style="
                     display: flex;
@@ -336,48 +337,79 @@ def render_base_data():
                     color: #334155;
                     margin-top: 8px;
                 ">
-                    <span>💡 <b>{t('Lịch thực tế:', '実労働カレンダー:')}</b></span>
-                    <span>📅 {adv_total_days} {t('ngày', '日')}</span>
+                    <span>💡 <b>{t('Lịch thực tế kỳ chọn:', '選択期間の実労働カレンダー:')}</b></span>
+                    <span>📅 {adv_total_days} {t('ngày', '日')} (~{avg_months} {t('tháng', 'ヶ月')})</span>
                     <span>•</span>
                     <span>🏖️ {t('Cuối tuần', '休日')}: {adv_weekend_days}</span>
                     <span>•</span>
                     <span>🎊 {t('Lễ', '祭日')}: {adv_holiday_days}</span>
                     <span>•</span>
-                    <span style="color: #2563eb; font-weight: 700;">💼 {t('Thực tế', '実労働')}: {adv_working_days} {t('ngày', '日')}</span>
+                    <span>💼 {t('Tổng làm việc', '実労働合計')}: <b>{adv_working_days} {t('ngày', '日')}</b></span>
+                    <span>•</span>
+                    <span style="color: #059669; font-weight: 700;">📊 {t('Trung bình', '月平均')}: ~{avg_work_per_month} {t('ngày/tháng', '日/月')}</span>
                 </div>
                 """, unsafe_allow_html=True)
-
-            with adv_c2:
-                if abs(float(adv_working_days) - float(std_days_mo)) > 0.01 and adv_working_days > 0:
-                    st.markdown("""
-                    <style>
-                    div.element-container:has(#apply-adv-anchor) {
-                        display: none !important;
-                    }
-                    div.element-container:has(#apply-adv-anchor) + div.element-container {
-                        margin: 0 !important;
-                        padding: 0 !important;
-                    }
-                    div.element-container:has(#apply-adv-anchor) + div.element-container button {
-                        height: 40px !important;
-                        min-height: 40px !important;
-                        max-height: 40px !important;
-                        padding: 0px 18px !important;
-                        font-size: 13px !important;
-                        border-radius: 20px !important;
-                        font-weight: 600 !important;
-                        margin-top: 8px !important;
-                        white-space: nowrap !important;
-                        line-height: 40px !important;
-                    }
-                    </style>
-                    <span id="apply-adv-anchor"></span>
+            else:
+                adv_c1, adv_c2 = st.columns([7.7, 2.3])
+                with adv_c1:
+                    st.markdown(f"""
+                    <div style="
+                        display: flex;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        gap: 14px;
+                        background: #f8fafc;
+                        border: 1px solid #e2e8f0;
+                        border-left: 4px solid #0ea5e9;
+                        border-radius: 20px;
+                        padding: 0 18px;
+                        height: 40px;
+                        font-size: 13px;
+                        color: #334155;
+                        margin-top: 8px;
+                    ">
+                        <span>💡 <b>{t('Lịch thực tế:', '実労働カレンダー:')}</b></span>
+                        <span>📅 {adv_total_days} {t('ngày', '日')}</span>
+                        <span>•</span>
+                        <span>🏖️ {t('Cuối tuần', '休日')}: {adv_weekend_days}</span>
+                        <span>•</span>
+                        <span>🎊 {t('Lễ', '祭日')}: {adv_holiday_days}</span>
+                        <span>•</span>
+                        <span style="color: #2563eb; font-weight: 700;">💼 {t('Thực tế', '実労働')}: {adv_working_days} {t('ngày', '日')}</span>
+                    </div>
                     """, unsafe_allow_html=True)
-                    if st.button(t(f"⚡ Áp dụng {adv_working_days} ngày", f"⚡ {adv_working_days}日を適用"), key="btn_apply_adv_days", type="secondary", use_container_width=True):
-                        st.session_state['ot_base_data']['standard_days'] = float(adv_working_days)
-                        save_base_data(st.session_state['ot_base_data'])
-                        st.session_state['pending_toast'] = t(f"Đã cập nhật số ngày chuẩn thành {adv_working_days} ngày!", f"標準日数を {adv_working_days}日 に更新しました！")
-                        st.rerun()
+
+                with adv_c2:
+                    if abs(float(adv_working_days) - float(std_days_mo)) > 0.01 and adv_working_days > 0:
+                        st.markdown("""
+                        <style>
+                        div.element-container:has(#apply-adv-anchor) {
+                            display: none !important;
+                        }
+                        div.element-container:has(#apply-adv-anchor) + div.element-container {
+                            margin: 0 !important;
+                            padding: 0 !important;
+                        }
+                        div.element-container:has(#apply-adv-anchor) + div.element-container button {
+                            height: 40px !important;
+                            min-height: 40px !important;
+                            max-height: 40px !important;
+                            padding: 0px 18px !important;
+                            font-size: 13px !important;
+                            border-radius: 20px !important;
+                            font-weight: 600 !important;
+                            margin-top: 8px !important;
+                            white-space: nowrap !important;
+                            line-height: 40px !important;
+                        }
+                        </style>
+                        <span id="apply-adv-anchor"></span>
+                        """, unsafe_allow_html=True)
+                        if st.button(t(f"⚡ Áp dụng {adv_working_days} ngày", f"⚡ {adv_working_days}日を適用"), key="btn_apply_adv_days", type="secondary", use_container_width=True):
+                            st.session_state['ot_base_data']['standard_days'] = float(adv_working_days)
+                            save_base_data(st.session_state['ot_base_data'])
+                            st.session_state['pending_toast'] = t(f"Đã cập nhật số ngày chuẩn thành {adv_working_days} ngày!", f"標準日数を {adv_working_days}日 に更新しました！")
+                            st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
             head_col1, head_col2 = st.columns([7.8, 2.2])
