@@ -962,8 +962,13 @@ def save_sticky_note(note_text):
 @st.dialog(t("📝 KIỂM TRA GHI CHÚ TRƯỚC KHI THOÁT", "📝 終了前のメモ確認"))
 def show_sticky_note_exit_modal():
     st.markdown("""<style>
-    /* Full-screen backdrop overlay filling entire viewport */
+    /* Full-screen backdrop overlay and flex centering in middle of viewport */
     div[data-testid="stModal"] {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -975,10 +980,16 @@ def show_sticky_note_exit_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    /* Lock modal width to a balanced 520px compact size */
-    div[data-testid="stModal"] > div:nth-child(2),
-    div[data-testid="stModal"] > div:nth-child(2) > div,
-    div[data-testid="stModal"] > div:nth-child(2) > div > div,
+    div[data-testid="stModal"] > div:nth-child(2) {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    /* Lock modal width to a balanced 530px compact size centered vertically & horizontally */
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
@@ -986,6 +997,7 @@ def show_sticky_note_exit_modal():
         min-width: 530px !important;
         max-width: 95vw !important;
         margin: auto !important;
+        align-self: center !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"],
@@ -1207,8 +1219,13 @@ def show_sticky_note_exit_modal():
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC CÁ NHÂN", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
     st.markdown("""<style>
-    /* Full-screen backdrop overlay filling entire viewport */
+    /* Full-screen backdrop overlay and flex centering in middle of viewport */
     div[data-testid="stModal"] {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -1220,9 +1237,16 @@ def show_sticky_note_editor_modal():
         width: 100vw !important;
         height: 100vh !important;
     }
-    /* Lock modal width to a balanced 520px compact size */
-    div[data-testid="stModal"] > div:nth-child(2) > div,
-    div[data-testid="stModal"] > div:nth-child(2) > div > div,
+    div[data-testid="stModal"] > div:nth-child(2) {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    /* Lock modal width to a balanced 530px compact size centered vertically & horizontally */
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
     [role="dialog"] {
@@ -1230,6 +1254,7 @@ def show_sticky_note_editor_modal():
         min-width: 530px !important;
         max-width: 95vw !important;
         margin: auto !important;
+        align-self: center !important;
         box-sizing: border-box !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"],
