@@ -1102,20 +1102,40 @@ def show_sticky_note_exit_modal():
         height: 44px !important;
         min-height: 44px !important;
         max-height: 44px !important;
-        display: flex !important;
+        display: inline-flex !important;
+        flex-direction: row !important;
         justify-content: center !important;
         align-items: center !important;
+        gap: 7px !important;
         box-sizing: border-box !important;
         white-space: nowrap !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] button *,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button *,
-    [role="dialog"] [data-testid="stVerticalBlock"] button *,
-    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button * {
+    [role="dialog"] div[data-testid="stDialogContent"] button p,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button p,
+    [role="dialog"] [data-testid="stVerticalBlock"] button p,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button p {
         white-space: nowrap !important;
-        font-size: 13.2px !important;
+        font-size: 13.5px !important;
         font-weight: 700 !important;
-        text-align: center !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
+    [role="dialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded {
+        font-size: 19px !important;
+        width: 19px !important;
+        height: 19px !important;
+        line-height: 19px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         margin: 0 !important;
         padding: 0 !important;
     }
@@ -1321,20 +1341,40 @@ def show_sticky_note_editor_modal():
         height: 44px !important;
         min-height: 44px !important;
         max-height: 44px !important;
-        display: flex !important;
+        display: inline-flex !important;
+        flex-direction: row !important;
         justify-content: center !important;
         align-items: center !important;
+        gap: 7px !important;
         box-sizing: border-box !important;
         white-space: nowrap !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] button *,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button *,
-    [role="dialog"] [data-testid="stVerticalBlock"] button *,
-    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button * {
+    [role="dialog"] div[data-testid="stDialogContent"] button p,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button p,
+    [role="dialog"] [data-testid="stVerticalBlock"] button p,
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button p {
         white-space: nowrap !important;
-        font-size: 13.2px !important;
+        font-size: 13.5px !important;
         font-weight: 700 !important;
-        text-align: center !important;
+        line-height: 1 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
+    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
+    [role="dialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded {
+        font-size: 19px !important;
+        width: 19px !important;
+        height: 19px !important;
+        line-height: 19px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         margin: 0 !important;
         padding: 0 !important;
     }
