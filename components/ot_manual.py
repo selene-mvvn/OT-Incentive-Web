@@ -287,8 +287,43 @@ def render_base_data():
                 std_hrs = st.number_input(t("SỐ GIỜ CHUẨN / NGÀY", "1日の標準労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0)), step=0.5)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3><div style='height: 15px;'></div>", unsafe_allow_html=True)
-            st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
+            head_col1, head_col2 = st.columns([7.2, 2.8])
+            with head_col1:
+                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 4px;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3>", unsafe_allow_html=True)
+                st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
+
+            with head_col2:
+                st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
+                is_masked = st.session_state.get('mask_salary_mode', False)
+                btn_txt = t("🔓 Hiện lương thực tế", "🔓 給与を表示") if is_masked else t("👁️ Ẩn lương (Bảo mật)", "👁️ 給与を隠す (プライバシー)")
+                if st.button(btn_txt, key="toggle_salary_privacy_btn", use_container_width=True, type="primary" if is_masked else "secondary"):
+                    st.session_state['mask_salary_mode'] = not is_masked
+                    st.rerun()
+
+            if st.session_state.get('mask_salary_mode', False):
+                st.markdown(f"""
+                <div style='
+                    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+                    border: 1.5px solid #93c5fd;
+                    border-left: 5px solid #2563eb;
+                    border-radius: 10px;
+                    padding: 12px 18px;
+                    margin-bottom: 14px;
+                    display: flex;
+                    align-items: center;
+                    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+                '>
+                    <div style='font-size: 24px; margin-right: 12px;'>🔒</div>
+                    <div>
+                        <div style='font-size: 14px; font-weight: 700; color: #1e40af;'>
+                            {t("CHẾ ĐỘ BẢO MẬT TIỀN LƯƠNG ĐANG BẬT", "給与プライバシーモード有効")}
+                        </div>
+                        <div style='font-size: 12.5px; color: #3b82f6; margin-top: 2px;'>
+                            {t("Toàn bộ Lương cơ bản, Phụ cấp & Lương Gross đang được ẩn an toàn dưới dạng •••••• VNĐ khi thao tác hoặc trình chiếu.", "基本給・手当・総支給額は画面共有やプレゼンのために •••••• VNĐ として安全に非表示化されています。")}
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
 
             col_cfg = {
                 "Mã NV": st.column_config.TextColumn(t("Mã NV", "社員番号"), required=False),
@@ -315,9 +350,15 @@ def render_base_data():
                 else: col_cfg[c] = st.column_config.TextColumn(c)
 
             display_df = emp_df.copy()
+            is_masked_active = st.session_state.get('mask_salary_mode', False)
             for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-                display_df[c] = pd.to_numeric(display_df[c], errors='coerce').fillna(0)
-                display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}").astype(str)
+                if is_masked_active:
+                    display_df[c] = "•••••• VNĐ"
+                    col_label = col_cfg[c].label if c in col_cfg and hasattr(col_cfg[c], 'label') else c
+                    col_cfg[c] = st.column_config.TextColumn(col_label, disabled=True)
+                else:
+                    display_df[c] = pd.to_numeric(display_df[c], errors='coerce').fillna(0)
+                    display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}").astype(str)
 
             edited_emp = st.data_editor(
                 display_df,
@@ -399,18 +440,23 @@ def render_base_data():
                 st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
                 save_base_data(st.session_state['ot_base_data'])
 
-                for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-                    if c in edited_emp.columns:
-                        edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
-                        edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                if st.session_state.get('mask_salary_mode', False):
+                    for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                        if c in edited_emp.columns and c in emp_df.columns:
+                            edited_emp[c] = emp_df[c].values
+                else:
+                    for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                        if c in edited_emp.columns:
+                            edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
+                            edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
 
-                edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
-                gross = edited_emp['Lương cơ bản'].copy()
-                for c in allowance_cols:
-                    if c in edited_emp.columns:
-                        edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-                        gross += edited_emp[c]
-                edited_emp['Lương Gross'] = gross
+                    edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
+                    gross = edited_emp['Lương cơ bản'].copy()
+                    for c in allowance_cols:
+                        if c in edited_emp.columns:
+                            edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                            gross += edited_emp[c]
+                    edited_emp['Lương Gross'] = gross
 
                 save_employees_df(edited_emp)
                 st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
