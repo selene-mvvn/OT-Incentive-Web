@@ -1139,6 +1139,27 @@ def show_sticky_note_exit_modal():
         margin: 0 !important;
         padding: 0 !important;
     }
+    /* Icon in Xong button -> Green */
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button [data-testid="stIconMaterial"],
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button .material-symbols-rounded,
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button .material-symbols-rounded {
+        color: #16a34a !important;
+    }
+    /* Icon in Để hôm sau button -> Yellow/Orange */
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button [data-testid="stIconMaterial"],
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded,
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded {
+        color: #f59e0b !important;
+    }
+    /* Icon in Chưa xong button -> Red */
+    [role="dialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) [data-testid="stIconMaterial"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) [data-testid="stIconMaterial"],
+    [role="dialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) .material-symbols-rounded,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button:not([data-testid="stHorizontalBlock"] button) .material-symbols-rounded {
+        color: #ef4444 !important;
+    }
     </style>""", unsafe_allow_html=True)
 
     note_content = st.session_state.get('sidebar_sticky_note', '').strip()
@@ -1171,7 +1192,7 @@ def show_sticky_note_exit_modal():
 
     col_done, col_later = st.columns(2, gap="small")
     with col_done:
-        if st.button(t("✅ Xong (Xóa & Tắt)", "✅ 完了 (終了)"), key="btn_note_done_exit", use_container_width=True, type="primary"):
+        if st.button(t("Xong (Xóa & Tắt)", "完了 (終了)"), icon=":material/check_circle:", key="btn_note_done_exit", use_container_width=True):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
@@ -1187,7 +1208,7 @@ def show_sticky_note_exit_modal():
             """, height=0)
             st.rerun()
     with col_later:
-        if st.button(t("⏳ Để hôm sau (Tắt)", "⏳ 明日に回す (終了)"), key="btn_note_later_exit", use_container_width=True):
+        if st.button(t("Để hôm sau (Tắt)", "明日に回す (終了)"), icon=":material/schedule:", key="btn_note_later_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
@@ -1200,7 +1221,7 @@ def show_sticky_note_exit_modal():
             """, height=0)
             st.rerun()
 
-    if st.button(t("🛑 Chưa xong (Ở lại trang)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
+    if st.button(t("Chưa xong (Ở lại trang)", "未完了 (戻る)"), icon=":material/cancel:", key="btn_note_stay", use_container_width=True):
         st.rerun()
 
 
