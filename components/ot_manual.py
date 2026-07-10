@@ -334,7 +334,7 @@ def render_base_data():
                     height: 40px;
                     font-size: 13px;
                     color: #334155;
-                    margin: 0;
+                    margin-top: 8px;
                 ">
                     <span>💡 <b>{t('Lịch thực tế:', '実労働カレンダー:')}</b></span>
                     <span>📅 {adv_total_days} {t('ngày', '日')}</span>
@@ -366,7 +366,7 @@ def render_base_data():
                         font-size: 13px !important;
                         border-radius: 20px !important;
                         font-weight: 600 !important;
-                        margin-top: 6px !important;
+                        margin-top: 8px !important;
                         white-space: nowrap !important;
                         line-height: 40px !important;
                     }
