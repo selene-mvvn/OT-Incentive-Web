@@ -1056,9 +1056,9 @@ def show_sticky_note_exit_modal():
     [role="dialog"] [data-testid="stHorizontalBlock"] > div,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
         flex: 1 1 0% !important;
-        width: calc(50% - 6px) !important;
-        min-width: calc(50% - 6px) !important;
-        max-width: calc(50% - 6px) !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
@@ -1250,9 +1250,9 @@ def show_sticky_note_editor_modal():
     [role="dialog"] [data-testid="stHorizontalBlock"] > div,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
         flex: 1 1 0% !important;
-        width: calc(50% - 6px) !important;
-        min-width: calc(50% - 6px) !important;
-        max-width: calc(50% - 6px) !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
