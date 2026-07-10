@@ -1801,13 +1801,15 @@ else:
                             window.parent._otExitModalFired = false;
                         } else {
                             window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
-                            window.parent._otExitModalFired = false;
+                            window.parent._otExitModalFired = true;
                         }
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
                             const triggerExitCheck = () => {
                                 const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                if (activeNote && !window.parent._otExitModalFired) {
+                                const liveFooter = doc.querySelector('.sidebar-footer-container');
+                                const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
+                                if (activeNote && isLiveActive && !window.parent._otExitModalFired) {
                                     window.parent._otExitModalFired = true;
                                     const stBtns = doc.querySelectorAll('button');
                                     stBtns.forEach(b => {
@@ -1819,7 +1821,11 @@ else:
                             };
                             window.parent.document.addEventListener('mousemove', (e) => {
                                 if (e.clientY > 100) {
-                                    window.parent._otExitModalFired = false;
+                                    const liveFooter = doc.querySelector('.sidebar-footer-container');
+                                    const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
+                                    if (isLiveActive) {
+                                        window.parent._otExitModalFired = false;
+                                    }
                                 }
                             });
                             window.parent.document.addEventListener('mouseleave', (e) => {
@@ -1830,7 +1836,9 @@ else:
                             });
                             window.parent.onbeforeunload = function(e) {
                                 const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                if (activeNote && !window.parent._otExitModalFired) {
+                                const liveFooter = doc.querySelector('.sidebar-footer-container');
+                                const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
+                                if (activeNote && isLiveActive && !window.parent._otExitModalFired) {
                                     e.preventDefault();
                                     e.returnValue = 'Bạn có Ghi chú nhắc việc cá nhân chưa hoàn thành! Bạn có chắc chắn muốn thoát web không?';
                                     return e.returnValue;
@@ -1838,7 +1846,9 @@ else:
                             };
                             window.parent.addEventListener('beforeunload', function(e) {
                                 const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
-                                if (activeNote && !window.parent._otExitModalFired) {
+                                const liveFooter = doc.querySelector('.sidebar-footer-container');
+                                const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
+                                if (activeNote && isLiveActive && !window.parent._otExitModalFired) {
                                     e.preventDefault();
                                     e.returnValue = 'Bạn có Ghi chú nhắc việc cá nhân chưa hoàn thành! Bạn có chắc chắn muốn thoát web không?';
                                     return e.returnValue;
