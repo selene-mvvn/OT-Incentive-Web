@@ -1798,8 +1798,10 @@ else:
                         const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
                         if (hasNoteAttr) {
                             window.parent.localStorage.setItem('ot_sidebar_sticky_note', 'active');
+                            window.parent._otExitModalFired = false;
                         } else {
                             window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
+                            window.parent._otExitModalFired = false;
                         }
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
@@ -1815,6 +1817,11 @@ else:
                                     });
                                 }
                             };
+                            window.parent.document.addEventListener('mousemove', (e) => {
+                                if (e.clientY > 100) {
+                                    window.parent._otExitModalFired = false;
+                                }
+                            });
                             window.parent.document.addEventListener('mouseleave', (e) => {
                                 if (e.clientY <= 50) triggerExitCheck();
                             });
