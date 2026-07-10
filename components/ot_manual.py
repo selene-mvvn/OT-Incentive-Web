@@ -287,40 +287,48 @@ def render_base_data():
                 std_hrs = st.number_input(t("SỐ GIỜ CHUẨN / NGÀY", "1日の標準労働時間"), min_value=1.0, value=float(st.session_state['ot_base_data'].get('standard_hours_per_day', 8.0)), step=0.5)
 
             st.markdown("<br>", unsafe_allow_html=True)
-            head_col1, head_col2 = st.columns([7.2, 2.8])
+            head_col1, head_col2 = st.columns([7.8, 2.2])
             with head_col1:
                 st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 4px;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3>", unsafe_allow_html=True)
                 st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
 
             with head_col2:
-                st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
-                is_masked = st.session_state.get('mask_salary_mode', False)
-                btn_txt = t("🔓 Hiện lương thực tế", "🔓 給与を表示") if is_masked else t("👁️ Ẩn lương (Bảo mật)", "👁️ 給与を隠す (プライバシー)")
+                st.markdown("""
+                <style>
+                div.element-container:has(#privacy-toggle-anchor) + div.element-container button {
+                    padding: 4px 14px !important;
+                    min-height: 36px !important;
+                    height: 36px !important;
+                    font-size: 13px !important;
+                    border-radius: 20px !important;
+                    font-weight: 600 !important;
+                }
+                </style>
+                <span id="privacy-toggle-anchor"></span>
+                <div style='margin-top: 10px;'></div>
+                """, unsafe_allow_html=True)
+                is_masked = st.session_state.get('mask_salary_mode', True)
+                btn_txt = t(":material/visibility: Hiện lương thực tế", ":material/visibility: 給与を表示") if is_masked else t(":material/visibility_off: Ẩn lương (Bảo mật)", ":material/visibility_off: 給与を隠す")
                 if st.button(btn_txt, key="toggle_salary_privacy_btn", use_container_width=True, type="primary" if is_masked else "secondary"):
                     st.session_state['mask_salary_mode'] = not is_masked
                     st.rerun()
 
-            if st.session_state.get('mask_salary_mode', False):
+            if st.session_state.get('mask_salary_mode', True):
                 st.markdown(f"""
                 <div style='
                     background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-                    border: 1.5px solid #93c5fd;
-                    border-left: 5px solid #2563eb;
-                    border-radius: 10px;
-                    padding: 12px 18px;
-                    margin-bottom: 14px;
+                    border: 1px solid #93c5fd;
+                    border-left: 4px solid #2563eb;
+                    border-radius: 8px;
+                    padding: 8px 14px;
+                    margin-bottom: 12px;
                     display: flex;
                     align-items: center;
-                    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+                    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.05);
                 '>
-                    <div style='font-size: 24px; margin-right: 12px;'>🔒</div>
-                    <div>
-                        <div style='font-size: 14px; font-weight: 700; color: #1e40af;'>
-                            {t("CHẾ ĐỘ BẢO MẬT TIỀN LƯƠNG ĐANG BẬT", "給与プライバシーモード有効")}
-                        </div>
-                        <div style='font-size: 12.5px; color: #3b82f6; margin-top: 2px;'>
-                            {t("Toàn bộ Lương cơ bản, Phụ cấp & Lương Gross đang được ẩn an toàn dưới dạng •••••• VNĐ khi thao tác hoặc trình chiếu.", "基本給・手当・総支給額は画面共有やプレゼンのために •••••• VNĐ として安全に非表示化されています。")}
-                        </div>
+                    <span class="material-symbols-rounded" style="color: #2563eb; font-size: 20px; margin-right: 10px;">lock</span>
+                    <div style='font-size: 13px; color: #1e40af;'>
+                        <b>{t("CHẾ ĐỘ BẢO MẬT TIỀN LƯƠNG ĐANG BẬT:", "給与プライバシーモード有効:")}</b> {t("Toàn bộ Lương cơ bản, Phụ cấp & Lương Gross đang được ẩn an toàn dưới dạng •••••• VNĐ. Bấm nút 'Hiện lương thực tế' ở trên để xem.", "基本給・手当・総支給額は •••••• VNĐ として安全に非表示化されています。上のボタンで表示できます。")}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -350,7 +358,7 @@ def render_base_data():
                 else: col_cfg[c] = st.column_config.TextColumn(c)
 
             display_df = emp_df.copy()
-            is_masked_active = st.session_state.get('mask_salary_mode', False)
+            is_masked_active = st.session_state.get('mask_salary_mode', True)
             for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
                 if is_masked_active:
                     display_df[c] = "•••••• VNĐ"
@@ -440,7 +448,7 @@ def render_base_data():
                 st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
                 save_base_data(st.session_state['ot_base_data'])
 
-                if st.session_state.get('mask_salary_mode', False):
+                if st.session_state.get('mask_salary_mode', True):
                     for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
                         if c in edited_emp.columns and c in emp_df.columns:
                             edited_emp[c] = emp_df[c].values
