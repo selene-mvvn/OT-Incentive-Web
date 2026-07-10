@@ -1015,6 +1015,19 @@ def show_sticky_note_exit_modal():
         white-space: nowrap !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
+    /* Shift entire content group up slightly toward the blue title bar */
+    [role="dialog"] div[data-testid="stDialogContent"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] {
+        padding-top: 0px !important;
+        margin-top: -10px !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
+        display: none !important;
+        height: 0px !important;
+        margin: 0px !important;
+        padding: 0px !important;
+    }
     /* Style Close X button cleanly in the blue header banner */
     [role="dialog"] header[data-testid="stDialogHeader"] button,
     [data-testid="stDialog"] header[data-testid="stDialogHeader"] button,
@@ -1215,6 +1228,7 @@ def show_sticky_note_editor_modal():
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         padding-top: 0px !important;
+        margin-top: -10px !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
