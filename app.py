@@ -1157,8 +1157,12 @@ def show_sticky_note_exit_modal():
             import streamlit.components.v1 as components
             components.html("""
                 <script>
-                    window.parent.localStorage.removeItem('ot_sidebar_sticky_note');
-                    window.parent.close();
+                    try { window.parent.localStorage.removeItem('ot_sidebar_sticky_note'); } catch(e) {}
+                    try { window.parent.close(); } catch(e) {}
+                    try {
+                        const modal = window.parent.document.querySelector('div[data-testid="stModal"]');
+                        if (modal) modal.style.display = 'none';
+                    } catch(e) {}
                 </script>
             """, height=0)
             st.rerun()
@@ -1167,9 +1171,14 @@ def show_sticky_note_exit_modal():
             import streamlit.components.v1 as components
             components.html("""
                 <script>
-                    window.parent.close();
+                    try { window.parent.close(); } catch(e) {}
+                    try {
+                        const modal = window.parent.document.querySelector('div[data-testid="stModal"]');
+                        if (modal) modal.style.display = 'none';
+                    } catch(e) {}
                 </script>
             """, height=0)
+            st.rerun()
 
     if st.button(t("🛑 Chưa xong (Ở lại trang)", "🛑 未完了 (戻る)"), key="btn_note_stay", use_container_width=True):
         st.rerun()
