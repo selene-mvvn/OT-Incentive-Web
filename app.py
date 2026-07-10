@@ -466,10 +466,10 @@ st.markdown("""
     /* Radio buttons in sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: transparent;
-        padding: 12px 15px;
+        padding: 10px 15px;
         border-radius: 8px;
         border: 1px solid transparent;
-        margin: 4px 15px;
+        margin: 2px 15px;
         transition: all 0.3s ease;
         cursor: pointer;
     }
@@ -1495,13 +1495,11 @@ else:
                     if 'last_rendered_tab' in st.session_state:
                         del st.session_state['last_rendered_tab']
                     st.rerun()
-            st.markdown("<br>", unsafe_allow_html=True)
         else:
             if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
                 st.session_state['current_page'] = 'welcome'
                 st.session_state['show_page_transition'] = True
                 st.rerun()
-            st.markdown("<br>", unsafe_allow_html=True)
         
         menu_title = t("MENU", "メニュー")
         st.markdown(f"<h2 style='text-align: center; width: 100%; margin-bottom: 5px; font-weight: bold; font-size: 18px !important; letter-spacing: 2px;'>{menu_title}</h2>", unsafe_allow_html=True)
@@ -1667,6 +1665,7 @@ else:
         st.markdown("""
         <style>
             [data-testid="stSidebarContent"] {
+                padding-top: 1.25rem !important;
                 padding-bottom: 0px !important;
             }
             div.element-container:has(#hidden-sticky-note-trigger-anchor),
