@@ -1052,13 +1052,19 @@ def show_sticky_note_exit_modal():
         flex-wrap: nowrap !important;
         gap: 12px !important;
         width: 100% !important;
+        padding: 0 !important;
+        margin: 0 0 12px 0 !important;
     }
     [role="dialog"] [data-testid="stHorizontalBlock"] > div,
-    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div,
+    [role="dialog"] [data-testid="stColumn"],
+    [data-testid="stDialog"] [data-testid="stColumn"] {
         flex: 1 1 0% !important;
-        width: auto !important;
+        width: 100% !important;
         min-width: 0 !important;
         max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
@@ -1246,13 +1252,19 @@ def show_sticky_note_editor_modal():
         flex-wrap: nowrap !important;
         gap: 12px !important;
         width: 100% !important;
+        padding: 0 !important;
+        margin: 0 0 12px 0 !important;
     }
     [role="dialog"] [data-testid="stHorizontalBlock"] > div,
-    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div {
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > div,
+    [role="dialog"] [data-testid="stColumn"],
+    [data-testid="stDialog"] [data-testid="stColumn"] {
         flex: 1 1 0% !important;
-        width: auto !important;
+        width: 100% !important;
         min-width: 0 !important;
         max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
     [role="dialog"] div[data-testid="stDialogContent"] button,
