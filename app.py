@@ -987,20 +987,26 @@ def show_sticky_note_exit_modal():
         max-width: 95vw !important;
         margin: auto !important;
         box-sizing: border-box !important;
+        padding: 20px 24px 22px 24px !important;
     }
     [role="dialog"] > div,
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         width: 100% !important;
         max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
         box-sizing: border-box !important;
     }
-    /* Ensure blue title banner stretches 100% across dialog header */
+    /* Ensure blue title banner stretches 100% across dialog header perfectly aligned with content */
     [role="dialog"] header[data-testid="stDialogHeader"],
     [data-testid="stDialog"] header[data-testid="stDialogHeader"],
     [role="dialog"] div[data-testid="stDialogHeader"],
     [data-testid="stDialog"] div[data-testid="stDialogHeader"] {
         width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 0 14px 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
@@ -1144,7 +1150,6 @@ def show_sticky_note_editor_modal():
         height: 100vh !important;
     }
     /* Lock modal width to a balanced 520px compact size */
-    div[data-testid="stModal"] > div:nth-child(2),
     div[data-testid="stModal"] > div:nth-child(2) > div,
     div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
@@ -1155,20 +1160,26 @@ def show_sticky_note_editor_modal():
         max-width: 95vw !important;
         margin: auto !important;
         box-sizing: border-box !important;
+        padding: 20px 24px 22px 24px !important;
     }
     [role="dialog"] > div,
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         width: 100% !important;
         max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
         box-sizing: border-box !important;
     }
-    /* Ensure blue title banner stretches 100% across dialog header */
+    /* Ensure blue title banner stretches 100% across dialog header perfectly aligned with content */
     [role="dialog"] header[data-testid="stDialogHeader"],
     [data-testid="stDialog"] header[data-testid="stDialogHeader"],
     [role="dialog"] div[data-testid="stDialogHeader"],
     [data-testid="stDialog"] div[data-testid="stDialogHeader"] {
         width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 0 14px 0 !important;
         display: flex !important;
         align-items: center !important;
         justify-content: space-between !important;
