@@ -1025,9 +1025,38 @@ def show_sticky_note_exit_modal():
         white-space: nowrap !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
-    /* Keep dialog buttons strictly on 1 line without wrapping */
-    [role="dialog"] button,
-    [data-testid="stDialog"] button {
+    /* Style Close X button cleanly in the blue header banner */
+    [role="dialog"] header[data-testid="stDialogHeader"] button,
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button,
+    [role="dialog"] div[data-testid="stDialogHeader"] button,
+    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button {
+        padding: 4px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255, 255, 255, 0.25) !important;
+        border-radius: 50% !important;
+        color: #ffffff !important;
+        border: none !important;
+        margin-left: 10px !important;
+        cursor: pointer !important;
+    }
+    [role="dialog"] header[data-testid="stDialogHeader"] button svg,
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg,
+    [role="dialog"] div[data-testid="stDialogHeader"] button svg,
+    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button svg {
+        width: 16px !important;
+        height: 16px !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+        color: #ffffff !important;
+    }
+    /* Keep dialog content buttons strictly on 1 line without wrapping */
+    [role="dialog"] div[data-testid="stDialogContent"] button,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button {
         padding: 9px 6px !important;
         width: 100% !important;
         display: flex !important;
@@ -1035,8 +1064,8 @@ def show_sticky_note_exit_modal():
         align-items: center !important;
         box-sizing: border-box !important;
     }
-    [role="dialog"] button p,
-    [data-testid="stDialog"] button p {
+    [role="dialog"] div[data-testid="stDialogContent"] button p,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button p {
         white-space: nowrap !important;
         font-size: 13px !important;
         font-weight: 600 !important;
@@ -1176,17 +1205,46 @@ def show_sticky_note_editor_modal():
         margin: 0px !important;
         padding: 0px !important;
     }
-    /* Keep dialog buttons balanced and strictly on 1 line */
-    [role="dialog"] button,
-    [data-testid="stDialog"] button {
+    /* Style Close X button cleanly in the blue header banner */
+    [role="dialog"] header[data-testid="stDialogHeader"] button,
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button,
+    [role="dialog"] div[data-testid="stDialogHeader"] button,
+    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button {
+        padding: 4px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(255, 255, 255, 0.25) !important;
+        border-radius: 50% !important;
+        color: #ffffff !important;
+        border: none !important;
+        margin-left: 10px !important;
+        cursor: pointer !important;
+    }
+    [role="dialog"] header[data-testid="stDialogHeader"] button svg,
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg,
+    [role="dialog"] div[data-testid="stDialogHeader"] button svg,
+    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button svg {
+        width: 16px !important;
+        height: 16px !important;
+        fill: #ffffff !important;
+        stroke: #ffffff !important;
+        color: #ffffff !important;
+    }
+    /* Keep dialog content buttons balanced and strictly on 1 line */
+    [role="dialog"] div[data-testid="stDialogContent"] button,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button {
         padding: 8px 12px !important;
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
         box-sizing: border-box !important;
     }
-    [role="dialog"] button p,
-    [data-testid="stDialog"] button p {
+    [role="dialog"] div[data-testid="stDialogContent"] button p,
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button p {
         white-space: nowrap !important;
         font-size: 13.2px !important;
         font-weight: 600 !important;
@@ -1576,7 +1634,7 @@ else:
                                 noteBtn.style.color = '#0369a1';
                             };
                             noteBtn.onclick = () => {
-                                const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
+                                const stBtns = doc.querySelectorAll('button');
                                 stBtns.forEach(b => {
                                     if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
                                         b.click();
@@ -1598,7 +1656,7 @@ else:
                                 const activeNote = window.parent.localStorage.getItem('ot_sidebar_sticky_note');
                                 if (activeNote && !window.parent._otExitModalFired) {
                                     window.parent._otExitModalFired = true;
-                                    const stBtns = doc.querySelectorAll('[data-testid="stSidebar"] button');
+                                    const stBtns = doc.querySelectorAll('button');
                                     stBtns.forEach(b => {
                                         if (b.innerText && b.innerText.includes('open_sticky_note_exit_trigger')) {
                                             b.click();
