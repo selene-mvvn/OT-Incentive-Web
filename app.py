@@ -1356,6 +1356,7 @@ def show_sticky_note_editor_modal():
     if st.button(t("💾 Lưu & Đóng", "💾 保存して閉じる"), key="btn_save_close_note", use_container_width=True, type="primary"):
         save_sticky_note(note_val)
         st.session_state['sidebar_sticky_note'] = note_val
+        st.session_state['pending_toast'] = t("Đã lưu ghi chú thành công!", "メモを保存しました！")
         st.rerun()
 
 
