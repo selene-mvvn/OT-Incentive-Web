@@ -1667,7 +1667,7 @@ else:
         st.markdown("""
         <style>
             [data-testid="stSidebarContent"] {
-                padding-bottom: 240px !important;
+                padding-bottom: 0px !important;
             }
             div.element-container:has(#hidden-sticky-note-trigger-anchor),
             div.element-container:has(#hidden-sticky-note-trigger-anchor) ~ div.element-container:has(button),
