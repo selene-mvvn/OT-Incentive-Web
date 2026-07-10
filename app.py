@@ -1073,7 +1073,7 @@ def show_sticky_note_exit_modal():
         width: 100% !important;
         max-width: 100% !important;
         gap: 12px !important;
-        margin: 0 0 12px 0 !important;
+        margin: 8px 0 3px 0 !important;
         padding: 0 !important;
     }
     [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
@@ -1283,7 +1283,7 @@ def show_sticky_note_editor_modal():
         width: 100% !important;
         max-width: 100% !important;
         gap: 12px !important;
-        margin: 0 0 12px 0 !important;
+        margin: 8px 0 3px 0 !important;
         padding: 0 !important;
     }
     [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
