@@ -422,7 +422,7 @@ def render_base_data():
                         </style>
                         <span id="apply-adv-anchor"></span>
                         """, unsafe_allow_html=True)
-                        if st.button(t(f"⚡ Áp dụng {adv_working_days} ngày", f"⚡ {adv_working_days}日を適用"), key="btn_apply_adv_days", type="secondary", use_container_width=True):
+                        if st.button(t(f"ÁP DỤNG {adv_working_days} NGÀY", f"{adv_working_days}日を適用"), icon=":material/check_circle:", key="btn_apply_adv_days", type="secondary", use_container_width=True):
                             st.session_state['ot_base_data']['standard_days'] = float(adv_working_days)
                             save_base_data(st.session_state['ot_base_data'])
                             st.session_state['pending_toast'] = t(f"Đã cập nhật số ngày chuẩn thành {adv_working_days} ngày!", f"標準日数を {adv_working_days}日 に更新しました！")
