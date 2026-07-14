@@ -1672,13 +1672,13 @@ else:
         st.markdown(f"""
         <style>
             #collapsed-sticky-note-btn {{
-                display: none;
+                display: none !important;
             }}
             [data-testid="stSidebar"][aria-expanded="false"] #collapsed-sticky-note-btn {{
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
-                margin-top: 36px;
+                margin-top: 25px;
                 margin-left: -1rem;
                 width: 100px;
                 cursor: pointer;
@@ -1830,6 +1830,10 @@ else:
                             };
                         }
                         const setupCollapsedNoteBtn = () => {
+                            const oldInjected = doc.getElementById('collapsed-note-menu-icon');
+                            if (oldInjected && oldInjected.parentNode) {
+                                oldInjected.parentNode.removeChild(oldInjected);
+                            }
                             const collapsedNoteBtn = doc.getElementById('collapsed-sticky-note-btn');
                             if (collapsedNoteBtn) {
                                 collapsedNoteBtn.onclick = () => {
@@ -1841,42 +1845,8 @@ else:
                                     });
                                 };
                             }
-                            const radiogroup = sidebar.querySelector('div[role="radiogroup"]');
-                            if (radiogroup && !doc.getElementById('collapsed-note-menu-icon')) {
-                                const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
-                                const btnDiv = doc.createElement('div');
-                                btnDiv.id = 'collapsed-note-menu-icon';
-                                btnDiv.title = 'Ghi chú nhắc việc';
-                                btnDiv.style.cssText = 'display: none; justify-content: center; align-items: center; margin-top: 36px; width: 100%; cursor: pointer; padding: 6px 0; transition: all 0.3s ease; position: relative;';
-                                btnDiv.innerHTML = `<span class="material-symbols-rounded" style="font-size: 26px; color: #2c3e50; transition: color 0.3s ease;">edit_note</span>` +
-                                    (hasNoteAttr ? `<span style="width: 7px; height: 7px; background: #e11d48; border-radius: 50%; position: absolute; top: 6px; right: 28px;"></span>` : '');
-                                btnDiv.onmouseenter = () => {
-                                    const span = btnDiv.querySelector('span.material-symbols-rounded');
-                                    if(span) span.style.color = '#00a8e8';
-                                };
-                                btnDiv.onmouseleave = () => {
-                                    const span = btnDiv.querySelector('span.material-symbols-rounded');
-                                    if(span) span.style.color = '#2c3e50';
-                                };
-                                btnDiv.onclick = () => {
-                                    const stBtns = doc.querySelectorAll('button');
-                                    stBtns.forEach(b => {
-                                        if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
-                                            b.click();
-                                        }
-                                    });
-                                };
-                                radiogroup.appendChild(btnDiv);
-                            }
-                            const injectedBtn = doc.getElementById('collapsed-note-menu-icon');
-                            if (injectedBtn) {
-                                const isCollapsed = sidebar.getAttribute('aria-expanded') === 'false' || sidebar.getBoundingClientRect().width < 200;
-                                injectedBtn.style.display = isCollapsed ? 'flex' : 'none';
-                            }
                         };
                         setupCollapsedNoteBtn();
-                        const observerMenu = new window.parent.MutationObserver(() => setupCollapsedNoteBtn());
-                        observerMenu.observe(sidebar, { attributes: true, attributeFilter: ['aria-expanded', 'style'] });
                         
                         // Automatic Exit Check when intending to leave / close web
                         const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
