@@ -1701,14 +1701,14 @@ else:
     <div class='sidebar-footer-container' data-lang='{lang}' data-has-note='{note_attr}'>
         <div id='sidebar-sticky-note-btn' style='
             margin: 0 auto 15px auto;
-            width: 86%;
+            width: fit-content;
             background: #f8fafc;
             border: 1px dashed #0284c7;
             color: #0369a1;
             font-weight: 600;
             font-size: 12.8px;
             border-radius: 8px;
-            padding: 7px 4px;
+            padding: 6px 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
