@@ -432,9 +432,7 @@ def render_welcome():
         <div style="position: relative; height: 0px; width: 100%; overflow: visible; margin: 0; padding: 0;">
             <div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center;">
                 <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 50px; border: none; overflow: hidden; background: transparent;"></iframe>
-            </div>
-            {countdown_html}
-        </div>
+            </div>{countdown_html}</div>
         <div class="info-card">
             <div style="font-size: 0.95rem; line-height: 1.6; color: #555; text-align: justify; font-family: 'Times New Roman', serif; font-style: italic; padding-bottom: 30px;">
                 {info_text}
