@@ -9,20 +9,22 @@ def render_action_history():
     st.markdown("""
         <style>
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title),
-            div.stVerticalBlockBorderWrapper:has(.history-card-title),
-            .custom-history-card {
+            div[data-testid="stBorder"]:has(.history-card-title),
+            div.element-container:has(.history-card-title),
+            .action-history-card-hover {
                 transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
                 background-color: #ffffff !important;
                 border: 1px solid #e2e8f0 !important;
                 border-radius: 12px !important;
             }
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title):hover,
-            div.stVerticalBlockBorderWrapper:has(.history-card-title):hover,
-            .custom-history-card:hover {
+            div[data-testid="stBorder"]:has(.history-card-title):hover,
+            div.element-container:has(.history-card-title):hover,
+            .action-history-card-hover:hover {
                 transform: translateY(-4px) !important;
-                box-shadow: 0 12px 28px -4px rgba(0, 168, 232, 0.22), 0 4px 10px -2px rgba(0, 168, 232, 0.1) !important;
+                box-shadow: 0 12px 28px -4px rgba(0, 168, 232, 0.25), 0 4px 10px -2px rgba(0, 168, 232, 0.12) !important;
                 border-color: #00a8e8 !important;
-                background: linear-gradient(to right, #f4fcff 0%, #ffffff 25%) !important;
+                background: linear-gradient(to right, #f2fcff 0%, #ffffff 25%) !important;
             }
             h3.history-card-title::after {
                 width: 50px !important;
@@ -40,6 +42,35 @@ def render_action_history():
             }
         </style>
     """, unsafe_allow_html=True)
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+    const setupCardHover = () => {
+        const doc = window.parent.document;
+        const titles = doc.querySelectorAll('.history-card-title');
+        titles.forEach(t => {
+            let el = t.closest('[data-testid="stVerticalBlockBorderWrapper"]') ||
+                     t.closest('[data-testid="stBorder"]');
+            if (!el) {
+                let curr = t.parentElement;
+                while (curr && curr.tagName !== 'BODY') {
+                    const style = window.parent.getComputedStyle(curr);
+                    if (style && style.borderWidth && style.borderWidth !== '0px' && style.borderStyle !== 'none') {
+                        el = curr;
+                        break;
+                    }
+                    curr = curr.parentElement;
+                }
+            }
+            if (el && !el.classList.contains('action-history-card-hover')) {
+                el.classList.add('action-history-card-hover');
+            }
+        });
+    };
+    setupCardHover();
+    window.parent.setInterval(setupCardHover, 600);
+    </script>
+    """, height=0, width=0)
     title = t("LỊCH SỬ THAO TÁC", "操作履歴")
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{title}</h2>", unsafe_allow_html=True)
     st.info(t("Lưu trữ lịch sử tính toán và xuất báo cáo gần đây.", "最近の計算とレポート出力履歴。"))
