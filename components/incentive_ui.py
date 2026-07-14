@@ -276,8 +276,8 @@ def render_incentive():
                 
         if st.session_state.get('incentive_records') and len(st.session_state['incentive_records']) > 0:
             if True:
-                st.markdown("---")
-                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU CHỜ XUẤT', '出力待ちデータ一覧')}</h3>", unsafe_allow_html=True)
+                st.markdown("<hr style='margin: 10px 0 6px 0;'>", unsafe_allow_html=True)
+                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 -14px 0;'>{t('BẢNG DỮ LIỆU CHỜ XUẤT', '出力待ちデータ一覧')}</h3>", unsafe_allow_html=True)
             
                 df_records = pd.DataFrame(st.session_state['incentive_records'])
             
@@ -303,7 +303,6 @@ def render_incentive():
                     if col in df_display.columns:
                         df_display[col] = pd.to_numeric(df_display[col], errors='coerce').apply(lambda x: f"{x:,.0f}" if pd.notnull(x) else "")
             
-                st.markdown("<div style='margin-bottom: 15px;'></div>", unsafe_allow_html=True)
                 edited_df = st.data_editor(
                     df_display,
                     use_container_width=True,
@@ -325,7 +324,7 @@ def render_incentive():
                 if st.session_state['incentive_records']:
                     default_name = f"{t('Bảng tổng hợp Incentive', 'インセンティブ集計表')}.xlsx"
 
-                    st.markdown("---")
+                    st.markdown("<hr style='margin: 8px 0 10px 0 !important; border-top: 1px solid rgba(0, 176, 240, 0.25);'>", unsafe_allow_html=True)
                     st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                     c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                     with c_name:
