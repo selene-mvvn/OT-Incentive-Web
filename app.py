@@ -639,22 +639,29 @@ st.markdown("""
         position: relative !important;
     }
 
-    /* ﾄ脆ｰa toﾃn b盻・vi盻］ xanh vﾃ bo gﾃｳc vﾃo div ch盻ｩa b蘯｣ng th盻ｱc s盻ｱ bﾃｪn trong (tr盻ｫ Toolbar) */
-    [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]),
-    [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
+    /* Style ONLY the main table wrapper, never Glide Data Grid portals or edit overlays */
+    [data-testid="stDataFrame"] > div:first-child,
+    [data-testid="stDataEditor"] > div:first-child {
         background: #ffffff !important;
         border-radius: 8px !important;
         box-shadow: 0 4px 15px rgba(0, 176, 240, 0.1) !important;
         border: 2px solid #00B0F0 !important;
         box-sizing: border-box !important;
-        width: calc(100% - 6px) !important;
+        width: 100% !important;
         overflow: hidden !important;
         transition: all 0.3s ease !important;
     }
+    /* Ensure Glide Data Grid editing portal overlays stay scoped to cell */
+    [data-testid="stDataEditor"] > div:nth-child(n+2) {
+        width: auto !important;
+        border: none !important;
+        background: transparent !important;
+        box-shadow: none !important;
+    }
 
-    /* B蘯｣ng n蘯ｱm trong Expander thﾃｬ b盻・vi盻］ xanh vﾃｬ Expander ﾄ妥｣ cﾃｳ vi盻］ */
-    [data-testid="stExpander"] [data-testid="stDataFrame"] > div:not([data-testid="stElementToolbar"]),
-    [data-testid="stExpander"] [data-testid="stDataEditor"] > div:not([data-testid="stElementToolbar"]) {
+    /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
+    [data-testid="stExpander"] [data-testid="stDataFrame"] > div:first-child,
+    [data-testid="stExpander"] [data-testid="stDataEditor"] > div:first-child {
         border: 1px solid rgba(0,0,0,0.1) !important;
         box-shadow: none !important;
     }
