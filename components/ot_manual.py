@@ -1169,7 +1169,10 @@ def render_project_data():
             with st.expander(t("📂 Quản lý Danh mục Dự án (Master Data)", "📂 プロジェクトリスト管理 (マスターデータ)")):
                 from components.ui_utils import make_expander_blue
                 make_expander_blue()
-                st.caption(t("Thêm, sửa, xóa các dự án tại đây để tự động điền thông tin khi tính OT.", "ここでプロジェクトを追加・編集・削除すると、OT計算時に自動入力されます。"))
+                st.markdown(
+                    f"<div style='font-size: 13.5px; color: #64748b; margin: 2px 0 -14px 2px;'>{t('Thêm, sửa, xóa các dự án tại đây để tự động điền thông tin khi tính OT.', 'ここでプロジェクトを追加・編集・削除すると、OT計算時に自動入力されます。')}</div>",
+                    unsafe_allow_html=True
+                )
             
                 column_config = {
                     "Tên dự án": st.column_config.TextColumn(t("Tên dự án", "プロジェクト名"), required=True),

@@ -646,9 +646,10 @@ st.markdown("""
         margin-bottom: 10px !important;
     }
 
-    /* Remove extra bottom margin for tables inside expanders */
+    /* Remove extra vertical margin for tables inside expanders */
     [data-testid="stExpander"] .element-container:has([data-testid="stDataFrame"]),
     [data-testid="stExpander"] .element-container:has([data-testid="stDataEditor"]) {
+        margin-top: -10px !important;
         margin-bottom: 2px !important;
     }
 
