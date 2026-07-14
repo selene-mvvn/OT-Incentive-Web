@@ -654,12 +654,16 @@ st.markdown("""
     }
 
     /* Pull holiday table up close below the autofill button */
-    div.element-container:has(.holiday-table-marker) + div.element-container:has([data-testid="stDataEditor"]) {
-        margin-top: -46px !important;
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) {
+        margin-top: -65px !important;
+    }
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) [data-testid="stDataEditor"] {
+        padding-top: 6px !important;
     }
     /* Pull LƯU NGÀY LỄ button up close below holiday table */
-    div.element-container:has(.holiday-table-marker) + div.element-container:has([data-testid="stDataEditor"]) + div.element-container {
-        margin-top: -18px !important;
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has(button),
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has([data-testid="stButton"]) {
+        margin-top: -24px !important;
     }
 
     /* Outer container reserves 26px space ABOVE table for floating toolbar */
