@@ -766,13 +766,13 @@ def render_base_data():
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
-            st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
-
             guide_text = t(
-                "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>HƯỚNG DẪN:</b><br>- <b>Thêm mới:</b> Bấm vào dấu <b>+</b> mờ mờ ở góc dưới cùng bên trái của bảng.<br>- <b>Chọn ngày/Sửa:</b> Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- <b>Xóa:</b> Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím <b>Delete</b> trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).</div>",
-                "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>操作ガイド:</b><br>- <b>新規追加:</b> 表の左下にある <b>+</b> ボタンを押してください。<br>- <b>日付選択・編集:</b> セルをダブルクリックして編集またはカレンダーから選択。<br>- <b>削除:</b> 左端のチェックボックスを選択し、<b>Delete</b>キーまたはゴミ箱アイコンで削除。</div>"
+                f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 6px 0;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>"
+                "<div style='margin-top: 4px; margin-bottom: 8px; font-size: 13.5px; color: #64748b; line-height: 1.5;'>✨ <b>HƯỚNG DẪN:</b><br>- <b>Thêm mới:</b> Bấm vào dấu <b>+</b> mờ mờ ở góc dưới cùng bên trái của bảng.<br>- <b>Chọn ngày/Sửa:</b> Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- <b>Xóa:</b> Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím <b>Delete</b> trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).</div>",
+                f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 6px 0;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>"
+                "<div style='margin-top: 4px; margin-bottom: 8px; font-size: 13.5px; color: #64748b; line-height: 1.5;'>✨ <b>操作ガイド:</b><br>- <b>新規追加:</b> 表の左下にある <b>+</b> ボタンを押してください。<br>- <b>日付選択・編集:</b> セルをダブルクリックして編集またはカレンダーから選択。<br>- <b>削除:</b> 左端のチェックボックスを選択し、<b>Delete</b>キーまたはゴミ箱アイコンで削除。</div>"
             )
-            st.caption(guide_text, unsafe_allow_html=True)
+            st.markdown(guide_text, unsafe_allow_html=True)
 
             current_df = st.session_state['ot_base_data'].get('holidays_df')
             if current_df is None or not isinstance(current_df, pd.DataFrame):
@@ -884,6 +884,15 @@ def render_base_data():
                 st.rerun()
 
             editor_key = f"holidays_editor_{st.session_state.get('holidays_editor_key', 0)}"
+
+            st.markdown("<div id='holiday-table-anchor'></div>", unsafe_allow_html=True)
+            st.markdown("""
+                <style>
+                div.element-container:has(#holiday-table-anchor) + div.element-container:has([data-testid="stDataEditor"]) {
+                    margin-top: -20px !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
 
             holidays_df = st.data_editor(
                 display_df,
