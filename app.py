@@ -1932,9 +1932,7 @@ else:
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
                             window.parent.document.addEventListener('mousemove', (e) => {
-                                if (e.clientY <= 25) {
-                                    if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
-                                } else if (e.clientY > 80) {
+                                if (e.clientY > 80) {
                                     const liveFooter = doc.querySelector('.sidebar-footer-container');
                                     const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
                                     if (isLiveActive) {
@@ -1943,12 +1941,12 @@ else:
                                 }
                             });
                             window.parent.document.addEventListener('mouseleave', (e) => {
-                                if (e.clientY <= 50) {
+                                if (e.clientY <= 6) {
                                     if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
                                 }
                             });
                             window.parent.document.addEventListener('mouseout', (e) => {
-                                if (!e.relatedTarget && e.clientY <= 50) {
+                                if (!e.relatedTarget && e.clientY <= 6) {
                                     if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
                                 }
                             });
