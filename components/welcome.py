@@ -339,7 +339,7 @@ def render_welcome():
             border_color = "rgba(0, 176, 240, 0.4)"
             text_color = "#0075a0"
             
-        countdown_html = f'<div style="position: absolute; top: calc(-13vh + 54px); width: 100%; display: flex; justify-content: center; z-index: 500; pointer-events: none;"><div style="background: {bg_color}; border: 1px solid {border_color}; backdrop-filter: blur(4px); color: {text_color}; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-family: \'Times New Roman\', serif; font-weight: 500; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; align-items: center; pointer-events: auto;">{msg}</div></div>'
+        countdown_html = f'<div style="background: {bg_color}; border: 1px solid {border_color}; backdrop-filter: blur(4px); color: {text_color}; padding: 4px 16px; border-radius: 20px; font-size: 0.88rem; font-family: \'Times New Roman\', serif; font-weight: 500; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">{msg}</div>'
     clock_html = f"""
     <!DOCTYPE html>
     <html>
@@ -349,8 +349,10 @@ def render_welcome():
         margin: 0; padding: 0; 
         font-family: 'Times New Roman', serif;
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
+        gap: 6px;
         background: transparent;
         overflow: hidden;
     }}
@@ -386,6 +388,7 @@ def render_welcome():
             <div class="time-display" id="time">00:00:00</div>
             <div class="greeting-text" id="greeting">Loading...</div>
         </div>
+        {countdown_html}
         <script>
             const quotes_jp = {daily_quotes_jp_js};
             const quotes_vn = {daily_quotes_vn_js};
@@ -430,9 +433,10 @@ def render_welcome():
         </div>
         <div class="divider"></div>
         <div style="position: relative; height: 0px; width: 100%; overflow: visible; margin: 0; padding: 0;">
-            <div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center;">
-                <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 50px; border: none; overflow: hidden; background: transparent;"></iframe>
-            </div>{countdown_html}</div>
+            <div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center; pointer-events: none;">
+                <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 95px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe>
+            </div>
+        </div>
         <div class="info-card">
             <div style="font-size: 0.95rem; line-height: 1.6; color: #555; text-align: justify; font-family: 'Times New Roman', serif; font-style: italic; padding-bottom: 30px;">
                 {info_text}
