@@ -1034,34 +1034,23 @@ def show_sticky_note_exit_modal():
         margin: 0px !important;
         padding: 0px !important;
     }
-    /* Style Close X button cleanly in the blue header banner */
+    /* Hide top-right 'X' close button on dialog */
     [role="dialog"] header[data-testid="stDialogHeader"] button,
     [data-testid="stDialog"] header[data-testid="stDialogHeader"] button,
     [role="dialog"] div[data-testid="stDialogHeader"] button,
-    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button {
-        padding: 4px !important;
-        width: 30px !important;
-        height: 30px !important;
-        min-width: 30px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: rgba(255, 255, 255, 0.25) !important;
-        border-radius: 50% !important;
-        color: #ffffff !important;
-        border: none !important;
-        margin-left: 10px !important;
-        cursor: pointer !important;
-    }
-    [role="dialog"] header[data-testid="stDialogHeader"] button svg,
-    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg,
-    [role="dialog"] div[data-testid="stDialogHeader"] button svg,
-    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button svg {
-        width: 16px !important;
-        height: 16px !important;
-        fill: #ffffff !important;
-        stroke: #ffffff !important;
-        color: #ffffff !important;
+    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button,
+    [role="dialog"] button[aria-label="Close"],
+    [data-testid="stDialog"] button[aria-label="Close"],
+    [data-testid="stModalCloseButton"],
+    div:has(> [data-testid="stDialogTitle"]) > button {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     /* Ensure 2 columns for buttons sit side-by-side on 1 row with equal 50% width */
     [role="dialog"] [data-testid="stHorizontalBlock"],
@@ -1156,6 +1145,24 @@ def show_sticky_note_exit_modal():
         color: #f59e0b !important;
     }
     </style>""", unsafe_allow_html=True)
+
+    import streamlit.components.v1 as components
+    components.html("""
+    <script>
+    setTimeout(() => {
+        const doc = window.parent.document;
+        const dialog = doc.querySelector('[role="dialog"]') || doc.querySelector('[data-testid="stDialog"]');
+        if (dialog) {
+            const closeBtns = dialog.querySelectorAll('button[aria-label="Close"], button[title="Close"], [data-testid="stModalCloseButton"]');
+            closeBtns.forEach(b => b.style.display = 'none');
+            const titleEl = dialog.querySelector('[data-testid="stDialogTitle"]');
+            if (titleEl && titleEl.parentElement) {
+                titleEl.parentElement.querySelectorAll('button').forEach(b => b.style.display = 'none');
+            }
+        }
+    }, 30);
+    </script>
+    """, height=0, width=0)
 
     note_content = st.session_state.get('sidebar_sticky_note', '').strip()
     if not note_content:
