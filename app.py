@@ -1694,7 +1694,7 @@ else:
         has_note = bool(current_note_val.strip())
         note_icon = '<span class="material-symbols-rounded" style="font-size: 18px;">edit_note</span>'
         pin_icon = '<span class="material-symbols-rounded" style="font-size: 16px; color: #e11d48;">push_pin</span>' if has_note else ''
-        btn_label = f'{note_icon}<span>{t("GHI CHÚ NHẮC VIỆC", "クイックメモ")}</span>{pin_icon}'
+        btn_label = f'{note_icon}<span>{t("GHI CHÚ", "メモ")}</span>{pin_icon}'
         lang = st.session_state.get('lang', 'VN')
         note_attr = "true" if has_note else ""
         st.markdown(f"""
