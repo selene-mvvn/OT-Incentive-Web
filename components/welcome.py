@@ -465,8 +465,8 @@ def render_welcome():
             </div>
         </div>
     """, unsafe_allow_html=True)
-    # Empty space to push buttons down
-    st.markdown("<div style='height: 10vh;'></div>", unsafe_allow_html=True)
+    # Empty space to position buttons correctly on the wave
+    st.markdown("<div style='height: 4.5vh;'></div>", unsafe_allow_html=True)
     
     # Render Buttons using standard Streamlit columns
     # Increase the outer spacers to push the buttons closer to the center
