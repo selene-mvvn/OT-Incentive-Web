@@ -60,31 +60,10 @@ st.markdown("""
         border-top: 1px solid rgba(0, 176, 240, 0.2) !important;
     }
     
-    /* Ensure table containers have space above and relative positioning */
-    .element-container:has([data-testid="stDataFrame"]),
-    .element-container:has([data-testid="stDataEditor"]),
+    /* Ensure table containers have clean, neat spacing above */
     [data-testid="stDataFrame"],
     [data-testid="stDataEditor"] {
-        margin-top: 42px !important;
-        position: relative !important;
-        overflow: visible !important;
-    }
-    
-    /* Place table toolbars (+ add row, search, download, fullscreen) outside above top-right corner */
-    .element-container:has([data-testid="stDataFrame"]) [data-testid="stElementToolbar"],
-    .element-container:has([data-testid="stDataEditor"]) [data-testid="stElementToolbar"],
-    [data-testid="stDataFrame"] [data-testid="stElementToolbar"],
-    [data-testid="stDataEditor"] [data-testid="stElementToolbar"],
-    [data-testid="stElementToolbar"] {
-        position: absolute !important;
-        top: -38px !important;
-        right: 0px !important;
-        left: auto !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-        display: flex !important;
-        z-index: 9999 !important;
+        margin-top: 15px !important;
     }
     
     /* Custom CSS for Toast notifications */
