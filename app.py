@@ -712,16 +712,20 @@ st.markdown("""
     
 
     
-    /* Special override: Target the column containing #holiday-heading directly */
-    div[data-testid="column"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) {
+    /* Special override: Target the column/vertical-block containing #holiday-heading directly */
+    [data-testid="stColumn"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]),
+    [data-testid="stVerticalBlock"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) {
         margin-top: -65px !important;
         margin-bottom: 2px !important;
     }
-    div[data-testid="column"]:has(#holiday-heading) [data-testid="stDataEditor"] {
+    [data-testid="stColumn"]:has(#holiday-heading) [data-testid="stDataEditor"],
+    [data-testid="stVerticalBlock"]:has(#holiday-heading) [data-testid="stDataEditor"] {
         padding-top: 4px !important;
     }
-    div[data-testid="column"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has(button),
-    div[data-testid="column"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has([data-testid="stButton"]) {
+    [data-testid="stColumn"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has([data-testid="stButton"]),
+    [data-testid="stVerticalBlock"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has([data-testid="stButton"]),
+    [data-testid="stColumn"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has(button),
+    [data-testid="stVerticalBlock"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has(button) {
         margin-top: -24px !important;
     }
 
