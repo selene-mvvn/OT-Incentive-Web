@@ -346,11 +346,12 @@ def render_welcome():
     <head>
     <style>
     body {{
-        margin: 0; padding: 0; 
+        margin: 0; padding: 0;
+        padding-top: 4px;
         font-family: 'Times New Roman', serif;
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         gap: 6px;
         background: transparent;
