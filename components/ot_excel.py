@@ -491,20 +491,21 @@ def render_ot_excel():
             
         # Show Data Editor if there are records
         if st.session_state.get('ot_excel_records') and len(st.session_state['ot_excel_records']) > 0:
-            st.markdown("<hr style='margin: 10px 0 6px 0;'>", unsafe_allow_html=True)
+            st.markdown("<hr style='margin: 14px 0 10px 0;'>", unsafe_allow_html=True)
             col_title, col_clear = st.columns([7.5, 2.5])
             with col_title:
                 st.markdown(
-                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('BẢNG DỮ LIỆU KẾT QUẢ', '処理結果データ')}</h3>"
-                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Bảng kết quả đã được tô màu theo hệ số để bạn dễ dàng kiểm tra. Nếu cần sửa dữ liệu, hãy mở bảng Sửa Dữ Liệu bên dưới.', '係数ごとに色分けされた結果表です。データを修正する場合は下の「データ編集」を開いてください。')}</div>",
+                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 6px 0;'>{t('BẢNG DỮ LIỆU KẾT QUẢ', '処理結果データ')}</h3>"
+                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 18px; line-height: 1.5;'>{t('Bảng kết quả đã được tô màu theo hệ số để bạn dễ dàng kiểm tra. Nếu cần sửa dữ liệu, hãy mở bảng Sửa Dữ Liệu bên dưới.', '係数ごとに色分けされた結果表です。データを修正する場合は下の「データ編集」を開いてください。')}</div>",
                     unsafe_allow_html=True
                 )
             with col_clear:
-                st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
+                st.markdown("<div style='height: 6px;'></div>", unsafe_allow_html=True)
                 if st.button(":material/delete: " + t("Xóa kết quả này", "結果をクリア"), use_container_width=True):
                     st.session_state['ot_excel_records'] = []
                     st.rerun()
         
+            st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
             # Style the dataframe
             df_display = pd.DataFrame(st.session_state['ot_excel_records'])
         
