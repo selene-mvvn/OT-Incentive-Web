@@ -136,10 +136,10 @@ def render_ot_excel():
                 # Remove any columns where the header is NaN
                 df = df.loc[:, df.columns.notna()]
                 
-                st.write(t(f"Dữ liệu đã tải lên (Bắt đầu từ dòng {header_idx + 1}):", f"アップロードされたデータ (行 {header_idx + 1} から開始):"))
+                st.markdown(f"<div style='font-size: 15px; font-weight: 500; margin-bottom: -24px;'>{t(f'Dữ liệu đã tải lên (Bắt đầu từ dòng {header_idx + 1}):', f'アップロードされたデータ (行 {header_idx + 1} から開始):')}</div>", unsafe_allow_html=True)
                 st.dataframe(df, height=150)
             
-                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 5px;'>{t('BƯỚC 1: CHẾ ĐỘ GHÉP CỘT DỮ LIỆU', 'ステップ 1: 列マッピングモード')}</h4>", unsafe_allow_html=True)
+                st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 26px; margin-bottom: 12px;'>{t('BƯỚC 1: CHẾ ĐỘ GHÉP CỘT DỮ LIỆU', 'ステップ 1: 列マッピングモード')}</h4>", unsafe_allow_html=True)
             
                 mapping_mode = st.radio(
                     t("Tùy chọn ghép cột:", "マッピングオプション:"),
