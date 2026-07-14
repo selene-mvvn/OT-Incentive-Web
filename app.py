@@ -1945,9 +1945,14 @@ else:
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
                             
-                            // Only trigger popup if mouse moves out at far top-right corner (Close Window X button area), NEVER when switching tabs
+                            // Trigger popup reliably when mouse moves out towards the top-right Close Window (X) area
                             window.parent.document.addEventListener('mouseleave', (e) => {
-                                if (e.clientY <= 5 && (window.parent.innerWidth - e.clientX) <= 140) {
+                                if (e.clientY <= 25 && e.clientX >= (window.parent.innerWidth - 320)) {
+                                    if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
+                                }
+                            });
+                            window.parent.document.addEventListener('mouseout', (e) => {
+                                if (!e.relatedTarget && e.clientY <= 25 && e.clientX >= (window.parent.innerWidth - 320)) {
                                     if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
                                 }
                             });
