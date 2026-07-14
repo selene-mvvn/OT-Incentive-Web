@@ -653,19 +653,6 @@ st.markdown("""
         margin-bottom: 2px !important;
     }
 
-    /* Pull holiday table up close below the autofill button */
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) {
-        margin-top: -65px !important;
-    }
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) [data-testid="stDataEditor"] {
-        padding-top: 6px !important;
-    }
-    /* Pull LƯU NGÀY LỄ button up close below holiday table */
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has(button),
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has([data-testid="stButton"]) {
-        margin-top: -24px !important;
-    }
-
     /* Outer container reserves 26px space ABOVE table for floating toolbar */
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: transparent !important;
@@ -725,6 +712,28 @@ st.markdown("""
     
 
     
+    /* Special override: Hide holiday-table-marker wrapper completely */
+    div.element-container:has(.holiday-table-marker) {
+        display: none !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    /* Pull holiday table up close below the autofill button */
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) {
+        margin-top: -38px !important;
+        margin-bottom: 2px !important;
+    }
+    /* Reduce top padding on holiday table so it sits higher */
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) [data-testid="stDataEditor"] {
+        padding-top: 4px !important;
+    }
+    /* Pull LƯU NGÀY LỄ button up close below holiday table */
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has(button),
+    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has([data-testid="stButton"]) {
+        margin-top: -16px !important;
+    }
+
     /* Compact popover for history delete */
     [data-testid="stPopoverBody"] {
         max-width: 280px !important;
