@@ -1671,20 +1671,6 @@ else:
 
         st.markdown(f"""
         <style>
-            [data-testid="stSidebarContent"] {{
-                padding-top: 1.25rem !important;
-                padding-bottom: 0px !important;
-            }}
-            div.element-container:has(#hidden-sticky-note-trigger-anchor),
-            div.element-container:has(#hidden-sticky-note-trigger-anchor) ~ div.element-container:has(button),
-            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container,
-            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container + div.element-container {{
-                display: none !important;
-                height: 0px !important;
-                margin: 0px !important;
-                padding: 0px !important;
-                overflow: hidden !important;
-            }}
             #collapsed-sticky-note-btn {{
                 display: none;
             }}
@@ -1702,11 +1688,30 @@ else:
                 color: #00a8e8 !important;
             }}
         </style>
-        <div id="hidden-sticky-note-trigger-anchor"></div>
         <div id="collapsed-sticky-note-btn" title="Ghi chú nhắc việc">
             <span class="material-symbols-rounded" style="font-size: 26px; color: #2c3e50; transition: color 0.3s ease;">edit_note</span>
             {"<span style='width: 7px; height: 7px; background: #e11d48; border-radius: 50%; position: absolute; margin-top: -16px; margin-left: 20px;'></span>" if has_note else ""}
         </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <style>
+            [data-testid="stSidebarContent"] {
+                padding-top: 1.25rem !important;
+                padding-bottom: 0px !important;
+            }
+            div.element-container:has(#hidden-sticky-note-trigger-anchor),
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) ~ div.element-container:has(button),
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container,
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container + div.element-container {
+                display: none !important;
+                height: 0px !important;
+                margin: 0px !important;
+                padding: 0px !important;
+                overflow: hidden !important;
+            }
+        </style>
+        <div id="hidden-sticky-note-trigger-anchor"></div>
         """, unsafe_allow_html=True)
         if st.button("open_sticky_note_trigger", key="btn_hidden_open_sticky_note"):
             show_sticky_note_editor_modal()
@@ -1824,17 +1829,54 @@ else:
                                 });
                             };
                         }
-                        const collapsedNoteBtn = doc.getElementById('collapsed-sticky-note-btn');
-                        if (collapsedNoteBtn) {
-                            collapsedNoteBtn.onclick = () => {
-                                const stBtns = doc.querySelectorAll('button');
-                                stBtns.forEach(b => {
-                                    if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
-                                        b.click();
-                                    }
-                                });
-                            };
-                        }
+                        const setupCollapsedNoteBtn = () => {
+                            const collapsedNoteBtn = doc.getElementById('collapsed-sticky-note-btn');
+                            if (collapsedNoteBtn) {
+                                collapsedNoteBtn.onclick = () => {
+                                    const stBtns = doc.querySelectorAll('button');
+                                    stBtns.forEach(b => {
+                                        if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
+                                            b.click();
+                                        }
+                                    });
+                                };
+                            }
+                            const radiogroup = sidebar.querySelector('div[role="radiogroup"]');
+                            if (radiogroup && !doc.getElementById('collapsed-note-menu-icon')) {
+                                const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
+                                const btnDiv = doc.createElement('div');
+                                btnDiv.id = 'collapsed-note-menu-icon';
+                                btnDiv.title = 'Ghi chú nhắc việc';
+                                btnDiv.style.cssText = 'display: none; justify-content: center; align-items: center; margin-top: 36px; width: 100%; cursor: pointer; padding: 6px 0; transition: all 0.3s ease; position: relative;';
+                                btnDiv.innerHTML = `<span class="material-symbols-rounded" style="font-size: 26px; color: #2c3e50; transition: color 0.3s ease;">edit_note</span>` +
+                                    (hasNoteAttr ? `<span style="width: 7px; height: 7px; background: #e11d48; border-radius: 50%; position: absolute; top: 6px; right: 28px;"></span>` : '');
+                                btnDiv.onmouseenter = () => {
+                                    const span = btnDiv.querySelector('span.material-symbols-rounded');
+                                    if(span) span.style.color = '#00a8e8';
+                                };
+                                btnDiv.onmouseleave = () => {
+                                    const span = btnDiv.querySelector('span.material-symbols-rounded');
+                                    if(span) span.style.color = '#2c3e50';
+                                };
+                                btnDiv.onclick = () => {
+                                    const stBtns = doc.querySelectorAll('button');
+                                    stBtns.forEach(b => {
+                                        if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
+                                            b.click();
+                                        }
+                                    });
+                                };
+                                radiogroup.appendChild(btnDiv);
+                            }
+                            const injectedBtn = doc.getElementById('collapsed-note-menu-icon');
+                            if (injectedBtn) {
+                                const isCollapsed = sidebar.getAttribute('aria-expanded') === 'false' || sidebar.getBoundingClientRect().width < 200;
+                                injectedBtn.style.display = isCollapsed ? 'flex' : 'none';
+                            }
+                        };
+                        setupCollapsedNoteBtn();
+                        const observerMenu = new window.parent.MutationObserver(() => setupCollapsedNoteBtn());
+                        observerMenu.observe(sidebar, { attributes: true, attributeFilter: ['aria-expanded', 'style'] });
                         
                         // Automatic Exit Check when intending to leave / close web
                         const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
