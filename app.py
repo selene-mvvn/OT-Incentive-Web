@@ -60,17 +60,25 @@ st.markdown("""
         border-top: 1px solid rgba(0, 176, 240, 0.2) !important;
     }
     
-    /* Ensure data tables have space for toolbar and make toolbar always visible */
+    /* Ensure data tables have space above and move toolbar OUTSIDE the table border to top-right */
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
-        margin-top: 28px !important;
+        margin-top: 42px !important;
+        position: relative !important;
+        overflow: visible !important;
     }
     
-    /* Make table toolbars (+ add row, search, download, fullscreen) always visible */
-    [data-testid="stElementToolbar"] {
+    /* Place table toolbars (+ add row, search, download, fullscreen) outside above top-right border */
+    [data-testid="stDataFrame"] [data-testid="stElementToolbar"],
+    [data-testid="stDataEditor"] [data-testid="stElementToolbar"] {
+        position: absolute !important;
+        top: -38px !important;
+        right: 0px !important;
+        left: auto !important;
         opacity: 1 !important;
         visibility: visible !important;
         pointer-events: auto !important;
         display: flex !important;
+        z-index: 100 !important;
     }
     
     /* Custom CSS for Toast notifications */
