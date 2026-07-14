@@ -1847,6 +1847,42 @@ else:
                             }
                         };
                         setupCollapsedNoteBtn();
+
+                        const updateMenuTooltips = () => {
+                            const radiogroup = sidebar.querySelector('div[role="radiogroup"]');
+                            if (radiogroup) {
+                                const isCollapsed = sidebar.getAttribute('aria-expanded') === 'false' || sidebar.getBoundingClientRect().width < 200;
+                                const lang = footer.getAttribute('data-lang') || 'VN';
+                                const tooltipsVN = [
+                                    "OVERTIME",
+                                    "DỮ LIỆU DỰ ÁN",
+                                    "NHẬP HÀNG LOẠT (EXCEL)",
+                                    "INCENTIVE",
+                                    "LỊCH SỬ THAO TÁC",
+                                    "CÀI ĐẶT CHUNG"
+                                ];
+                                const tooltipsJP = [
+                                    "残業代計算",
+                                    "プロジェクト",
+                                    "一括入力",
+                                    "インセンティブ",
+                                    "操作履歴",
+                                    "一般設定"
+                                ];
+                                const tooltips = lang === 'JP' ? tooltipsJP : tooltipsVN;
+                                const labels = radiogroup.querySelectorAll('label');
+                                labels.forEach((lbl, idx) => {
+                                    if (isCollapsed && idx < tooltips.length) {
+                                        lbl.setAttribute('title', tooltips[idx]);
+                                    } else {
+                                        lbl.removeAttribute('title');
+                                    }
+                                });
+                            }
+                        };
+                        updateMenuTooltips();
+                        const observerMenu = new window.parent.MutationObserver(() => updateMenuTooltips());
+                        observerMenu.observe(sidebar, { attributes: true, attributeFilter: ['aria-expanded', 'style'] });
                         
                         // Automatic Exit Check when intending to leave / close web
                         const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
