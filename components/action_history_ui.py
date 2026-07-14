@@ -8,13 +8,21 @@ from logic.action_log import get_action_logs, clear_all_logs, delete_action_log,
 def render_action_history():
     st.markdown("""
         <style>
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title),
+            div.stVerticalBlockBorderWrapper:has(.history-card-title),
             .custom-history-card {
-                transition: all 0.2s ease-in-out !important;
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+                background-color: #ffffff !important;
+                border: 1px solid #e2e8f0 !important;
+                border-radius: 12px !important;
             }
+            div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title):hover,
+            div.stVerticalBlockBorderWrapper:has(.history-card-title):hover,
             .custom-history-card:hover {
-                box-shadow: 0 6px 16px rgba(0,0,0,0.1) !important;
-                transform: translateY(-2px) !important;
-                border-color: #3498db !important;
+                transform: translateY(-4px) !important;
+                box-shadow: 0 12px 28px -4px rgba(0, 168, 232, 0.22), 0 4px 10px -2px rgba(0, 168, 232, 0.1) !important;
+                border-color: #00a8e8 !important;
+                background: linear-gradient(to right, #f4fcff 0%, #ffffff 25%) !important;
             }
             h3.history-card-title::after {
                 width: 50px !important;
