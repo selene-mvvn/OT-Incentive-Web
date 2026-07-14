@@ -635,10 +635,16 @@ st.markdown("""
     /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS & CONTAINERS */
 
 
-    /* Create comfortable breathing room below every table block */
+    /* Create comfortable breathing room below main tables */
     .element-container:has([data-testid="stDataFrame"]),
     .element-container:has([data-testid="stDataEditor"]) {
-        margin-bottom: 32px !important;
+        margin-bottom: 28px !important;
+    }
+
+    /* Remove extra bottom margin for tables inside expanders */
+    [data-testid="stExpander"] .element-container:has([data-testid="stDataFrame"]),
+    [data-testid="stExpander"] .element-container:has([data-testid="stDataEditor"]) {
+        margin-bottom: 4px !important;
     }
 
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
@@ -647,13 +653,27 @@ st.markdown("""
         border-radius: 10px !important;
         box-shadow: 0 4px 15px rgba(0, 176, 240, 0.12) !important;
         margin-bottom: 12px !important;
-        padding: 0 !important;
+        padding: 40px 0 0 0 !important;
         overflow: hidden !important;
         width: 100% !important;
         position: relative !important;
         box-sizing: border-box !important;
         display: flex !important;
         flex-direction: column !important;
+    }
+
+    /* Make table toolbars (+ add row, search, download, fullscreen) always visible in reserved top space */
+    [data-testid="stDataFrame"] [data-testid="stElementToolbar"],
+    [data-testid="stDataEditor"] [data-testid="stElementToolbar"],
+    [data-testid="stElementToolbar"] {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        display: flex !important;
+        position: absolute !important;
+        top: 6px !important;
+        right: 12px !important;
+        z-index: 50 !important;
     }
 
     /* Remove extra inner borders and eliminate trailing white space below scrollbar */
@@ -665,11 +685,12 @@ st.markdown("""
         padding-bottom: 0 !important;
     }
 
-    /* Bảng nằm trong Expander thì dùng viền mảnh hơn */
+    /* Bảng nằm trong Expander thì dùng viền mảnh hơn và không để khoảng trống dưới thừa */
     [data-testid="stExpander"] [data-testid="stDataFrame"],
     [data-testid="stExpander"] [data-testid="stDataEditor"] {
         border: 1px solid rgba(0, 176, 240, 0.35) !important;
         box-shadow: none !important;
+        margin-bottom: 4px !important;
     }
     [data-testid="stDataFrame"] th, [data-testid="stDataEditor"] th {
         background-color: #00a8e8 !important;
