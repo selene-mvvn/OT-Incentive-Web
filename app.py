@@ -653,6 +653,15 @@ st.markdown("""
         margin-bottom: 2px !important;
     }
 
+    /* Pull holiday table up close below the autofill button */
+    div.element-container:has(.holiday-table-marker) + div.element-container:has([data-testid="stDataEditor"]) {
+        margin-top: -46px !important;
+    }
+    /* Pull LƯU NGÀY LỄ button up close below holiday table */
+    div.element-container:has(.holiday-table-marker) + div.element-container:has([data-testid="stDataEditor"]) + div.element-container {
+        margin-top: -18px !important;
+    }
+
     /* Outer container reserves 26px space ABOVE table for floating toolbar */
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: transparent !important;

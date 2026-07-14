@@ -766,21 +766,6 @@ def render_base_data():
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
-            st.markdown("""
-                <style>
-                /* Pull holiday table up close below the autofill button */
-                div.element-container:has(button) + div.element-container:has([data-testid="stDataEditor"]),
-                div.element-container:has([data-testid="stButton"]) + div.element-container:has([data-testid="stDataEditor"]) {
-                    margin-top: -46px !important;
-                }
-                /* Pull save button up along with the table */
-                div.element-container:has([data-testid="stDataEditor"]) + div.element-container:has(button),
-                div.element-container:has([data-testid="stDataEditor"]) + div.element-container:has([data-testid="stButton"]) {
-                    margin-top: -18px !important;
-                }
-                </style>
-            """, unsafe_allow_html=True)
-
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
 
             guide_text = t(
@@ -900,6 +885,7 @@ def render_base_data():
 
             editor_key = f"holidays_editor_{st.session_state.get('holidays_editor_key', 0)}"
 
+            st.markdown("<div class='holiday-table-marker'></div>", unsafe_allow_html=True)
             holidays_df = st.data_editor(
                 display_df,
                 num_rows="dynamic",
