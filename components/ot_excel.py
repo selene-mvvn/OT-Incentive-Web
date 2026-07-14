@@ -121,6 +121,9 @@ def render_ot_excel():
                 div.element-container:has([data-testid="stFileUploader"]) ~ div.element-container:has([data-testid="stDataFrame"]) [data-testid="stDataFrame"] {
                     padding-top: 4px !important;
                 }
+                div.element-container:has([data-testid="stFileUploader"]) ~ div.element-container:has([data-testid="stDataFrame"]) [data-testid="stElementToolbar"] {
+                    display: none !important;
+                }
 
                 /* Tighten spacing around radio options and info alerts */
                 [data-testid="stRadio"] {
