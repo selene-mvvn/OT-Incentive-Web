@@ -1932,6 +1932,7 @@ else:
                             const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
                             if (isLiveActive && !window.parent._otExitModalFired) {
                                 window.parent._otExitModalFired = true;
+                                setTimeout(() => { window.parent._otExitModalFired = false; }, 3500);
                                 const stBtns = doc.querySelectorAll('button');
                                 stBtns.forEach(b => {
                                     const txt = (b.innerText || b.textContent || '');
@@ -1944,6 +1945,13 @@ else:
 
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
+                            
+                            // Reset exit check cooldown whenever user moves mouse back into normal page area
+                            window.parent.document.addEventListener('mousemove', (e) => {
+                                if (e.clientY > 45) {
+                                    window.parent._otExitModalFired = false;
+                                }
+                            });
                             
                             // Trigger popup reliably when mouse moves out towards the top-right Close Window (X) area
                             window.parent.document.addEventListener('mouseleave', (e) => {
