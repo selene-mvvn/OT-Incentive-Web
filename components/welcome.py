@@ -340,27 +340,7 @@ def render_welcome():
             border_color = "rgba(0, 176, 240, 0.4)"
             text_color = "#0075a0"
             
-        countdown_html = f'''
-        <div style="position: absolute; top: calc(-13vh + 54px); width: 100%; display: flex; justify-content: center; z-index: 500; pointer-events: none;">
-            <div style="
-                background: {bg_color};
-                border: 1px solid {border_color};
-                backdrop-filter: blur(4px);
-                color: {text_color};
-                padding: 6px 16px;
-                border-radius: 20px;
-                font-size: 0.9rem;
-                font-family: 'Times New Roman', serif;
-                font-weight: 500;
-                box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-                display: flex;
-                align-items: center;
-                pointer-events: auto;
-            ">
-                {msg}
-            </div>
-        </div>
-        '''
+        countdown_html = f'<div style="position: absolute; top: calc(-13vh + 54px); width: 100%; display: flex; justify-content: center; z-index: 500; pointer-events: none;"><div style="background: {bg_color}; border: 1px solid {border_color}; backdrop-filter: blur(4px); color: {text_color}; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; font-family: \'Times New Roman\', serif; font-weight: 500; box-shadow: 0 4px 6px rgba(0,0,0,0.05); display: flex; align-items: center; pointer-events: auto;">{msg}</div></div>'
     clock_html = f"""
     <!DOCTYPE html>
     <html>
