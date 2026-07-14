@@ -60,6 +60,11 @@ st.markdown("""
         border-top: 1px solid rgba(0, 176, 240, 0.2) !important;
     }
     
+    /* Ensure all data tables have breathing room above so floating toolbar doesn't overlap text */
+    [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
+        margin-top: 35px !important;
+    }
+    
     /* Custom CSS for Toast notifications */
     [data-testid="stToast"] {
         background-color: #10b981 !important;
