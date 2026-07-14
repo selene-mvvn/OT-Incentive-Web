@@ -82,14 +82,15 @@ def render_ot_excel():
         st.markdown("""
             <style>
                 [data-testid="stFileUploader"] {
-                    padding: 10px 0;
-                    margin-bottom: 20px;
+                    padding: 0 !important;
+                    margin-top: -12px !important;
+                    margin-bottom: 4px !important;
                 }
                 [data-testid="stFileUploaderDropzone"] {
-                    border: 2.5px dashed #3498db !important;
-                    border-radius: 16px !important;
+                    border: 2px dashed #3498db !important;
+                    border-radius: 12px !important;
                     background-color: #ffffff !important;
-                    padding: 40px 20px !important;
+                    padding: 16px 20px !important;
                     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
                 }
                 [data-testid="stFileUploaderDropzone"]:hover {
@@ -112,6 +113,22 @@ def render_ot_excel():
                     color: #2980b9 !important;
                 }
 
+                /* Tighten uploaded data table below its label */
+                div.element-container:has([data-testid="stFileUploader"]) ~ div.element-container:has([data-testid="stDataFrame"]) {
+                    margin-top: -36px !important;
+                    margin-bottom: 6px !important;
+                }
+                div.element-container:has([data-testid="stFileUploader"]) ~ div.element-container:has([data-testid="stDataFrame"]) [data-testid="stDataFrame"] {
+                    padding-top: 4px !important;
+                }
+
+                /* Tighten spacing around radio options and info alerts */
+                [data-testid="stRadio"] {
+                    margin-bottom: -12px !important;
+                }
+                div.element-container:has([data-testid="stRadio"]) + div.element-container:has([data-testid="stAlert"]) {
+                    margin-top: -8px !important;
+                }
             </style>
         """, unsafe_allow_html=True)
         uploaded_file = st.file_uploader(t("Upload File Dữ Liệu Tăng Ca", "残業データファイルをアップロード"), type=['xlsx', 'xls'])
