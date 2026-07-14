@@ -25,6 +25,7 @@ def render_welcome():
             background-position: bottom;
             background-repeat: no-repeat;
             background-size: 100vw 100vh; /* Force exact full viewport fill */
+            background-attachment: fixed;
             font-family: 'Times New Roman', serif;
         }
         
@@ -449,7 +450,7 @@ def render_welcome():
             OVERTIME & INCENTIVE<br>MANAGEMENT SYSTEM
         </div>
         <div class="divider"></div>
-        <div style="position: relative; height: 0; width: 100%;">
+        <div style="position: relative; height: 0px; width: 100%; overflow: visible; margin: 0; padding: 0;">
             <div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center;">
                 <iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 50px; border: none; overflow: hidden; background: transparent;"></iframe>
             </div>
