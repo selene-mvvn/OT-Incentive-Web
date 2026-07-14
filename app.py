@@ -653,13 +653,13 @@ st.markdown("""
         margin-bottom: 2px !important;
     }
 
-    /* Outer container reserves compact 22px space ABOVE table for floating toolbar */
+    /* Outer container reserves 26px space ABOVE table for floating toolbar */
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         margin-bottom: 4px !important;
-        padding: 22px 0 0 0 !important;
+        padding: 26px 0 0 0 !important;
         overflow: visible !important;
         width: 100% !important;
         position: relative !important;
@@ -675,7 +675,7 @@ st.markdown("""
         pointer-events: auto !important;
         display: flex !important;
         position: absolute !important;
-        top: -14px !important;
+        top: -18px !important;
         right: 4px !important;
         z-index: 50 !important;
     }
