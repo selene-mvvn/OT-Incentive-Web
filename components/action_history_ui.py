@@ -10,7 +10,6 @@ def render_action_history():
         <style>
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title),
             div[data-testid="stBorder"]:has(.history-card-title),
-            div.element-container:has(.history-card-title),
             .action-history-card-hover {
                 transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
                 background-color: #ffffff !important;
@@ -19,7 +18,6 @@ def render_action_history():
             }
             div[data-testid="stVerticalBlockBorderWrapper"]:has(.history-card-title):hover,
             div[data-testid="stBorder"]:has(.history-card-title):hover,
-            div.element-container:has(.history-card-title):hover,
             .action-history-card-hover:hover {
                 transform: translateY(-4px) !important;
                 box-shadow: 0 12px 28px -4px rgba(0, 168, 232, 0.25), 0 4px 10px -2px rgba(0, 168, 232, 0.12) !important;
@@ -49,21 +47,25 @@ def render_action_history():
         const doc = window.parent.document;
         const titles = doc.querySelectorAll('.history-card-title');
         titles.forEach(t => {
-            let el = t.closest('[data-testid="stVerticalBlockBorderWrapper"]') ||
-                     t.closest('[data-testid="stBorder"]');
-            if (!el) {
-                let curr = t.parentElement;
-                while (curr && curr.tagName !== 'BODY') {
-                    const style = window.parent.getComputedStyle(curr);
-                    if (style && style.borderWidth && style.borderWidth !== '0px' && style.borderStyle !== 'none') {
-                        el = curr;
-                        break;
+            const row = t.closest('[data-testid="stHorizontalBlock"]');
+            if (row) {
+                let card = row.closest('[data-testid="stVerticalBlockBorderWrapper"]') ||
+                           row.closest('[data-testid="stBorder"]');
+                if (!card) {
+                    let curr = row.parentElement;
+                    while (curr && curr.tagName !== 'BODY') {
+                        const style = window.parent.getComputedStyle(curr);
+                        if (style && style.borderWidth && style.borderWidth !== '0px' && style.borderStyle !== 'none') {
+                            card = curr;
+                            break;
+                        }
+                        curr = curr.parentElement;
                     }
-                    curr = curr.parentElement;
+                    if (!card) card = row.parentElement;
                 }
-            }
-            if (el && !el.classList.contains('action-history-card-hover')) {
-                el.classList.add('action-history-card-hover');
+                if (card && !card.classList.contains('action-history-card-hover')) {
+                    card.classList.add('action-history-card-hover');
+                }
             }
         });
     };
