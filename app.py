@@ -712,16 +712,17 @@ st.markdown("""
     
 
     
-    /* Pull holiday table up close directly below its autofill button sibling */
-    div.element-container:has([data-testid="stButton"]) ~ div.element-container:has([data-testid="stDataEditor"]) {
-        margin-top: -55px !important;
+    /* Pull tables inside tabs up close to elements right above them */
+    [data-testid="stTabs"] .element-container:has([data-testid="stDataEditor"]) {
+        margin-top: -38px !important;
+        margin-bottom: 2px !important;
     }
-    div.element-container:has([data-testid="stButton"]) ~ div.element-container:has([data-testid="stDataEditor"]) [data-testid="stDataEditor"] {
+    [data-testid="stTabs"] [data-testid="stDataEditor"] {
         padding-top: 4px !important;
     }
-    /* Pull LƯU NGÀY LỄ save button up close right below the holiday table */
-    div.element-container:has([data-testid="stButton"]) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has([data-testid="stButton"]) {
-        margin-top: -24px !important;
+    /* Pull LƯU NGÀY LỄ save button up close right below the table */
+    [data-testid="stTabs"] .element-container:has([data-testid="stDataEditor"]) + .element-container {
+        margin-top: -16px !important;
     }
 
     /* Compact popover for history delete */
