@@ -1688,7 +1688,7 @@ else:
                 color: #00a8e8 !important;
             }}
         </style>
-        <div id="collapsed-sticky-note-btn" title="Ghi chú nhắc việc">
+        <div id="collapsed-sticky-note-btn" title="{t('Ghi chú nhắc việc', 'クイックメモ')}">
             <span class="material-symbols-rounded" style="font-size: 26px; color: #2c3e50; transition: color 0.3s ease;">edit_note</span>
             {"<span style='width: 7px; height: 7px; background: #e11d48; border-radius: 50%; position: absolute; margin-top: -16px; margin-left: 20px;'></span>" if has_note else ""}
         </div>
@@ -1878,6 +1878,10 @@ else:
                                         lbl.removeAttribute('title');
                                     }
                                 });
+                                const collapsedSticky = doc.getElementById('collapsed-sticky-note-btn');
+                                if (collapsedSticky) {
+                                    collapsedSticky.setAttribute('title', lang === 'JP' ? 'クイックメモ' : 'Ghi chú nhắc việc');
+                                }
                             }
                         };
                         updateMenuTooltips();
