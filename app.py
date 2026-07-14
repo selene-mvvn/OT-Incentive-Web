@@ -635,25 +635,30 @@ st.markdown("""
     /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS & CONTAINERS */
 
 
-    /* Create comfortable breathing room below main tables */
+    /* Compact, cohesive breathing room below main tables and expanders */
     .element-container:has([data-testid="stDataFrame"]),
     .element-container:has([data-testid="stDataEditor"]) {
-        margin-bottom: 28px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .element-container:has([data-testid="stExpander"]) {
+        margin-top: 6px !important;
+        margin-bottom: 10px !important;
     }
 
     /* Remove extra bottom margin for tables inside expanders */
     [data-testid="stExpander"] .element-container:has([data-testid="stDataFrame"]),
     [data-testid="stExpander"] .element-container:has([data-testid="stDataEditor"]) {
-        margin-bottom: 4px !important;
+        margin-bottom: 2px !important;
     }
 
-    /* Outer container reserves 24px space ABOVE table for floating toolbar */
+    /* Outer container reserves compact 22px space ABOVE table for floating toolbar */
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
-        margin-bottom: 12px !important;
-        padding: 24px 0 0 0 !important;
+        margin-bottom: 4px !important;
+        padding: 22px 0 0 0 !important;
         overflow: visible !important;
         width: 100% !important;
         position: relative !important;
