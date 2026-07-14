@@ -1016,21 +1016,23 @@ def show_sticky_note_exit_modal():
         white-space: nowrap !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
-    /* Shift entire content group up slightly toward the blue title bar */
+    /* Eliminate white gap below dialog title */
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         padding-top: 0px !important;
-        margin-top: -10px !important;
+        margin-top: -24px !important;
     }
     [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] {
-        margin-top: -18px !important;
-        gap: 0.5rem !important;
+        margin-top: -14px !important;
+        gap: 0.3rem !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
-        display: none !important;
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(1),
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(2),
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(1),
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(2) {
         height: 0px !important;
+        min-height: 0px !important;
         margin: 0px !important;
         padding: 0px !important;
     }
@@ -1174,7 +1176,7 @@ def show_sticky_note_exit_modal():
             border-left: 5px solid #eab308;
             padding: 14px 18px;
             border-radius: 8px;
-            margin-top: -14px;
+            margin-top: -26px;
             margin-bottom: 12px;
             color: #713f12;
             font-size: 14.5px;
