@@ -1220,7 +1220,7 @@ def show_sticky_note_exit_modal():
         st.rerun()
 
 
-@st.dialog(t("GHI CHÚ NHẮC VIỆC", "クイックメモ"))
+@st.dialog(t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ"))
 def show_sticky_note_editor_modal():
     st.markdown("""<style>
     /* Full-screen backdrop overlay filling entire viewport */
