@@ -1692,7 +1692,9 @@ else:
             st.session_state['sidebar_sticky_note'] = load_sticky_note()
         current_note_val = st.session_state['sidebar_sticky_note']
         has_note = bool(current_note_val.strip())
-        btn_label = t("📝 GHI CHÚ NHẮC VIỆC 📌", "📝 クイックメモ 📌") if has_note else t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ")
+        note_icon = '<span class="material-symbols-rounded" style="font-size: 18px;">edit_note</span>'
+        pin_icon = '<span class="material-symbols-rounded" style="font-size: 16px; color: #e11d48;">push_pin</span>' if has_note else ''
+        btn_label = f'{note_icon}<span>{t("GHI CHÚ NHẮC VIỆC", "クイックメモ")}</span>{pin_icon}'
         lang = st.session_state.get('lang', 'VN')
         note_attr = "true" if has_note else ""
         st.markdown(f"""
@@ -1708,7 +1710,10 @@ else:
             border-radius: 8px;
             padding: 7px 4px;
             cursor: pointer;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
