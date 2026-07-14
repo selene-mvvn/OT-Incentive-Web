@@ -427,13 +427,14 @@ def render_welcome():
     </body>
     </html>
     """
+    holiday_state_key = "with_holiday" if countdown_data else "no_holiday"
     clock_html_escaped = html.escape(clock_html.replace('\n', ' '))
     st.markdown(f"""
         <div class="title">
             OVERTIME & INCENTIVE<br>MANAGEMENT SYSTEM
         </div>
         <div class="divider"></div>
-        <div style="position: relative; height: 0px; width: 100%; overflow: visible; margin: 0; padding: 0;"><div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center; pointer-events: none;"><iframe srcdoc="{clock_html_escaped}" style="width: 100%; height: 95px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe></div></div>
+        <div id="clock-wrapper-{holiday_state_key}" style="position: relative; height: 0px; width: 100%; overflow: visible; margin: 0; padding: 0;"><div style="position: absolute; top: -13vh; width: 100%; display: flex; justify-content: center; pointer-events: none;"><iframe name="clock_iframe_{holiday_state_key}" id="clock_iframe_{holiday_state_key}" srcdoc="{clock_html_escaped}" style="width: 100%; height: 95px; border: none; overflow: hidden; background: transparent; pointer-events: auto;"></iframe></div></div>
         <div class="info-card">
             <div style="font-size: 0.95rem; line-height: 1.6; color: #555; text-align: justify; font-family: 'Times New Roman', serif; font-style: italic; padding-bottom: 30px;">
                 {info_text}
