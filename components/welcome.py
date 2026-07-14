@@ -25,7 +25,6 @@ def render_welcome():
             background-position: bottom;
             background-repeat: no-repeat;
             background-size: 100vw 100vh; /* Force exact full viewport fill */
-            background-attachment: fixed;
             font-family: 'Times New Roman', serif;
         }
         
@@ -446,7 +445,7 @@ def render_welcome():
         </div>
     """, unsafe_allow_html=True)
     # Empty space to position buttons correctly on the wave
-    st.markdown("<div style='height: 4.5vh;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 7.5vh;'></div>", unsafe_allow_html=True)
     
     # Render Buttons using standard Streamlit columns
     # Increase the outer spacers to push the buttons closer to the center
