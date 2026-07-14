@@ -647,20 +647,20 @@ st.markdown("""
         margin-bottom: 4px !important;
     }
 
-    /* Outer container reserves 36px space ABOVE table for floating toolbar */
+    /* Outer container reserves 24px space ABOVE table for floating toolbar */
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
         margin-bottom: 12px !important;
-        padding: 36px 0 0 0 !important;
+        padding: 24px 0 0 0 !important;
         overflow: visible !important;
         width: 100% !important;
         position: relative !important;
         box-sizing: border-box !important;
     }
 
-    /* Place toolbar outside above top-right edge of the bordered table */
+    /* Place toolbar outside above top-right edge of the bordered table without touching table border */
     [data-testid="stDataFrame"] [data-testid="stElementToolbar"],
     [data-testid="stDataEditor"] [data-testid="stElementToolbar"],
     [data-testid="stElementToolbar"] {
@@ -669,8 +669,8 @@ st.markdown("""
         pointer-events: auto !important;
         display: flex !important;
         position: absolute !important;
-        top: 2px !important;
-        right: 2px !important;
+        top: -14px !important;
+        right: 4px !important;
         z-index: 50 !important;
     }
 
