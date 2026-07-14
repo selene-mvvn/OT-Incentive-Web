@@ -19,7 +19,7 @@ def render_welcome():
         [data-testid="stHeader"] { display: none !important; }
         
         /* The main app container gets the wave background */
-        .stApp, [data-testid="stAppViewContainer"], section.main {
+        .stApp {
             background-color: #ffffff;
             background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path fill="%2300B0F0" fill-opacity="1" d="M0,224L80,213.3C160,203,320,181,480,181.3C640,181,800,203,960,213.3C1120,224,1280,224,1360,224L1440,224L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>');
             background-position: bottom;
@@ -27,12 +27,10 @@ def render_welcome():
             background-size: 100vw 100vh; /* Force exact full viewport fill */
             background-attachment: fixed;
             font-family: 'Times New Roman', serif;
-            overflow: hidden !important;
         }
         
         .block-container { 
             padding-top: 0vh !important;
-            padding-bottom: 0vh !important;
             margin-top: -5vh !important; /* Adjusted to keep language switcher visible */
             padding-left: 6vw !important; /* Shift to center */
             max-width: 100% !important;
@@ -118,7 +116,7 @@ def render_welcome():
             color: #ffffff;
             text-align: center;
             font-size: 14px;
-            margin-top: 4vh;
+            margin-top: 9vh;
             line-height: 1.5;
             letter-spacing: 0.5px;
         }
@@ -448,7 +446,7 @@ def render_welcome():
         </div>
     """, unsafe_allow_html=True)
     # Empty space to position buttons correctly on the wave
-    st.markdown("<div style='height: 2.5vh;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 4.5vh;'></div>", unsafe_allow_html=True)
     
     # Render Buttons using standard Streamlit columns
     # Increase the outer spacers to push the buttons closer to the center
