@@ -640,6 +640,7 @@ st.markdown("""
         border: 2px solid #00B0F0 !important;
         border-radius: 10px !important;
         box-shadow: 0 4px 15px rgba(0, 176, 240, 0.12) !important;
+        margin-bottom: 24px !important;
         padding: 0 !important;
         overflow: hidden !important;
         width: 100% !important;
