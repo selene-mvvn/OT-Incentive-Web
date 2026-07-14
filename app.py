@@ -1446,7 +1446,10 @@ if 'current_page' not in st.session_state:
 if st.session_state['current_page'] == 'welcome':
     if 'last_rendered_tab' in st.session_state:
         del st.session_state['last_rendered_tab']
-    render_welcome()
+    import importlib
+    import components.welcome
+    importlib.reload(components.welcome)
+    components.welcome.render_welcome()
 else:
     # Main App specific CSS
     st.markdown("""
