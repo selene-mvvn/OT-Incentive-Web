@@ -712,20 +712,15 @@ st.markdown("""
     
 
     
-    /* Special override: Target the column/vertical-block containing #holiday-heading directly */
-    [data-testid="stColumn"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]),
-    [data-testid="stVerticalBlock"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) {
-        margin-top: -65px !important;
-        margin-bottom: 2px !important;
+    /* Pull holiday table up close directly below its autofill button sibling */
+    div.element-container:has([data-testid="stButton"]) ~ div.element-container:has([data-testid="stDataEditor"]) {
+        margin-top: -55px !important;
     }
-    [data-testid="stColumn"]:has(#holiday-heading) [data-testid="stDataEditor"],
-    [data-testid="stVerticalBlock"]:has(#holiday-heading) [data-testid="stDataEditor"] {
+    div.element-container:has([data-testid="stButton"]) ~ div.element-container:has([data-testid="stDataEditor"]) [data-testid="stDataEditor"] {
         padding-top: 4px !important;
     }
-    [data-testid="stColumn"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has([data-testid="stButton"]),
-    [data-testid="stVerticalBlock"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has([data-testid="stButton"]),
-    [data-testid="stColumn"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has(button),
-    [data-testid="stVerticalBlock"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has(button) {
+    /* Pull LƯU NGÀY LỄ save button up close right below the holiday table */
+    div.element-container:has([data-testid="stButton"]) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has([data-testid="stButton"]) {
         margin-top: -24px !important;
     }
 
