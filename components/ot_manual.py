@@ -885,16 +885,16 @@ def render_base_data():
 
             editor_key = f"holidays_editor_{st.session_state.get('holidays_editor_key', 0)}"
 
-            st.markdown("<div id='holiday-table-anchor'></div>", unsafe_allow_html=True)
             st.markdown("""
+                <div id='holiday-table-anchor'></div>
                 <style>
                 /* Pull holiday table up close below the autofill button */
-                div.element-container:has(#holiday-table-anchor) + div.element-container:has([data-testid="stDataEditor"]) {
-                    margin-top: -38px !important;
+                div.element-container:has(#holiday-table-anchor) ~ div.element-container:has([data-testid="stDataEditor"]) {
+                    margin-top: -45px !important;
                 }
                 /* Pull save button up along with the table */
-                div.element-container:has(#holiday-table-anchor) + div.element-container:has([data-testid="stDataEditor"]) + div.element-container {
-                    margin-top: -16px !important;
+                div.element-container:has(#holiday-table-anchor) ~ div.element-container:has([data-testid="stDataEditor"]) + div.element-container {
+                    margin-top: -18px !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
