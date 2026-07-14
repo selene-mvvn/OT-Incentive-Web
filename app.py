@@ -635,24 +635,34 @@ st.markdown("""
     /* 4. GLASSMORPHISM CARDS FOR TABLES & METRICS & CONTAINERS */
 
 
+    /* Create comfortable breathing room below every table block */
+    .element-container:has([data-testid="stDataFrame"]),
+    .element-container:has([data-testid="stDataEditor"]) {
+        margin-bottom: 32px !important;
+    }
+
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
         background: #ffffff !important;
         border: 2px solid #00B0F0 !important;
         border-radius: 10px !important;
         box-shadow: 0 4px 15px rgba(0, 176, 240, 0.12) !important;
-        margin-bottom: 24px !important;
+        margin-bottom: 12px !important;
         padding: 0 !important;
         overflow: hidden !important;
         width: 100% !important;
         position: relative !important;
         box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: column !important;
     }
 
-    /* Remove extra inner borders so outer border wraps cleanly around all 4 sides */
+    /* Remove extra inner borders and eliminate trailing white space below scrollbar */
     [data-testid="stDataFrame"] > div,
     [data-testid="stDataEditor"] > div {
         border: none !important;
         box-shadow: none !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
     }
 
     /* Bảng nằm trong Expander thì dùng viền mảnh hơn */
