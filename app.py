@@ -1852,7 +1852,8 @@ else:
                             const radiogroup = sidebar.querySelector('div[role="radiogroup"]');
                             if (radiogroup) {
                                 const isCollapsed = sidebar.getAttribute('aria-expanded') === 'false' || sidebar.getBoundingClientRect().width < 200;
-                                const lang = footer.getAttribute('data-lang') || 'VN';
+                                const liveFooter = doc.querySelector('.sidebar-footer-container');
+                                const lang = (liveFooter && liveFooter.getAttribute('data-lang')) || 'VN';
                                 const tooltipsVN = [
                                     "OVERTIME",
                                     "DỮ LIỆU DỰ ÁN",
@@ -1886,7 +1887,7 @@ else:
                         };
                         updateMenuTooltips();
                         const observerMenu = new window.parent.MutationObserver(() => updateMenuTooltips());
-                        observerMenu.observe(sidebar, { attributes: true, attributeFilter: ['aria-expanded', 'style'] });
+                        observerMenu.observe(sidebar, { attributes: true, childList: true, subtree: true });
                         
                         // Automatic Exit Check when intending to leave / close web
                         const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
