@@ -1874,20 +1874,26 @@ else:
                                 const labels = radiogroup.querySelectorAll('label');
                                 labels.forEach((lbl, idx) => {
                                     if (isCollapsed && idx < tooltips.length) {
-                                        lbl.setAttribute('title', tooltips[idx]);
+                                        if (lbl.getAttribute('title') !== tooltips[idx]) {
+                                            lbl.setAttribute('title', tooltips[idx]);
+                                        }
                                     } else {
-                                        lbl.removeAttribute('title');
+                                        if (lbl.hasAttribute('title')) {
+                                            lbl.removeAttribute('title');
+                                        }
                                     }
                                 });
                                 const collapsedSticky = doc.getElementById('collapsed-sticky-note-btn');
                                 if (collapsedSticky) {
-                                    collapsedSticky.setAttribute('title', lang === 'JP' ? 'クイックメモ' : 'Ghi chú nhắc việc');
+                                    const expectedTitle = lang === 'JP' ? 'クイックメモ' : 'Ghi chú nhắc việc';
+                                    if (collapsedSticky.getAttribute('title') !== expectedTitle) {
+                                        collapsedSticky.setAttribute('title', expectedTitle);
+                                    }
                                 }
                             }
                         };
                         updateMenuTooltips();
-                        const observerMenu = new window.parent.MutationObserver(() => updateMenuTooltips());
-                        observerMenu.observe(sidebar, { attributes: true, childList: true, subtree: true });
+                        window.parent.setInterval(updateMenuTooltips, 800);
                         
                         // Automatic Exit Check when intending to leave / close web
                         const hasNoteAttr = footer.getAttribute('data-has-note') === 'true';
