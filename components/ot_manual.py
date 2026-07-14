@@ -766,31 +766,26 @@ def render_base_data():
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
+            st.markdown("""
+                <style>
+                /* Pull holiday table up close below the autofill button */
+                div.element-container:has(button) + div.element-container:has([data-testid="stDataEditor"]),
+                div.element-container:has([data-testid="stButton"]) + div.element-container:has([data-testid="stDataEditor"]) {
+                    margin-top: -46px !important;
+                }
+                /* Pull save button up along with the table */
+                div.element-container:has([data-testid="stDataEditor"]) + div.element-container:has(button),
+                div.element-container:has([data-testid="stDataEditor"]) + div.element-container:has([data-testid="stButton"]) {
+                    margin-top: -18px !important;
+                }
+                </style>
+            """, unsafe_allow_html=True)
+
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
 
             guide_text = t(
-                "<style>"
-                "div.element-container:has(button) + div.element-container:has([data-testid='stDataEditor']),"
-                "div.element-container:has([data-testid='stButton']) + div.element-container:has([data-testid='stDataEditor']) {"
-                "    margin-top: -42px !important;"
-                "}"
-                "div.element-container:has([data-testid='stDataEditor']) + div.element-container:has(button),"
-                "div.element-container:has([data-testid='stDataEditor']) + div.element-container:has([data-testid='stButton']) {"
-                "    margin-top: -18px !important;"
-                "}"
-                "</style>"
                 "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>HƯỚNG DẪN:</b><br>- <b>Thêm mới:</b> Bấm vào dấu <b>+</b> mờ mờ ở góc dưới cùng bên trái của bảng.<br>- <b>Chọn ngày/Sửa:</b> Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- <b>Xóa:</b> Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím <b>Delete</b> trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).</div>",
-                "<style>"
-                "div.element-container:has(button) + div.element-container:has([data-testid='stDataEditor']),"
-                "div.element-container:has([data-testid='stButton']) + div.element-container:has([data-testid='stDataEditor']) {"
-                "    margin-top: -42px !important;"
-                "}"
-                "div.element-container:has([data-testid='stDataEditor']) + div.element-container:has(button),"
-                "div.element-container:has([data-testid='stDataEditor']) + div.element-container:has([data-testid='stButton']) {"
-                "    margin-top: -18px !important;"
-                "}"
-                "</style>"
-                "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>操作ガイド:</b><br>- <b>新規追加:</b> 表の左下にある <b>+</b> ボタンを押してください。<br>- <b>日付選択・編集:</b> セルをダブルクリックして編集またはカレンダーから選択。<br>- <b>削除:</b> 左端のチェックボックスを選択し、<b>Delete</b>キーまたはゴミ箱アイコンで削除。</div>"
+                "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>操作ガイド:</b><br>- <b>新規追加:</b> 表の左下にある <b>+</b> ボタンを押してください。<br>- <b>日付選択・編集:</b> セルをダブルクリックして編集 hoặc カレンダーから選択。<br>- <b>削除:</b> 左端のチェックボックスを選択し、<b>Delete</b>キー hoặc ゴミ箱アイコンで削除。</div>"
             )
             st.caption(guide_text, unsafe_allow_html=True)
 
