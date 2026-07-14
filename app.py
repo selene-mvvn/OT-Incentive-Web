@@ -712,26 +712,17 @@ st.markdown("""
     
 
     
-    /* Special override: Hide holiday-table-marker wrapper completely */
-    div.element-container:has(.holiday-table-marker) {
-        display: none !important;
-        height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    /* Pull holiday table up close below the autofill button */
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) {
-        margin-top: -38px !important;
+    /* Special override: Target the column containing #holiday-heading directly */
+    div[data-testid="column"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) {
+        margin-top: -65px !important;
         margin-bottom: 2px !important;
     }
-    /* Reduce top padding on holiday table so it sits higher */
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) [data-testid="stDataEditor"] {
+    div[data-testid="column"]:has(#holiday-heading) [data-testid="stDataEditor"] {
         padding-top: 4px !important;
     }
-    /* Pull LƯU NGÀY LỄ button up close below holiday table */
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has(button),
-    div.element-container:has(.holiday-table-marker) ~ div.element-container:has([data-testid="stDataEditor"]) ~ div.element-container:has([data-testid="stButton"]) {
-        margin-top: -16px !important;
+    div[data-testid="column"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has(button),
+    div[data-testid="column"]:has(#holiday-heading) .element-container:has([data-testid="stDataEditor"]) ~ .element-container:has([data-testid="stButton"]) {
+        margin-top: -24px !important;
     }
 
     /* Compact popover for history delete */
