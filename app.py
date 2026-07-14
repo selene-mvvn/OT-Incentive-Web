@@ -1944,12 +1944,23 @@ else:
 
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
+                            
+                            // Only trigger popup if mouse moves out at far top-right corner (Close Window X button area), NEVER when switching tabs
+                            window.parent.document.addEventListener('mouseleave', (e) => {
+                                if (e.clientY <= 5 && (window.parent.innerWidth - e.clientX) <= 140) {
+                                    if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
+                                }
+                            });
+                            
                             const checkUnload = function(e) {
                                 const liveFooter = doc.querySelector('.sidebar-footer-container');
                                 const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
                                 if (isLiveActive && !window.parent._otExitModalFired) {
                                     e.preventDefault();
                                     e.returnValue = 'Bạn có Ghi chú nhắc việc cá nhân chưa hoàn thành! Bạn có chắc chắn muốn thoát web không?';
+                                    setTimeout(() => {
+                                        if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
+                                    }, 300);
                                     return e.returnValue;
                                 }
                             };
