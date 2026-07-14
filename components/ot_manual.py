@@ -434,8 +434,11 @@ def render_base_data():
             st.markdown("<br>", unsafe_allow_html=True)
             head_col1, head_col2 = st.columns([7.8, 2.2])
             with head_col1:
-                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; margin-bottom: 4px;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3>", unsafe_allow_html=True)
-                st.caption(t("Quản lý thông tin nhân sự. Lưu ý: Cột 'Lương Gross' sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.", "スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。"))
+                st.markdown(
+                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3>"
+                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Quản lý thông tin nhân sự. Lưu ý: Cột Lương Gross sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.', 'スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。')}</div>",
+                    unsafe_allow_html=True
+                )
 
             with head_col2:
                 st.markdown("""
@@ -1576,9 +1579,12 @@ def render_project_data():
                         st.rerun()
 
             if len(st.session_state['ot_records']) > 0:
-                st.markdown("---")
-                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>", unsafe_allow_html=True)
-                st.caption(t("Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.", "セルをクリックして編集。行を選択してDeleteで削除。"))
+                st.markdown("<hr style='margin: 10px 0 6px 0;'>", unsafe_allow_html=True)
+                st.markdown(
+                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>"
+                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.', 'セルをクリックして編集。行を選択してDeleteで削除。')}</div>",
+                    unsafe_allow_html=True
+                )
             
                 df = pd.DataFrame(st.session_state['ot_records'])
             

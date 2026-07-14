@@ -141,7 +141,10 @@ def render_dashboard():
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 from components.ui_utils import make_expander_blue
                 make_expander_blue()
-                st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
+                st.markdown(
+                    f"<div style='font-size: 13.5px; color: #64748b; margin: 2px 0 -14px 2px;'>{t('Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.', '保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。')}</div>",
+                    unsafe_allow_html=True
+                )
                 df_ot_edit = pd.DataFrame(ot_history)
                 if all(c in df_ot_edit.columns for c in ['ot_date', 'employee_name', 'order_name', 'ot_hours']):
                     df_ot_edit = df_ot_edit.drop_duplicates(subset=['ot_date', 'employee_name', 'order_name', 'ot_hours'], keep='first')
@@ -308,7 +311,10 @@ def render_dashboard():
             with st.expander(t("✏️ Sửa dữ liệu thủ công (Nếu cần)", "✏️ 手動データ編集 (必要な場合)")):
                 from components.ui_utils import make_expander_blue
                 make_expander_blue()
-                st.caption(t("Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.", "保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。"))
+                st.markdown(
+                    f"<div style='font-size: 13.5px; color: #64748b; margin: 2px 0 -14px 2px;'>{t('Bảng hiển thị toàn bộ lịch sử đã lưu. Chỉnh sửa và ấn nút Lưu để cập nhật.', '保存された全履歴を表示しています。編集して保存ボタンを押して更新してください。')}</div>",
+                    unsafe_allow_html=True
+                )
                 df_inc_edit = pd.DataFrame(inc_history).drop_duplicates()
                 
                 col_order_inc = ["date", "employee_name", "project_name", "target_hours", "actual_hours", "unit_price", "company_charge", "profit", "standard_incentive", "final_incentive", "notes"]
