@@ -636,39 +636,28 @@ st.markdown("""
 
 
     [data-testid="stDataFrame"], [data-testid="stDataEditor"] {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
+        background: #ffffff !important;
+        border: 2px solid #00B0F0 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 4px 15px rgba(0, 176, 240, 0.12) !important;
         padding: 0 !important;
-        overflow: visible !important;
+        overflow: hidden !important;
         width: 100% !important;
         position: relative !important;
+        box-sizing: border-box !important;
     }
 
-    /* Style ONLY the main table wrapper, never Glide Data Grid portals or edit overlays */
-    [data-testid="stDataFrame"] > div:first-child,
-    [data-testid="stDataEditor"] > div:first-child {
-        background: #ffffff !important;
-        border-radius: 8px !important;
-        box-shadow: 0 4px 15px rgba(0, 176, 240, 0.1) !important;
-        border: 2px solid #00B0F0 !important;
-        box-sizing: border-box !important;
-        width: 100% !important;
-        overflow: hidden !important;
-        transition: all 0.3s ease !important;
-    }
-    /* Ensure Glide Data Grid editing portal overlays stay scoped to cell */
-    [data-testid="stDataEditor"] > div:nth-child(n+2) {
-        width: auto !important;
+    /* Remove extra inner borders so outer border wraps cleanly around all 4 sides */
+    [data-testid="stDataFrame"] > div,
+    [data-testid="stDataEditor"] > div {
         border: none !important;
-        background: transparent !important;
         box-shadow: none !important;
     }
 
-    /* Bảng nằm trong Expander thì bỏ viền xanh vì Expander đã có viền */
-    [data-testid="stExpander"] [data-testid="stDataFrame"] > div:first-child,
-    [data-testid="stExpander"] [data-testid="stDataEditor"] > div:first-child {
-        border: 1px solid rgba(0,0,0,0.1) !important;
+    /* Bảng nằm trong Expander thì dùng viền mảnh hơn */
+    [data-testid="stExpander"] [data-testid="stDataFrame"],
+    [data-testid="stExpander"] [data-testid="stDataEditor"] {
+        border: 1px solid rgba(0, 176, 240, 0.35) !important;
         box-shadow: none !important;
     }
     [data-testid="stDataFrame"] th, [data-testid="stDataEditor"] th {
