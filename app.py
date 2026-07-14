@@ -1664,24 +1664,49 @@ else:
         )
         menu_selection = st.session_state['menu_selection']
         
-        st.markdown("""
+        if 'sidebar_sticky_note' not in st.session_state:
+            st.session_state['sidebar_sticky_note'] = load_sticky_note()
+        current_note_val = st.session_state['sidebar_sticky_note']
+        has_note = bool(current_note_val.strip())
+
+        st.markdown(f"""
         <style>
-            [data-testid="stSidebarContent"] {
+            [data-testid="stSidebarContent"] {{
                 padding-top: 1.25rem !important;
                 padding-bottom: 0px !important;
-            }
+            }}
             div.element-container:has(#hidden-sticky-note-trigger-anchor),
             div.element-container:has(#hidden-sticky-note-trigger-anchor) ~ div.element-container:has(button),
             div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container,
-            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container + div.element-container {
+            div.element-container:has(#hidden-sticky-note-trigger-anchor) + div.element-container + div.element-container {{
                 display: none !important;
                 height: 0px !important;
                 margin: 0px !important;
                 padding: 0px !important;
                 overflow: hidden !important;
-            }
+            }}
+            #collapsed-sticky-note-btn {{
+                display: none;
+            }}
+            [data-testid="stSidebar"][aria-expanded="false"] #collapsed-sticky-note-btn {{
+                display: flex !important;
+                justify-content: center;
+                align-items: center;
+                margin-top: 36px;
+                margin-left: -1rem;
+                width: 100px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }}
+            [data-testid="stSidebar"][aria-expanded="false"] #collapsed-sticky-note-btn:hover span.material-symbols-rounded {{
+                color: #00a8e8 !important;
+            }}
         </style>
         <div id="hidden-sticky-note-trigger-anchor"></div>
+        <div id="collapsed-sticky-note-btn" title="Ghi chú nhắc việc">
+            <span class="material-symbols-rounded" style="font-size: 26px; color: #2c3e50; transition: color 0.3s ease;">edit_note</span>
+            {"<span style='width: 7px; height: 7px; background: #e11d48; border-radius: 50%; position: absolute; margin-top: -16px; margin-left: 20px;'></span>" if has_note else ""}
+        </div>
         """, unsafe_allow_html=True)
         if st.button("open_sticky_note_trigger", key="btn_hidden_open_sticky_note"):
             show_sticky_note_editor_modal()
@@ -1791,6 +1816,17 @@ else:
                                 noteBtn.style.color = '#0369a1';
                             };
                             noteBtn.onclick = () => {
+                                const stBtns = doc.querySelectorAll('button');
+                                stBtns.forEach(b => {
+                                    if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
+                                        b.click();
+                                    }
+                                });
+                            };
+                        }
+                        const collapsedNoteBtn = doc.getElementById('collapsed-sticky-note-btn');
+                        if (collapsedNoteBtn) {
+                            collapsedNoteBtn.onclick = () => {
                                 const stBtns = doc.querySelectorAll('button');
                                 stBtns.forEach(b => {
                                     if (b.innerText && b.innerText.includes('open_sticky_note_trigger')) {
