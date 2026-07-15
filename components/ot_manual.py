@@ -1598,6 +1598,13 @@ def render_project_data():
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) label[data-testid="stWidgetLabel"] * {{
                         color: #ffffff !important;
                     }}
+                    /* Ensure icons inside both blue cards (such as bolt and tune title icons) are pure white */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .material-symbols-rounded:not(button *):not(.custom-row-badge *),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .material-symbols-rounded:not(button *):not(.custom-row-badge *),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) .material-symbols-rounded:not(button *):not(.custom-row-badge *),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .material-symbols-rounded:not(button *):not(.custom-row-badge *) {{
+                        color: #ffffff !important;
+                    }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge *,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .custom-row-badge,
@@ -1834,7 +1841,7 @@ def render_project_data():
                     st.markdown("<span class='custom-blue-card-std' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
                     c_title, c_reset = st.columns([8.4, 1.6])
                     with c_title:
-                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>bolt</span> {t('CÁC RỔ HỆ SỐ CHUẨN (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px; color: #ffffff !important;'>bolt</span> {t('CÁC RỔ HỆ SỐ CHUẨN (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
                     with c_reset:
                         if st.button(t(":material/refresh: Làm mới rổ giờ", ":material/refresh: リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
                             st.session_state['manual_reset_key'] += 1
@@ -1852,7 +1859,7 @@ def render_project_data():
 
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-custom' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; margin-bottom: 6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>tune</span> {t('CÁC RỔ HỆ SỐ KHÁC (TUỲ CHỈNH - NHIỀU DÒNG)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; margin-bottom: 6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px; color: #ffffff !important;'>tune</span> {t('CÁC RỔ HỆ SỐ KHÁC (TUỲ CHỈNH - NHIỀU DÒNG)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
                     st.markdown("<hr style='margin: 2px 0 6px 0 !important; border: 0 !important; border-top: 1px solid #ffffff !important; opacity: 1 !important;'>", unsafe_allow_html=True)
                     
                     
