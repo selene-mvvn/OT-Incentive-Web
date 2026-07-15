@@ -1558,13 +1558,17 @@ def render_project_data():
 
                     /* Card 1 & Card 2: Rich Blue UI Backgrounds and White Text (No border glow / shadow) */
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std),
                     div[data-testid="stBorder"]:has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div > div[data-testid="stVerticalBlock"],
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) > div > div[data-testid="stVerticalBlock"],
+                    div[data-testid="stBorder"]:has(.custom-blue-card-std) > div,
+                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std),
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom),
                     div[data-testid="stBorder"]:has(.custom-blue-card-custom),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div > div[data-testid="stVerticalBlock"],
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) > div > div[data-testid="stVerticalBlock"] {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) > div,
+                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) {{
                         background: linear-gradient(135deg, #00A8E8 0%, #0082C8 100%) !important;
                         background-color: #00A8E8 !important;
                         border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
