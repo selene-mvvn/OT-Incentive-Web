@@ -1772,6 +1772,13 @@ def render_project_data():
                     }}
 
                     /* Compact Delete Icon Button inside Card 2 Column 4 ONLY */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton {{
+                        display: flex !important;
+                        justify-content: flex-end !important;
+                        padding-right: 0px !important;
+                        margin-right: -16px !important;
+                    }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton button,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton button {{
                         min-height: 36px !important;
