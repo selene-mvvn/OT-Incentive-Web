@@ -1557,18 +1557,14 @@ def render_project_data():
                     }}
 
                     /* Card 1 & Card 2: Rich Blue UI Backgrounds and White Text (No border glow / shadow) */
+                    div:has(> div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom))),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)),
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std),
                     div[data-testid="stBorder"]:has(.custom-blue-card-std),
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) > div,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std),
+                    div:has(> div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std))),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)),
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom),
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom),
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) > div,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) {{
                         background: linear-gradient(135deg, #00A8E8 0%, #0082C8 100%) !important;
                         background-color: #00A8E8 !important;
                         border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
@@ -1576,8 +1572,12 @@ def render_project_data():
                         box-shadow: none !important;
                     }}
 
+                    div:has(> div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom))),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)),
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
                     div[data-testid="stBorder"]:has(.custom-blue-card-std),
+                    div:has(> div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std))),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)),
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
                     div[data-testid="stBorder"]:has(.custom-blue-card-custom) {{
                         padding: 14px 18px 12px 18px !important;
@@ -1585,16 +1585,20 @@ def render_project_data():
                     }}
 
                     /* Ensure all text inside both blue cards (EXCEPT buttons and inputs) is pure white */
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) *:not(button):not(button *):not(input):not(input *),
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) *:not(button):not(button *):not(input):not(input *),
                     div[data-testid="stBorder"]:has(.custom-blue-card-std) *:not(button):not(button *):not(input):not(input *),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) *:not(button):not(button *):not(input):not(input *),
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) *:not(button):not(button *):not(input):not(input *),
                     div[data-testid="stBorder"]:has(.custom-blue-card-custom) *:not(button):not(button *):not(input):not(input *) {{
                         color: #ffffff !important;
                     }}
 
                     /* Keep Number Input boxes crisp white with dark navy text so inputs are clear */
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div[data-testid="stNumberInput"] input,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] input,
                     div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] input,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] input,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] input,
                     div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] input {{
                         background-color: #ffffff !important;
@@ -1605,16 +1609,20 @@ def render_project_data():
                     }}
 
                     /* Number input +/- buttons inside the blue cards */
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div[data-testid="stNumberInput"] button,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button,
                     div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button,
                     div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button {{
                         background-color: #f8fafc !important;
                         color: #00A8E8 !important;
                         border: none !important;
                     }}
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div[data-testid="stNumberInput"] button:hover,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
                     div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button:hover,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover,
                     div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover {{
                         background-color: #e0f2fe !important;
@@ -1623,10 +1631,9 @@ def render_project_data():
 
                     /* Inverted Button Color Effects (hiệu ứng đổi ngược lại: normal has white background & blue text, hover turns blue background with white text) */
                     /* Compact Reset Button inside Card 1 ONLY */
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stButton"] button,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stButton"] button {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button {{
                         min-height: 28px !important;
                         height: 28px !important;
                         padding: 2px 14px !important;
@@ -1641,35 +1648,31 @@ def render_project_data():
                         box-shadow: none !important;
                         transition: all 0.2s ease !important;
                     }}
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button *,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stButton"] button *,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button *,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stButton"] button * {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button * {{
                         color: #0082C8 !important;
                         font-size: 12px !important;
                         margin: 0 !important;
                         padding: 0 !important;
                     }}
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button:hover,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stButton"] button:hover,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button:hover,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stButton"] button:hover {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button:hover {{
                         background-color: #0082C8 !important;
                         color: #ffffff !important;
                         border-color: #ffffff !important;
                     }}
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button:hover *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover *,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stButton"] button:hover *,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button:hover *,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div[data-testid="stButton"] button:hover * {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-std) div.stButton button:hover * {{
                         color: #ffffff !important;
                     }}
 
                     /* Compact Delete Icon Button inside Card 2 Column 3 ONLY (Inverted effect) */
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button {{
                         min-height: 36px !important;
                         height: 36px !important;
                         width: 38px !important;
@@ -1687,16 +1690,14 @@ def render_project_data():
                         justify-content: center !important;
                         transition: all 0.2s ease !important;
                     }}
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button *,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button *,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button *,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button * {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button * {{
                         color: #ef4444 !important;
                     }}
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button:hover,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover,
-                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button:hover {{
+                    div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover {{
                         background-color: #ef4444 !important;
                         color: #ffffff !important;
                         border-color: #ffffff !important;
