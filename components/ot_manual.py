@@ -1464,7 +1464,7 @@ def render_project_data():
                     
                     if est_cost > 0:
                         svg_icon = '<svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="#2e7d32" style="vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M480-320q-33 0-56.5-23.5T400-400v-160q0-33 23.5-56.5T480-640h160q33 0 56.5 23.5T720-560v160q0 33-23.5 56.5T640-320H480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/><path d="M560-440q17 0 28.5-11.5T600-480q0-17-11.5-28.5T560-520q-17 0-28.5 11.5T520-480q0 17 11.5 28.5T560-440Z"/></svg>'
-                        st.markdown(f"<div style='margin-bottom: 8px; padding: 6px 12px; background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; color: #2e7d32; font-size: 14px; display: inline-block;'>{svg_icon}<strong>{t('Dự tính chi phí:', '予想コスト:')}</strong> {est_cost:,.0f} VNĐ</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='margin-bottom: 15px; padding: 6px 12px; background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; color: #2e7d32; font-size: 14px; display: inline-block;'>{svg_icon}<strong>{t('Dự tính chi phí:', '予想コスト:')}</strong> {est_cost:,.0f} VNĐ</div>", unsafe_allow_html=True)
                 
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
                     if employee_name_proj == opt_emp:
@@ -1534,7 +1534,7 @@ def render_project_data():
                 
                 if est_cost_manual > 0:
                     svg_icon = '<svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="#2e7d32" style="vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M480-320q-33 0-56.5-23.5T400-400v-160q0-33 23.5-56.5T480-640h160q33 0 56.5 23.5T720-560v160q0 33-23.5 56.5T640-320H480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/><path d="M560-440q17 0 28.5-11.5T600-480q0-17-11.5-28.5T560-520q-17 0-28.5 11.5T520-480q0 17 11.5 28.5T560-440Z"/></svg>'
-                    st.markdown(f"<div style='margin-bottom: 8px; padding: 6px 12px; background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; color: #2e7d32; font-size: 14px; display: inline-block;'>{svg_icon}<strong>{t('Dự tính chi phí:', '予想コスト:')}</strong> {est_cost_manual:,.0f} VNĐ</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='margin-bottom: 15px; padding: 6px 12px; background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; color: #2e7d32; font-size: 14px; display: inline-block;'>{svg_icon}<strong>{t('Dự tính chi phí:', '予想コスト:')}</strong> {est_cost_manual:,.0f} VNĐ</div>", unsafe_allow_html=True)
             
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
                     manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
@@ -1579,28 +1579,10 @@ def render_project_data():
                         st.rerun()
 
             if len(st.session_state['ot_records']) > 0:
-                st.markdown("""
-                    <style>
-                        /* Tighten hr separator */
-                        div.element-container:has(#ot-records-top-anchor) { display: none !important; }
-                        div.element-container:has(#ot-records-top-anchor) + div.element-container hr {
-                            margin: 8px 0 4px 0 !important;
-                        }
-                        /* Pull ot_records_editor table up directly below its label and remove empty top spacing */
-                        div.element-container:has(div[class*="stDataEditor"]) {
-                            margin-top: -26px !important;
-                            margin-bottom: 4px !important;
-                        }
-                        [data-testid="stDataEditor"] {
-                            padding-top: 4px !important;
-                        }
-                    </style>
-                    <span id="ot-records-top-anchor"></span>
-                    <hr style='margin: 8px 0 4px 0; border: none; border-top: 1px solid #cbd5e1;'>
-                """, unsafe_allow_html=True)
+                st.markdown("<hr style='margin: 10px 0 6px 0;'>", unsafe_allow_html=True)
                 st.markdown(
                     f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>"
-                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 16px; line-height: 1.4;'>{t('Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.', 'セルをクリックして編集。行を選択してDeleteで削除。')}</div>",
+                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.', 'セルをクリックして編集。行を選択してDeleteで削除。')}</div>",
                     unsafe_allow_html=True
                 )
             
@@ -1648,19 +1630,8 @@ def render_project_data():
                 )
                 st.session_state['ot_records'] = edited_df.to_dict('records')
             
-                st.markdown(f"""
-                    <style>
-                        /* Tighten spacing above and below export buttons section */
-                        div.element-container:has(#ot-export-bottom-anchor) {{ display: none !important; }}
-                        div.element-container:has(#ot-export-bottom-anchor) + div.element-container {{
-                            margin-top: -6px !important;
-                            margin-bottom: 4px !important;
-                        }}
-                    </style>
-                    <span id="ot-export-bottom-anchor"></span>
-                    <hr style='margin: 10px 0 8px 0; border: none; border-top: 1px solid #cbd5e1;'>
-                    <div style='font-size: 13.5px; color: #475569; margin-bottom: 8px;'>📌 <b>{t("Lưu ý:", "注意:")}</b> {t("Bạn cần bấm nút <b>Lưu Dữ Liệu</b> thì Bảng xếp hạng mới được cập nhật.", "ランキングを更新するには「データ保存」ボタンを押してください。")}</div>
-                """, unsafe_allow_html=True)
+                st.markdown("---")
+                st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                 with c_name:
                     default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
