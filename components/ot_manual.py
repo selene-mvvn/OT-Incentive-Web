@@ -1587,11 +1587,15 @@ def render_project_data():
                         margin-bottom: -4px !important;
                     }}
 
-                    /* Ensure all title & general text inside both blue cards is pure white, except badges */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) *:not(.custom-row-badge):not(.custom-row-badge *),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) *:not(.custom-row-badge):not(.custom-row-badge *),
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) *:not(.custom-row-badge):not(.custom-row-badge *),
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) *:not(.custom-row-badge):not(.custom-row-badge *) {{
+                    /* Ensure widget labels inside both blue cards are pure white, without overriding buttons or badges */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) label[data-testid="stWidgetLabel"],
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) label[data-testid="stWidgetLabel"] *,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) label[data-testid="stWidgetLabel"],
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) label[data-testid="stWidgetLabel"] *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) label[data-testid="stWidgetLabel"],
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) label[data-testid="stWidgetLabel"] *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) label[data-testid="stWidgetLabel"],
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) label[data-testid="stWidgetLabel"] * {{
                         color: #ffffff !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge,
