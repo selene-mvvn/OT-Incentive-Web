@@ -1556,25 +1556,76 @@ def render_project_data():
                         padding: 0px !important;
                     }}
 
-                    /* Card 1: Standard buckets container ONLY */
+                    /* Card 1 & Card 2: Rich Blue UI Backgrounds and White Text */
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
                     div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std),
-                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) {{
-                        background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
-                        background-color: #f0f9ff !important;
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {{
+                        background: linear-gradient(135deg, #00A8E8 0%, #0082C8 100%) !important;
+                        background-color: #00A8E8 !important;
                         border: 1.5px solid #00B0F0 !important;
-                        border-radius: 12px !important;
+                        border-radius: 14px !important;
+                        box-shadow: 0 6px 18px rgba(0, 168, 232, 0.25) !important;
                     }}
+
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
-                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) {{
-                        border-top: 4px solid #00B0F0 !important;
-                        padding: 12px 18px 8px 18px !important;
-                        box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {{
+                        border-top: 4px solid #ffffff !important;
+                        padding: 14px 18px 12px 18px !important;
                         margin-top: -4px !important;
                     }}
 
-                    /* Compact Reset Button inside Card 1 ONLY - strictly inside div.stButton */
+                    /* Ensure all text (headings, labels, numbers) inside both blue cards is pure white */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) *,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) *,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) *,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) * {{
+                        color: #ffffff !important;
+                    }}
+
+                    /* Keep Number Input boxes crisp white with dark navy text so inputs are clear */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] input,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] input,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] input,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] input,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] input,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] input {{
+                        background-color: #ffffff !important;
+                        color: #0f172a !important;
+                        border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
+                        border-radius: 6px !important;
+                        font-weight: 600 !important;
+                    }}
+
+                    /* Number input +/- buttons inside the blue cards */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] button,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] button,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] button,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button {{
+                        background-color: #f8fafc !important;
+                        color: #00A8E8 !important;
+                        border: none !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover,
+                    div[data-testid="stVerticalBlock"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover {{
+                        background-color: #e0f2fe !important;
+                        color: #0082C8 !important;
+                    }}
+
+                    /* Inverted Button Color Effects (hiệu ứng đổi ngược lại: normal has transparent/semi background + white text & border, hover turns pure white with blue text) */
+                    /* Compact Reset Button inside Card 1 ONLY */
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div.stButton button,
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stButton"] button,
                     div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div.stButton button,
@@ -1586,10 +1637,21 @@ def render_project_data():
                         border-radius: 6px !important;
                         margin-top: 0px !important;
                         margin-bottom: 0px !important;
-                        border: 1.5px solid #00B0F0 !important;
-                        background-color: #ffffff !important;
-                        color: #00B0F0 !important;
+                        border: 1.5px solid #ffffff !important;
+                        background-color: rgba(255, 255, 255, 0.18) !important;
+                        color: #ffffff !important;
                         line-height: 1 !important;
+                        box-shadow: none !important;
+                        transition: all 0.2s ease !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div.stButton button:hover,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stButton"] button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div.stButton button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stButton"] button:hover {{
+                        background-color: #ffffff !important;
+                        color: #0082C8 !important;
+                        border-color: #ffffff !important;
+                        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.35) !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div.stButton button p,
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stButton"] button p,
@@ -1599,26 +1661,14 @@ def render_project_data():
                         margin: 0 !important;
                         padding: 0 !important;
                     }}
-
-                    /* Card 2: Custom rows container ONLY */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
-                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom),
-                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) {{
-                        background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
-                        background-color: #f0f9ff !important;
-                        border: 1.5px solid #38bdf8 !important;
-                        border-radius: 12px !important;
-                    }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
-                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {{
-                        border-top: 4px solid #0284c7 !important;
-                        padding: 14px 18px 14px 18px !important;
-                        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
-                        margin-top: -4px !important;
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div.stButton button:hover *,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stButton"] button:hover *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div.stButton button:hover *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stButton"] button:hover * {{
+                        color: #0082C8 !important;
                     }}
 
-                    /* Compact Delete Icon Button inside Card 2 Column 3 ONLY */
+                    /* Compact Delete Icon Button inside Card 2 Column 3 ONLY (Inverted effect) */
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button,
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button,
                     div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button,
@@ -1631,16 +1681,31 @@ def render_project_data():
                         font-size: 14px !important;
                         border-radius: 6px !important;
                         margin-top: 0px !important;
-                        border: 1.5px solid #fca5a5 !important;
-                        background-color: #fef2f2 !important;
-                        color: #ef4444 !important;
+                        border: 1.5px solid rgba(255, 255, 255, 0.6) !important;
+                        background-color: rgba(239, 68, 68, 0.3) !important;
+                        color: #ffffff !important;
                         box-shadow: none !important;
                         display: flex !important;
                         align-items: center !important;
                         justify-content: center !important;
+                        transition: all 0.2s ease !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button:hover {{
+                        background-color: #ffffff !important;
+                        color: #ef4444 !important;
+                        border-color: #ffffff !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover *,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button:hover *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"] button:hover * {{
+                        color: #ef4444 !important;
                     }}
 
-                    /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 ONLY */
+                    /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 ONLY (Inverted effect) */
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button,
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stButton"]:not(div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"]) button,
                     div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button,
@@ -1651,9 +1716,26 @@ def render_project_data():
                         font-size: 13px !important;
                         border-radius: 6px !important;
                         margin-top: 8px !important;
-                        border: 1.5px solid #0284c7 !important;
+                        border: 1.5px solid #ffffff !important;
+                        background-color: rgba(255, 255, 255, 0.18) !important;
+                        color: #ffffff !important;
+                        box-shadow: none !important;
+                        transition: all 0.2s ease !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stButton"]:not(div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"]) button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stButton"]:not(div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"]) button:hover {{
                         background-color: #ffffff !important;
-                        color: #0284c7 !important;
+                        color: #0082C8 !important;
+                        border-color: #ffffff !important;
+                        box-shadow: 0 4px 14px rgba(255, 255, 255, 0.35) !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover *,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stButton"]:not(div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"]) button:hover *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover *,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stButton"]:not(div[data-testid="stColumn"]:nth-child(3) div[data-testid="stButton"]) button:hover * {{
+                        color: #0082C8 !important;
                     }}
                     </style>
                     """,
@@ -1664,14 +1746,14 @@ def render_project_data():
                     st.markdown("<span class='custom-blue-card-std' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
                     c_title, c_reset = st.columns([7.5, 2.5])
                     with c_title:
-                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 2px;'>⚡ {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #ffffff; margin-top: 2px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>bolt</span> {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
                     with c_reset:
-                        if st.button(t("🔄 Làm mới rổ giờ", "🔄 リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
+                        if st.button(t(":material/refresh: Làm mới rổ giờ", ":material/refresh: リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
                             st.session_state['manual_reset_key'] += 1
                             st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
                             st.rerun()
                     
-                    st.markdown("<hr style='margin: 6px 0 12px 0 !important; border: 0; border-top: 1px solid rgba(0, 176, 240, 0.25) !important;'>", unsafe_allow_html=True)
+                    st.markdown("<hr style='margin: 6px 0 12px 0 !important; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.3) !important;'>", unsafe_allow_html=True)
                     rk = st.session_state['manual_reset_key']
                     m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
                     with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h150_{rk}")
@@ -1682,8 +1764,8 @@ def render_project_data():
 
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-custom' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 2px; margin-bottom: 6px;'>⚙️ {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
-                    st.markdown("<hr style='margin: 4px 0 14px 0 !important; border: 0; border-top: 1px solid rgba(0, 176, 240, 0.25) !important;'>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #ffffff; margin-top: 2px; margin-bottom: 6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>tune</span> {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                    st.markdown("<hr style='margin: 4px 0 14px 0 !important; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.3) !important;'>", unsafe_allow_html=True)
                     
                     updated_custom_rows = []
                     rows_to_delete = []
@@ -1704,7 +1786,7 @@ def render_project_data():
                             )
                         with rc3:
                             st.markdown("<div style='height: 27px;'></div>", unsafe_allow_html=True)
-                            if st.button("🗑️", key=f"del_cust_{row_id}_{rk}", help=t("Xóa dòng này", "この行を削除")):
+                            if st.button(":material/delete:", key=f"del_cust_{row_id}_{rk}", help=t("Xóa dòng này", "この行を削除")):
                                 rows_to_delete.append(row_id)
                         
                         updated_custom_rows.append({'id': row_id, 'mult': val_mult, 'hrs': val_hrs})
@@ -1717,7 +1799,7 @@ def render_project_data():
                     else:
                         st.session_state['manual_custom_rows'] = updated_custom_rows
                     
-                    if st.button(t("➕ Thêm dòng hệ số tùy chỉnh", "➕ カスタム係数を追加"), key=f"add_cust_row_{rk}"):
+                    if st.button(t(":material/add_circle: Thêm dòng hệ số tùy chỉnh", ":material/add_circle: カスタム係数を追加"), key=f"add_cust_row_{rk}"):
                         max_id = max([r['id'] for r in st.session_state['manual_custom_rows']], default=0) + 1
                         st.session_state['manual_custom_rows'].append({'id': max_id, 'mult': 0.0, 'hrs': 0.0})
                         st.rerun()
@@ -1742,12 +1824,12 @@ def render_project_data():
                         f"""
                         <div style='margin-top: 16px; margin-bottom: 16px; padding: 14px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 10px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);'>
                             <div style='font-size: 14px; font-weight: 600; color: #166534; margin-bottom: 6px; display: flex; align-items: center;'>
-                                <span style='font-size: 16px; margin-right: 6px;'>📊</span> {t('TỔNG HỢP NHẬP TAY TRỰC TIẾP (LIVE SUMMARY)', '手動入力リアルタイム集計')}
+                                <span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>analytics</span> {t('TỔNG HỢP NHẬP TAY TRỰC TIẾP (LIVE SUMMARY)', '手動入力リアルタイム集計')}
                             </div>
                             <div style='display: flex; flex-wrap: wrap; gap: 24px; font-size: 13.5px; color: #15803d;'>
-                                <div>⏱️ {t('Tổng số giờ:', '残業時間合計:')} <strong style='font-size: 15px; color: #166534;'>{manual_total:.1f} h</strong></div>
-                                <div>📈 {t('Hệ số trung bình:', '平均係数:')} <strong style='font-size: 15px; color: #166534;'>{avg_mult:.1f}%</strong></div>
-                                <div>💰 {t('Dự tính chi phí:', '予想コスト:')} <strong style='font-size: 15px; color: #166534;'>{est_cost_manual:,.0f} VNĐ</strong></div>
+                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px;'>schedule</span> {t('Tổng số giờ:', '残業時間合計:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{manual_total:.1f} h</strong></div>
+                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px;'>trending_up</span> {t('Hệ số trung bình:', '平均係数:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{avg_mult:.1f}%</strong></div>
+                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px;'>payments</span> {t('Dự tính chi phí:', '予想コスト:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{est_cost_manual:,.0f} VNĐ</strong></div>
                             </div>
                         </div>
                         """,
@@ -1755,11 +1837,11 @@ def render_project_data():
                     )
                     if manual_total > 16.0:
                         st.markdown(
-                            f"<div style='margin-bottom: 15px; padding: 10px 14px; background-color: #fef9c3; border-left: 4px solid #eab308; border-radius: 6px; color: #854d0e; font-size: 13.5px;'>⚠️ <strong>{t('Cảnh báo an toàn:', '注意:')}</strong> {t(f'Tổng số giờ OT trong ngày đang là <b>{manual_total:.1f} giờ</b> (vượt ngưỡng 16 giờ/ngày). Vui lòng kiểm tra lại dấu chấm/phẩy trước khi thêm!', f'1日の残業合計が<b>{manual_total:.1f}時間</b>に達しています。入力内容をご確認ください！')}</div>",
+                            f"<div style='margin-bottom: 15px; padding: 10px 14px; background-color: #fef9c3; border-left: 4px solid #eab308; border-radius: 6px; color: #854d0e; font-size: 13.5px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>warning</span> <div><strong>{t('Cảnh báo an toàn:', '注意:')}</strong> {t(f'Tổng số giờ OT trong ngày đang là <b>{manual_total:.1f} giờ</b> (vượt ngưỡng 16 giờ/ngày). Vui lòng kiểm tra lại dấu chấm/phẩy trước khi thêm!', f'1日の残業合計が<b>{manual_total:.1f}時間</b>に達しています。入力内容をご確認ください！')}</div></div>",
                             unsafe_allow_html=True
                         )
             
-                if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
+                if st.button(t(":material/add_circle: THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", ":material/add_circle: 手動追加"), key="btn_manual"):
                     if employee_name_proj == opt_emp:
                         st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
                     elif manual_total <= 0:
