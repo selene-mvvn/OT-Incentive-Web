@@ -1579,10 +1579,30 @@ def render_project_data():
                         st.rerun()
 
             if len(st.session_state['ot_records']) > 0:
-                st.markdown("<hr style='margin: 10px 0 6px 0;'>", unsafe_allow_html=True)
+                st.markdown("""
+                <style>
+                    /* Pull up the divider right below the tabs and pull up the table block */
+                    div.element-container:has(#ot-records-section-anchor) {
+                        display: none !important;
+                    }
+                    div.element-container:has(#ot-records-section-anchor) + div.element-container {
+                        margin-top: -24px !important;
+                    }
+                    /* Pull table tight underneath the subtitle */
+                    div.element-container:has(#ot-records-section-anchor) ~ div.element-container:has([data-testid="stDataEditor"]) {
+                        margin-top: -22px !important;
+                        margin-bottom: 0px !important;
+                    }
+                    div.element-container:has(#ot-records-section-anchor) ~ div.element-container:has([data-testid="stDataEditor"]) [data-testid="stDataEditor"] {
+                        padding-top: 4px !important;
+                    }
+                </style>
+                <span id="ot-records-section-anchor"></span>
+                <hr style='margin: -14px 0 10px 0; border: none; border-top: 1px solid #cbd5e1;'>
+                """, unsafe_allow_html=True)
                 st.markdown(
-                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>"
-                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.', 'セルをクリックして編集。行を選択してDeleteで削除。')}</div>",
+                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 2px 0;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>"
+                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 8px; line-height: 1.4;'>{t('Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.', 'セルをクリックして編集。行を選択してDeleteで削除。')}</div>",
                     unsafe_allow_html=True
                 )
             
@@ -1630,8 +1650,20 @@ def render_project_data():
                 )
                 st.session_state['ot_records'] = edited_df.to_dict('records')
             
-                st.markdown("---")
-                st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
+                st.markdown("""
+                <style>
+                    div.element-container:has(#ot-records-bottom-anchor) {
+                        display: none !important;
+                    }
+                    div.element-container:has(#ot-records-bottom-anchor) + div.element-container {
+                        margin-top: -18px !important;
+                        margin-bottom: -6px !important;
+                    }
+                </style>
+                <span id="ot-records-bottom-anchor"></span>
+                <hr style='margin: 6px 0 8px 0; border: none; border-top: 1px solid #cbd5e1;'>
+                """, unsafe_allow_html=True)
+                st.markdown(f"<div style='font-size: 13px; color: #e11d48; font-weight: 600; margin-top: 2px; margin-bottom: 6px;'>📌 {t('Lưu ý: Bạn cần bấm nút LƯU DỮ LIỆU thì Bảng xếp hạng mới được cập nhật.', '📌 注意: ランキングを更新するには「データ保存」ボタンを押してください。')}</div>", unsafe_allow_html=True)
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                 with c_name:
                     default_name = t("Bảng tổng hợp tăng ca (OT).xlsx", "残業計算結果_OT.xlsx")
