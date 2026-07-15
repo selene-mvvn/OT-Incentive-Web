@@ -1581,6 +1581,12 @@ def render_project_data():
             if len(st.session_state['ot_records']) > 0:
                 st.markdown("<hr style='margin: 10px 0 6px 0;'>", unsafe_allow_html=True)
                 st.markdown(
+                    f"<span id='ot-records-table-header-anchor'></span>"
+                    f"<style>"
+                    f"div.element-container:has(#ot-records-table-header-anchor) ~ div.element-container:has([data-testid='stDataEditor']) {{"
+                    f"    margin-top: -26px !important;"
+                    f"}}"
+                    f"</style>"
                     f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>"
                     f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Bấm vào các ô để chỉnh sửa. Chọn dòng và ấn Delete để xóa.', 'セルをクリックして編集。行を選択してDeleteで削除。')}</div>",
                     unsafe_allow_html=True
@@ -1630,7 +1636,29 @@ def render_project_data():
                 )
                 st.session_state['ot_records'] = edited_df.to_dict('records')
             
-                st.markdown("---")
+                st.markdown("""
+                <span id="ot-table-bottom-anchor"></span>
+                <style>
+                div.element-container:has(#ot-table-bottom-anchor) {
+                    display: none !important;
+                }
+                /* Pull the horizontal divider up close under the table */
+                div.element-container:has(#ot-table-bottom-anchor) + div.element-container {
+                    margin-top: -18px !important;
+                    margin-bottom: -14px !important;
+                }
+                /* Pull the caption Note up close to the divider */
+                div.element-container:has(#ot-table-bottom-anchor) ~ div.element-container:has([data-testid="stCaptionContainer"]) {
+                    margin-top: -12px !important;
+                    margin-bottom: -10px !important;
+                }
+                /* Pull the action columns (filename & buttons) up close to the caption Note */
+                div.element-container:has(#ot-table-bottom-anchor) ~ div.element-container:has([data-testid="stHorizontalBlock"]) {
+                    margin-top: -12px !important;
+                }
+                </style>
+                <hr style="margin: 6px 0 4px 0 !important; border: 0; border-top: 1px solid #cbd5e1;">
+                """, unsafe_allow_html=True)
                 st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                 with c_name:
