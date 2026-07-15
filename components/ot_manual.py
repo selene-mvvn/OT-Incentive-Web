@@ -1910,7 +1910,7 @@ def render_project_data():
                             unsafe_allow_html=True
                         )
             
-                if st.button(t(":material/add_circle: THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", ":material/add_circle: 手動追加"), key="btn_manual"):
+                if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
                     if employee_name_proj == opt_emp:
                         st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
                     elif manual_total <= 0:
