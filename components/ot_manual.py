@@ -1584,10 +1584,10 @@ def render_project_data():
                     f"<span id='ot-records-table-header-anchor'></span>"
                     f"<style>"
                     f"div.element-container:has(#ot-records-table-header-anchor) ~ div.element-container:has([data-testid='stDataFrame']) {{"
-                    f"    margin-top: -38px !important;"
+                    f"    margin-top: -18px !important;"
                     f"}}"
                     f"div.element-container:has(#ot-records-table-header-anchor) ~ div.element-container:has([data-testid='stDataFrame']) [data-testid='stDataFrame'] {{"
-                    f"    padding-top: 6px !important;"
+                    f"    padding-top: 14px !important;"
                     f"}}"
                     f"</style>"
                     f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>"
@@ -1641,22 +1641,22 @@ def render_project_data():
             
                 st.markdown("""
                 <style>
-                /* Pull the hr divider closer under the table */
+                /* Pull the hr divider closer under the table cleanly without overlapping */
                 div.element-container:has(#ot-table-bottom-divider) {
-                    margin-top: -16px !important;
-                    margin-bottom: -10px !important;
+                    margin-top: -6px !important;
+                    margin-bottom: 0px !important;
                 }
-                /* Pull the caption Note closer below hr */
+                /* Ensure caption Note sits cleanly right below hr with zero overlap */
                 div.element-container:has(#ot-table-bottom-divider) + div.element-container {
-                    margin-top: -8px !important;
-                    margin-bottom: -8px !important;
+                    margin-top: 0px !important;
+                    margin-bottom: 0px !important;
                 }
-                /* Pull the action row (filename & buttons) closer to the caption Note */
+                /* Ensure action row sits right cleanly below caption Note */
                 div.element-container:has(#ot-table-bottom-divider) ~ div.element-container:has([data-testid="stHorizontalBlock"]) {
-                    margin-top: -12px !important;
+                    margin-top: -4px !important;
                 }
                 </style>
-                <div id="ot-table-bottom-divider" style="margin: 12px 0 8px 0; border-top: 1px solid #cbd5e1;"></div>
+                <div id="ot-table-bottom-divider" style="margin: 8px 0 10px 0; border-top: 1px solid #cbd5e1;"></div>
                 """, unsafe_allow_html=True)
                 st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
