@@ -1685,7 +1685,7 @@ def render_project_data():
                         padding: 2px 14px !important;
                         font-size: 12px !important;
                         border-radius: 6px !important;
-                        margin-top: 0px !important;
+                        margin-top: -6px !important;
                         margin-bottom: 0px !important;
                         border: 1.5px solid #ffffff !important;
                         background-color: #ffffff !important;
@@ -1693,6 +1693,9 @@ def render_project_data():
                         line-height: 1 !important;
                         box-shadow: none !important;
                         transition: all 0.2s ease !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stColumn"]:nth-child(2) div[data-testid="stElementContainer"] {{
+                        margin-top: -6px !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover *,
@@ -1758,12 +1761,15 @@ def render_project_data():
                         padding: 4px 16px !important;
                         font-size: 13px !important;
                         border-radius: 6px !important;
-                        margin-top: 8px !important;
+                        margin-top: -2px !important;
                         border: 1.5px solid #ffffff !important;
                         background-color: #ffffff !important;
                         color: #00B0F0 !important;
                         box-shadow: none !important;
                         transition: all 0.2s ease !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stElementContainer"]:has(div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton)) {{
+                        margin-top: -4px !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button *,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button * {{
@@ -1790,8 +1796,13 @@ def render_project_data():
                         color: #166534 !important;
                     }}
 
-                    /* Ensure + THÊM VÀO BẢNG CHỜ XUẤT button is NOT moved up with Live Summary and is pushed down */
+                    /* Default state when Live Summary is NOT visible: move + THÊM VÀO BẢNG CHỜ XUẤT up close under Card 2 */
                     div[data-testid="stVerticalBlock"] > div[data-testid="stElementContainer"]:has(div.stButton > button) {{
+                        margin-top: 4px !important;
+                    }}
+
+                    /* When Live Summary box is rendered above the button, automatically push the button down */
+                    div[data-testid="stElementContainer"]:has(.live-summary-box) ~ div[data-testid="stElementContainer"]:has(div.stButton > button) {{
                         margin-top: 24px !important;
                     }}
                     </style>
