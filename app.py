@@ -53,10 +53,11 @@ st.markdown("""
     
 
     
-    /* Adjust spacing for horizontal rules */
-    hr {
+    /* Adjust spacing and synchronized corporate color for ALL horizontal rules and table dividers */
+    hr, [data-testid="stDivider"], #ot-table-bottom-divider, .custom-hr-divider {
         margin-top: 15px !important;
         margin-bottom: 15px !important;
+        border: 0 !important;
         border-top: 1px solid rgba(0, 176, 240, 0.2) !important;
     }
     

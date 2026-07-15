@@ -609,7 +609,7 @@ def render_ot_excel():
                         
                 st.session_state['ot_excel_records'] = edited_records
         
-            st.markdown("<hr style='margin: 6px 0 10px 0 !important; border: 0; border-top: 1px solid rgba(49, 51, 63, 0.2);'>", unsafe_allow_html=True)
+            st.markdown("<hr class='custom-hr-divider' style='margin: 6px 0 10px 0 !important; border: 0; border-top: 1px solid rgba(0, 176, 240, 0.2) !important;'>", unsafe_allow_html=True)
             st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「結果ファイルダウンロード」ボタンを押してください。"))
             c_name, c_btn = st.columns([6, 4])
             with c_name:
