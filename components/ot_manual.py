@@ -1542,11 +1542,19 @@ def render_project_data():
                 if 'manual_custom_rows' not in st.session_state or not isinstance(st.session_state['manual_custom_rows'], list):
                     st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
 
-                st.warning(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0または空白で。"))
+                st.markdown(
+                    f"""
+                    <div style="margin-top: 10px; margin-bottom: 16px; padding: 12px 16px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #00B0F0; border-radius: 8px; color: #0369a1; font-size: 14px; box-shadow: 0 2px 6px rgba(0, 176, 240, 0.08); display: flex; align-items: center;">
+                        <span style="font-size: 18px; margin-right: 10px;">💡</span>
+                        <div><strong>{t('HƯỚNG DẪN:', '操作ガイド:')}</strong> {t('Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.', '各係数の時間を手動で入力してください。発生しない場合は0または空白で。')}</div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
                 
                 c_title, c_reset = st.columns([7, 3])
                 with c_title:
-                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 6px;'>{t('⚡ Các rổ hệ số chuẩn (150% - 400%)', '⚡ 標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size: 15px; font-weight: 700; color: #0284c7; margin-top: 6px; display: flex; align-items: center;'><span style='margin-right: 6px;'>⚡</span> {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
                 with c_reset:
                     if st.button(t("🔄 Làm mới rổ giờ", "🔄 リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
                         st.session_state['manual_reset_key'] += 1
@@ -1554,6 +1562,22 @@ def render_project_data():
                         st.rerun()
 
                 rk = st.session_state['manual_reset_key']
+                st.markdown(
+                    """
+                    <span id='manual-std-card-anchor'></span>
+                    <style>
+                    div.element-container:has(#manual-std-card-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div {
+                        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
+                        border: 1.5px solid #cbd5e1 !important;
+                        border-top: 4px solid #00B0F0 !important;
+                        border-radius: 12px !important;
+                        padding: 16px 18px 10px 18px !important;
+                        box-shadow: 0 4px 14px rgba(0, 176, 240, 0.07) !important;
+                    }
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                )
                 with st.container(border=True):
                     m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
                     with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h150_{rk}")
@@ -1562,13 +1586,29 @@ def render_project_data():
                     with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h300_{rk}")
                     with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h400_{rk}")
             
-                st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 15px; margin-bottom: 4px;'>{t('⚙️ Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', '⚙️ その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='font-size: 15px; font-weight: 700; color: #0284c7; margin-top: 16px; margin-bottom: 4px; display: flex; align-items: center;'><span style='margin-right: 6px;'>⚙️</span> {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                st.markdown(
+                    """
+                    <span id='manual-custom-card-anchor'></span>
+                    <style>
+                    div.element-container:has(#manual-custom-card-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div {
+                        background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+                        border: 1.5px solid #bae6fd !important;
+                        border-top: 4px solid #0284c7 !important;
+                        border-radius: 12px !important;
+                        padding: 18px 18px 14px 18px !important;
+                        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
+                    }
+                    </style>
+                    """,
+                    unsafe_allow_html=True
+                )
                 with st.container(border=True):
                     updated_custom_rows = []
                     rows_to_delete = []
                     for i, row in enumerate(st.session_state['manual_custom_rows']):
                         row_id = row['id']
-                        rc1, rc2, rc3 = st.columns([4.5, 4.5, 1.0])
+                        rc1, rc2, rc3 = st.columns([4.3, 4.3, 1.4])
                         with rc1:
                             val_mult = st.number_input(
                                 t(f"Hệ số tuỳ chỉnh #{i+1} (%)", f"カスタム係数 #{i+1} (%)"),
