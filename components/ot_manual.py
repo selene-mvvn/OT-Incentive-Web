@@ -1627,9 +1627,9 @@ def render_project_data():
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button path {{
                         color: #0f172a !important;
                         fill: #0f172a !important;
-                        stroke: #0f172a !important;
+                        stroke: none !important;
                         font-weight: normal !important;
-                        stroke-width: 1px !important;
+                        stroke-width: 0 !important;
                     }}
 
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
@@ -1655,9 +1655,9 @@ def render_project_data():
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button:hover path {{
                         color: #000000 !important;
                         fill: #000000 !important;
-                        stroke: #000000 !important;
+                        stroke: none !important;
                         font-weight: normal !important;
-                        stroke-width: 1px !important;
+                        stroke-width: 0 !important;
                     }}
 
                     /* Compact Reset Button inside Card 1 ONLY */
