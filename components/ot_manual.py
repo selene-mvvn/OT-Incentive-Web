@@ -1587,12 +1587,19 @@ def render_project_data():
                         margin-bottom: -4px !important;
                     }}
 
-                    /* Ensure all title & general text inside both blue cards is pure white */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) *,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) * {{
+                    /* Ensure all title & general text inside both blue cards is pure white, except badges */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) *:not(.custom-row-badge):not(.custom-row-badge *),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) *:not(.custom-row-badge):not(.custom-row-badge *),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) *:not(.custom-row-badge):not(.custom-row-badge *),
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) *:not(.custom-row-badge):not(.custom-row-badge *) {{
                         color: #ffffff !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .custom-row-badge,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .custom-row-badge * {{
+                        color: #00B0F0 !important;
+                        background-color: #ffffff !important;
                     }}
 
                     /* Ensure horizontal lines hr inside both blue cards are pure white */
@@ -1854,7 +1861,7 @@ def render_project_data():
                             st.markdown("<div style='height: 31px;'></div>", unsafe_allow_html=True)
                             st.markdown(
                                 f"""
-                                <div style='display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: #ffffff; color: #00B0F0; font-weight: 700; font-size: 14px; border: 2px solid #00B0F0; border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); margin: 0 auto;'>
+                                <div class='custom-row-badge' style='display: flex !important; align-items: center !important; justify-content: center !important; width: 34px !important; height: 34px !important; background-color: #ffffff !important; color: #00B0F0 !important; font-weight: 700 !important; font-size: 15px !important; border: 2px solid #00B0F0 !important; border-radius: 50% !important; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important; margin: 0 auto !important;'>
                                     {i+1}
                                 </div>
                                 """,
