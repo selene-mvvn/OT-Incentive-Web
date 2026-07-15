@@ -1544,7 +1544,7 @@ def render_project_data():
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)),
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) {{
-                        background: linear-gradient(135deg, #00A8E8 0%, #0082C8 100%) !important;
+                        background-color: #0082C8 !important;
                         border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
                         border-radius: 12px !important;
                         padding: 18px 22px 16px 22px !important;
