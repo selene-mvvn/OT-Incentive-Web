@@ -1686,13 +1686,15 @@ def render_project_data():
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button:hover {{
-                        background-color: #00B0F0 !important;
-                        color: #ffffff !important;
+                        background-color: #ffffff !important;
+                        color: #0075a0 !important;
                         border-color: #ffffff !important;
+                        transform: translateY(-2px) !important;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover *,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button:hover * {{
-                        color: #ffffff !important;
+                        color: #0075a0 !important;
                     }}
 
                     /* Compact Delete Icon Button inside Card 2 Column 3 ONLY */
@@ -1754,13 +1756,15 @@ def render_project_data():
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover {{
-                        background-color: #00B0F0 !important;
-                        color: #ffffff !important;
+                        background-color: #ffffff !important;
+                        color: #0075a0 !important;
                         border-color: #ffffff !important;
+                        transform: translateY(-2px) !important;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover *,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover * {{
-                        color: #ffffff !important;
+                        color: #0075a0 !important;
                     }}
                     </style>
                     """,
