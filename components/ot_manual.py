@@ -1704,7 +1704,7 @@ def render_project_data():
                         display: flex !important;
                         justify-content: flex-end !important;
                         padding-right: 0px !important;
-                        margin-right: -10px !important;
+                        margin-right: -24px !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover *,
@@ -1821,7 +1821,7 @@ def render_project_data():
 
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-std' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
-                    c_title, c_reset = st.columns([7.8, 2.2])
+                    c_title, c_reset = st.columns([8.4, 1.6])
                     with c_title:
                         st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>bolt</span> {t('CÁC RỔ HỆ SỐ CHUẨN (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
                     with c_reset:
