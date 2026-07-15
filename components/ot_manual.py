@@ -883,6 +883,25 @@ def render_base_data():
                 
                 st.rerun()
 
+            st.markdown(
+                f"<span id='holidays-table-anchor'></span>"
+                f"<style>"
+                f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']),"
+                f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) {{"
+                f"    margin-top: -24px !important;"
+                f"}}"
+                f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']) [data-testid='stDataEditor'],"
+                f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) [data-testid='stDataFrame'] {{"
+                f"    padding-top: 22px !important;"
+                f"}}"
+                f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']) [data-testid='stElementToolbar'],"
+                f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) [data-testid='stElementToolbar'] {{"
+                f"    top: -28px !important;"
+                f"}}"
+                f"</style>",
+                unsafe_allow_html=True
+            )
+
             editor_key = f"holidays_editor_{st.session_state.get('holidays_editor_key', 0)}"
 
             holidays_df = st.data_editor(
