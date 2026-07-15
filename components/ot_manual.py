@@ -1546,7 +1546,7 @@ def render_project_data():
                     f"""
                     <div style="margin-top: 10px; margin-bottom: 16px; padding: 12px 16px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #00B0F0; border-radius: 8px; color: #0369a1; font-size: 14px; box-shadow: 0 2px 6px rgba(0, 176, 240, 0.08); display: flex; align-items: center;">
                         <span style="font-size: 18px; margin-right: 10px;">💡</span>
-                        <div><strong>{t('HƯỚNG DẪN:', '操作ガイド:')}</strong> {t('Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.', '各係数の時間を手動で入力してください。発生しない場合は0または空白で。')}</div>
+                        <div><strong>{t('HƯỚNG DẪN:', '操作ガイド:')}</strong> {t('Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.', '各係数の時間を手動で入力してください。発生しない場合は0 hoặc bằng 0.')}</div>
                     </div>
                     """,
                     unsafe_allow_html=True
@@ -1555,72 +1555,96 @@ def render_project_data():
                 st.markdown(
                     """
                     <style>
-                    /* Card 1: Standard buckets container styling */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) {
+                    /* Card 1: Standard buckets container styling - target both anchor sibling AND inner span */
+                    div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
+                    div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #00B0F0 !important;
-                        border-top: 4px solid #00B0F0 !important;
                         border-radius: 12px !important;
+                    }
+                    div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) {
+                        border-top: 4px solid #00B0F0 !important;
                         padding: 14px 18px 10px 18px !important;
                         box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
                     }
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div {
-                        background: transparent !important;
-                        background-color: transparent !important;
-                    }
-                    /* Compact Reset Button inside Card 1 top-right */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button {
-                        min-height: 32px !important;
-                        height: 32px !important;
+
+                    /* Override global app.py button styling for Reset Button inside Card 1 */
+                    [data-testid="stMain"] div.element-container:has(#manual-std-box-anchor) + div.element-container button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .stButton button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) button {
+                        min-height: 30px !important;
+                        height: 30px !important;
                         padding: 2px 14px !important;
-                        font-size: 13px !important;
+                        font-size: 12.5px !important;
                         border-radius: 6px !important;
-                        margin-top: 2px !important;
+                        margin-top: 0px !important;
+                        margin-bottom: 0px !important;
+                        border: 1.5px solid #00B0F0 !important;
                     }
 
                     /* Card 2: Custom rows container styling */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) {
+                    div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
+                    div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #38bdf8 !important;
-                        border-top: 4px solid #0284c7 !important;
                         border-radius: 12px !important;
+                    }
+                    div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) {
+                        border-top: 4px solid #0284c7 !important;
                         padding: 14px 18px 14px 18px !important;
                         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
                     }
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div {
-                        background: transparent !important;
-                        background-color: transparent !important;
-                    }
-                    /* Compact Delete Icon Button inside Card 2 */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button {
+
+                    /* Compact Delete Icon Button inside Card 2 Column 3 */
+                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stColumn"]:nth-child(3) button,
+                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stColumn"]:nth-child(3) .stButton button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button {
                         min-height: 36px !important;
                         height: 36px !important;
-                        width: 38px !important;
+                        width: 40px !important;
+                        min-width: 40px !important;
                         padding: 0 !important;
                         font-size: 14px !important;
                         border-radius: 6px !important;
-                        margin-top: 28px !important;
-                        border: 1px solid #fca5a5 !important;
+                        margin-top: 0px !important;
+                        border: 1.5px solid #fca5a5 !important;
                         background-color: #fef2f2 !important;
                         color: #ef4444 !important;
+                        box-shadow: none !important;
                     }
-                    /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("Thêm dòng")),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("カスタム")) {
+                    /* Compact "+ Thêm dòng hệ số tùy chỉnh" button */
+                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container button:has(div:contains("Thêm dòng")),
+                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container button:has(div:contains("カスタム")),
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("Thêm dòng")),
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("カスタム")) {
                         min-height: 36px !important;
                         height: 36px !important;
-                        padding: 4px 16px !important;
+                        padding: 4px 18px !important;
                         font-size: 13.5px !important;
                         border-radius: 6px !important;
-                        margin-top: 4px !important;
+                        margin-top: 8px !important;
+                        border: 1.5px solid #0284c7 !important;
+                        background-color: #ffffff !important;
+                        color: #0284c7 !important;
                     }
                     </style>
                     """,
                     unsafe_allow_html=True
                 )
 
+                st.markdown("<span id='manual-std-box-anchor'></span>", unsafe_allow_html=True)
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-std'></span>", unsafe_allow_html=True)
                     c_title, c_reset = st.columns([7.5, 2.5])
@@ -1641,7 +1665,7 @@ def render_project_data():
                     with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h300_{rk}")
                     with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h400_{rk}")
 
-                st.markdown("<div style='margin-top: 12px;'></div>", unsafe_allow_html=True)
+                st.markdown("<div style='margin-top: 12px;'></div><span id='manual-custom-box-anchor'></span>", unsafe_allow_html=True)
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-custom'></span>", unsafe_allow_html=True)
                     st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 2px; margin-bottom: 6px;'>⚙️ {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
@@ -1665,6 +1689,7 @@ def render_project_data():
                                 key=f"cust_hrs_{row_id}_{rk}"
                             )
                         with rc3:
+                            st.markdown("<div style='height: 27px;'></div>", unsafe_allow_html=True)
                             if st.button("🗑️", key=f"del_cust_{row_id}_{rk}", help=t("Xóa dòng này", "この行を削除")):
                                 rows_to_delete.append(row_id)
                         
