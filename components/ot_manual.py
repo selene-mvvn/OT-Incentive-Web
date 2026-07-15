@@ -1457,39 +1457,29 @@ def render_project_data():
             with tab_auto:
                 st.info(t("Hệ thống sẽ tự động phân bổ số giờ vào các mức hệ số dựa trên loại ngày (Ngày đi làm hành chính, Cuối tuần, Ngày lễ).", "システムは日種（平日・週末・祭日）に基づいて自動配分します。"))
                 total_hours_auto = st.number_input(t("TỔNG SỐ GIỜ TĂNG CA", "残業時間合計"), min_value=0.0, step=0.1, value=1.0, format="%.1f")
-                
                 auto_buckets = {150: 0.0, 200: 0.0, 270: 0.0, 300: 0.0, 400: 0.0}
-            
                 if total_hours_auto > 0:
                     holidays = []
                     if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
                         holidays = base['holidays_df']['Ngày nghỉ'].tolist()
-                    
                     auto_buckets = breakdown_ot_hours(ot_date, total_hours_auto, holidays)
-                
                     b_col1, b_col2, b_col3, b_col4, b_col5 = st.columns(5)
                     nt = t("Ngày đi làm hành chính", "平日")
                     ct = t("Cuối tuần", "週末")
                     nl = t("Ngày lễ", "祭日")
-                    def get_val(h):
-                        return f"{h:.1f} h" + (" ←" if h > 0 else "")
-
+                    def get_val(h): return f"{h:.1f} h" + (" ←" if h > 0 else "")
                     with b_col1: st.metric("150%", get_val(auto_buckets[150]), help=f"{nt}: 17h-22h")
                     with b_col2: st.metric("200%", get_val(auto_buckets[200]), help=f"{nt}: 22h-24h\n{ct}: 08h-22h")
                     with b_col3: st.metric("270%", get_val(auto_buckets[270]), help=f"{ct}: 22h-24h")
                     with b_col4: st.metric("300%", get_val(auto_buckets[300]), help=f"{nl}: 17h-22h")
                     with b_col5: st.metric("400%", get_val(auto_buckets[400]), help=f"{nl}: 08h-17h")
-                
                     std_days = float(base.get('standard_days', 22.0))
                     std_hrs = float(base.get('standard_hours_per_day', 8.0))
                     hourly_rate_est = (emp_gross / std_days / std_hrs) if (std_days > 0 and std_hrs > 0) else 0
-                    
                     est_cost = sum(hrs * (pct / 100.0) * hourly_rate_est for pct, hrs in auto_buckets.items() if hrs > 0)
-                    
                     if est_cost > 0:
                         svg_icon = '<svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="#2e7d32" style="vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M480-320q-33 0-56.5-23.5T400-400v-160q0-33 23.5-56.5T480-640h160q33 0 56.5 23.5T720-560v160q0 33-23.5 56.5T640-320H480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/><path d="M560-440q17 0 28.5-11.5T600-480q0-17-11.5-28.5T560-520q-17 0-28.5 11.5T520-480q0 17 11.5 28.5T560-440Z"/></svg>'
                         st.markdown(f"<div style='margin-bottom: 15px; padding: 6px 12px; background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; color: #2e7d32; font-size: 14px; display: inline-block;'>{svg_icon}<strong>{t('Dự tính chi phí:', '予想コスト:')}</strong> {est_cost:,.0f} VNĐ</div>", unsafe_allow_html=True)
-                
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - TỰ ĐỘNG", "➕ 自動追加"), key="btn_auto"):
                     if employee_name_proj == opt_emp:
                         st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
@@ -1499,14 +1489,10 @@ def render_project_data():
                         add_to_history("reasons", ot_reason)
                         std_days = float(base.get('standard_days', 22.0))
                         hourly_rate = int(emp_gross / std_days / 8) if std_days > 0 else 0
-                    
                         holidays_for_loop = []
                         if not base['holidays_df'].empty and 'Ngày nghỉ' in base['holidays_df'].columns:
-                            try:
-                                holidays_for_loop = base['holidays_df']['Ngày nghỉ'].tolist()
-                            except:
-                                pass
-                        
+                            try: holidays_for_loop = base['holidays_df']['Ngày nghỉ'].tolist()
+                            except: pass
                         for d_i in target_dates:
                             d_buckets = breakdown_ot_hours(d_i, total_hours_auto, holidays_for_loop)
                             d_period = get_payroll_period(d_i)
@@ -1529,127 +1515,21 @@ def render_project_data():
                                     k_name = f"{int(mult)}%" if float(mult).is_integer() else f"{mult}%"
                                     entry[k_name] = int(res["ot_pay"])
                             st.session_state['ot_records'].append(entry)
-                        
                         if len(target_dates) > 1:
                             st.toast(f"{t('Đã thêm thành công', '追加完了！')} {len(target_dates)} {t('bản ghi OT liên tiếp!', '件の連続残業データ')}", icon=":material/check_circle:")
                         else:
                             st.toast(f"{t('Đã thêm bản ghi', 'レコード追加完了！')} ({total_hours_auto} {t('giờ', '時間')})", icon=":material/check_circle:")
                         st.rerun()
-                    
+
             with tab_manual:
                 if 'manual_reset_key' not in st.session_state:
                     st.session_state['manual_reset_key'] = 0
                 if 'manual_custom_rows' not in st.session_state or not isinstance(st.session_state['manual_custom_rows'], list):
                     st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
-
                 st.info(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0 hoặc bằng 0."))
-
                 st.markdown(
                     f"""
                     <style>
-                    /* Hide marker containers completely so they take 0 space */
-                    div.element-container:has(.custom-blue-card-std),
-                    div.element-container:has(.custom-blue-card-custom) {{
-                        display: none !important;
-                        height: 0px !important;
-                        margin: 0px !important;
-                        padding: 0px !important;
-                    }}
-
-                    /* Card 1 & Card 2: Rich Blue UI Backgrounds and White Text (No border glow / shadow) */
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) {{
-                        background: linear-gradient(135deg, #00A8E8 0%, #0082C8 100%) !important;
-                        background-color: #00A8E8 !important;
-                        border: 1.5px solid rgba(255, 255, 255, 0.4) !important;
-                        border-radius: 12px !important;
-                        padding: 18px 22px 16px 22px !important;
-                        margin-top: 0px !important;
-                        margin-bottom: 20px !important;
-                        box-shadow: 0 6px 18px rgba(0, 176, 240, 0.25) !important;
-                    }}
-
-                    /* Ensure all title & general text inside both blue cards is pure white */
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) > div.element-container *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) > div.element-container * {{
-                        color: #ffffff !important;
-                    }}
-
-                    /* Style columns inside Card 1 (2nd horizontal block) & Card 2 (custom inputs) as White Mini-Cards inside the blue background */
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div[data-testid="stHorizontalBlock"]:nth-of-type(2) div[data-testid="stColumn"],
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"]:nth-child(1),
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"]:nth-child(2) {{
-                        background: #ffffff !important;
-                        background-color: #ffffff !important;
-                        border: 1px solid #e2e8f0 !important;
-                        border-radius: 10px !important;
-                        padding: 12px 14px !important;
-                        box-shadow: 0 2px 6px rgba(0,0,0,0.06) !important;
-                    }}
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div[data-testid="stHorizontalBlock"]:nth-of-type(2) div[data-testid="stColumn"] *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"]:nth-child(1) *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stHorizontalBlock"] div[data-testid="stColumn"]:nth-child(2) * {{
-                        color: #1e293b !important;
-                    }}
-
-                    /* Keep Number Input boxes crisp white with dark navy text so inputs are clear */
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] input,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] input {{
-                        background-color: #ffffff !important;
-                        color: #0f172a !important;
-                        border: 1.5px solid #cbd5e1 !important;
-                        border-radius: 6px !important;
-                        font-weight: 600 !important;
-                    }}
-
-                    /* Number input +/- buttons inside the blue cards */
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button {{
-                        background-color: #f8fafc !important;
-                        color: #00A8E8 !important;
-                        border: none !important;
-                    }}
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover {{
-                        background-color: #e0f2fe !important;
-                        color: #0082C8 !important;
-                    }}
-
-                    /* Inverted Button Color Effects */
-                    /* Compact Reset Button inside Card 1 ONLY */
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div.stButton button {{
-                        min-height: 28px !important;
-                        height: 28px !important;
-                        padding: 2px 14px !important;
-                        font-size: 12px !important;
-                        border-radius: 6px !important;
-                        margin-top: 0px !important;
-                        margin-bottom: 0px !important;
-                        border: 1.5px solid #ffffff !important;
-                        background-color: #ffffff !important;
-                        color: #0082C8 !important;
-                        line-height: 1 !important;
-                        box-shadow: none !important;
-                        transition: all 0.2s ease !important;
-                    }}
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div.stButton button *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div.stButton button:hover * {{
-                        color: #0082C8 !important;
-                    }}
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div.stButton button:hover {{
-                        background-color: #0082C8 !important;
-                        color: #ffffff !important;
-                        border-color: #ffffff !important;
-                    }}
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) div.stButton button:hover * {{
-                        color: #ffffff !important;
-                    }}
-
-                    /* Compact Delete Icon Button inside Card 2 Column 3 ONLY */
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button {{
-                        min-height: 36px !important;
-                        height: 36px !important;
-                        width: 38px !important;
                         min-width: 38px !important;
                         padding: 0 !important;
                         font-size: 14px !important;
