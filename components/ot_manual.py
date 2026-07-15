@@ -1607,11 +1607,9 @@ def render_project_data():
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div[data-testid="stNumberInput"] button,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button {{
-                        background-color: #ffffff !important;
-                        color: #00B0F0 !important;
-                        border: 1.5px solid #00B0F0 !important;
-                        border-radius: 6px !important;
-                        font-weight: bold !important;
+                        background-color: #f8fafc !important;
+                        color: #0f172a !important;
+                        border: none !important;
                         transition: all 0.2s ease !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button *,
@@ -1626,18 +1624,18 @@ def render_project_data():
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button path,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div[data-testid="stNumberInput"] button path,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button path {{
-                        color: #00B0F0 !important;
-                        fill: #00B0F0 !important;
-                        stroke: #00B0F0 !important;
+                        color: #0f172a !important;
+                        fill: #0f172a !important;
+                        stroke: #0f172a !important;
                     }}
 
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div[data-testid="stNumberInput"] button:hover,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button:hover {{
-                        background-color: #00B0F0 !important;
-                        color: #ffffff !important;
-                        border-color: #ffffff !important;
+                        background-color: #e2e8f0 !important;
+                        color: #000000 !important;
+                        border: none !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover *,
@@ -1651,9 +1649,9 @@ def render_project_data():
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover path,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div[data-testid="stNumberInput"] button:hover path,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stNumberInput"] button:hover path {{
-                        color: #ffffff !important;
-                        fill: #ffffff !important;
-                        stroke: #ffffff !important;
+                        color: #000000 !important;
+                        fill: #000000 !important;
+                        stroke: #000000 !important;
                     }}
 
                     /* Compact Reset Button inside Card 1 ONLY */
