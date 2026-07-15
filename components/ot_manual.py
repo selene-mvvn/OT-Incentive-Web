@@ -1772,21 +1772,15 @@ def render_project_data():
                     }}
 
                     /* Compact Delete Icon Button inside Card 2 Column 4 ONLY */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div[data-testid="stVerticalBlock"],
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.element-container,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div[data-testid="stVerticalBlock"],
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.element-container,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton {{
                         display: flex !important;
-                        width: 100% !important;
-                        justify-content: flex-end !important;
-                        align-items: flex-end !important;
-                        padding-right: 0px !important;
+                        justify-content: flex-start !important;
+                        padding-left: 0px !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton button,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton button {{
-                        margin-left: auto !important;
+                        margin-left: 22px !important;
                         min-height: 36px !important;
                         height: 36px !important;
                         width: 38px !important;
