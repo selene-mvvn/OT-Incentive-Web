@@ -1579,7 +1579,21 @@ def render_project_data():
                         st.rerun()
 
             if len(st.session_state['ot_records']) > 0:
-                st.markdown("<hr style='margin: 10px 0 6px 0;'>", unsafe_allow_html=True)
+                st.markdown("""
+                <span id="ot-records-top-divider-anchor"></span>
+                <style>
+                /* Pull the hr top divider closer up to the buttons above */
+                div.element-container:has(#ot-records-top-divider-anchor) {
+                    margin-top: -24px !important;
+                    margin-bottom: -12px !important;
+                }
+                /* Pull the BẢNG DỮ LIỆU ĐÃ NHẬP header container up closer to the divider */
+                div.element-container:has(#ot-records-top-divider-anchor) + div.element-container {
+                    margin-top: -12px !important;
+                }
+                </style>
+                <hr style="margin: 4px 0 4px 0 !important; border: 0; border-top: 1px solid #cbd5e1;">
+                """, unsafe_allow_html=True)
                 st.markdown(
                     f"<span id='ot-records-table-header-anchor'></span>"
                     f"<style>"
