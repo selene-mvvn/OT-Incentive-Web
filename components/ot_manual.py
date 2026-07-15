@@ -1579,6 +1579,17 @@ def render_project_data():
                         color: #ffffff !important;
                     }}
 
+                    /* Ensure horizontal lines hr inside both blue cards are pure white */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) hr,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) hr,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) hr,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) hr {{
+                        border: 0 !important;
+                        border-top: 1px solid #ffffff !important;
+                        opacity: 1 !important;
+                        background: transparent !important;
+                    }}
+
                     /* Keep Number Input boxes crisp white with dark navy text so inputs are clear and readable */
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] input,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] input,
@@ -1611,6 +1622,7 @@ def render_project_data():
                     /* Compact Reset Button inside Card 1 ONLY */
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button {{
+                        text-transform: none !important;
                         min-height: 28px !important;
                         height: 28px !important;
                         padding: 2px 14px !important;
@@ -1725,7 +1737,7 @@ def render_project_data():
                             st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
                             st.rerun()
                     
-                    st.markdown("<hr style='margin: 6px 0 12px 0 !important; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.3) !important;'>", unsafe_allow_html=True)
+                    st.markdown("<hr style='margin: 6px 0 12px 0 !important; border: 0 !important; border-top: 1px solid #ffffff !important; opacity: 1 !important;'>", unsafe_allow_html=True)
                     rk = st.session_state['manual_reset_key']
                     m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
                     with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h150_{rk}")
@@ -1737,7 +1749,7 @@ def render_project_data():
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-custom' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
                     st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #ffffff; margin-top: 2px; margin-bottom: 6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>tune</span> {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
-                    st.markdown("<hr style='margin: 4px 0 14px 0 !important; border: 0; border-top: 1px solid rgba(255, 255, 255, 0.3) !important;'>", unsafe_allow_html=True)
+                    st.markdown("<hr style='margin: 4px 0 14px 0 !important; border: 0 !important; border-top: 1px solid #ffffff !important; opacity: 1 !important;'>", unsafe_allow_html=True)
                     
                     
                     updated_custom_rows = []
