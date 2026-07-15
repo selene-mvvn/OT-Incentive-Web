@@ -1697,6 +1697,11 @@ def render_project_data():
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stColumn"]:nth-child(2) div[data-testid="stElementContainer"] {{
                         margin-top: -6px !important;
                     }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stColumn"]:nth-child(2) div.stButton {{
+                        display: flex !important;
+                        justify-content: flex-end !important;
+                        padding-right: 8px !important;
+                    }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover *,
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std):not(:has(.custom-blue-card-custom)) div.stButton button *,
@@ -1812,7 +1817,7 @@ def render_project_data():
 
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-std' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
-                    c_title, c_reset = st.columns([7.5, 2.5])
+                    c_title, c_reset = st.columns([7.8, 2.2])
                     with c_title:
                         st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>bolt</span> {t('CÁC RỔ HỆ SỐ CHUẨN (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
                     with c_reset:
