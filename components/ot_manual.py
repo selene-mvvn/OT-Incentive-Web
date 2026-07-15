@@ -1555,19 +1555,18 @@ def render_project_data():
                 st.markdown(
                     """
                     <style>
-                    /* Card 1: Standard buckets container styling - target both anchor sibling AND inner span */
+                    /* Card 1: Standard buckets container styling - strictly ONLY the immediate sibling container after anchor */
                     div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
+                    div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"],
                     div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) {
+                    div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] > div {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #00B0F0 !important;
                         border-radius: 12px !important;
                     }
                     div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) {
+                    div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] {
                         border-top: 4px solid #00B0F0 !important;
                         padding: 14px 18px 10px 18px !important;
                         box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
@@ -1575,9 +1574,7 @@ def render_project_data():
 
                     /* Override global app.py button styling for Reset Button inside Card 1 */
                     [data-testid="stMain"] div.element-container:has(#manual-std-box-anchor) + div.element-container button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .stButton button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) button {
+                    [data-testid="stMain"] div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] button {
                         min-height: 30px !important;
                         height: 30px !important;
                         padding: 2px 14px !important;
@@ -1588,19 +1585,18 @@ def render_project_data():
                         border: 1.5px solid #00B0F0 !important;
                     }
 
-                    /* Card 2: Custom rows container styling */
+                    /* Card 2: Custom rows container styling - strictly ONLY the immediate sibling container after anchor */
                     div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
+                    div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"],
                     div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) {
+                    div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] > div {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #38bdf8 !important;
                         border-radius: 12px !important;
                     }
                     div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) {
+                    div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] {
                         border-top: 4px solid #0284c7 !important;
                         padding: 14px 18px 14px 18px !important;
                         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
@@ -1608,9 +1604,7 @@ def render_project_data():
 
                     /* Compact Delete Icon Button inside Card 2 Column 3 */
                     [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stColumn"]:nth-child(3) button,
-                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stColumn"]:nth-child(3) .stButton button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button {
+                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stColumn"]:nth-child(3) button {
                         min-height: 36px !important;
                         height: 36px !important;
                         width: 40px !important;
@@ -1627,8 +1621,8 @@ def render_project_data():
                     /* Compact "+ Thêm dòng hệ số tùy chỉnh" button */
                     [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container button:has(div:contains("Thêm dòng")),
                     [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container button:has(div:contains("カスタム")),
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("Thêm dòng")),
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("カスタム")) {
+                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] button:has(div:contains("Thêm dòng")),
+                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] button:has(div:contains("カスタム")) {
                         min-height: 36px !important;
                         height: 36px !important;
                         padding: 4px 18px !important;
