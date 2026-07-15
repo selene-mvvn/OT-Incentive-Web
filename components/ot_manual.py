@@ -1555,26 +1555,23 @@ def render_project_data():
                 st.markdown(
                     """
                     <style>
-                    /* Card 1: Standard buckets container styling inside tab_manual */
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div {
+                    /* Card 1: Standard buckets container inside tab_manual */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) > div {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #00B0F0 !important;
                         border-radius: 12px !important;
                     }
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) {
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) {
                         border-top: 4px solid #00B0F0 !important;
                         padding: 14px 18px 10px 18px !important;
                         box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
                     }
 
-                    /* Override global app.py button styling for Reset Button inside Card 1 */
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button,
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .stButton button,
-                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("LÀM MỚI")),
-                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("Làm mới")),
-                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("リセット")) {
+                    /* Compact Reset Button inside Card 1 */
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) .stButton button {
                         min-height: 28px !important;
                         height: 28px !important;
                         padding: 2px 12px !important;
@@ -1585,24 +1582,23 @@ def render_project_data():
                         border: 1.5px solid #00B0F0 !important;
                     }
 
-                    /* Card 2: Custom rows container styling inside tab_manual */
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div {
+                    /* Card 2: Custom rows container inside tab_manual */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) > div {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #38bdf8 !important;
                         border-radius: 12px !important;
                     }
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) {
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {
                         border-top: 4px solid #0284c7 !important;
                         padding: 14px 18px 14px 18px !important;
                         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
                     }
 
                     /* Compact Delete Icon Button inside Card 2 Column 3 */
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button,
-                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("🗑️")) {
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button {
                         min-height: 36px !important;
                         height: 36px !important;
                         width: 38px !important;
@@ -1618,10 +1614,8 @@ def render_project_data():
                     }
 
                     /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 */
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("Thêm dòng")),
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("カスタム")),
-                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("Thêm dòng")),
-                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("カスタム")) {
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) button:not(div[data-testid="stColumn"]:nth-child(3) button),
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) .stButton:not(div[data-testid="stColumn"]:nth-child(3) .stButton) button {
                         min-height: 34px !important;
                         height: 34px !important;
                         padding: 4px 16px !important;
