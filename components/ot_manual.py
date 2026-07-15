@@ -1524,6 +1524,8 @@ def render_project_data():
             with tab_manual:
                 if 'manual_reset_key' not in st.session_state:
                     st.session_state['manual_reset_key'] = 0
+                if 'manual_custom_reset_key' not in st.session_state:
+                    st.session_state['manual_custom_reset_key'] = 0
                 if 'manual_custom_rows' not in st.session_state or not isinstance(st.session_state['manual_custom_rows'], list):
                     st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
                 st.info(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0 hoặc bằng 0."))
@@ -1871,6 +1873,7 @@ def render_project_data():
                     with c_reset:
                         if st.button(t(":material/refresh: Làm mới rổ giờ", ":material/refresh: リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
                             st.session_state['manual_reset_key'] += 1
+                            st.session_state['manual_custom_reset_key'] = st.session_state.get('manual_custom_reset_key', 0) + 1
                             st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
                             st.rerun()
                     
@@ -1891,6 +1894,7 @@ def render_project_data():
                     
                     updated_custom_rows = []
                     rows_to_delete = []
+                    crk = st.session_state.get('manual_custom_reset_key', 0)
                     for i, row in enumerate(st.session_state['manual_custom_rows']):
                         row_id = row['id']
                         rc_badge, rc1, rc2, rc3 = st.columns([0.6, 4.1, 4.1, 1.2])
@@ -1908,34 +1912,26 @@ def render_project_data():
                             val_mult = st.number_input(
                                 t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"),
                                 min_value=0.0, step=10.0, value=float(row.get('mult', 0.0)),
-                                key=f"cust_mult_{row_id}_{rk}"
+                                key=f"cust_mult_{row_id}_{rk}_{crk}"
                             )
                         with rc2:
                             val_hrs = st.number_input(
                                 t("Số giờ tương ứng", "該当時間"),
                                 min_value=0.0, step=0.1, format="%.1f", value=float(row.get('hrs', 0.0)),
-                                key=f"cust_hrs_{row_id}_{rk}"
+                                key=f"cust_hrs_{row_id}_{rk}_{crk}"
                             )
                         with rc3:
                             st.markdown("<div style='height: 31px;'></div>", unsafe_allow_html=True)
-                            if st.button(":material/delete:", key=f"del_cust_{row_id}_{rk}", help=t("Xóa dòng này", "この行を削除")):
+                            if st.button(":material/delete:", key=f"del_cust_{row_id}_{rk}_{crk}", help=t("Xóa dòng này", "この行を削除")):
                                 rows_to_delete.append(row_id)
                         
                         updated_custom_rows.append({'id': row_id, 'mult': val_mult, 'hrs': val_hrs})
                     
                     if rows_to_delete:
-                        for del_id in rows_to_delete:
-                            if f"cust_mult_{del_id}_{rk}" in st.session_state:
-                                del st.session_state[f"cust_mult_{del_id}_{rk}"]
-                            if f"cust_hrs_{del_id}_{rk}" in st.session_state:
-                                del st.session_state[f"cust_hrs_{del_id}_{rk}"]
                         st.session_state['manual_custom_rows'] = [r for r in updated_custom_rows if r['id'] not in rows_to_delete]
                         if not st.session_state['manual_custom_rows']:
                             st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
-                            if f"cust_mult_1_{rk}" in st.session_state:
-                                del st.session_state[f"cust_mult_1_{rk}"]
-                            if f"cust_hrs_1_{rk}" in st.session_state:
-                                del st.session_state[f"cust_hrs_1_{rk}"]
+                        st.session_state['manual_custom_reset_key'] = st.session_state.get('manual_custom_reset_key', 0) + 1
                         st.rerun()
                     else:
                         st.session_state['manual_custom_rows'] = updated_custom_rows
