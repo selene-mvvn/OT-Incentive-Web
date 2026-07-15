@@ -1542,21 +1542,23 @@ def render_project_data():
                 if 'manual_custom_rows' not in st.session_state or not isinstance(st.session_state['manual_custom_rows'], list):
                     st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
 
+                st.info(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0 hoặc bằng 0."))
+
                 st.markdown(
                     f"""
                     <style>
                     /* Pull up both cards and style Card 1 (Standard buckets) inside tab_manual */
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stVerticalBlock"],
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stVerticalBlock"] {{
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) > div,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) > div {{
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #00B0F0 !important;
                         border-radius: 12px !important;
                     }}
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) {{
                         border-top: 4px solid #00B0F0 !important;
                         padding: 12px 18px 8px 18px !important;
                         box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
@@ -1564,10 +1566,12 @@ def render_project_data():
                     }}
 
                     /* Compact Reset Button inside Card 1 */
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button,
-                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .stButton button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) .stButton button {{
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .stButton button,
+                    [data-testid="stMain"] div[data-testid="stBorder"]:has(.custom-blue-card-std) button,
+                    [data-testid="stMain"] div[data-testid="stBorder"]:has(.custom-blue-card-std) .stButton button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-std) .stButton button {{
                         min-height: 28px !important;
                         height: 28px !important;
                         padding: 2px 12px !important;
@@ -1579,25 +1583,30 @@ def render_project_data():
                     }}
 
                     /* Style Card 2 (Custom rows) inside tab_manual */
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"],
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"] {{
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) > div,
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) > div {{
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #38bdf8 !important;
                         border-radius: 12px !important;
                     }}
-                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
+                    div[data-testid="stBorder"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {{
                         border-top: 4px solid #0284c7 !important;
                         padding: 14px 18px 14px 18px !important;
                         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
+                        margin-top: -4px !important;
                     }}
 
                     /* Compact Delete Icon Button inside Card 2 Column 3 */
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button {{
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button,
+                    [data-testid="stMain"] div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
+                    [data-testid="stMain"] div[data-testid="stBorder"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button {{
                         min-height: 36px !important;
                         height: 36px !important;
                         width: 38px !important;
@@ -1613,8 +1622,12 @@ def render_project_data():
                     }}
 
                     /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 */
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) button:not(div[data-testid="stColumn"]:nth-child(3) button),
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) .stButton:not(div[data-testid="stColumn"]:nth-child(3) .stButton) button {{
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:not(div[data-testid="stColumn"]:nth-child(3) button),
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .stButton:not(div[data-testid="stColumn"]:nth-child(3) .stButton) button,
+                    [data-testid="stMain"] div[data-testid="stBorder"]:has(.custom-blue-card-custom) button:not(div[data-testid="stColumn"]:nth-child(3) button),
+                    [data-testid="stMain"] div[data-testid="stBorder"]:has(.custom-blue-card-custom) .stButton:not(div[data-testid="stColumn"]:nth-child(3) .stButton) button,
+                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) button:not(div[data-testid="stColumn"]:nth-child(3) button),
+                    [data-testid="stMain"] div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom) .stButton:not(div[data-testid="stColumn"]:nth-child(3) .stButton) button {{
                         min-height: 34px !important;
                         height: 34px !important;
                         padding: 4px 16px !important;
