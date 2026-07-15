@@ -1924,9 +1924,18 @@ def render_project_data():
                         updated_custom_rows.append({'id': row_id, 'mult': val_mult, 'hrs': val_hrs})
                     
                     if rows_to_delete:
+                        for del_id in rows_to_delete:
+                            if f"cust_mult_{del_id}_{rk}" in st.session_state:
+                                del st.session_state[f"cust_mult_{del_id}_{rk}"]
+                            if f"cust_hrs_{del_id}_{rk}" in st.session_state:
+                                del st.session_state[f"cust_hrs_{del_id}_{rk}"]
                         st.session_state['manual_custom_rows'] = [r for r in updated_custom_rows if r['id'] not in rows_to_delete]
                         if not st.session_state['manual_custom_rows']:
                             st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
+                            if f"cust_mult_1_{rk}" in st.session_state:
+                                del st.session_state[f"cust_mult_1_{rk}"]
+                            if f"cust_hrs_1_{rk}" in st.session_state:
+                                del st.session_state[f"cust_hrs_1_{rk}"]
                         st.rerun()
                     else:
                         st.session_state['manual_custom_rows'] = updated_custom_rows
