@@ -58,7 +58,7 @@ st.markdown("""
         margin-top: 15px !important;
         margin-bottom: 15px !important;
         border: 0 !important;
-        border-top: 1px solid rgba(0, 176, 240, 0.2) !important;
+        border-top: 1.5px solid #94a3b8 !important;
     }
     
     /* Ensure table containers have clean, neat spacing above */

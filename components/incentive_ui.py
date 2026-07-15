@@ -324,7 +324,7 @@ def render_incentive():
                 if st.session_state['incentive_records']:
                     default_name = f"{t('Bảng tổng hợp Incentive', 'インセンティブ集計表')}.xlsx"
 
-                    st.markdown("<hr class='custom-hr-divider' style='margin: 8px 0 10px 0 !important; border: 0; border-top: 1px solid rgba(0, 176, 240, 0.2) !important;'>", unsafe_allow_html=True)
+                    st.markdown("<hr class='custom-hr-divider' style='margin: 8px 0 10px 0 !important; border: 0; border-top: 1.5px solid #94a3b8 !important;'>", unsafe_allow_html=True)
                     st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                     c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                     with c_name:
