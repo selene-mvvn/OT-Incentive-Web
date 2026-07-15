@@ -1537,31 +1537,108 @@ def render_project_data():
                         st.rerun()
                     
             with tab_manual:
+                if 'manual_reset_key' not in st.session_state:
+                    st.session_state['manual_reset_key'] = 0
+                if 'manual_custom_rows' not in st.session_state or not isinstance(st.session_state['manual_custom_rows'], list):
+                    st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
+
                 st.warning(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0または空白で。"))
-                m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
-                with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f")
-                with m_col2: h_200 = st.number_input(t("Số giờ 200%", "200% 時間"), min_value=0.0, step=0.1, format="%.1f")
-                with m_col3: h_270 = st.number_input(t("Số giờ 270%", "270% 時間"), min_value=0.0, step=0.1, format="%.1f")
-                with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f")
-                with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f")
+                
+                c_title, c_reset = st.columns([7, 3])
+                with c_title:
+                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 6px;'>{t('⚡ Các rổ hệ số chuẩn (150% - 400%)', '⚡ 標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
+                with c_reset:
+                    if st.button(t("🔄 Làm mới rổ giờ", "🔄 リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
+                        st.session_state['manual_reset_key'] += 1
+                        st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
+                        st.rerun()
+
+                rk = st.session_state['manual_reset_key']
+                with st.container(border=True):
+                    m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
+                    with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h150_{rk}")
+                    with m_col2: h_200 = st.number_input(t("Số giờ 200%", "200% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h200_{rk}")
+                    with m_col3: h_270 = st.number_input(t("Số giờ 270%", "270% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h270_{rk}")
+                    with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h300_{rk}")
+                    with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h400_{rk}")
             
-                st.markdown(f"##### {t('Hệ số Khác (Tuỳ chỉnh)', 'その他係数（カスタム）')}")
-                c_col1, c_col2 = st.columns(2)
-                with c_col1: c_mult = st.number_input(t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"), min_value=0.0, step=10.0)
-                with c_col2: c_hrs = st.number_input(t("Số giờ cho hệ số này", "時間数"), min_value=0.0, step=0.1, format="%.1f")
+                st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 15px; margin-bottom: 4px;'>{t('⚙️ Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', '⚙️ その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                with st.container(border=True):
+                    updated_custom_rows = []
+                    rows_to_delete = []
+                    for i, row in enumerate(st.session_state['manual_custom_rows']):
+                        row_id = row['id']
+                        rc1, rc2, rc3 = st.columns([4.5, 4.5, 1.0])
+                        with rc1:
+                            val_mult = st.number_input(
+                                t(f"Hệ số tuỳ chỉnh #{i+1} (%)", f"カスタム係数 #{i+1} (%)"),
+                                min_value=0.0, step=10.0, value=float(row.get('mult', 0.0)),
+                                key=f"cust_mult_{row_id}_{rk}"
+                            )
+                        with rc2:
+                            val_hrs = st.number_input(
+                                t(f"Số giờ cho hệ số #{i+1}", f"時間数 #{i+1}"),
+                                min_value=0.0, step=0.1, format="%.1f", value=float(row.get('hrs', 0.0)),
+                                key=f"cust_hrs_{row_id}_{rk}"
+                            )
+                        with rc3:
+                            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                            if st.button("🗑️", key=f"del_cust_{row_id}_{rk}", help=t("Xóa dòng này", "この行を削除")):
+                                rows_to_delete.append(row_id)
+                        
+                        updated_custom_rows.append({'id': row_id, 'mult': val_mult, 'hrs': val_hrs})
+                    
+                    if rows_to_delete:
+                        st.session_state['manual_custom_rows'] = [r for r in updated_custom_rows if r['id'] not in rows_to_delete]
+                        if not st.session_state['manual_custom_rows']:
+                            st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
+                        st.rerun()
+                    else:
+                        st.session_state['manual_custom_rows'] = updated_custom_rows
+                    
+                    if st.button(t("➕ Thêm dòng hệ số tùy chỉnh", "➕ カスタム係数を追加"), key=f"add_cust_row_{rk}"):
+                        max_id = max([r['id'] for r in st.session_state['manual_custom_rows']], default=0) + 1
+                        st.session_state['manual_custom_rows'].append({'id': max_id, 'mult': 0.0, 'hrs': 0.0})
+                        st.rerun()
             
                 std_days = float(base.get('standard_days', 22.0))
                 std_hrs = float(base.get('standard_hours_per_day', 8.0))
                 hourly_rate_est = (emp_gross / std_days / std_hrs) if (std_days > 0 and std_hrs > 0) else 0
                 
-                est_cost_manual = (h_150 * 1.5 + h_200 * 2.0 + h_270 * 2.7 + h_300 * 3.0 + h_400 * 4.0 + c_hrs * (c_mult / 100.0)) * hourly_rate_est
+                bucket_inputs = {150: h_150, 200: h_200, 270: h_270, 300: h_300, 400: h_400}
+                for crow in st.session_state['manual_custom_rows']:
+                    cmult = crow.get('mult', 0.0)
+                    chrs = crow.get('hrs', 0.0)
+                    if chrs > 0 and cmult > 0:
+                        bucket_inputs[cmult] = bucket_inputs.get(cmult, 0.0) + chrs
+
+                manual_total = sum(bucket_inputs.values())
+                est_cost_manual = sum(hrs * (mult / 100.0) * hourly_rate_est for mult, hrs in bucket_inputs.items() if hrs > 0)
+                avg_mult = (sum(hrs * mult for mult, hrs in bucket_inputs.items() if hrs > 0) / manual_total) if manual_total > 0 else 0.0
                 
-                if est_cost_manual > 0:
-                    svg_icon = '<svg xmlns="http://www.w3.org/2000/svg" height="18" viewBox="0 -960 960 960" width="18" fill="#2e7d32" style="vertical-align: middle; margin-right: 4px; margin-top: -2px;"><path d="M480-320q-33 0-56.5-23.5T400-400v-160q0-33 23.5-56.5T480-640h160q33 0 56.5 23.5T720-560v160q0 33-23.5 56.5T640-320H480ZM160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm0-80h640v-480H160v480Zm0 0v-480 480Z"/><path d="M560-440q17 0 28.5-11.5T600-480q0-17-11.5-28.5T560-520q-17 0-28.5 11.5T520-480q0 17 11.5 28.5T560-440Z"/></svg>'
-                    st.markdown(f"<div style='margin-bottom: 15px; padding: 6px 12px; background-color: #e8f5e9; border: 1px solid #c8e6c9; border-radius: 6px; color: #2e7d32; font-size: 14px; display: inline-block;'>{svg_icon}<strong>{t('Dự tính chi phí:', '予想コスト:')}</strong> {est_cost_manual:,.0f} VNĐ</div>", unsafe_allow_html=True)
+                if manual_total > 0:
+                    st.markdown(
+                        f"""
+                        <div style='margin-top: 16px; margin-bottom: 16px; padding: 14px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 10px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);'>
+                            <div style='font-size: 14px; font-weight: 600; color: #166534; margin-bottom: 6px; display: flex; align-items: center;'>
+                                <span style='font-size: 16px; margin-right: 6px;'>📊</span> {t('TỔNG HỢP NHẬP TAY TRỰC TIẾP (LIVE SUMMARY)', '手動入力リアルタイム集計')}
+                            </div>
+                            <div style='display: flex; flex-wrap: wrap; gap: 24px; font-size: 13.5px; color: #15803d;'>
+                                <div>⏱️ {t('Tổng số giờ:', '残業時間合計:')} <strong style='font-size: 15px; color: #166534;'>{manual_total:.1f} h</strong></div>
+                                <div>📈 {t('Hệ số trung bình:', '平均係数:')} <strong style='font-size: 15px; color: #166534;'>{avg_mult:.1f}%</strong></div>
+                                <div>💰 {t('Dự tính chi phí:', '予想コスト:')} <strong style='font-size: 15px; color: #166534;'>{est_cost_manual:,.0f} VNĐ</strong></div>
+                            </div>
+                        </div>
+                        """,
+                        unsafe_allow_html=True
+                    )
+                    if manual_total > 16.0:
+                        st.markdown(
+                            f"<div style='margin-bottom: 15px; padding: 10px 14px; background-color: #fef9c3; border-left: 4px solid #eab308; border-radius: 6px; color: #854d0e; font-size: 13.5px;'>⚠️ <strong>{t('Cảnh báo an toàn:', '注意:')}</strong> {t(f'Tổng số giờ OT trong ngày đang là <b>{manual_total:.1f} giờ</b> (vượt ngưỡng 16 giờ/ngày). Vui lòng kiểm tra lại dấu chấm/phẩy trước khi thêm!', f'1日の残業合計が<b>{manual_total:.1f}時間</b>に達しています。入力内容をご確認ください！')}</div>",
+                            unsafe_allow_html=True
+                        )
             
                 if st.button(t("➕ THÊM VÀO BẢNG CHỜ XUẤT - THỦ CÔNG", "➕ 手動追加"), key="btn_manual"):
-                    manual_total = h_150 + h_200 + h_270 + h_300 + h_400 + c_hrs
                     if employee_name_proj == opt_emp:
                         st.error(t("Vui lòng chọn nhân sự làm việc!", "スタッフを選択してください！"))
                     elif manual_total <= 0:
@@ -1586,9 +1663,6 @@ def render_project_data():
                                 "ot_hours": manual_total,
                                 "hourly_rate": hourly_rate,
                             }
-                            bucket_inputs = {150: h_150, 200: h_200, 270: h_270, 300: h_300, 400: h_400}
-                            if c_hrs > 0 and c_mult > 0:
-                                bucket_inputs[c_mult] = c_hrs
                             for mult, hrs in bucket_inputs.items():
                                 if hrs > 0:
                                     res = calculate_ot_pay(emp_gross, std_days, hrs, mult)
