@@ -1544,34 +1544,30 @@ def render_project_data():
 
                 st.markdown(
                     f"""
-                    <div style="margin-top: 10px; margin-bottom: 16px; padding: 12px 16px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-left: 4px solid #00B0F0; border-radius: 8px; color: #0369a1; font-size: 14px; box-shadow: 0 2px 6px rgba(0, 176, 240, 0.08); display: flex; align-items: center;">
-                        <span style="font-size: 18px; margin-right: 10px;">💡</span>
-                        <div><strong>{t('HƯỚNG DẪN:', '操作ガイド:')}</strong> {t('Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.', '各係数の時間を手動で入力してください。発生しない場合は0 hoặc bằng 0.')}</div>
-                    </div>
-                    """,
-                    unsafe_allow_html=True
-                )
-                
-                st.markdown(
-                    """
                     <style>
-                    /* Card 1: Standard buckets container inside tab_manual */
+                    /* Pull up both cards and style Card 1 (Standard buckets) inside tab_manual */
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stVerticalBlock"],
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) > div {
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) div[data-testid="stVerticalBlock"] {{
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #00B0F0 !important;
                         border-radius: 12px !important;
-                    }
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) {
+                    }}
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) {{
                         border-top: 4px solid #00B0F0 !important;
-                        padding: 14px 18px 10px 18px !important;
+                        padding: 12px 18px 8px 18px !important;
                         box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
-                    }
+                        margin-top: -4px !important;
+                    }}
 
                     /* Compact Reset Button inside Card 1 */
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button,
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .stButton button,
                     [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) .stButton button {
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-std) .stButton button {{
                         min-height: 28px !important;
                         height: 28px !important;
                         padding: 2px 12px !important;
@@ -1580,25 +1576,28 @@ def render_project_data():
                         margin-top: 0px !important;
                         margin-bottom: 0px !important;
                         border: 1.5px solid #00B0F0 !important;
-                    }
+                    }}
 
-                    /* Card 2: Custom rows container inside tab_manual */
+                    /* Style Card 2 (Custom rows) inside tab_manual */
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"],
                     div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom),
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) > div {
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stVerticalBlock"] {{
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #38bdf8 !important;
                         border-radius: 12px !important;
-                    }
-                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {
+                    }}
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) {{
                         border-top: 4px solid #0284c7 !important;
                         padding: 14px 18px 14px 18px !important;
                         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
-                    }
+                    }}
 
                     /* Compact Delete Icon Button inside Card 2 Column 3 */
                     [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button {
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button {{
                         min-height: 36px !important;
                         height: 36px !important;
                         width: 38px !important;
@@ -1611,11 +1610,11 @@ def render_project_data():
                         background-color: #fef2f2 !important;
                         color: #ef4444 !important;
                         box-shadow: none !important;
-                    }
+                    }}
 
                     /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 */
                     [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) button:not(div[data-testid="stColumn"]:nth-child(3) button),
-                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) .stButton:not(div[data-testid="stColumn"]:nth-child(3) .stButton) button {
+                    [data-testid="stMain"] div[data-testid="stVerticalBlockBorderWrapper"]:not(:has([data-testid="stTabs"])):has(.custom-blue-card-custom) .stButton:not(div[data-testid="stColumn"]:nth-child(3) .stButton) button {{
                         min-height: 34px !important;
                         height: 34px !important;
                         padding: 4px 16px !important;
@@ -1625,18 +1624,16 @@ def render_project_data():
                         border: 1.5px solid #0284c7 !important;
                         background-color: #ffffff !important;
                         color: #0284c7 !important;
-                    }
+                    }}
                     </style>
                     """,
                     unsafe_allow_html=True
                 )
 
-                st.markdown("<span id='manual-std-box-anchor'></span>", unsafe_allow_html=True)
                 with st.container(border=True):
-                    st.markdown("<span class='custom-blue-card-std'></span>", unsafe_allow_html=True)
                     c_title, c_reset = st.columns([7.5, 2.5])
                     with c_title:
-                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 4px;'>⚡ {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<span class='custom-blue-card-std'></span><div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 2px;'>⚡ {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
                     with c_reset:
                         if st.button(t("🔄 Làm mới rổ giờ", "🔄 リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
                             st.session_state['manual_reset_key'] += 1
@@ -1652,10 +1649,8 @@ def render_project_data():
                     with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h300_{rk}")
                     with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h400_{rk}")
 
-                st.markdown("<div style='margin-top: 12px;'></div><span id='manual-custom-box-anchor'></span>", unsafe_allow_html=True)
                 with st.container(border=True):
-                    st.markdown("<span class='custom-blue-card-custom'></span>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 2px; margin-bottom: 6px;'>⚙️ {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<span class='custom-blue-card-custom'></span><div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 2px; margin-bottom: 6px;'>⚙️ {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
                     st.markdown("<hr style='margin: 4px 0 14px 0 !important; border: 0; border-top: 1px solid rgba(0, 176, 240, 0.25) !important;'>", unsafe_allow_html=True)
                     
                     updated_custom_rows = []
