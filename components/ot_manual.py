@@ -1694,13 +1694,17 @@ def render_project_data():
                         box-shadow: none !important;
                         transition: all 0.2s ease !important;
                     }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stColumn"]:nth-child(2) {{
+                        padding-right: 0px !important;
+                    }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stColumn"]:nth-child(2) div[data-testid="stElementContainer"] {{
                         margin-top: -6px !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stColumn"]:nth-child(2) div.stButton {{
                         display: flex !important;
                         justify-content: flex-end !important;
-                        padding-right: 8px !important;
+                        padding-right: 0px !important;
+                        margin-right: -10px !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div.stButton button:hover *,
