@@ -1590,7 +1590,7 @@ def render_project_data():
                     f"    padding-top: 22px !important;"
                     f"}}"
                     f"div.element-container:has(#ot-records-table-header-anchor) ~ div.element-container:has([data-testid='stDataFrame']) [data-testid='stElementToolbar'] {{"
-                    f"    top: -36px !important;"
+                    f"    top: -28px !important;"
                     f"}}"
                     f"</style>"
                     f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('BẢNG DỮ LIỆU ĐÃ NHẬP', '入力済みデータ一覧')}</h3>"
