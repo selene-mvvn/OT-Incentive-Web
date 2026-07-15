@@ -1606,11 +1606,37 @@ def render_project_data():
                         color: #ffffff !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .custom-row-badge,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .custom-row-badge * {{
-                        color: #00B0F0 !important;
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .custom-row-badge {{
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: center !important;
+                        width: 34px !important;
+                        min-width: 34px !important;
+                        max-width: 34px !important;
+                        height: 34px !important;
+                        min-height: 34px !important;
+                        max-height: 34px !important;
+                        border-radius: 50% !important;
                         background-color: #ffffff !important;
+                        border: 2px solid #00B0F0 !important;
+                        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+                        margin: 0 auto !important;
+                        padding: 0 !important;
+                        color: #00B0F0 !important;
+                        font-weight: 700 !important;
+                        font-size: 15px !important;
+                    }}
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) .custom-row-badge *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) .custom-row-badge * {{
+                        background: transparent !important;
+                        background-color: transparent !important;
+                        color: #00B0F0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        border: none !important;
+                        box-shadow: none !important;
+                        font-weight: 700 !important;
+                        font-size: 15px !important;
                     }}
 
                     /* Ensure horizontal lines hr inside both blue cards are pure white */
