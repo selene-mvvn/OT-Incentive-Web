@@ -1771,7 +1771,7 @@ def render_project_data():
                     st.markdown("<span class='custom-blue-card-std' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
                     c_title, c_reset = st.columns([7.5, 2.5])
                     with c_title:
-                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #ffffff; margin-top: 2px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>bolt</span> {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
+                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>bolt</span> {t('CÁC RỔ HỆ SỐ CHUẨN (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
                     with c_reset:
                         if st.button(t(":material/refresh: Làm mới rổ giờ", ":material/refresh: リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
                             st.session_state['manual_reset_key'] += 1
@@ -1789,7 +1789,7 @@ def render_project_data():
 
                 with st.container(border=True):
                     st.markdown("<span class='custom-blue-card-custom' style='display:none; position:absolute;'></span>", unsafe_allow_html=True)
-                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #ffffff; margin-top: 2px; margin-bottom: 6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>tune</span> {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; text-transform: uppercase; color: #ffffff; margin-top: 2px; margin-bottom: 6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>tune</span> {t('CÁC RỔ HỆ SỐ KHÁC (TUỲ CHỈNH - NHIỀU DÒNG)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
                     st.markdown("<hr style='margin: 4px 0 14px 0 !important; border: 0 !important; border-top: 1px solid #ffffff !important; opacity: 1 !important;'>", unsafe_allow_html=True)
                     
                     
@@ -1811,7 +1811,7 @@ def render_project_data():
                                 key=f"cust_hrs_{row_id}_{rk}"
                             )
                         with rc3:
-                            st.markdown("<div style='height: 27px;'></div>", unsafe_allow_html=True)
+                            st.markdown("<div style='height: 31px;'></div>", unsafe_allow_html=True)
                             if st.button(":material/delete:", key=f"del_cust_{row_id}_{rk}", help=t("Xóa dòng này", "この行を削除")):
                                 rows_to_delete.append(row_id)
                         
