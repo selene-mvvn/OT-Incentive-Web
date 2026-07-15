@@ -888,7 +888,8 @@ def render_base_data():
                 f"<style>"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']),"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) {{"
-                f"    margin-top: -24px !important;"
+                f"    margin-top: -38px !important;"
+                f"    margin-bottom: -10px !important;"
                 f"}}"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']) [data-testid='stDataEditor'],"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) [data-testid='stDataFrame'] {{"
@@ -897,6 +898,9 @@ def render_base_data():
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']) [data-testid='stElementToolbar'],"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) [data-testid='stElementToolbar'] {{"
                 f"    top: -28px !important;"
+                f"}}"
+                f"div.element-container:has(#holidays-save-btn-anchor) + div.element-container {{"
+                f"    margin-top: -18px !important;"
                 f"}}"
                 f"</style>",
                 unsafe_allow_html=True
@@ -916,6 +920,7 @@ def render_base_data():
                 key=editor_key
             )
 
+            st.markdown("<span id='holidays-save-btn-anchor'></span>", unsafe_allow_html=True)
             if st.button(t("LƯU NGÀY LỄ", "休日を保存")):
                 if st.session_state.get('lang', 'VN') == 'JP':
                     holidays_df['Lý do'] = holidays_df['Lý do'].apply(lambda x: reverse_holiday_translations.get(str(x).strip(), x))
