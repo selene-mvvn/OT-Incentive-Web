@@ -1766,6 +1766,13 @@ def render_project_data():
                     div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover * {{
                         color: #0075a0 !important;
                     }}
+
+                    /* Ensure Live summary icons are dark green (#166534) and override global blue icon styles */
+                    div.live-summary-box .material-symbols-rounded,
+                    div.live-summary-box span.material-symbols-rounded,
+                    [data-testid="stMainBlockContainer"] div.live-summary-box .material-symbols-rounded {{
+                        color: #166534 !important;
+                    }}
                     </style>
                     """,
                     unsafe_allow_html=True
@@ -1852,14 +1859,14 @@ def render_project_data():
                 if manual_total > 0:
                     st.markdown(
                         f"""
-                        <div style='margin-top: 16px; margin-bottom: 16px; padding: 14px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 10px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);'>
+                        <div class='live-summary-box' style='margin-top: -10px !important; margin-bottom: 14px !important; padding: 12px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 10px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);'>
                             <div style='font-size: 14px; font-weight: 600; color: #166534; margin-bottom: 6px; display: flex; align-items: center;'>
-                                <span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px;'>analytics</span> {t('TỔNG HỢP NHẬP TAY TRỰC TIẾP (LIVE SUMMARY)', '手動入力リアルタイム集計')}
+                                <span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px; color: #166534 !important;'>analytics</span> {t('TỔNG HỢP NHẬP TAY TRỰC TIẾP (LIVE SUMMARY)', '手動入力リアルタイム集計')}
                             </div>
                             <div style='display: flex; flex-wrap: wrap; gap: 24px; font-size: 13.5px; color: #15803d;'>
-                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px;'>schedule</span> {t('Tổng số giờ:', '残業時間合計:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{manual_total:.1f} h</strong></div>
-                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px;'>trending_up</span> {t('Hệ số trung bình:', '平均係数:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{avg_mult:.1f}%</strong></div>
-                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px;'>payments</span> {t('Dự tính chi phí:', '予想コスト:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{est_cost_manual:,.0f} VNĐ</strong></div>
+                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px; color: #166534 !important;'>schedule</span> {t('Tổng số giờ:', '残業時間合計:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{manual_total:.1f} h</strong></div>
+                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px; color: #166534 !important;'>trending_up</span> {t('Hệ số trung bình:', '平均係数:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{avg_mult:.1f}%</strong></div>
+                                <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px; color: #166534 !important;'>payments</span> {t('Dự tính chi phí:', '予想コスト:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{est_cost_manual:,.0f} VNĐ</strong></div>
                             </div>
                         </div>
                         """,
