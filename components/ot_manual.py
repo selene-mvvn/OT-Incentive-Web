@@ -1866,7 +1866,7 @@ def render_project_data():
                         f"""
                         <div class='live-summary-box' style='margin-top: -10px !important; margin-bottom: 18px !important; padding: 12px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 10px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);'>
                             <div style='font-size: 14px; font-weight: 600; color: #166534; margin-bottom: 6px; display: flex; align-items: center;'>
-                                <span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px; color: #166534 !important;'>analytics</span> {t('TỔNG HỢP NHẬP TAY TRỰC TIẾP (LIVE SUMMARY)', '手動入力リアルタイム集計')}
+                                <span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px; color: #166534 !important;'>analytics</span> {t('BẢNG TỔNG HỢP SỐ LIỆU OT DỰ TÍNH', '残業集計・予想コストプレビュー')}
                             </div>
                             <div style='display: flex; flex-wrap: wrap; gap: 24px; font-size: 13.5px; color: #15803d;'>
                                 <div style='display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size: 18px; margin-right: 4px; color: #166534 !important;'>schedule</span> {t('Tổng số giờ:', '残業時間合計:')} &nbsp;<strong style='font-size: 15px; color: #166534;'>{manual_total:.1f} h</strong></div>
