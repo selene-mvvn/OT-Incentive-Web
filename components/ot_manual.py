@@ -1773,6 +1773,11 @@ def render_project_data():
                     [data-testid="stMainBlockContainer"] div.live-summary-box .material-symbols-rounded {{
                         color: #166534 !important;
                     }}
+
+                    /* Ensure + THÊM VÀO BẢNG CHỜ XUẤT button moves up along with Live Summary box */
+                    div[data-testid="stVerticalBlock"] > div[data-testid="stElementContainer"]:has(div.stButton > button) {{
+                        margin-top: -12px !important;
+                    }}
                     </style>
                     """,
                     unsafe_allow_html=True
@@ -1859,7 +1864,7 @@ def render_project_data():
                 if manual_total > 0:
                     st.markdown(
                         f"""
-                        <div class='live-summary-box' style='margin-top: -10px !important; margin-bottom: 14px !important; padding: 12px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 10px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);'>
+                        <div class='live-summary-box' style='margin-top: -10px !important; margin-bottom: 4px !important; padding: 12px 18px; background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 1.5px solid #86efac; border-radius: 10px; box-shadow: 0 4px 12px rgba(34, 197, 94, 0.1);'>
                             <div style='font-size: 14px; font-weight: 600; color: #166534; margin-bottom: 6px; display: flex; align-items: center;'>
                                 <span class='material-symbols-rounded' style='font-size: 20px; margin-right: 6px; color: #166534 !important;'>analytics</span> {t('TỔNG HỢP NHẬP TAY TRỰC TIẾP (LIVE SUMMARY)', '手動入力リアルタイム集計')}
                             </div>
