@@ -1555,60 +1555,58 @@ def render_project_data():
                 st.markdown(
                     """
                     <style>
-                    /* Card 1: Standard buckets container styling - strictly ONLY the immediate sibling container after anchor */
-                    div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
-                    div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"],
-                    div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div,
-                    div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] > div {
+                    /* Card 1: Standard buckets container styling inside tab_manual */
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std),
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #00B0F0 !important;
                         border-radius: 12px !important;
                     }
-                    div.element-container:has(#manual-std-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
-                    div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] {
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) {
                         border-top: 4px solid #00B0F0 !important;
                         padding: 14px 18px 10px 18px !important;
                         box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
                     }
 
                     /* Override global app.py button styling for Reset Button inside Card 1 */
-                    [data-testid="stMain"] div.element-container:has(#manual-std-box-anchor) + div.element-container button,
-                    [data-testid="stMain"] div.element-container:has(#manual-std-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] button {
-                        min-height: 30px !important;
-                        height: 30px !important;
-                        padding: 2px 14px !important;
-                        font-size: 12.5px !important;
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button,
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) .stButton button,
+                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("LÀM MỚI")),
+                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("Làm mới")),
+                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("リセット")) {
+                        min-height: 28px !important;
+                        height: 28px !important;
+                        padding: 2px 12px !important;
+                        font-size: 12px !important;
                         border-radius: 6px !important;
                         margin-top: 0px !important;
                         margin-bottom: 0px !important;
                         border: 1.5px solid #00B0F0 !important;
                     }
 
-                    /* Card 2: Custom rows container styling - strictly ONLY the immediate sibling container after anchor */
-                    div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
-                    div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"],
-                    div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div,
-                    div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] > div {
+                    /* Card 2: Custom rows container styling inside tab_manual */
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom),
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div {
                         background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
                         background-color: #f0f9ff !important;
                         border: 1.5px solid #38bdf8 !important;
                         border-radius: 12px !important;
                     }
-                    div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"],
-                    div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] {
+                    [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) {
                         border-top: 4px solid #0284c7 !important;
                         padding: 14px 18px 14px 18px !important;
                         box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
                     }
 
                     /* Compact Delete Icon Button inside Card 2 Column 3 */
-                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container div[data-testid="stColumn"]:nth-child(3) button,
-                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] div[data-testid="stColumn"]:nth-child(3) button {
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button,
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) .stButton button,
+                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("🗑️")) {
                         min-height: 36px !important;
                         height: 36px !important;
-                        width: 40px !important;
-                        min-width: 40px !important;
+                        width: 38px !important;
+                        min-width: 38px !important;
                         padding: 0 !important;
                         font-size: 14px !important;
                         border-radius: 6px !important;
@@ -1618,15 +1616,16 @@ def render_project_data():
                         color: #ef4444 !important;
                         box-shadow: none !important;
                     }
-                    /* Compact "+ Thêm dòng hệ số tùy chỉnh" button */
-                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container button:has(div:contains("Thêm dòng")),
-                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div.element-container button:has(div:contains("カスタム")),
-                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] button:has(div:contains("Thêm dòng")),
-                    [data-testid="stMain"] div.element-container:has(#manual-custom-box-anchor) + div[data-testid="stVerticalBlockBorderWrapper"] button:has(div:contains("カスタム")) {
-                        min-height: 36px !important;
-                        height: 36px !important;
-                        padding: 4px 18px !important;
-                        font-size: 13.5px !important;
+
+                    /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 */
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("Thêm dòng")),
+                    [data-testid="stMain"] [data-testid="stTabs"] div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("カスタム")),
+                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("Thêm dòng")),
+                    [data-testid="stMain"] [data-testid="stTabs"] button:has(div:contains("カスタム")) {
+                        min-height: 34px !important;
+                        height: 34px !important;
+                        padding: 4px 16px !important;
+                        font-size: 13px !important;
                         border-radius: 6px !important;
                         margin-top: 8px !important;
                         border: 1.5px solid #0284c7 !important;
