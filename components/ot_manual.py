@@ -1725,9 +1725,9 @@ def render_project_data():
                         color: #0075a0 !important;
                     }}
 
-                    /* Compact Delete Icon Button inside Card 2 Column 3 ONLY */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button {{
+                    /* Compact Delete Icon Button inside Card 2 Column 4 ONLY */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton button,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton button {{
                         min-height: 36px !important;
                         height: 36px !important;
                         width: 38px !important;
@@ -1745,26 +1745,26 @@ def render_project_data():
                         justify-content: center !important;
                         transition: all 0.2s ease !important;
                     }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button *,
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover * {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton button *,
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton button:hover *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton button *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton button:hover * {{
                         color: #ef4444 !important;
                     }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton button:hover,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton button:hover {{
                         background-color: #ef4444 !important;
                         color: #ffffff !important;
                         border-color: #ffffff !important;
                     }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(3) div.stButton button:hover * {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(4) div.stButton button:hover *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div[data-testid="stColumn"]:nth-child(4) div.stButton button:hover * {{
                         color: #ffffff !important;
                     }}
 
                     /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 ONLY */
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button {{
                         min-height: 34px !important;
                         height: 34px !important;
                         padding: 4px 16px !important;
@@ -1777,24 +1777,24 @@ def render_project_data():
                         box-shadow: none !important;
                         transition: all 0.2s ease !important;
                     }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stElementContainer"]:has(div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton)) {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stElementContainer"]:has(div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton)) {{
                         margin-top: -4px !important;
                     }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button * {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button * {{
                         color: #00B0F0 !important;
                         font-size: 13px !important;
                     }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button:hover,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button:hover {{
                         background-color: #ffffff !important;
                         color: #0075a0 !important;
                         border-color: #ffffff !important;
                         transform: translateY(-2px) !important;
                         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
                     }}
-                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover *,
-                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(3) div.stButton) button:hover * {{
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button:hover *,
+                    div[data-testid="stVerticalBlock"]:has(.custom-blue-card-custom):not(:has(.custom-blue-card-std)) div.stButton:not(div[data-testid="stColumn"]:nth-child(4) div.stButton) button:hover * {{
                         color: #0075a0 !important;
                     }}
 
@@ -1849,16 +1849,26 @@ def render_project_data():
                     rows_to_delete = []
                     for i, row in enumerate(st.session_state['manual_custom_rows']):
                         row_id = row['id']
-                        rc1, rc2, rc3 = st.columns([4.4, 4.4, 1.2])
+                        rc_badge, rc1, rc2, rc3 = st.columns([0.6, 4.1, 4.1, 1.2])
+                        with rc_badge:
+                            st.markdown("<div style='height: 31px;'></div>", unsafe_allow_html=True)
+                            st.markdown(
+                                f"""
+                                <div style='display: flex; align-items: center; justify-content: center; width: 34px; height: 34px; background: #ffffff; color: #00B0F0; font-weight: 700; font-size: 14px; border: 2px solid #00B0F0; border-radius: 50%; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); margin: 0 auto;'>
+                                    {i+1}
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
                         with rc1:
                             val_mult = st.number_input(
-                                t(f"Hệ số tuỳ chỉnh #{i+1} (%)", f"カスタム係数 #{i+1} (%)"),
+                                t("Hệ số tuỳ chỉnh (%)", "カスタム係数 (%)"),
                                 min_value=0.0, step=10.0, value=float(row.get('mult', 0.0)),
                                 key=f"cust_mult_{row_id}_{rk}"
                             )
                         with rc2:
                             val_hrs = st.number_input(
-                                t(f"Số giờ cho hệ số #{i+1}", f"時間数 #{i+1}"),
+                                t("Số giờ tương ứng", "該当時間"),
                                 min_value=0.0, step=0.1, format="%.1f", value=float(row.get('hrs', 0.0)),
                                 key=f"cust_hrs_{row_id}_{rk}"
                             )
