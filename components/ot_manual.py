@@ -889,7 +889,7 @@ def render_base_data():
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']),"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) {{"
                 f"    margin-top: -38px !important;"
-                f"    margin-bottom: -16px !important;"
+                f"    margin-bottom: -6px !important;"
                 f"}}"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataEditor']) [data-testid='stDataEditor'],"
                 f"div.element-container:has(#holidays-table-anchor) ~ div.element-container:has([data-testid='stDataFrame']) [data-testid='stDataFrame'] {{"
@@ -900,7 +900,7 @@ def render_base_data():
                 f"    top: -28px !important;"
                 f"}}"
                 f"div.element-container:has(#holidays-save-btn-anchor) + div.element-container {{"
-                f"    margin-top: -24px !important;"
+                f"    margin-top: -14px !important;"
                 f"}}"
                 f"</style>",
                 unsafe_allow_html=True
