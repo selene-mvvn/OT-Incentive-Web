@@ -1592,7 +1592,7 @@ def render_project_data():
                     margin-top: -12px !important;
                 }
                 </style>
-                <hr style="margin: 4px 0 4px 0 !important; border: 0; border-top: 1px solid #cbd5e1;">
+                <hr style="margin: 4px 0 4px 0 !important; border: 0; border-top: 1px solid rgba(49, 51, 63, 0.2) !important;">
                 """, unsafe_allow_html=True)
                 st.markdown(
                     f"<span id='ot-records-table-header-anchor'></span>"
@@ -1673,7 +1673,7 @@ def render_project_data():
                     margin-top: -4px !important;
                 }
                 </style>
-                <div id="ot-table-bottom-divider" style="margin: 8px 0 10px 0; border-top: 1px solid #cbd5e1;"></div>
+                <div id="ot-table-bottom-divider" style="margin: 8px 0 10px 0; border-top: 1px solid rgba(49, 51, 63, 0.2);"></div>
                 """, unsafe_allow_html=True)
                 st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                 c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
