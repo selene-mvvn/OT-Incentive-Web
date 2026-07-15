@@ -1599,7 +1599,7 @@ def render_project_data():
                         color: #0f172a !important;
                         border: 1.5px solid #cbd5e1 !important;
                         border-radius: 6px !important;
-                        font-weight: 600 !important;
+                        font-weight: normal !important;
                     }}
 
                     /* Number input +/- buttons inside the blue cards */
@@ -1610,6 +1610,7 @@ def render_project_data():
                         background-color: #f8fafc !important;
                         color: #0f172a !important;
                         border: none !important;
+                        font-weight: normal !important;
                         transition: all 0.2s ease !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button *,
@@ -1627,6 +1628,8 @@ def render_project_data():
                         color: #0f172a !important;
                         fill: #0f172a !important;
                         stroke: #0f172a !important;
+                        font-weight: normal !important;
+                        stroke-width: 1px !important;
                     }}
 
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover,
@@ -1636,6 +1639,7 @@ def render_project_data():
                         background-color: #e2e8f0 !important;
                         color: #000000 !important;
                         border: none !important;
+                        font-weight: normal !important;
                     }}
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) div[data-testid="stNumberInput"] button:hover *,
                     div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stNumberInput"] button:hover *,
@@ -1652,6 +1656,8 @@ def render_project_data():
                         color: #000000 !important;
                         fill: #000000 !important;
                         stroke: #000000 !important;
+                        font-weight: normal !important;
+                        stroke-width: 1px !important;
                     }}
 
                     /* Compact Reset Button inside Card 1 ONLY */
