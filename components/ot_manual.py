@@ -1552,63 +1552,106 @@ def render_project_data():
                     unsafe_allow_html=True
                 )
                 
-                c_title, c_reset = st.columns([7, 3])
-                with c_title:
-                    st.markdown(f"<div style='font-size: 15px; font-weight: 700; color: #0284c7; margin-top: 6px; display: flex; align-items: center;'><span style='margin-right: 6px;'>⚡</span> {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
-                with c_reset:
-                    if st.button(t("🔄 Làm mới rổ giờ", "🔄 リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
-                        st.session_state['manual_reset_key'] += 1
-                        st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
-                        st.rerun()
-
-                rk = st.session_state['manual_reset_key']
                 st.markdown(
                     """
-                    <span id='manual-std-card-anchor'></span>
                     <style>
-                    div.element-container:has(#manual-std-card-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div {
-                        background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%) !important;
-                        border: 1.5px solid #cbd5e1 !important;
+                    /* Card 1: Standard buckets container styling */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) {
+                        background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+                        background-color: #f0f9ff !important;
+                        border: 1.5px solid #00B0F0 !important;
                         border-top: 4px solid #00B0F0 !important;
                         border-radius: 12px !important;
-                        padding: 16px 18px 10px 18px !important;
-                        box-shadow: 0 4px 14px rgba(0, 176, 240, 0.07) !important;
+                        padding: 14px 18px 10px 18px !important;
+                        box-shadow: 0 4px 14px rgba(0, 176, 240, 0.08) !important;
+                    }
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) > div {
+                        background: transparent !important;
+                        background-color: transparent !important;
+                    }
+                    /* Compact Reset Button inside Card 1 top-right */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-std) button {
+                        min-height: 32px !important;
+                        height: 32px !important;
+                        padding: 2px 14px !important;
+                        font-size: 13px !important;
+                        border-radius: 6px !important;
+                        margin-top: 2px !important;
+                    }
+
+                    /* Card 2: Custom rows container styling */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) {
+                        background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
+                        background-color: #f0f9ff !important;
+                        border: 1.5px solid #38bdf8 !important;
+                        border-top: 4px solid #0284c7 !important;
+                        border-radius: 12px !important;
+                        padding: 14px 18px 14px 18px !important;
+                        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
+                    }
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) > div {
+                        background: transparent !important;
+                        background-color: transparent !important;
+                    }
+                    /* Compact Delete Icon Button inside Card 2 */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) div[data-testid="stColumn"]:nth-child(3) button {
+                        min-height: 36px !important;
+                        height: 36px !important;
+                        width: 38px !important;
+                        padding: 0 !important;
+                        font-size: 14px !important;
+                        border-radius: 6px !important;
+                        margin-top: 28px !important;
+                        border: 1px solid #fca5a5 !important;
+                        background-color: #fef2f2 !important;
+                        color: #ef4444 !important;
+                    }
+                    /* Compact "+ Thêm dòng hệ số tùy chỉnh" button inside Card 2 */
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("Thêm dòng")),
+                    div[data-testid="stVerticalBlockBorderWrapper"]:has(.custom-blue-card-custom) button:has(div:contains("カスタム")) {
+                        min-height: 36px !important;
+                        height: 36px !important;
+                        padding: 4px 16px !important;
+                        font-size: 13.5px !important;
+                        border-radius: 6px !important;
+                        margin-top: 4px !important;
                     }
                     </style>
                     """,
                     unsafe_allow_html=True
                 )
+
                 with st.container(border=True):
+                    st.markdown("<span class='custom-blue-card-std'></span>", unsafe_allow_html=True)
+                    c_title, c_reset = st.columns([7.5, 2.5])
+                    with c_title:
+                        st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 4px;'>⚡ {t('Các rổ hệ số chuẩn (150% - 400%)', '標準係数 (150% - 400%)')}</div>", unsafe_allow_html=True)
+                    with c_reset:
+                        if st.button(t("🔄 Làm mới rổ giờ", "🔄 リセット"), key=f"btn_reset_manual_{st.session_state['manual_reset_key']}"):
+                            st.session_state['manual_reset_key'] += 1
+                            st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
+                            st.rerun()
+                    
+                    st.markdown("<hr style='margin: 6px 0 12px 0 !important; border: 0; border-top: 1px solid rgba(0, 176, 240, 0.25) !important;'>", unsafe_allow_html=True)
+                    rk = st.session_state['manual_reset_key']
                     m_col1, m_col2, m_col3, m_col4, m_col5 = st.columns(5)
                     with m_col1: h_150 = st.number_input(t("Số giờ 150%", "150% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h150_{rk}")
                     with m_col2: h_200 = st.number_input(t("Số giờ 200%", "200% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h200_{rk}")
                     with m_col3: h_270 = st.number_input(t("Số giờ 270%", "270% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h270_{rk}")
                     with m_col4: h_300 = st.number_input(t("Số giờ 300%", "300% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h300_{rk}")
                     with m_col5: h_400 = st.number_input(t("Số giờ 400%", "400% 時間"), min_value=0.0, step=0.1, format="%.1f", key=f"h400_{rk}")
-            
-                st.markdown(f"<div style='font-size: 15px; font-weight: 700; color: #0284c7; margin-top: 16px; margin-bottom: 4px; display: flex; align-items: center;'><span style='margin-right: 6px;'>⚙️</span> {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
-                st.markdown(
-                    """
-                    <span id='manual-custom-card-anchor'></span>
-                    <style>
-                    div.element-container:has(#manual-custom-card-anchor) + div.element-container div[data-testid="stVerticalBlockBorderWrapper"] > div {
-                        background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 100%) !important;
-                        border: 1.5px solid #bae6fd !important;
-                        border-top: 4px solid #0284c7 !important;
-                        border-radius: 12px !important;
-                        padding: 18px 18px 14px 18px !important;
-                        box-shadow: 0 4px 14px rgba(2, 132, 199, 0.08) !important;
-                    }
-                    </style>
-                    """,
-                    unsafe_allow_html=True
-                )
+
+                st.markdown("<div style='margin-top: 12px;'></div>", unsafe_allow_html=True)
                 with st.container(border=True):
+                    st.markdown("<span class='custom-blue-card-custom'></span>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #1e293b; margin-top: 2px; margin-bottom: 6px;'>⚙️ {t('Các rổ Hệ số Khác (Tuỳ chỉnh - Nhiều dòng)', 'その他係数（カスタム・複数行対応）')}</div>", unsafe_allow_html=True)
+                    st.markdown("<hr style='margin: 4px 0 14px 0 !important; border: 0; border-top: 1px solid rgba(0, 176, 240, 0.25) !important;'>", unsafe_allow_html=True)
+                    
                     updated_custom_rows = []
                     rows_to_delete = []
                     for i, row in enumerate(st.session_state['manual_custom_rows']):
                         row_id = row['id']
-                        rc1, rc2, rc3 = st.columns([4.3, 4.3, 1.4])
+                        rc1, rc2, rc3 = st.columns([4.4, 4.4, 1.2])
                         with rc1:
                             val_mult = st.number_input(
                                 t(f"Hệ số tuỳ chỉnh #{i+1} (%)", f"カスタム係数 #{i+1} (%)"),
@@ -1622,7 +1665,6 @@ def render_project_data():
                                 key=f"cust_hrs_{row_id}_{rk}"
                             )
                         with rc3:
-                            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
                             if st.button("🗑️", key=f"del_cust_{row_id}_{rk}", help=t("Xóa dòng này", "この行を削除")):
                                 rows_to_delete.append(row_id)
                         
