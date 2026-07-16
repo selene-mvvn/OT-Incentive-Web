@@ -114,57 +114,57 @@ def render_project_history():
 
             # Summary Metric Cards
             st.markdown(f"""
-            <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 28px; margin-top: 12px;'>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 14px; padding: 18px 20px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
-                    <div style='display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px;'>
-                        <div style='font-size: 13px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase; margin-top: 4px;'>
+            <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 20px; margin-top: 8px;'>
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                        <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('TỔNG GIỜ OT', '残業時間合計')}
                         </div>
-                        <div style='width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(0, 168, 232, 0.35); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 22px; color: #ffffff;">schedule</span>
+                        <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'>
+                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">schedule</span>
                         </div>
                     </div>
-                    <div style='font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1;'>
-                        {total_hrs:,.1f} <span style='font-size: 16px; font-weight: 600; color: #475569;'>h</span>
+                    <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
+                        {total_hrs:,.1f} <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span>
                     </div>
                 </div>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 14px; padding: 18px 20px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
-                    <div style='display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px;'>
-                        <div style='font-size: 13px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase; margin-top: 4px;'>
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                        <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('DỰ TÍNH CHI PHÍ', '予想支出額')}
                         </div>
-                        <div style='width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(16, 185, 129, 0.35); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 22px; color: #ffffff;">payments</span>
+                        <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); flex-shrink: 0;'>
+                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">payments</span>
                         </div>
                     </div>
-                    <div style='font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1;'>
-                        {total_cost:,.0f} <span style='font-size: 16px; font-weight: 600; color: #475569;'>VNĐ</span>
+                    <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
+                        {total_cost:,.0f} <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span>
                     </div>
                 </div>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 14px; padding: 18px 20px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
-                    <div style='display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px;'>
-                        <div style='font-size: 13px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase; margin-top: 4px;'>
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                        <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('SỐ DỰ ÁN THAM GIA', '対象プロジェクト数')}
                         </div>
-                        <div style='width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(139, 92, 246, 0.35); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 22px; color: #ffffff;">folder</span>
+                        <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3); flex-shrink: 0;'>
+                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">folder</span>
                         </div>
                     </div>
-                    <div style='font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1;'>
-                        {num_projects} <span style='font-size: 16px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span>
+                    <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
+                        {num_projects} <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span>
                     </div>
                 </div>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 14px; padding: 18px 20px; box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
-                    <div style='display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px;'>
-                        <div style='font-size: 13px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase; margin-top: 4px;'>
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                        <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('SỐ NHÂN SỰ OT', '対象スタッフ数')}
                         </div>
-                        <div style='width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(245, 158, 11, 0.35); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 22px; color: #ffffff;">group</span>
+                        <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); flex-shrink: 0;'>
+                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">group</span>
                         </div>
                     </div>
-                    <div style='font-size: 26px; font-weight: 800; color: #0f172a; line-height: 1;'>
-                        {num_staff} <span style='font-size: 16px; font-weight: 600; color: #475569;'>{t('người', '名')}</span>
+                    <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
+                        {num_staff} <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('người', '名')}</span>
                     </div>
                 </div>
             </div>
