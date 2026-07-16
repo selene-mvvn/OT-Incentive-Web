@@ -321,6 +321,7 @@ def render_ot_excel():
                 """, unsafe_allow_html=True)
             
                 if st.button(t("Xử Lý Dữ Liệu Tăng Ca", "データ処理"), type="primary"):
+                    st.session_state['ot_excel_downloaded'] = False
                     if mapping_mode == t("Ghép cột thủ công", "手動マッピング"):
                         # Update map based on user selection
                         col_map = col_map_auto.copy()
@@ -641,6 +642,7 @@ def render_ot_excel():
                     save_action_log(*args)
                     from logic.history_records import add_records
                     add_records("ot", st.session_state['ot_excel_records'])
+                    st.session_state['ot_excel_downloaded'] = True
                 
                 st.download_button(
                     label=t("TẢI FILE EXCEL KẾT QUẢ", "結果ファイルダウンロード"),
@@ -659,6 +661,8 @@ def render_ot_excel():
             current_step = 2
         if st.session_state.get('ot_excel_records') and len(st.session_state['ot_excel_records']) > 0:
             current_step = 3
+        if st.session_state.get('ot_excel_downloaded'):
+            current_step = 4
         
         stepper_placeholder.markdown(f"""
             <div style="display: flex; justify-content: space-between; align-items: center; margin: 10px 0 20px 0; background: #ffffff; padding: 15px 20px; border-radius: 12px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
