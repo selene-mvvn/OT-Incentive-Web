@@ -398,7 +398,7 @@ def render_ot_excel():
                         emp_name_clean = str(emp_name).strip().lower()
                         emp_row = emp_df[emp_df['Tên NV'].astype(str).str.strip().str.lower() == emp_name_clean]
                       
-                        if emp_row.empty:
+                        if emp_row.empty and len(emp_name_clean) > 1:
                             emp_row = emp_df[emp_df['Tên NV'].astype(str).str.lower().str.contains(emp_name_clean, na=False)]
                           
                         if not emp_row.empty:
