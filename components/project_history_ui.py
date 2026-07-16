@@ -237,14 +237,15 @@ def render_project_history():
                         color_discrete_sequence=curated_colors
                     )
                     
-                    # Pull top slice slightly for modern 3D emphasis effect
-                    pull_array = [0.05 if i == 0 else 0 for i in range(len(pie_df))]
+                    # Pull top slice slightly for emphasis, and pull thin slices (<2.5%) outward so their leader lines extend longer and clearer
+                    pull_array = [0.05 if i == 0 else (0.045 if row['Percentage'] < 2.5 else 0) for i, row in pie_df.iterrows()]
                     
                     fig_pie.update_traces(
                         textposition='auto',
                         textinfo='percent',
                         pull=pull_array,
-                        domain=dict(x=[0, 0.64], y=[0.08, 1.0]),
+                        rotation=35,
+                        domain=dict(x=[0.05, 0.72], y=[0.05, 0.98]),
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=2))
                     )
@@ -255,9 +256,9 @@ def render_project_history():
                         legend=dict(
                             orientation='v',
                             yanchor='middle',
-                            y=0.54,
+                            y=0.52,
                             xanchor='left',
-                            x=0.96,
+                            x=0.98,
                             font=dict(size=11.5, color='#1e293b'),
                             bgcolor='rgba(255,255,255,0.85)',
                             bordercolor='#cbd5e1',
