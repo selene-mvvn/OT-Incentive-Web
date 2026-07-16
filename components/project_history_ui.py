@@ -425,35 +425,60 @@ def render_project_history():
             </div>
             """, unsafe_allow_html=True)
 
+            st.markdown("""
+            <style>
+            [data-testid="stMainBlockContainer"] .kpi-t2-card-1 .material-symbols-rounded,
+            [data-testid="stMainBlockContainer"] span.material-symbols-rounded.kpi-t2-icon-1 {
+                color: #0284c7 !important;
+                -webkit-text-fill-color: #0284c7 !important;
+            }
+            [data-testid="stMainBlockContainer"] .kpi-t2-card-2 .material-symbols-rounded,
+            [data-testid="stMainBlockContainer"] span.material-symbols-rounded.kpi-t2-icon-2 {
+                color: #8b5cf6 !important;
+                -webkit-text-fill-color: #8b5cf6 !important;
+            }
+            [data-testid="stMainBlockContainer"] .kpi-t2-card-3 .material-symbols-rounded,
+            [data-testid="stMainBlockContainer"] span.material-symbols-rounded.kpi-t2-icon-3 {
+                color: #10b981 !important;
+                -webkit-text-fill-color: #10b981 !important;
+            }
+            [data-testid="stMainBlockContainer"] .kpi-t2-card-4 .material-symbols-rounded,
+            [data-testid="stMainBlockContainer"] span.material-symbols-rounded.kpi-t2-icon-4 {
+                color: #f59e0b !important;
+                -webkit-text-fill-color: #f59e0b !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
             col_k1, col_k2, col_k3, col_k4 = st.columns(4)
             with col_k1:
                 st.markdown(f"""
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #0284c7 !important; -webkit-text-fill-color: #0284c7 !important;">schedule</span>{t('Tổng Số Giờ OT', '総残業時間')}</div>
+                <div class='kpi-t2-card-1' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded kpi-t2-icon-1" style="font-size: 18px; color: #0284c7 !important; -webkit-text-fill-color: #0284c7 !important;">schedule</span>{t('Tổng Số Giờ OT', '総残業時間')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_hrs:,.1f} h</div>
                     <div style='font-size: 12px; color: #475569;'>{t('TB:', '平均:')} <b>{p_hrs/p_records:,.1f} h</b>/{t('lượt', '回')}</div>
                 </div>
                 """, unsafe_allow_html=True)
             with col_k2:
                 st.markdown(f"""
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #8b5cf6; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #8b5cf6 !important; -webkit-text-fill-color: #8b5cf6 !important;">group</span>{t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
+                <div class='kpi-t2-card-2' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #8b5cf6; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded kpi-t2-icon-2" style="font-size: 18px; color: #8b5cf6 !important; -webkit-text-fill-color: #8b5cf6 !important;">group</span>{t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_staff} {t('người', '名')}</div>
                     <div style='font-size: 12px; color: #475569;'><b>{p_records}</b> {t('lượt ghi nhận OT', '件の残業記録')}</div>
                 </div>
                 """, unsafe_allow_html=True)
             with col_k3:
                 st.markdown(f"""
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #10b981 !important; -webkit-text-fill-color: #10b981 !important;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
+                <div class='kpi-t2-card-3' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded kpi-t2-icon-3" style="font-size: 18px; color: #10b981 !important; -webkit-text-fill-color: #10b981 !important;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #10b981; margin: 4px 0;'>{p_cost:,.0f} đ</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Dựa trên đơn giá OT', '残業単価に基づく')}</div>
                 </div>
                 """, unsafe_allow_html=True)
             with col_k4:
                 st.markdown(f"""
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #f59e0b !important; -webkit-text-fill-color: #f59e0b !important;">calendar_month</span>{t('Tần Suất Làm Việc', '残業頻度')}</div>
+                <div class='kpi-t2-card-4' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded kpi-t2-icon-4" style="font-size: 18px; color: #f59e0b !important; -webkit-text-fill-color: #f59e0b !important;">calendar_month</span>{t('Tần Suất Làm Việc', '残業頻度')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{df_t2['ot_date'].nunique()} {t('ngày', '日')}</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Có phát sinh OT', '残業発生日数')}</div>
                 </div>
