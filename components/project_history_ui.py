@@ -262,8 +262,8 @@ def render_project_history():
                         color_discrete_sequence=curated_colors
                     )
                     
-                    # Ép các mảnh nhỏ (< 3.5%) hiển thị text ra 'outside' để Plotly buộc phải vẽ đường chỉ dẫn (leader line)
-                    textpos_array = ['outside' if row['Percentage'] < 3.5 else 'inside' for i, row in pie_df.iterrows()]
+                    # Ép các mảnh nhỏ (< 1.5%) hiển thị text ra 'outside' để Plotly buộc phải vẽ đường chỉ dẫn (leader line)
+                    textpos_array = ['outside' if row['Percentage'] < 1.5 else 'inside' for i, row in pie_df.iterrows()]
                     
                     # Không tách (pull) các phần tử nhỏ ra khỏi biểu đồ để tránh cảm giác bị "lệch"
                     fig_pie.update_traces(
