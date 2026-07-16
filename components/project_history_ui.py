@@ -416,7 +416,7 @@ def render_project_history():
 
             # Top Banner & 4 KPI Cards
             st.markdown(f"""
-            <h3 style='margin-bottom: 20px;'>
+            <h3 style='font-size: 18px; margin-bottom: 20px;'>
                 {sel_project if sel_project != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2 if sel_period_t2 != all_period_opt else t('Toàn bộ thời gian', '全期間')})
             </h3>
             """, unsafe_allow_html=True)
@@ -566,7 +566,7 @@ def render_project_history():
             # Full-Width Detail Table Section across Bottom
             st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
             st.markdown(f"""
-            <h3 style='margin-bottom: 0px;'>
+            <h3 style='font-size: 18px; margin-bottom: 0px;'>
                 {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')} ({p_records} {t('lượt ghi nhận', '件')})
             </h3>
             <div style='color: #64748b; font-size: 13.5px; margin-top: 10px; margin-bottom: 16px;'>
