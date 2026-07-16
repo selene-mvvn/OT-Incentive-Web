@@ -150,13 +150,13 @@ def render_project_history():
         col_f1_y, col_f1_m, _ = st.columns([2, 2, 6])
         with col_f1_y:
             sel_year_t1 = st.selectbox(
-                t("📅 Chọn năm", "📅 年を選択:"),
+                t(":material/calendar_today: Chọn năm", ":material/calendar_today: 年を選択:"),
                 options=year_options,
                 key="tab1_sel_year"
             )
         with col_f1_m:
             sel_month_t1 = st.selectbox(
-                t("📅 Chọn tháng", "📅 月を選択:"),
+                t(":material/calendar_month: Chọn tháng", ":material/calendar_month: 月を選択:"),
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
                 key="tab1_sel_month"
@@ -420,13 +420,13 @@ def render_project_history():
             )
         with col_t2_y:
             sel_year_t2 = st.selectbox(
-                t("📅 Lọc theo Năm:", "📅 年を選択:"),
+                t(":material/calendar_today: Lọc theo Năm:", ":material/calendar_today: 年を選択:"),
                 options=year_options,
                 key="tab2_sel_year"
             )
         with col_t2_m:
             sel_month_t2 = st.selectbox(
-                t("📅 Lọc theo Tháng:", "📅 月を選択:"),
+                t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
                 key="tab2_sel_month"

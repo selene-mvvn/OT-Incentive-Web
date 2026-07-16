@@ -215,14 +215,14 @@ def render_mini_leaderboard(data_type="ot"):
         col_y, col_m = st.columns(2)
         with col_y:
             sel_year = st.selectbox(
-                t("Chọn năm", "年を選択"), 
+                t(":material/calendar_today: Chọn năm", ":material/calendar_today: 年を選択"), 
                 options=year_options, 
                 key=f"mini_year_{data_type}"
             )
         with col_m:
             month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
             sel_month = st.selectbox(
-                t("Chọn tháng", "月を選択"),
+                t(":material/calendar_month: Chọn tháng", ":material/calendar_month: 月を選択"),
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
                 key=f"mini_month_{data_type}"
