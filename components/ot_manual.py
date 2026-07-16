@@ -598,15 +598,19 @@ def render_base_data():
             import os
             template_path = os.path.join("data", "custom_ot_template.xlsx")
             
-            uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
-            if uploaded_template is not None:
-                if st.button(t("📤 CẬP NHẬT FILE MẪU", "📤 テンプレートを更新"), type="secondary"):
-                    if not os.path.exists("data"):
-                        os.makedirs("data")
-                    with open(template_path, "wb") as f:
-                        f.write(uploaded_template.getbuffer())
-                    st.success(t("Đã lưu file mẫu thành công!", "テンプレートを保存しました！"))
-                    st.rerun()
+            up_c1, up_c2 = st.columns([3, 1])
+            with up_c1:
+                uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
+            with up_c2:
+                if uploaded_template is not None:
+                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+                    if st.button(t("📤 CẬP NHẬT FILE MẪU", "📤 テンプレートを更新"), type="secondary", use_container_width=True):
+                        if not os.path.exists("data"):
+                            os.makedirs("data")
+                        with open(template_path, "wb") as f:
+                            f.write(uploaded_template.getbuffer())
+                        st.success(t("Đã lưu file mẫu thành công!", "テンプレートを保存しました！"))
+                        st.rerun()
                     
             if os.path.exists(template_path):
                 st.markdown("---")
