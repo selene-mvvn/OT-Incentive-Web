@@ -244,19 +244,20 @@ def render_project_history():
                         textposition='auto',
                         textinfo='percent',
                         pull=pull_array,
+                        domain=dict(x=[0, 0.64], y=[0.08, 1.0]),
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=2))
                     )
                     fig_pie.update_layout(
                         font=dict(family="'Times New Roman', serif"),
-                        margin=dict(t=15, b=15, l=10, r=180),
+                        margin=dict(t=5, b=10, l=0, r=0),
                         showlegend=True,
                         legend=dict(
                             orientation='v',
                             yanchor='middle',
-                            y=0.5,
+                            y=0.54,
                             xanchor='left',
-                            x=1.02,
+                            x=0.96,
                             font=dict(size=11.5, color='#1e293b'),
                             bgcolor='rgba(255,255,255,0.85)',
                             bordercolor='#cbd5e1',
