@@ -34,6 +34,10 @@ def render_ot_excel():
                 file_bytes = f.read()
             b64 = base64.b64encode(file_bytes).decode()
             template_filename = t("Bảng tổng hợp tăng ca (OT)_Mẫu (Tùy chỉnh).xlsx", "残業・費用集計表(OT)_カスタムテンプレート.xlsx")
+            name_path = os.path.join("data", "custom_ot_template_name.txt")
+            if os.path.exists(name_path):
+                with open(name_path, "r", encoding="utf-8") as f:
+                    template_filename = f.read().strip()
         else:
             template_buffer = export_ot_to_excel([], allow_merge=False, filename=template_filename, is_template=True)
             b64 = base64.b64encode(template_buffer.getvalue()).decode()
