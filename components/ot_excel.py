@@ -135,6 +135,10 @@ def render_ot_excel():
             </style>
         """, unsafe_allow_html=True)
         uploaded_file = st.file_uploader(t("Upload File Dữ Liệu Tăng Ca", "残業データファイルをアップロード"), type=['xlsx', 'xls'])
+        
+        if uploaded_file is None:
+            st.session_state['ot_excel_records'] = []
+            
         if uploaded_file is not None:
             try:
                 df_raw = pd.read_excel(uploaded_file, header=None)
