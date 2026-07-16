@@ -522,7 +522,9 @@ st.markdown("""
         font-size: 13px !important;
         text-transform: uppercase;
         letter-spacing: 0.3px;
-        line-height: 1.3 !important;
+        line-height: 1.25 !important;
+        white-space: normal !important;
+        word-break: break-word !important;
         transition: all 0.2s ease;
     }
     
@@ -1621,23 +1623,24 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(1):has(input:checked) p::after {
                     color: #FFFFFF !important;
                 }
-                /* Sub-items font size */
+                /* Sub-items font size and natural wrapping */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2) p,
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) p,
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) p {
-                    font-size: 12px !important;
-                    line-height: 1.3 !important;
-                    white-space: nowrap !important;
+                    font-size: 11.8px !important;
+                    line-height: 1.25 !important;
+                    white-space: normal !important;
+                    word-break: break-word !important;
                 }
                 /* Sub-menu items (2, 3, 4) */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) {
-                    margin-left: 28px !important;
-                    margin-right: 15px !important;
+                    margin-left: 24px !important;
+                    margin-right: 14px !important;
                     margin-top: 1px !important;
                     margin-bottom: 1px !important;
-                    padding: 7px 10px !important;
+                    padding: 6px 10px !important;
                     border-left: 2px solid rgba(0, 0, 0, 0.1) !important;
                     border-radius: 0 8px 8px 0;
                 }
