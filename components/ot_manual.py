@@ -529,32 +529,7 @@ def render_base_data():
                 key="employees_editor_v2"
             )
 
-            st.markdown("<br><hr>", unsafe_allow_html=True)
-            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; color: #1e293b; text-transform: uppercase;'>{t('QUẢN LÝ FILE EXCEL MẪU', 'EXCELテンプレート管理')}</h3>", unsafe_allow_html=True)
-            st.info(t("Tải lên file .xlsx mẫu của công ty bạn. File này sẽ được dùng cho chức năng Tải File Excel Mẫu ở tab Nhập hàng loạt.", "会社のExcelテンプレート(.xlsx)をアップロードしてください。一括入力タブのテンプレートとして使用されます。"))
-            
-            import os
-            template_path = os.path.join("data", "custom_ot_template.xlsx")
-            
-            uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
-            if uploaded_template is not None:
-                if st.button(t("💾 Lưu File Mẫu", "💾 テンプレートを保存"), type="primary"):
-                    if not os.path.exists("data"):
-                        os.makedirs("data")
-                    with open(template_path, "wb") as f:
-                        f.write(uploaded_template.getbuffer())
-                    st.success(t("Đã lưu file mẫu thành công!", "テンプレートを保存しました！"))
-                    st.rerun()
-                    
-            if os.path.exists(template_path):
-                st.markdown("---")
-                st.markdown(f"**{t('File mẫu hiện tại:', '現在のテンプレート:')}** custom_ot_template.xlsx")
-                if st.button(t("🗑️ Xóa file mẫu tùy chỉnh (Quay về mặc định)", "🗑️ カスタムテンプレートを削除 (デフォルトに戻す)"), type="secondary"):
-                    os.remove(template_path)
-                    st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
-                    st.rerun()
 
-            st.markdown("<br><hr>", unsafe_allow_html=True)
             ex_col1, ex_col2 = st.columns(2)
             with ex_col1:
                 with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
@@ -616,7 +591,30 @@ def render_base_data():
                             st.session_state['qa_form_key'] += 1
                             import time; time.sleep(0.5)
                             st.rerun()
-
+            st.markdown("<br><hr>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; color: #1e293b; text-transform: uppercase;'>{t('QUẢN LÝ FILE EXCEL MẪU', 'EXCELテンプレート管理')}</h3>", unsafe_allow_html=True)
+            st.info(t("Tải lên file .xlsx mẫu của công ty bạn. File này sẽ được dùng cho chức năng Tải File Excel Mẫu ở tab Nhập hàng loạt.", "会社のExcelテンプレート(.xlsx)をアップロードしてください。一括入力タブのテンプレートとして使用されます。"))
+            
+            import os
+            template_path = os.path.join("data", "custom_ot_template.xlsx")
+            
+            uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
+            if uploaded_template is not None:
+                if st.button(t("💾 Lưu File Mẫu", "💾 テンプレートを保存"), type="primary"):
+                    if not os.path.exists("data"):
+                        os.makedirs("data")
+                    with open(template_path, "wb") as f:
+                        f.write(uploaded_template.getbuffer())
+                    st.success(t("Đã lưu file mẫu thành công!", "テンプレートを保存しました！"))
+                    st.rerun()
+                    
+            if os.path.exists(template_path):
+                st.markdown("---")
+                st.markdown(f"**{t('File mẫu hiện tại:', '現在のテンプレート:')}** custom_ot_template.xlsx")
+                if st.button(t("🗑️ Xóa file mẫu tùy chỉnh (Quay về mặc định)", "🗑️ カスタムテンプレートを削除 (デフォルトに戻す)"), type="secondary"):
+                    os.remove(template_path)
+                    st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
+                    st.rerun()
 
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary"):
