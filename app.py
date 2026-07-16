@@ -526,6 +526,14 @@ st.markdown("""
         white-space: normal !important;
         word-break: break-word !important;
         transition: all 0.2s ease;
+        display: flex !important;
+        align-items: flex-start !important;
+        gap: 6px !important;
+    }
+    [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p > strong,
+    [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p > span:not([class*="material"]):not([translate="no"]):not([data-testid*="Icon"]) {
+        flex: 1 !important;
+        min-width: 0 !important;
     }
     
     /* Flamingo-style collapsible sidebar */
@@ -1584,7 +1592,9 @@ else:
             [data-testid="stSidebar"] div[role="radiogroup"] span[translate="no"] {
                 font-size: 1.3em !important;
                 vertical-align: middle !important;
-                margin-right: 8px !important;
+                margin-right: 0px !important;
+                margin-top: -1px !important;
+                flex-shrink: 0 !important;
                 color: inherit !important;
             }
         </style>
