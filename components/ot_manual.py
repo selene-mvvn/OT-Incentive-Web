@@ -343,7 +343,7 @@ def render_base_data():
                         box-shadow: 0 1px 3px rgba(0, 176, 240, 0.08);
                     ">
                         <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #0c5873;">
-                            💡 {t('Lịch thực tế kỳ chọn:', '選択期間の実労働カレンダー:')}
+                            {t('Lịch thực tế kỳ chọn:', '選択期間の実労働カレンダー:')}
                             <span style="background: #ffffff; color: #00B0F0; border: 1px solid #80d7f7; padding: 2px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 700;">
                                 📅 {adv_total_days} {t('ngày', '日')} (~{avg_months} {t('tháng', 'ヶ月')})
                             </span>
@@ -383,7 +383,7 @@ def render_base_data():
                         box-shadow: 0 1px 3px rgba(0, 176, 240, 0.08);
                     ">
                         <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 700; color: #0c5873;">
-                            💡 {t('Lịch thực tế:', '実労働カレンダー:')}
+                            {t('Lịch thực tế:', '実労働カレンダー:')}
                             <span style="background: #ffffff; color: #00B0F0; border: 1px solid #80d7f7; padding: 2px 10px; border-radius: 6px; font-size: 12.5px; font-weight: 700;">
                                 📅 {adv_total_days} {t('ngày', '日')}
                             </span>
