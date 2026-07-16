@@ -220,7 +220,7 @@ def render_project_history():
             </div>
             """, unsafe_allow_html=True)
 
-            col_pie, col_tbl = st.columns([5.5, 4.5], gap="large")
+            col_pie, col_tbl = st.columns([4.6, 5.4], gap="large")
             
             proj_summary = df_tab1.groupby('order_name').agg(
                 Hours=('ot_hours', 'sum'),
@@ -329,23 +329,50 @@ def render_project_history():
 
             with col_tbl:
                 st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
-                display_df = proj_summary.copy()
+                col_proj = t('Tên Dự Án', 'プロジェクト名')
+                col_hrs = t('Số Giờ (h)', '時間 (h)')
+                col_pct = t('Tỷ Lệ (%)', '割合 (%)')
+                col_cost = t('Chi Phí VNĐ', '予想支出額')
+                col_staff = t('Số NV', '人数')
+
                 display_df = display_df.rename(columns={
-                    'order_name': t('Tên Dự Án', 'プロジェクト名'),
-                    'Hours': t('Số Giờ (h)', '時間 (h)'),
-                    'Percentage': t('Tỷ Lệ (%)', '割合 (%)'),
-                    'Cost': t('Chi Phí VNĐ', '予想支出額'),
-                    'StaffCount': t('Số NV', '人数')
+                    'order_name': col_proj,
+                    'Hours': col_hrs,
+                    'Percentage': col_pct,
+                    'Cost': col_cost,
+                    'StaffCount': col_staff
                 })
-                display_df[t('Số Giờ (h)', '時間 (h)')] = display_df[t('Số Giờ (h)', '時間 (h)')].apply(lambda x: f"{x:,.1f}")
-                display_df[t('Tỷ Lệ (%)', '割合 (%)')] = display_df[t('Tỷ Lệ (%)', '割合 (%)')].apply(lambda x: f"{x}%")
-                display_df[t('Chi Phí VNĐ', '予想支出額')] = display_df[t('Chi Phí VNĐ', '予想支出額')].apply(lambda x: f"{x:,.0f}")
+                display_df[col_hrs] = display_df[col_hrs].apply(lambda x: f"{x:,.1f}")
+                display_df[col_pct] = display_df[col_pct].apply(lambda x: f"{x}%")
+                display_df[col_cost] = display_df[col_cost].apply(lambda x: f"{x:,.0f}")
 
                 st.dataframe(
                     display_df,
                     use_container_width=True,
                     hide_index=True,
-                    height=380
+                    height=380,
+                    column_config={
+                        col_proj: st.column_config.TextColumn(
+                            col_proj,
+                            width="large"
+                        ),
+                        col_hrs: st.column_config.TextColumn(
+                            col_hrs,
+                            width="small"
+                        ),
+                        col_cost: st.column_config.TextColumn(
+                            col_cost,
+                            width="medium"
+                        ),
+                        col_staff: st.column_config.TextColumn(
+                            col_staff,
+                            width="small"
+                        ),
+                        col_pct: st.column_config.TextColumn(
+                            col_pct,
+                            width="small"
+                        )
+                    }
                 )
 
     # ==================== TAB 2: TRA CỨU CHI TIẾT TỪNG DỰ ÁN ====================
@@ -588,6 +615,15 @@ def render_project_history():
                 detail_df,
                 use_container_width=True,
                 hide_index=True,
-                height=max(280, min(520, len(detail_df) * 38))
+                height=max(280, min(520, len(detail_df) * 38)),
+                column_config={
+                    t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width="small"),
+                    t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width="medium"),
+                    t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width="small"),
+                    t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width="small"),
+                    t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width="medium"),
+                    t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width="medium"),
+                    t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'), width="large")
+                }
             )
 
