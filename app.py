@@ -1958,8 +1958,8 @@ else:
                                 const tooltipsVN = [
                                     "OVERTIME",
                                     "DỮ LIỆU DỰ ÁN",
-                                    "LỊCH SỬ DỰ ÁN",
                                     "NHẬP HÀNG LOẠT (EXCEL)",
+                                    "LỊCH SỬ DỰ ÁN",
                                     "INCENTIVE",
                                     "LỊCH SỬ THAO TÁC",
                                     "CÀI ĐẶT CHUNG"
@@ -1967,8 +1967,8 @@ else:
                                 const tooltipsJP = [
                                     "残業代計算",
                                     "プロジェクト",
-                                    "プロジェクト分析・履歴",
                                     "一括入力",
+                                    "プロジェクト分析・履歴",
                                     "インセンティブ",
                                     "操作履歴",
                                     "一般設定"
