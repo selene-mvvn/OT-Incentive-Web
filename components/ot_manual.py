@@ -185,7 +185,7 @@ def render_base_data():
         import streamlit.components.v1 as components
         components.html(js_count_up, height=0)
         
-    tab1, tab2, tab3 = st.tabs([t("1. THÔNG TIN CHUNG", "1. 一般情報"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日"), t("3. FILE MẪU EXCEL", "3. Excelテンプレート")])
+    tab1, tab2 = st.tabs([t("1. THÔNG TIN CHUNG", "1. 一般情報"), t("2. NGÀY NGHỈ & LỄ", "2. 休日・祭日")])
     
     components.html("""
     <script>
@@ -762,6 +762,31 @@ def render_base_data():
                         <div class='hc-val' style='color: #10b981;'>{cumulative_hours:,.1f} <span style='font-size: 13px; font-weight: 500;'>h</span></div>
                     </div>
                     ''', unsafe_allow_html=True)
+                    
+        st.markdown("<br><hr>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; color: #1e293b; text-transform: uppercase;'>{t('QUẢN LÝ FILE EXCEL MẪU', 'EXCELテンプレート管理')}</h3>", unsafe_allow_html=True)
+        st.info(t("Tải lên file .xlsx mẫu của công ty bạn. File này sẽ được dùng cho chức năng Tải File Excel Mẫu ở tab Nhập hàng loạt.", "会社のExcelテンプレート(.xlsx)をアップロードしてください。一括入力タブのテンプレートとして使用されます。"))
+        
+        import os
+        template_path = os.path.join("data", "custom_ot_template.xlsx")
+        
+        uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
+        if uploaded_template is not None:
+            if st.button(t("💾 Lưu File Mẫu", "💾 テンプレートを保存"), type="primary"):
+                if not os.path.exists("data"):
+                    os.makedirs("data")
+                with open(template_path, "wb") as f:
+                    f.write(uploaded_template.getbuffer())
+                st.success(t("Đã lưu file mẫu thành công!", "テンプレートを保存しました！"))
+                st.rerun()
+                
+        if os.path.exists(template_path):
+            st.markdown("---")
+            st.markdown(f"**{t('File mẫu hiện tại:', '現在のテンプレート:')}** custom_ot_template.xlsx")
+            if st.button(t("🗑️ Xóa file mẫu tùy chỉnh (Quay về mặc định)", "🗑️ カスタムテンプレートを削除 (デフォルトに戻す)"), type="secondary"):
+                os.remove(template_path)
+                st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
+                st.rerun()
 
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
@@ -1149,32 +1174,6 @@ def render_base_data():
             </script>
             """
             components.html(html_code, height=650)
-            
-    with tab3:
-        st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; color: #1e293b;'>{t('Quản lý File Excel Mẫu', 'Excelテンプレート管理')}</h3>", unsafe_allow_html=True)
-        st.info(t("Tải lên file .xlsx mẫu của công ty bạn. File này sẽ được dùng cho chức năng Tải File Excel Mẫu ở tab Nhập hàng loạt.", "会社のExcelテンプレート(.xlsx)をアップロードしてください。一括入力タブのテンプレートとして使用されます。"))
-        
-        import os
-        template_path = os.path.join("data", "custom_ot_template.xlsx")
-        
-        uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
-        if uploaded_template is not None:
-            if st.button(t("💾 Lưu File Mẫu", "💾 テンプレートを保存"), type="primary"):
-                if not os.path.exists("data"):
-                    os.makedirs("data")
-                with open(template_path, "wb") as f:
-                    f.write(uploaded_template.getbuffer())
-                st.success(t("Đã lưu file mẫu thành công!", "テンプレートを保存しました！"))
-                st.rerun()
-                
-        if os.path.exists(template_path):
-            st.markdown("---")
-            st.markdown(f"**{t('File mẫu hiện tại:', '現在のテンプレート:')}** custom_ot_template.xlsx")
-            if st.button(t("🗑️ Xóa file mẫu tùy chỉnh (Quay về mặc định)", "🗑️ カスタムテンプレートを削除 (デフォルトに戻す)"), type="secondary"):
-                os.remove(template_path)
-                st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
-                st.rerun()
-
 def render_project_data():
     col_main, col_rank = st.columns([7.5, 2.5], gap="large")
     with col_rank:
