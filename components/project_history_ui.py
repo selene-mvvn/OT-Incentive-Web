@@ -416,14 +416,9 @@ def render_project_history():
 
             # Top Banner & 4 KPI Cards
             st.markdown(f"""
-            <div style='background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #cbd5e1; border-left: 5px solid #00a8e8; border-radius: 10px; padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03);'>
-                <div>
-                    <span style='font-size: 16px; font-weight: 700; color: #0f172a;'>
-                        <span class="material-symbols-rounded" style="vertical-align: middle; color: #00a8e8 !important; -webkit-text-fill-color: #00a8e8 !important; margin-right: 6px;">manage_search</span>
-                        {sel_project if sel_project != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2 if sel_period_t2 != all_period_opt else t('Toàn bộ thời gian', '全期間')})
-                    </span>
-                </div>
-            </div>
+            <h3 style='margin-bottom: 20px;'>
+                {sel_project if sel_project != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2 if sel_period_t2 != all_period_opt else t('Toàn bộ thời gian', '全期間')})
+            </h3>
             """, unsafe_allow_html=True)
 
             st.markdown("""
@@ -571,14 +566,11 @@ def render_project_history():
             # Full-Width Detail Table Section across Bottom
             st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
             st.markdown(f"""
-            <div style='background: #ffffff; border: 1px solid #cbd5e1; border-left: 4px solid #3b82f6; border-radius: 8px; padding: 12px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);'>
-                <div style='font-size: 15.5px; font-weight: 700; color: #0f172a;'>
-                    <span class="material-symbols-rounded" style="vertical-align: middle; color: #3b82f6; margin-right: 6px;">table_chart</span>
-                    {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')} ({p_records} {t('lượt ghi nhận', '件')})
-                </div>
-                <div style='font-size: 13px; color: #64748b; font-weight: 500;'>
-                    {t('📋 Bảng chi tiết toàn bộ nhân sự, thời gian, chi phí và lý do', '📋 スタッフ・時間・理由の全明細ログ')}
-                </div>
+            <h3 style='margin-bottom: 0px;'>
+                {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')} ({p_records} {t('lượt ghi nhận', '件')})
+            </h3>
+            <div style='color: #64748b; font-size: 13.5px; margin-top: 10px; margin-bottom: 16px;'>
+                {t('Bảng chi tiết toàn bộ nhân sự, thời gian, chi phí và lý do.', 'スタッフ・時間・理由の全明細ログ。')}
             </div>
             """, unsafe_allow_html=True)
 
