@@ -598,8 +598,8 @@ def render_base_data():
             import os
             template_path = os.path.join("data", "custom_ot_template.xlsx")
             
-            uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
-                    
+            help_text = t("💡 Mẹo: Bấm nút `+` để tải lên file thay thế, hoặc `x` để xóa file đang chọn.", "💡 ヒント: 現在のファイルを削除するには「x」を、別のファイルに置き換えるには「+」をクリックします。")
+            uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'], help=help_text)
             if os.path.exists(template_path):
                 st.markdown("---")
                 st.markdown(f"**{t('File mẫu hiện tại:', '現在のテンプレート:')}** custom_ot_template.xlsx")
