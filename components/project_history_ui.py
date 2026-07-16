@@ -444,9 +444,9 @@ def render_project_history():
                 """, unsafe_allow_html=True)
             with col_k3:
                 st.markdown(f"""
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #7c3aed; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #7c3aed !important; -webkit-text-fill-color: #7c3aed !important;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
-                    <div style='font-size: 20px; font-weight: 800; color: #7c3aed; margin: 4px 0;'>{p_cost:,.0f} đ</div>
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #10b981 !important; -webkit-text-fill-color: #10b981 !important;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
+                    <div style='font-size: 20px; font-weight: 800; color: #10b981; margin: 4px 0;'>{p_cost:,.0f} đ</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Dựa trên đơn giá OT', '残業単価に基づく')}</div>
                 </div>
                 """, unsafe_allow_html=True)
