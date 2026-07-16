@@ -159,7 +159,8 @@ def render_project_history():
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
-                key="tab1_sel_month"
+                key="tab1_sel_month",
+                help=t("Mẹo: Nếu 'Lọc theo Năm' là 'Tất cả', hệ thống sẽ tổng hợp dữ liệu của tháng này trên tất cả các năm (hữu ích để phân tích tính mùa vụ).", "ヒント: 「年を選択」を「すべて」にすると、全年の該当月のデータが合算されます（季節性の分析に便利です）。")
             )
 
         df_tab1 = df.copy()
@@ -429,7 +430,8 @@ def render_project_history():
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
-                key="tab2_sel_month"
+                key="tab2_sel_month",
+                help=t("Mẹo: Nếu 'Lọc theo Năm' là 'Tất cả', hệ thống sẽ tổng hợp dữ liệu của tháng này trên tất cả các năm (hữu ích để phân tích tính mùa vụ).", "ヒント: 「年を選択」を「すべて」にすると、全年の該当月のデータが合算されます（季節性の分析に便利です）。")
             )
 
         df_t2 = df.copy()

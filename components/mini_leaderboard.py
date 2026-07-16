@@ -225,7 +225,8 @@ def render_mini_leaderboard(data_type="ot"):
                 t(":material/calendar_month: Chọn tháng", ":material/calendar_month: 月を選択"),
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
-                key=f"mini_month_{data_type}"
+                key=f"mini_month_{data_type}",
+                help=t("Mẹo: Nếu 'Chọn năm' là 'Tất cả', hệ thống sẽ tổng hợp dữ liệu của tháng này trên tất cả các năm (hữu ích để phân tích tính mùa vụ).", "ヒント: 「年を選択」を「すべて」にすると、全年の該当月のデータが合算されます（季節性の分析に便利です）。")
             )
             
         # Spacing
