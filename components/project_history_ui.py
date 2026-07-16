@@ -284,6 +284,8 @@ def render_project_history():
                         ),
                         text=bar_df.apply(lambda r: f"{r['Hours']:,.1f} h ({r['Percentage']}%)", axis=1),
                         textposition='auto',
+                        textangle=0,
+                        constraintext='none',
                         insidetextanchor='end',
                         insidetextfont=dict(size=12, color=text_colors_t1, weight='bold'),
                         outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
@@ -397,6 +399,8 @@ def render_project_history():
                     ),
                     text=staff_contrib['Hours'].apply(lambda x: f"{x:,.1f} h"),
                     textposition='auto',
+                    textangle=0,
+                    constraintext='none',
                     insidetextanchor='end',
                     insidetextfont=dict(size=12, color=text_colors_t2, weight='bold'),
                     outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
