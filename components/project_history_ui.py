@@ -278,12 +278,13 @@ def render_project_history():
                         orientation='h',
                         marker=dict(
                             color=bar_df['Hours'],
-                            colorscale=[[0, '#bae6fd'], [1, '#0284c7']],
+                            colorscale=[[0, '#7dd3fc'], [1, '#0284c7']],
                         ),
                         text=bar_df.apply(lambda r: f"{r['Hours']:,.1f} h ({r['Percentage']}%)", axis=1),
                         textposition='auto',
                         insidetextanchor='end',
-                        textfont=dict(size=12, color='#0f172a')
+                        insidetextfont=dict(size=12, color='#ffffff', weight='bold'),
+                        outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
                     ))
                     fig_pbar.update_layout(
                         font=dict(family="'Times New Roman', serif"),
@@ -388,12 +389,13 @@ def render_project_history():
                     orientation='h',
                     marker=dict(
                         color=staff_contrib['Hours'],
-                        colorscale=[[0, '#e0f2fe'], [1, '#0284c7']],
+                        colorscale=[[0, '#7dd3fc'], [1, '#0284c7']],
                     ),
                     text=staff_contrib['Hours'].apply(lambda x: f"{x:,.1f} h"),
                     textposition='auto',
                     insidetextanchor='end',
-                    textfont=dict(size=12, color='#0f172a')
+                    insidetextfont=dict(size=12, color='#ffffff', weight='bold'),
+                    outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
                 ))
                 fig_bar.update_layout(
                     font=dict(family="'Times New Roman', serif"),
