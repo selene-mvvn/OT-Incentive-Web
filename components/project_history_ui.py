@@ -219,19 +219,15 @@ def render_project_history():
                     )
 
                 if chart_mode == t("🥧 Tròn (Donut)", "🥧 ドーナツ"):
-                    # Group small projects beyond top 6 for ultra-clean pie slices
+                    # Display all projects directly without grouping so data is honest and complete
                     pie_df = proj_summary.copy()
-                    if len(pie_df) > 7:
-                        top_df = pie_df.iloc[:6].copy()
-                        other_df = pie_df.iloc[6:].copy()
-                        other_hrs = other_df['Hours'].sum()
-                        other_cost = other_df['Cost'].sum()
-                        other_staff = other_df['StaffCount'].max()
-                        top_df.loc[len(top_df)] = [t('Các dự án khác (<3%)', 'その他 (<3%)'), other_hrs, other_cost, other_staff, round(other_hrs / total_hrs * 100, 1)]
-                        pie_df = top_df
                     
-                    # Rich saturated curated color palette
-                    curated_colors = ['#0088fe', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#94a3b8']
+                    # Rich saturated curated color palette with enough colors for all projects
+                    curated_colors = [
+                        '#0088fe', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
+                        '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
+                        '#84cc16', '#d946ef', '#64748b', '#0d9488'
+                    ]
                     
                     fig_pie = px.pie(
                         pie_df,
@@ -245,7 +241,7 @@ def render_project_history():
                     pull_array = [0.05 if i == 0 else 0 for i in range(len(pie_df))]
                     
                     fig_pie.update_traces(
-                        textposition='inside',
+                        textposition='auto',
                         textinfo='percent',
                         pull=pull_array,
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<extra></extra>',
@@ -253,7 +249,7 @@ def render_project_history():
                     )
                     fig_pie.update_layout(
                         font=dict(family="'Times New Roman', serif"),
-                        margin=dict(t=15, b=15, l=10, r=160),
+                        margin=dict(t=15, b=15, l=10, r=180),
                         showlegend=True,
                         legend=dict(
                             orientation='v',
@@ -261,12 +257,12 @@ def render_project_history():
                             y=0.5,
                             xanchor='left',
                             x=1.02,
-                            font=dict(size=12, color='#1e293b'),
+                            font=dict(size=11.5, color='#1e293b'),
                             bgcolor='rgba(255,255,255,0.85)',
                             bordercolor='#cbd5e1',
                             borderwidth=1
                         ),
-                        height=380,
+                        height=400,
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)'
                     )
