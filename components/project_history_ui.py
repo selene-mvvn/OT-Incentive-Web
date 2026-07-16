@@ -83,12 +83,37 @@ def render_project_history():
     df = pd.DataFrame(all_records)
     
     # Ensure necessary columns exist
-    for col in ['order_name', 'ot_hours', 'employee_name', 'ot_date']:
+    for col in ['order_name', 'order_id', 'client_order_id', 'ot_hours', 'employee_name', 'ot_date']:
         if col not in df.columns:
             df[col] = ''
 
+    def get_full_project_name(row):
+        name = str(row.get('order_name', '')).strip()
+        if not name or name.lower() in ['nan', 'none', '']:
+            return t('Khác / Không tên', 'その他')
+        if name.startswith('[') and '] ' in name:
+            return name
+        code = str(row.get('order_id', '')).strip()
+        if not code or code.lower() in ['nan', 'none', '']:
+            code = str(row.get('client_order_id', '')).strip()
+        if not code or code.lower() in ['nan', 'none', '']:
+            try:
+                base = st.session_state.get('base', {})
+                p_df = base.get('projects_df', pd.DataFrame()) if isinstance(base, dict) else pd.DataFrame()
+                if not p_df.empty and 'Tên dự án' in p_df.columns and 'Mã đơn hàng' in p_df.columns:
+                    matches = p_df[p_df['Tên dự án'].astype(str).str.strip() == name]
+                    if len(matches) == 1:
+                        c_val = str(matches.iloc[0]['Mã đơn hàng']).strip()
+                        if c_val and c_val.lower() not in ['nan', 'none', '']:
+                            code = c_val
+            except:
+                pass
+        if code and code.lower() not in ['nan', 'none', '']:
+            return f"[{code}] {name}"
+        return name
+
     df['ot_hours'] = pd.to_numeric(df['ot_hours'], errors='coerce').fillna(0.0)
-    df['order_name'] = df['order_name'].astype(str).str.strip().replace({'': t('Khác / Không tên', 'その他')})
+    df['order_name'] = df.apply(get_full_project_name, axis=1)
     df['employee_name'] = df['employee_name'].astype(str).str.strip().replace({'': t('Chưa rõ', '未定')})
     df['clean_period'] = df.apply(get_clean_period, axis=1)
     df['est_cost'] = df.apply(get_record_cost, axis=1)
