@@ -53,9 +53,9 @@ def render_project_history():
         margin: 0 !important;
         padding: 0 !important;
     }
-    /* Pull dataframe upward closer to the subheader */
+    /* Pull dataframe upward closer to the subheader without being too tight */
     [data-testid="stDataFrame"] {
-        margin-top: -20px !important;
+        margin-top: -10px !important;
     }
     [data-testid="stDataFrame"] > div {
         margin-top: 0px !important;
@@ -231,7 +231,7 @@ def render_project_history():
                 st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
 
             with col_tbl:
-                st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 0px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
                 display_df = proj_summary.copy()
                 display_df = display_df.rename(columns={
                     'order_name': t('Tên Dự Án', 'プロジェクト名'),
@@ -341,7 +341,7 @@ def render_project_history():
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
 
             with col_t2_list:
-                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 0px;'>📝 {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📝 {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')}</div>", unsafe_allow_html=True)
                 detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']].copy()
                 detail_df = detail_df.sort_values(by=['clean_period', 'ot_date'], ascending=[False, False]).reset_index(drop=True)
                 
