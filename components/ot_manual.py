@@ -600,7 +600,7 @@ def render_base_data():
             
             uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
             if uploaded_template is not None:
-                if st.button(t("💾 Lưu File Mẫu", "💾 テンプレートを保存"), type="primary"):
+                if st.button(t("📤 CẬP NHẬT FILE MẪU", "📤 テンプレートを更新"), type="secondary"):
                     if not os.path.exists("data"):
                         os.makedirs("data")
                     with open(template_path, "wb") as f:
