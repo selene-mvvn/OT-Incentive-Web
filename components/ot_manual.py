@@ -591,7 +591,7 @@ def render_base_data():
                             st.session_state['qa_form_key'] += 1
                             import time; time.sleep(0.5)
                             st.rerun()
-            st.markdown("<br><hr>", unsafe_allow_html=True)
+            st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
             st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; color: #1e293b; text-transform: uppercase;'>{t('QUẢN LÝ FILE EXCEL MẪU', 'EXCELテンプレート管理')}</h3>", unsafe_allow_html=True)
             st.info(t("Tải lên file .xlsx mẫu của công ty bạn. File này sẽ được dùng cho chức năng Tải File Excel Mẫu ở tab Nhập hàng loạt.", "会社のExcelテンプレート(.xlsx)をアップロードしてください。一括入力タブのテンプレートとして使用されます。"))
             
