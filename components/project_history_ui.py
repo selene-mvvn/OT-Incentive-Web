@@ -272,7 +272,8 @@ def render_project_history():
                 else:
                     # Horizontal bar chart sorted clearly by hours
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
-                    text_colors_t1 = ['#ffffff' if i >= len(bar_df) - 3 else '#0f172a' for i in range(len(bar_df))]
+                    max_hrs_t1 = bar_df['Hours'].max() if not bar_df.empty else 0
+                    text_colors_t1 = ['#ffffff' if (i >= len(bar_df) - 3 and max_hrs_t1 > 0 and bar_df.iloc[i]['Hours'] >= 0.55 * max_hrs_t1) else '#0f172a' for i in range(len(bar_df))]
                     fig_pbar = go.Figure(go.Bar(
                         x=bar_df['Hours'],
                         y=bar_df['order_name'],
@@ -384,7 +385,8 @@ def render_project_history():
 
             with col_t2_bar:
                 st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>👥 {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
-                text_colors_t2 = ['#ffffff' if i >= len(staff_contrib) - 3 else '#0f172a' for i in range(len(staff_contrib))]
+                max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
+                text_colors_t2 = ['#ffffff' if (i >= len(staff_contrib) - 3 and max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.55 * max_hrs_t2) else '#0f172a' for i in range(len(staff_contrib))]
                 fig_bar = go.Figure(go.Bar(
                     x=staff_contrib['Hours'],
                     y=staff_contrib['employee_name'],
