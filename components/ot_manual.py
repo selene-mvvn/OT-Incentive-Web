@@ -610,12 +610,14 @@ def render_base_data():
 
             uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'], help=help_text)
             if os.path.exists(template_path):
-                st.markdown("---")
-                st.markdown(f"**{t('File mẫu hiện tại:', '現在のテンプレート:')}** custom_ot_template.xlsx")
-                if st.button(t("🗑️ Xóa file mẫu tùy chỉnh (Quay về mặc định)", "🗑️ カスタムテンプレートを削除 (デフォルトに戻す)"), type="secondary"):
-                    os.remove(template_path)
-                    st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
-                    st.rerun()
+                c1, c2 = st.columns([3, 2])
+                with c1:
+                    st.markdown(f"<div style='margin-top: 6px;'><b>{t('File mẫu hiện tại:', '現在のテンプレート:')}</b> custom_ot_template.xlsx</div>", unsafe_allow_html=True)
+                with c2:
+                    if st.button(t("XÓA FILE (QUAY VỀ MẶC ĐỊNH)", "削除 (デフォルトに戻す)"), icon=":material/delete:", type="secondary", use_container_width=True):
+                        os.remove(template_path)
+                        st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
+                        st.rerun()
 
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary"):
