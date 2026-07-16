@@ -436,8 +436,8 @@ def render_project_history():
                 """, unsafe_allow_html=True)
             with col_k2:
                 st.markdown(f"""
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0d9488; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #0d9488 !important; -webkit-text-fill-color: #0d9488 !important;">group</span>{t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #8b5cf6; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #8b5cf6 !important; -webkit-text-fill-color: #8b5cf6 !important;">group</span>{t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_staff} {t('người', '名')}</div>
                     <div style='font-size: 12px; color: #475569;'><b>{p_records}</b> {t('lượt ghi nhận OT', '件の残業記録')}</div>
                 </div>
