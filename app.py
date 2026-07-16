@@ -1611,7 +1611,7 @@ else:
             t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"),
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
             t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
-            t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
+            t(":material/analytics: **LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
             t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
@@ -1626,7 +1626,7 @@ else:
             header_text,
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
             t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
-            t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
+            t(":material/analytics: **LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
             t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
@@ -1719,7 +1719,7 @@ else:
                 ":material/timer: **OVERTIME**",
                 ":material/folder: **DỮ LIỆU DỰ ÁN**",
                 ":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**",
-                ":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**",
+                ":material/analytics: **LỊCH SỬ DỰ ÁN**",
                 ":material/payments: **INCENTIVE**",
                 ":material/history: **LỊCH SỬ THAO TÁC**",
                 ":material/settings: **CÀI ĐẶT CHUNG**"
@@ -1958,7 +1958,7 @@ else:
                                 const tooltipsVN = [
                                     "OVERTIME",
                                     "DỮ LIỆU DỰ ÁN",
-                                    "PHÂN BỔ & LỊCH SỬ DỰ ÁN",
+                                    "LỊCH SỬ DỰ ÁN",
                                     "NHẬP HÀNG LOẠT (EXCEL)",
                                     "INCENTIVE",
                                     "LỊCH SỬ THAO TÁC",
@@ -2178,7 +2178,7 @@ else:
         import components.ot_manual
         importlib.reload(components.ot_manual)
         components.ot_manual.render_project_data()
-    elif menu_selection == t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"):
+    elif menu_selection == t(":material/analytics: **LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"):
         import importlib
         import components.project_history_ui
         importlib.reload(components.project_history_ui)
