@@ -272,6 +272,7 @@ def render_project_history():
                 else:
                     # Horizontal bar chart sorted clearly by hours
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
+                    text_colors_t1 = ['#ffffff' if i >= len(bar_df) - 3 else '#0f172a' for i in range(len(bar_df))]
                     fig_pbar = go.Figure(go.Bar(
                         x=bar_df['Hours'],
                         y=bar_df['order_name'],
@@ -283,7 +284,7 @@ def render_project_history():
                         text=bar_df.apply(lambda r: f"{r['Hours']:,.1f} h ({r['Percentage']}%)", axis=1),
                         textposition='auto',
                         insidetextanchor='end',
-                        insidetextfont=dict(size=12, color='#ffffff', weight='bold'),
+                        insidetextfont=dict(size=12, color=text_colors_t1, weight='bold'),
                         outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
                     ))
                     fig_pbar.update_layout(
@@ -383,6 +384,7 @@ def render_project_history():
 
             with col_t2_bar:
                 st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>👥 {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
+                text_colors_t2 = ['#ffffff' if i >= len(staff_contrib) - 3 else '#0f172a' for i in range(len(staff_contrib))]
                 fig_bar = go.Figure(go.Bar(
                     x=staff_contrib['Hours'],
                     y=staff_contrib['employee_name'],
@@ -394,7 +396,7 @@ def render_project_history():
                     text=staff_contrib['Hours'].apply(lambda x: f"{x:,.1f} h"),
                     textposition='auto',
                     insidetextanchor='end',
-                    insidetextfont=dict(size=12, color='#ffffff', weight='bold'),
+                    insidetextfont=dict(size=12, color=text_colors_t2, weight='bold'),
                     outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
                 ))
                 fig_bar.update_layout(
