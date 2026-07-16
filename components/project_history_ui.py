@@ -418,7 +418,7 @@ def render_project_history():
             <div style='background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #cbd5e1; border-left: 5px solid #00a8e8; border-radius: 10px; padding: 14px 20px; margin-bottom: 16px; display: flex; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.03);'>
                 <div>
                     <span style='font-size: 16px; font-weight: 700; color: #0f172a;'>
-                        <span class="material-symbols-rounded" style="vertical-align: middle; color: #00a8e8; margin-right: 6px;">manage_search</span>
+                        <span class="material-symbols-rounded" style="vertical-align: middle; color: #00a8e8 !important; -webkit-text-fill-color: #00a8e8 !important; margin-right: 6px;">manage_search</span>
                         {sel_project if sel_project != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2 if sel_period_t2 != all_period_opt else t('Toàn bộ thời gian', '全期間')})
                     </span>
                 </div>
@@ -429,7 +429,7 @@ def render_project_history():
             with col_k1:
                 st.markdown(f"""
                 <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #0284c7;">schedule</span>{t('Tổng Số Giờ OT', '総残業時間')}</div>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #0284c7 !important; -webkit-text-fill-color: #0284c7 !important;">schedule</span>{t('Tổng Số Giờ OT', '総残業時間')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_hrs:,.1f} h</div>
                     <div style='font-size: 12px; color: #475569;'>{t('TB:', '平均:')} <b>{p_hrs/p_records:,.1f} h</b>/{t('lượt', '回')}</div>
                 </div>
@@ -437,7 +437,7 @@ def render_project_history():
             with col_k2:
                 st.markdown(f"""
                 <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0d9488; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #0d9488;">group</span>{t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #0d9488 !important; -webkit-text-fill-color: #0d9488 !important;">group</span>{t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_staff} {t('người', '名')}</div>
                     <div style='font-size: 12px; color: #475569;'><b>{p_records}</b> {t('lượt ghi nhận OT', '件の残業記録')}</div>
                 </div>
@@ -445,7 +445,7 @@ def render_project_history():
             with col_k3:
                 st.markdown(f"""
                 <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #7c3aed; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #7c3aed;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #7c3aed !important; -webkit-text-fill-color: #7c3aed !important;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #7c3aed; margin: 4px 0;'>{p_cost:,.0f} đ</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Dựa trên đơn giá OT', '残業単価に基づく')}</div>
                 </div>
@@ -453,7 +453,7 @@ def render_project_history():
             with col_k4:
                 st.markdown(f"""
                 <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
-                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #f59e0b;">calendar_month</span>{t('Tần Suất Làm Việc', '残業頻度')}</div>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #f59e0b !important; -webkit-text-fill-color: #f59e0b !important;">calendar_month</span>{t('Tần Suất Làm Việc', '残業頻度')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{df_t2['ot_date'].nunique()} {t('ngày', '日')}</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Có phát sinh OT', '残業発生日数')}</div>
                 </div>

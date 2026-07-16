@@ -389,7 +389,7 @@ st.markdown("""
     }
     
     /* Material Icons in Main Body */
-    [data-testid="stMainBlockContainer"] .material-symbols-rounded:not(.summary-white-icon),
+    [data-testid="stMainBlockContainer"] .material-symbols-rounded:not(.summary-white-icon):not([style*="color"]),
     [data-testid="stMainBlockContainer"] label[data-testid="stWidgetLabel"] .st-icon,
     [data-testid="stMainBlockContainer"] label[data-testid="stWidgetLabel"] span[translate="no"],
     [data-testid="stMainBlockContainer"] label[data-testid="stWidgetLabel"] i {
