@@ -220,7 +220,7 @@ def render_project_history():
             </div>
             """, unsafe_allow_html=True)
 
-            col_pie, col_tbl = st.columns([4.3, 5.7], gap="large")
+            col_pie, col_tbl = st.columns([5.5, 4.5], gap="large")
             
             proj_summary = df_tab1.groupby('order_name').agg(
                 Hours=('ot_hours', 'sum'),
@@ -354,24 +354,23 @@ def render_project_history():
                     height=380,
                     column_config={
                         col_proj: st.column_config.TextColumn(
-                            col_proj,
-                            width="medium"
+                            col_proj
                         ),
                         col_hrs: st.column_config.TextColumn(
                             col_hrs,
-                            width="small"
+                            width=75
                         ),
                         col_cost: st.column_config.TextColumn(
                             col_cost,
-                            width="small"
+                            width=95
                         ),
                         col_staff: st.column_config.TextColumn(
                             col_staff,
-                            width="small"
+                            width=55
                         ),
                         col_pct: st.column_config.TextColumn(
                             col_pct,
-                            width="small"
+                            width=65
                         )
                     }
                 )
@@ -618,13 +617,13 @@ def render_project_history():
                 hide_index=True,
                 height=max(280, min(520, len(detail_df) * 38)),
                 column_config={
-                    t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width="small"),
-                    t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width="medium"),
-                    t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width="small"),
-                    t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width="small"),
-                    t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width="small"),
-                    t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width="medium"),
-                    t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'), width="large")
+                    t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width=75),
+                    t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width=140),
+                    t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width=85),
+                    t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width=65),
+                    t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width=95),
+                    t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width=130),
+                    t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'))
                 }
             )
 
