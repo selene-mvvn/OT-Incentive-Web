@@ -258,7 +258,7 @@ def render_project_history():
                             yanchor='middle',
                             y=0.52,
                             xanchor='left',
-                            x=0.98,
+                            x=0.84,
                             font=dict(size=11.5, color='#1e293b'),
                             bgcolor='rgba(255,255,255,0.85)',
                             bordercolor='#cbd5e1',
