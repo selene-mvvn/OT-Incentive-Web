@@ -25,9 +25,19 @@ def render_ot_excel():
         import base64
         
         desc_text = t("Tải lên file Excel từ hệ thống của bạn. File cần có ít nhất các cột mang tên: <b>Ngày</b>, <b>Tên nhân viên</b>, <b>OT</b>, <b>Lý do tăng ca</b>.", "システムからExcelファイルをアップロードしてください。必要な列：<b>日付</b>、<b>社員名</b>、<b>OT</b>、<b>残業理由</b>")
+        import os
         template_filename = t("Bảng tổng hợp tăng ca (OT)_Mẫu.xlsx", "残業・費用集計表(OT)_テンプレート.xlsx")
-        template_buffer = export_ot_to_excel([], allow_merge=False, filename=template_filename, is_template=True)
-        b64 = base64.b64encode(template_buffer.getvalue()).decode()
+        custom_template_path = os.path.join("data", "custom_ot_template.xlsx")
+        
+        if os.path.exists(custom_template_path):
+            with open(custom_template_path, "rb") as f:
+                file_bytes = f.read()
+            b64 = base64.b64encode(file_bytes).decode()
+            template_filename = t("Bảng tổng hợp tăng ca (OT)_Mẫu (Tùy chỉnh).xlsx", "残業・費用集計表(OT)_カスタムテンプレート.xlsx")
+        else:
+            template_buffer = export_ot_to_excel([], allow_merge=False, filename=template_filename, is_template=True)
+            b64 = base64.b64encode(template_buffer.getvalue()).decode()
+            
         href = f"data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,{b64}"
         
         st.markdown(f"""
