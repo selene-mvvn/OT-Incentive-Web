@@ -160,7 +160,7 @@ def render_project_history():
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
                 key="tab1_sel_month",
-                help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm để tiện phân tích tính mùa vụ.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します（季節性の分析に便利です）。")
+                help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.\n\n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。\n\n👉 *季節性の分析に便利です*。")
             )
 
         df_tab1 = df.copy()
@@ -431,7 +431,7 @@ def render_project_history():
                 options=month_options,
                 format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
                 key="tab2_sel_month",
-                help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm để tiện phân tích tính mùa vụ.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します（季節性の分析に便利です）。")
+                help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.\n\n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。\n\n👉 *季節性の分析に便利です*。")
             )
 
         df_t2 = df.copy()
