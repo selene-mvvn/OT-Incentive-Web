@@ -274,6 +274,7 @@ def render_project_history():
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
                     max_hrs_t1 = bar_df['Hours'].max() if not bar_df.empty else 0
                     text_colors_t1 = ['#ffffff' if (i >= len(bar_df) - 3 and max_hrs_t1 > 0 and bar_df.iloc[i]['Hours'] >= 0.55 * max_hrs_t1) else '#0f172a' for i in range(len(bar_df))]
+                    pos_list_t1 = ['inside' if (max_hrs_t1 > 0 and bar_df.iloc[i]['Hours'] >= 0.35 * max_hrs_t1) else 'outside' for i in range(len(bar_df))]
                     fig_pbar = go.Figure(go.Bar(
                         x=bar_df['Hours'],
                         y=bar_df['order_name'],
@@ -283,16 +284,16 @@ def render_project_history():
                             colorscale=[[0, '#7dd3fc'], [1, '#0284c7']],
                         ),
                         text=bar_df.apply(lambda r: f"{r['Hours']:,.1f} h ({r['Percentage']}%)", axis=1),
-                        textposition='auto',
+                        textposition=pos_list_t1,
                         textangle=0,
-                        constraintext='none',
+                        cliponaxis=False,
                         insidetextanchor='end',
                         insidetextfont=dict(size=12, color=text_colors_t1, weight='bold'),
                         outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
                     ))
                     fig_pbar.update_layout(
                         font=dict(family="'Times New Roman', serif"),
-                        margin=dict(l=0, r=0, t=15, b=15),
+                        margin=dict(l=0, r=45, t=15, b=15),
                         height=max(380, len(bar_df) * 32),
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)',
@@ -389,6 +390,7 @@ def render_project_history():
                 st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>👥 {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
                 max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
                 text_colors_t2 = ['#ffffff' if (i >= len(staff_contrib) - 3 and max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.55 * max_hrs_t2) else '#0f172a' for i in range(len(staff_contrib))]
+                pos_list_t2 = ['inside' if (max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.35 * max_hrs_t2) else 'outside' for i in range(len(staff_contrib))]
                 fig_bar = go.Figure(go.Bar(
                     x=staff_contrib['Hours'],
                     y=staff_contrib['employee_name'],
@@ -398,16 +400,16 @@ def render_project_history():
                         colorscale=[[0, '#7dd3fc'], [1, '#0284c7']],
                     ),
                     text=staff_contrib['Hours'].apply(lambda x: f"{x:,.1f} h"),
-                    textposition='auto',
+                    textposition=pos_list_t2,
                     textangle=0,
-                    constraintext='none',
+                    cliponaxis=False,
                     insidetextanchor='end',
                     insidetextfont=dict(size=12, color=text_colors_t2, weight='bold'),
                     outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
                 ))
                 fig_bar.update_layout(
                     font=dict(family="'Times New Roman', serif"),
-                    margin=dict(l=0, r=0, t=10, b=10),
+                    margin=dict(l=0, r=45, t=10, b=10),
                     height=max(220, len(staff_contrib) * 36),
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
