@@ -1611,6 +1611,7 @@ else:
             t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"),
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
             t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
+            t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
             t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
