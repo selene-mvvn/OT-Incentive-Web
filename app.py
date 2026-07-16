@@ -473,11 +473,11 @@ st.markdown("""
     /* Radio buttons in sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: transparent;
-        padding: 10px 15px;
+        padding: 6px 10px;
         border-radius: 8px;
         border: 1px solid transparent;
-        margin: 2px 15px;
-        transition: all 0.3s ease;
+        margin: 1px 10px;
+        transition: all 0.2s ease;
         cursor: pointer;
     }
 
@@ -495,7 +495,7 @@ st.markdown("""
         background: #00a8e8 !important;
         border: none !important;
         box-shadow: 0 4px 12px rgba(0, 168, 232, 0.3) !important;
-        transform: translateX(5px);
+        transform: translateX(4px);
     }
 
     [data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p {
@@ -511,16 +511,19 @@ st.markdown("""
     [data-testid="stSidebar"] div[role="radiogroup"] label [data-testid="stRadioCircle"] {
         display: none !important;
     }
+    [data-testid="stSidebar"] div[role="radiogroup"] > div,
     [data-testid="stSidebar"] div[role="radiogroup"] {
-        padding-bottom: 140px !important;
+        gap: 2px !important;
+        padding-bottom: 120px !important;
     }
 
     [data-testid="stSidebar"] div[role="radiogroup"] div[data-testid="stMarkdownContainer"] p {
         font-weight: bold;
         font-size: 13px !important;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        transition: all 0.3s ease;
+        letter-spacing: 0.3px;
+        line-height: 1.3 !important;
+        transition: all 0.2s ease;
     }
     
     /* Flamingo-style collapsible sidebar */
@@ -1622,14 +1625,19 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2) p,
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) p,
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) p {
-                    font-size: 12px !important;
+                    font-size: 11.8px !important;
+                    line-height: 1.25 !important;
+                    white-space: nowrap !important;
                 }
                 /* Sub-menu items (2, 3, 4) */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) {
-                    margin-left: 30px;
-                    padding-left: 10px;
+                    margin-left: 16px !important;
+                    margin-right: 6px !important;
+                    margin-top: 1px !important;
+                    margin-bottom: 1px !important;
+                    padding: 5px 8px !important;
                     border-left: 2px solid rgba(0, 0, 0, 0.1) !important;
                     border-radius: 0 8px 8px 0;
                 }
@@ -1647,7 +1655,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 8px;
+                    margin-top: 4px !important;
                 }
             </style>
             """, unsafe_allow_html=True)
@@ -1675,7 +1683,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 8px;
+                    margin-top: 4px !important;
                 }
             </style>
             """, unsafe_allow_html=True)
