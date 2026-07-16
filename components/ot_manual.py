@@ -603,8 +603,8 @@ def render_base_data():
                 uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
             with up_c2:
                 if uploaded_template is not None:
-                    st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                    if st.button(t("📤 CẬP NHẬT FILE MẪU", "📤 テンプレートを更新"), type="secondary", use_container_width=True):
+                    st.markdown("<div style='margin-top: 42px;'></div>", unsafe_allow_html=True)
+                    if st.button(t("CẬP NHẬT FILE MẪU", "テンプレートを更新"), type="primary", use_container_width=True):
                         if not os.path.exists("data"):
                             os.makedirs("data")
                         with open(template_path, "wb") as f:
