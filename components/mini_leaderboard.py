@@ -212,12 +212,20 @@ def render_mini_leaderboard(data_type="ot"):
         """, unsafe_allow_html=True)
         
         # Selectbox (Small and centered)
-        col1, col2, col3 = st.columns([0.5, 3, 0.5])
-        with col2:
+        col_y, col_m = st.columns(2)
+        with col_y:
             sel_year = st.selectbox(
-                t("Chọn năm (Bộ lọc)", "年を選択 (フィルター)"), 
+                t("Chọn năm", "年を選択"), 
                 options=year_options, 
                 key=f"mini_year_{data_type}"
+            )
+        with col_m:
+            month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
+            sel_month = st.selectbox(
+                t("Chọn tháng", "月を選択"),
+                options=month_options,
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
+                key=f"mini_month_{data_type}"
             )
             
         # Spacing
@@ -227,6 +235,9 @@ def render_mini_leaderboard(data_type="ot"):
             df_filtered = df[df['date_obj'].dt.year == sel_year].copy()
         else:
             df_filtered = df.copy()
+
+        if sel_month not in ["Tất cả", "すべて"]:
+            df_filtered = df_filtered[df_filtered['date_obj'].dt.month == sel_month]
 
         if df_filtered.empty:
             from components.ui_utils import render_empty_state
@@ -324,7 +335,7 @@ def render_mini_leaderboard(data_type="ot"):
                 fig.update_layout(
                     font=dict(family="'Times New Roman', serif"),
                     margin=dict(l=0, r=0, t=5, b=5),
-                    height=160,
+                    height=max(60, len(top_5) * 32),
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
                     xaxis=dict(visible=False),
