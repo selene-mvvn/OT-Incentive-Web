@@ -599,14 +599,6 @@ def render_base_data():
             template_path = os.path.join("data", "custom_ot_template.xlsx")
             
             uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'])
-            if uploaded_template is not None:
-                if st.button(t("💾 Lưu File Mẫu", "💾 テンプレートを保存"), type="primary"):
-                    if not os.path.exists("data"):
-                        os.makedirs("data")
-                    with open(template_path, "wb") as f:
-                        f.write(uploaded_template.getbuffer())
-                    st.success(t("Đã lưu file mẫu thành công!", "テンプレートを保存しました！"))
-                    st.rerun()
                     
             if os.path.exists(template_path):
                 st.markdown("---")
@@ -618,6 +610,12 @@ def render_base_data():
 
             st.markdown("<br>", unsafe_allow_html=True)
             if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary"):
+                if uploaded_template is not None:
+                    if not os.path.exists("data"):
+                        os.makedirs("data")
+                    with open(template_path, "wb") as f:
+                        f.write(uploaded_template.getbuffer())
+
                 st.session_state['ot_base_data']['standard_days'] = std_days_mo
                 st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
                 st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
