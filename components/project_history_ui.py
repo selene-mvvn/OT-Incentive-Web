@@ -265,12 +265,12 @@ def render_project_history():
                     # Ép các mảnh nhỏ (< 1.5%) hiển thị text ra 'outside' để Plotly buộc phải vẽ đường chỉ dẫn (leader line)
                     textpos_array = ['outside' if row['Percentage'] < 1.5 else 'inside' for i, row in pie_df.iterrows()]
                     
-                    # Không tách (pull) các phần tử nhỏ ra khỏi biểu đồ để tránh cảm giác bị "lệch"
+                    # Xoay biểu đồ (rotation=80) để mảnh 0.803% nằm ở góc chéo, buộc Plotly phải vẽ đường chỉ dẫn
                     fig_pie.update_traces(
                         textposition=textpos_array,
                         textinfo='percent',
                         pull=0,
-                        rotation=35,
+                        rotation=80,
                         domain=dict(x=[0.05, 0.72], y=[0.05, 0.98]),
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=2))
