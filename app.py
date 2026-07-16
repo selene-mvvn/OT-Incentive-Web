@@ -1602,6 +1602,7 @@ else:
         options = [
             header_text,
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
+            t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
             t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
@@ -1619,27 +1620,30 @@ else:
                 }
                 /* Sub-items font size */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2) p,
-                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) p {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) p,
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) p {
                     font-size: 12px !important;
                 }
-                /* Sub-menu items (2, 3) */
+                /* Sub-menu items (2, 3, 4) */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
-                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) {
                     margin-left: 30px;
                     padding-left: 10px;
                     border-left: 2px solid rgba(0, 0, 0, 0.1) !important;
                     border-radius: 0 8px 8px 0;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2):hover,
-                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3):hover {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3):hover,
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4):hover {
                     border-left: 2px solid #00a8e8 !important;
                 }
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2):has(input:checked),
-                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3):has(input:checked) {
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3):has(input:checked),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4):has(input:checked) {
                     border-left: none !important;
                 }
-                /* Main items 4, 5, 6, 7 styling */
-                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4),
+                /* Main items 5, 6, 7 styling */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
@@ -1660,13 +1664,14 @@ else:
                 /* Hide sub-items when collapsed */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3),
+                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4),
                 [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(2),
-                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(3) {
+                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(3),
+                [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(4) {
                     display: none !important;
                 }
                 
-                /* Main items 4, 5, 6, 7 styling when collapsed */
-                [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4),
+                /* Main items 5, 6, 7 styling when collapsed */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
@@ -1684,6 +1689,7 @@ else:
             vn_opts = [
                 ":material/timer: **OVERTIME**",
                 ":material/folder: **DỮ LIỆU DỰ ÁN**",
+                ":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**",
                 ":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**",
                 ":material/payments: **INCENTIVE**",
                 ":material/history: **LỊCH SỬ THAO TÁC**",
@@ -1692,6 +1698,7 @@ else:
             jp_opts = [
                 ":material/timer: **残業代計算**",
                 ":material/folder: **プロジェクト**",
+                ":material/analytics: **プロジェクト分析・履歴**",
                 ":material/edit_document: **一括入力**",
                 ":material/payments: **インセンティブ**",
                 ":material/history: **操作履歴**",
@@ -1922,6 +1929,7 @@ else:
                                 const tooltipsVN = [
                                     "OVERTIME",
                                     "DỮ LIỆU DỰ ÁN",
+                                    "PHÂN BỔ & LỊCH SỬ DỰ ÁN",
                                     "NHẬP HÀNG LOẠT (EXCEL)",
                                     "INCENTIVE",
                                     "LỊCH SỬ THAO TÁC",
@@ -1930,6 +1938,7 @@ else:
                                 const tooltipsJP = [
                                     "残業代計算",
                                     "プロジェクト",
+                                    "プロジェクト分析・履歴",
                                     "一括入力",
                                     "インセンティブ",
                                     "操作履歴",
@@ -2140,6 +2149,11 @@ else:
         import components.ot_manual
         importlib.reload(components.ot_manual)
         components.ot_manual.render_project_data()
+    elif menu_selection == t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"):
+        import importlib
+        import components.project_history_ui
+        importlib.reload(components.project_history_ui)
+        components.project_history_ui.render_project_history()
     elif menu_selection == t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"):
         render_ot_excel()
     elif menu_selection == t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"):
