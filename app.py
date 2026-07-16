@@ -473,10 +473,10 @@ st.markdown("""
     /* Radio buttons in sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: transparent;
-        padding: 6px 10px;
+        padding: 8px 14px;
         border-radius: 8px;
         border: 1px solid transparent;
-        margin: 1px 10px;
+        margin: 2px 15px;
         transition: all 0.2s ease;
         cursor: pointer;
     }
@@ -513,7 +513,7 @@ st.markdown("""
     }
     [data-testid="stSidebar"] div[role="radiogroup"] > div,
     [data-testid="stSidebar"] div[role="radiogroup"] {
-        gap: 2px !important;
+        gap: 3px !important;
         padding-bottom: 120px !important;
     }
 
@@ -1625,19 +1625,19 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2) p,
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3) p,
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) p {
-                    font-size: 11.8px !important;
-                    line-height: 1.25 !important;
+                    font-size: 12px !important;
+                    line-height: 1.3 !important;
                     white-space: nowrap !important;
                 }
                 /* Sub-menu items (2, 3, 4) */
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(2),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(3),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) {
-                    margin-left: 16px !important;
-                    margin-right: 6px !important;
+                    margin-left: 28px !important;
+                    margin-right: 15px !important;
                     margin-top: 1px !important;
                     margin-bottom: 1px !important;
-                    padding: 5px 8px !important;
+                    padding: 7px 10px !important;
                     border-left: 2px solid rgba(0, 0, 0, 0.1) !important;
                     border-radius: 0 8px 8px 0;
                 }
@@ -1655,7 +1655,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 4px !important;
+                    margin-top: 6px !important;
                 }
             </style>
             """, unsafe_allow_html=True)
@@ -1683,7 +1683,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 4px !important;
+                    margin-top: 6px !important;
                 }
             </style>
             """, unsafe_allow_html=True)
