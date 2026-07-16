@@ -399,7 +399,18 @@ def render_ot_excel():
                         emp_row = emp_df[emp_df['Tên NV'].astype(str).str.strip().str.lower() == emp_name_clean]
                       
                         if emp_row.empty and len(emp_name_clean) > 1:
-                            emp_row = emp_df[emp_df['Tên NV'].astype(str).str.lower().str.contains(emp_name_clean, na=False)]
+                            if " " not in emp_name_clean:
+                                matches = emp_df[emp_df['Tên NV'].astype(str).str.strip().str.lower().str.endswith(f" {emp_name_clean}")]
+                                if not matches.empty:
+                                    emp_row = matches.head(1)
+                            else:
+                                matches = emp_df[emp_df['Tên NV'].astype(str).str.lower().str.contains(emp_name_clean, na=False)]
+                                if not matches.empty:
+                                    starts = matches[matches['Tên NV'].astype(str).str.lower().str.startswith(emp_name_clean)]
+                                    if not starts.empty:
+                                        emp_row = starts.head(1)
+                                    else:
+                                        emp_row = matches.head(1)
                           
                         if not emp_row.empty:
                             emp_name = str(emp_row.iloc[0]['Tên NV'])
