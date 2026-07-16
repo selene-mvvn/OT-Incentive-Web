@@ -359,25 +359,58 @@ def render_project_history():
             p_staff = df_t2['employee_name'].nunique()
             p_records = len(df_t2)
 
+            # Top Banner & 4 KPI Cards
             st.markdown(f"""
-            <div style='background: #f8fafc; border: 1px solid #cbd5e1; border-left: 5px solid #00a8e8; border-radius: 8px; padding: 12px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;'>
+            <div style='background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border: 1px solid #cbd5e1; border-left: 5px solid #00a8e8; border-radius: 10px; padding: 14px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; box-shadow: 0 2px 4px rgba(0,0,0,0.03);'>
                 <div>
-                    <span style='font-size: 15px; font-weight: 700; color: #0f172a;'>
+                    <span style='font-size: 16px; font-weight: 700; color: #0f172a;'>
                         <span class="material-symbols-rounded" style="vertical-align: middle; color: #00a8e8; margin-right: 6px;">manage_search</span>
                         {sel_project if sel_project != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2 if sel_period_t2 != all_period_opt else t('Toàn bộ thời gian', '全期間')})
                     </span>
                 </div>
-                <div style='display: flex; gap: 20px; font-size: 13.5px; color: #334155; align-items: center;'>
-                    <div><b>{p_hrs:,.1f}</b> {t('giờ OT', '時間')}</div>
-                    <div style='color: #cbd5e1;'>•</div>
-                    <div><b>{p_staff}</b> {t('nhân sự tham gia', '名参加')}</div>
-                    <div style='color: #cbd5e1;'>•</div>
-                    <div>{t('Dự tính chi phí:', '予想コスト:')} <b style='color: #0284c7; font-size: 15px;'>{p_cost:,.0f} VNĐ</b></div>
+                <div style='font-size: 13.5px; color: #475569; font-weight: 500;'>
+                    {t('💡 Mẹo: Có thể chuyển đổi chế độ biểu đồ bên phải để đối chiếu lý do và tiến độ làm việc.', '💡 ヒント: 右側のグラフ表示モードを切り替えて理由や時系列を分析できます。')}
                 </div>
             </div>
             """, unsafe_allow_html=True)
 
-            col_t2_bar, col_t2_list = st.columns([4.5, 5.5], gap="large")
+            col_k1, col_k2, col_k3, col_k4 = st.columns(4)
+            with col_k1:
+                st.markdown(f"""
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;'>⏱️ {t('Tổng Số Giờ OT', '総残業時間')}</div>
+                    <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_hrs:,.1f} h</div>
+                    <div style='font-size: 12px; color: #475569;'>{t('TB:', '平均:')} <b>{p_hrs/p_records:,.1f} h</b>/{t('lượt', '回')}</div>
+                </div>
+                """, unsafe_allow_html=True)
+            with col_k2:
+                st.markdown(f"""
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0d9488; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;'>👥 {t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
+                    <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_staff} {t('người', '名')}</div>
+                    <div style='font-size: 12px; color: #475569;'><b>{p_records}</b> {t('lượt ghi nhận OT', '件の残業記録')}</div>
+                </div>
+                """, unsafe_allow_html=True)
+            with col_k3:
+                st.markdown(f"""
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #7c3aed; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;'>💰 {t('Dự Tính Chi Phí', '予想コスト')}</div>
+                    <div style='font-size: 20px; font-weight: 800; color: #7c3aed; margin: 4px 0;'>{p_cost:,.0f} đ</div>
+                    <div style='font-size: 12px; color: #475569;'>{t('Dựa trên đơn giá OT', '残業単価に基づく')}</div>
+                </div>
+                """, unsafe_allow_html=True)
+            with col_k4:
+                st.markdown(f"""
+                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
+                    <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase;'>📊 {t('Tần Suất Làm Việc', '残業頻度')}</div>
+                    <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{df_t2['ot_date'].nunique()} {t('ngày', '日')}</div>
+                    <div style='font-size: 12px; color: #475569;'>{t('Có phát sinh OT', '残業発生日数')}</div>
+                </div>
+                """, unsafe_allow_html=True)
+
+            # Symmetrical Row 2: Staff breakdown vs Reason/Timeline breakdown
+            st.markdown("<div style='margin-top: 20px;'></div>", unsafe_allow_html=True)
+            col_t2_c1, col_t2_c2 = st.columns([5, 5], gap="large")
 
             # Staff contribution in this project/period
             staff_contrib = df_t2.groupby('employee_name').agg(
@@ -386,7 +419,9 @@ def render_project_history():
                 DaysCount=('ot_date', 'nunique')
             ).reset_index().sort_values(by='Hours', ascending=True)
 
-            with col_t2_bar:
+            shared_chart_height = max(300, len(staff_contrib) * 38)
+
+            with col_t2_c1:
                 st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>👥 {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
                 max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
                 text_colors_t2 = ['#ffffff' if (i >= len(staff_contrib) - 3 and max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.55 * max_hrs_t2) else '#0f172a' for i in range(len(staff_contrib))]
@@ -410,7 +445,7 @@ def render_project_history():
                 fig_bar.update_layout(
                     font=dict(family="'Times New Roman', serif"),
                     margin=dict(l=0, r=45, t=10, b=10),
-                    height=max(220, len(staff_contrib) * 36),
+                    height=shared_chart_height,
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
                     xaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9'),
@@ -418,26 +453,116 @@ def render_project_history():
                 )
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
 
-            with col_t2_list:
-                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📝 {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')}</div>", unsafe_allow_html=True)
-                detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']].copy()
-                detail_df = detail_df.sort_values(by=['clean_period', 'ot_date'], ascending=[False, False]).reset_index(drop=True)
-                
-                detail_df = detail_df.rename(columns={
-                    'clean_period': t('Tháng/Kỳ', '月'),
-                    'employee_name': t('Tên NV', 'スタッフ名'),
-                    'ot_date': t('Ngày OT', '残業日'),
-                    'ot_hours': t('Số Giờ', '時間'),
-                    'est_cost': t('Chi Phí VNĐ', '予想支出額'),
-                    'manager_name': t('PM', 'PM'),
-                    'ot_reason': t('Lý Do', '残業理由')
-                })
-                detail_df[t('Số Giờ', '時間')] = detail_df[t('Số Giờ', '時間')].apply(lambda x: f"{x:,.1f}")
-                detail_df[t('Chi Phí VNĐ', '予想支出額')] = detail_df[t('Chi Phí VNĐ', '予想支出額')].apply(lambda x: f"{x:,.0f}" if x > 0 else "-")
+            with col_t2_c2:
+                col_c2_hdr1, col_c2_hdr2 = st.columns([5.5, 4.5])
+                with col_c2_hdr1:
+                    st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📈 {t('Phân Tích Tỷ Trọng & Diễn Biến', '理由・推移の分析')}</div>", unsafe_allow_html=True)
+                with col_c2_hdr2:
+                    t2_chart_mode = st.radio(
+                        "mode",
+                        options=[t("💡 Lý do OT", "💡 残業理由"), t("📅 Thời gian", "📅 推移")],
+                        horizontal=True,
+                        label_visibility="collapsed",
+                        key="tab2_right_mode"
+                    )
 
-                st.dataframe(
-                    detail_df,
-                    use_container_width=True,
-                    hide_index=True,
-                    height=max(280, len(detail_df) * 38)
-                )
+                if t2_chart_mode == t("💡 Lý do OT", "💡 残業理由"):
+                    reason_df = df_t2.groupby('ot_reason')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=True)
+                    if reason_df.empty:
+                        from components.ui_utils import render_empty_state
+                        render_empty_state(t("Chưa có dữ liệu lý do OT", "残業理由データがありません"), height=shared_chart_height-40)
+                    else:
+                        max_hrs_r = reason_df['ot_hours'].max() if not reason_df.empty else 0
+                        text_colors_r = ['#ffffff' if (i >= len(reason_df) - 3 and max_hrs_r > 0 and reason_df.iloc[i]['ot_hours'] >= 0.55 * max_hrs_r) else '#0f172a' for i in range(len(reason_df))]
+                        pos_list_r = ['inside' if (max_hrs_r > 0 and reason_df.iloc[i]['ot_hours'] >= 0.35 * max_hrs_r) else 'outside' for i in range(len(reason_df))]
+                        fig_r = go.Figure(go.Bar(
+                            x=reason_df['ot_hours'],
+                            y=reason_df['ot_reason'],
+                            orientation='h',
+                            marker=dict(
+                                color=reason_df['ot_hours'],
+                                colorscale=[[0, '#a7f3d0'], [1, '#059669']],
+                            ),
+                            text=reason_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
+                            textposition=pos_list_r,
+                            textangle=0,
+                            cliponaxis=False,
+                            insidetextanchor='end',
+                            insidetextfont=dict(size=12, color=text_colors_r, weight='bold'),
+                            outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
+                        ))
+                        fig_r.update_layout(
+                            font=dict(family="'Times New Roman', serif"),
+                            margin=dict(l=0, r=45, t=10, b=10),
+                            height=shared_chart_height,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)',
+                            xaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9'),
+                            yaxis=dict(tickfont=dict(size=12, color='#1e293b'))
+                        )
+                        st.plotly_chart(fig_r, use_container_width=True, config={'displayModeBar': False})
+                else:
+                    # Time series chart (by ot_date)
+                    time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index().sort_values(by='ot_date', ascending=True)
+                    if time_df.empty:
+                        from components.ui_utils import render_empty_state
+                        render_empty_state(t("Chưa có dữ liệu thời gian", "時系列データがありません"), height=shared_chart_height-40)
+                    else:
+                        fig_t = go.Figure(go.Bar(
+                            x=time_df['ot_date'],
+                            y=time_df['ot_hours'],
+                            marker=dict(
+                                color=time_df['ot_hours'],
+                                colorscale=[[0, '#fde047'], [1, '#ca8a04']],
+                            ),
+                            text=time_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
+                            textposition='auto',
+                            textfont=dict(size=11, color='#0f172a', weight='bold')
+                        ))
+                        fig_t.update_layout(
+                            font=dict(family="'Times New Roman', serif"),
+                            margin=dict(l=0, r=10, t=10, b=25),
+                            height=shared_chart_height,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)',
+                            xaxis=dict(title=t("Ngày OT", "残業日"), gridcolor='#f1f5f9'),
+                            yaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9')
+                        )
+                        st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False})
+
+            # Full-Width Detail Table Section across Bottom
+            st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style='background: #ffffff; border: 1px solid #cbd5e1; border-left: 4px solid #3b82f6; border-radius: 8px; padding: 12px 18px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.03);'>
+                <div style='font-size: 15.5px; font-weight: 700; color: #0f172a;'>
+                    <span class="material-symbols-rounded" style="vertical-align: middle; color: #3b82f6; margin-right: 6px;">table_chart</span>
+                    {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')} ({p_records} {t('lượt ghi nhận', '件')})
+                </div>
+                <div style='font-size: 13px; color: #64748b; font-weight: 500;'>
+                    {t('📋 Bảng chi tiết toàn bộ nhân sự, thời gian, chi phí và lý do', '📋 スタッフ・時間・理由の全明細ログ')}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']].copy()
+            detail_df = detail_df.sort_values(by=['clean_period', 'ot_date'], ascending=[False, False]).reset_index(drop=True)
+            
+            detail_df = detail_df.rename(columns={
+                'clean_period': t('Tháng/Kỳ', '月'),
+                'employee_name': t('Tên NV', 'スタッフ名'),
+                'ot_date': t('Ngày OT', '残業日'),
+                'ot_hours': t('Số Giờ', '時間'),
+                'est_cost': t('Chi Phí VNĐ', '予想支出額'),
+                'manager_name': t('PM', 'PM'),
+                'ot_reason': t('Lý Do', '残業理由')
+            })
+            detail_df[t('Số Giờ', '時間')] = detail_df[t('Số Giờ', '時間')].apply(lambda x: f"{x:,.1f}")
+            detail_df[t('Chi Phí VNĐ', '予想支出額')] = detail_df[t('Chi Phí VNĐ', '予想支出額')].apply(lambda x: f"{x:,.0f}" if x > 0 else "-")
+
+            st.dataframe(
+                detail_df,
+                use_container_width=True,
+                hide_index=True,
+                height=max(280, min(520, len(detail_df) * 38))
+            )
+
