@@ -262,13 +262,11 @@ def render_project_history():
                         color_discrete_sequence=curated_colors
                     )
                     
-                    # Pull top slice slightly for emphasis, and pull thin slices (<2.5%) outward so their leader lines extend longer and clearer
-                    pull_array = [0.05 if i == 0 else (0.045 if row['Percentage'] < 2.5 else 0) for i, row in pie_df.iterrows()]
-                    
+                    # Không tách (pull) các phần tử nhỏ ra khỏi biểu đồ để tránh cảm giác bị "lệch"
                     fig_pie.update_traces(
                         textposition='auto',
                         textinfo='percent',
-                        pull=pull_array,
+                        pull=0,
                         rotation=35,
                         domain=dict(x=[0.05, 0.72], y=[0.05, 0.98]),
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<extra></extra>',
