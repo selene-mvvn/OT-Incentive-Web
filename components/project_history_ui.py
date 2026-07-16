@@ -297,6 +297,7 @@ def render_project_history():
                 else:
                     # Horizontal bar chart sorted clearly by hours
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
+                    bar_w_t1 = 0.25 if len(bar_df) == 1 else (0.35 if len(bar_df) == 2 else (0.45 if len(bar_df) == 3 else None))
                     max_hrs_t1 = bar_df['Hours'].max() if not bar_df.empty else 0
                     text_colors_t1 = ['#ffffff' if (i >= len(bar_df) - 3 and max_hrs_t1 > 0 and bar_df.iloc[i]['Hours'] >= 0.55 * max_hrs_t1) else '#0f172a' for i in range(len(bar_df))]
                     pos_list_t1 = ['inside' if (max_hrs_t1 > 0 and bar_df.iloc[i]['Hours'] >= 0.35 * max_hrs_t1) else 'outside' for i in range(len(bar_df))]
@@ -304,6 +305,7 @@ def render_project_history():
                         x=bar_df['Hours'],
                         y=bar_df['order_name'],
                         orientation='h',
+                        width=bar_w_t1,
                         marker=dict(
                             color=bar_df['Hours'],
                             colorscale=[[0, '#7dd3fc'], [1, '#0284c7']],
@@ -476,12 +478,14 @@ def render_project_history():
             with col_t2_c1:
                 st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>👥 {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
                 max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
+                bar_w_t2 = 0.25 if len(staff_contrib) == 1 else (0.35 if len(staff_contrib) == 2 else (0.45 if len(staff_contrib) == 3 else None))
                 text_colors_t2 = ['#ffffff' if (i >= len(staff_contrib) - 3 and max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.55 * max_hrs_t2) else '#0f172a' for i in range(len(staff_contrib))]
                 pos_list_t2 = ['inside' if (max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.35 * max_hrs_t2) else 'outside' for i in range(len(staff_contrib))]
                 fig_bar = go.Figure(go.Bar(
                     x=staff_contrib['Hours'],
                     y=staff_contrib['employee_name'],
                     orientation='h',
+                    width=bar_w_t2,
                     marker=dict(
                         color=staff_contrib['Hours'],
                         colorscale=[[0, '#7dd3fc'], [1, '#0284c7']],
@@ -508,15 +512,20 @@ def render_project_history():
             with col_t2_c2:
                 st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>📈 {t('Diễn Biến Số Giờ OT Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
                 
-                # Time series chart (by ot_date)
-                time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index().sort_values(by='ot_date', ascending=True)
+                # Time series chart (by ot_date) sorted chronologically by actual date
+                time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
+                time_df['_sort_dt'] = pd.to_datetime(time_df['ot_date'], format='%d/%m/%Y', errors='coerce')
+                time_df = time_df.sort_values(by='_sort_dt', ascending=True).drop(columns=['_sort_dt'])
+
                 if time_df.empty:
                     from components.ui_utils import render_empty_state
                     render_empty_state(t("Chưa có dữ liệu thời gian", "時系列データがありません"), height=shared_chart_height-40)
                 else:
+                    bar_w_t = 0.25 if len(time_df) == 1 else (0.35 if len(time_df) == 2 else (0.45 if len(time_df) == 3 else None))
                     fig_t = go.Figure(go.Bar(
                         x=time_df['ot_date'],
                         y=time_df['ot_hours'],
+                        width=bar_w_t,
                         marker=dict(
                             color=time_df['ot_hours'],
                             colorscale=[[0, '#fde047'], [1, '#ca8a04']],
