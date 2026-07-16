@@ -610,12 +610,20 @@ def render_base_data():
 
             uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'], help=help_text)
             if os.path.exists(template_path):
+                name_path = os.path.join("data", "custom_ot_template_name.txt")
+                display_name = "custom_ot_template.xlsx"
+                if os.path.exists(name_path):
+                    with open(name_path, "r", encoding="utf-8") as f:
+                        display_name = f.read().strip()
+
                 c1, c2 = st.columns([3, 2])
                 with c1:
-                    st.markdown(f"<div style='margin-top: 6px;'><b>{t('File mẫu hiện tại:', '現在のテンプレート:')}</b> custom_ot_template.xlsx</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='margin-top: 6px;'><b>{t('File mẫu hiện tại:', '現在のテンプレート:')}</b> {display_name}</div>", unsafe_allow_html=True)
                 with c2:
                     if st.button(t("XÓA FILE (QUAY VỀ MẶC ĐỊNH)", "削除 (デフォルトに戻す)"), icon=":material/delete:", type="secondary", use_container_width=True):
                         os.remove(template_path)
+                        if os.path.exists(name_path):
+                            os.remove(name_path)
                         st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
                         st.rerun()
 
@@ -626,6 +634,8 @@ def render_base_data():
                         os.makedirs("data")
                     with open(template_path, "wb") as f:
                         f.write(uploaded_template.getbuffer())
+                    with open(os.path.join("data", "custom_ot_template_name.txt"), "w", encoding="utf-8") as f:
+                        f.write(uploaded_template.name)
 
                 st.session_state['ot_base_data']['standard_days'] = std_days_mo
                 st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
