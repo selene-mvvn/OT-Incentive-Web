@@ -277,12 +277,12 @@ def render_project_history():
                     )
                     fig_pie.update_layout(
                         font=dict(family="'Times New Roman', serif"),
-                        margin=dict(t=5, b=10, l=0, r=0),
+                        margin=dict(t=5, b=40, l=0, r=0),
                         showlegend=True,
                         legend=dict(
                             orientation='v',
-                            yanchor='middle',
-                            y=0.52,
+                            yanchor='top',
+                            y=0.95,
                             xanchor='left',
                             x=0.84,
                             font=dict(size=11.5, color='#1e293b'),
