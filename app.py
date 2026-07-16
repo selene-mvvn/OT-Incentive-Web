@@ -813,6 +813,7 @@ def show_user_guide():
 ### 1. OVERTIME
 - **Dữ liệu dự án**: Nhập thủ công thời gian tăng ca cho từng dự án. Dữ liệu nhân sự và lương được tự động đồng bộ từ Cài đặt chung.
 - **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu, hệ thống tự động nhận diện và tính toán thời gian tăng ca hàng loạt cực kỳ nhanh chóng.
+- **Lịch sử dự án**: Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo thời gian.
 
 ### 2. INCENTIVE
 - Tự động trích xuất và gợi ý dữ liệu từ các dự án đã thực hiện.
@@ -830,6 +831,7 @@ def show_user_guide():
 ### 1. 残業代計算(OVERTIME)
 - **プロジェクト**: 各プロジェクトの残業時間を手動で入力します。スタッフデータや給与情報は一般設定から自動的に同期されます。
 - **一括入力(Excel)**: Excelデータをアップロードするだけで、システムが自動的に認識し、スマートかつ迅速に一括計算します。
+- **プロジェクト分析・履歴**: 残業時間の割合を分析し、各プロジェクトの履歴詳細を期間ごとに検索できます。
 
 ### 2. インセンティブ(INCENTIVE)
 - 実行済みのプロジェクトからデータを自動的に抽出・提案します。
