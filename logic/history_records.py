@@ -43,27 +43,59 @@ def deduplicate_records(records, file_type="ot"):
             df = df.drop_duplicates()
     return json.loads(df.to_json(orient='records'))
 
-def get_records(file_type="ot"):
+def get_records(file_type="ot", filter_active_employees=True):
     """file_type can be 'ot' or 'incentive'"""
     filename = "ot_history.json" if file_type == "ot" else "incentive_history.json"
     local_file = OT_HISTORY_FILE if file_type == "ot" else INCENTIVE_HISTORY_FILE
     
+    records = []
     firebase_url = get_firebase_url(filename)
     if firebase_url:
         try:
             resp = requests.get(firebase_url, timeout=5)
             if resp.status_code == 200 and resp.json() is not None:
-                return deduplicate_records(resp.json(), file_type)
+                records = deduplicate_records(resp.json(), file_type)
         except Exception:
             pass
 
-    init_history_records()
-    try:
-        with open(local_file, "r", encoding="utf-8") as f:
-            data = json.load(f)
-            return deduplicate_records(data if data else [], file_type)
-    except Exception:
-        return []
+    if not records:
+        init_history_records()
+        try:
+            with open(local_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                records = deduplicate_records(data if data else [], file_type)
+        except Exception:
+            records = []
+            
+    if filter_active_employees and records:
+        try:
+            from logic.employee_data import get_employees_df
+            emp_df = get_employees_df()
+            if not emp_df.empty and "Tên NV" in emp_df.columns:
+                valid_names = set(emp_df["Tên NV"].dropna().astype(str).str.strip())
+                records = [r for r in records if str(r.get("employee_name", "")).strip() in valid_names]
+        except Exception as e:
+            print(f"Error filtering records by active employees: {e}")
+            
+    return records
+
+def clean_history_records(valid_names):
+    """Clean up history records by removing records of deleted employees"""
+    if not isinstance(valid_names, set):
+        valid_names = set(valid_names)
+        
+    ot_recs = get_records("ot", filter_active_employees=False)
+    if ot_recs:
+        filtered_ot = [r for r in ot_recs if str(r.get("employee_name", "")).strip() in valid_names]
+        if len(filtered_ot) != len(ot_recs):
+            save_all_records("ot", filtered_ot)
+            
+    inc_recs = get_records("incentive", filter_active_employees=False)
+    if inc_recs:
+        filtered_inc = [r for r in inc_recs if str(r.get("employee_name", "")).strip() in valid_names]
+        if len(filtered_inc) != len(inc_recs):
+            save_all_records("incentive", filtered_inc)
+
 
 def add_records(file_type, new_records_list):
     if not new_records_list:
