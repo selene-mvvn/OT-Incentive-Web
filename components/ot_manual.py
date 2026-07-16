@@ -592,19 +592,22 @@ def render_base_data():
                             import time; time.sleep(0.5)
                             st.rerun()
             st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
-            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; color: #1e293b; text-transform: uppercase;'>{t('QUẢN LÝ FILE EXCEL MẪU', 'EXCELテンプレート管理')}</h3>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <style>
+            [data-testid="stFileUploader"] [data-testid="stWidgetLabel"] {{
+                width: max-content !important;
+                gap: 6px !important;
+            }}
+            </style>
+            <h3 style='font-size: 18px; font-weight: 600; color: #1e293b; text-transform: uppercase;'>{t('QUẢN LÝ FILE EXCEL MẪU', 'EXCELテンプレート管理')}</h3>
+            """, unsafe_allow_html=True)
             st.info(t("Tải lên file .xlsx mẫu của công ty bạn. File này sẽ được dùng cho chức năng Tải File Excel Mẫu ở tab Nhập hàng loạt.", "会社のExcelテンプレート(.xlsx)をアップロードしてください。一括入力タブのテンプレートとして使用されます。"))
             
             import os
             template_path = os.path.join("data", "custom_ot_template.xlsx")
             
             help_text = t("💡 Mẹo: Bấm nút `+` để tải lên file thay thế, hoặc `x` để xóa file đang chọn.", "💡 ヒント: 現在のファイルを削除するには「x」を、別のファイルに置き換えるには「+」をクリックします。")
-            st.markdown("""<style>
-            [data-testid="stFileUploader"] [data-testid="stWidgetLabel"] {
-                width: max-content !important;
-                padding-right: 10px;
-            }
-            </style>""", unsafe_allow_html=True)
+
             uploaded_template = st.file_uploader(t("Tải lên file mẫu mới (.xlsx)", "新しいテンプレートをアップロード (.xlsx)"), type=['xlsx'], help=help_text)
             if os.path.exists(template_path):
                 st.markdown("---")
@@ -614,7 +617,7 @@ def render_base_data():
                     st.success(t("Đã xóa file mẫu tùy chỉnh!", "カスタムテンプレートを削除しました！"))
                     st.rerun()
 
-            st.markdown("<br>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary"):
                 if uploaded_template is not None:
                     if not os.path.exists("data"):
