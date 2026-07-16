@@ -161,11 +161,16 @@ def render_ot_excel():
             
                 st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 26px; margin-bottom: 12px;'>{t('BƯỚC 1: CHẾ ĐỘ GHÉP CỘT DỮ LIỆU', 'ステップ 1: 列マッピングモード')}</h4>", unsafe_allow_html=True)
             
-                mapping_mode = st.radio(
-                    t("Tùy chọn ghép cột:", "マッピングオプション:"),
-                    [t("Tự động nhận diện thông minh", "スマート自動認識"), t("Ghép cột thủ công", "手動マッピング")],
-                    horizontal=True
-                )
+                col_lbl, col_rad = st.columns([1.4, 5])
+                with col_lbl:
+                    st.markdown(f"<div style='margin-top: 10px; font-size: 14px; color: #444;'>{t('Tùy chọn ghép cột:', 'マッピングオプション:')}</div>", unsafe_allow_html=True)
+                with col_rad:
+                    mapping_mode = st.radio(
+                        t("Tùy chọn ghép cột:", "マッピングオプション:"),
+                        [t("Tự động nhận diện thông minh", "スマート自動認識"), t("Ghép cột thủ công", "手動マッピング")],
+                        horizontal=True,
+                        label_visibility="collapsed"
+                    )
             
                 # Multi-tier prioritized intelligent column detection
                 col_map_auto = {
