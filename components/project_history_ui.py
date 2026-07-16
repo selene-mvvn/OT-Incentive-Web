@@ -46,6 +46,11 @@ def render_project_history():
 
     all_raw = copy.deepcopy(hist_records) + copy.deepcopy(manual_pending) + copy.deepcopy(excel_pending)
     all_records = deduplicate_records(all_raw, "ot")
+    all_records = [
+        r for r in all_records
+        if str(r.get('order_name', '')).strip().lower() not in ['test', 'dummy', 'test project']
+        and str(r.get('order_id', '')).strip() != 'V000000'
+    ]
 
     if not all_records:
         from components.ui_utils import render_empty_state
