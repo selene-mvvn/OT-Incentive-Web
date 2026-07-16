@@ -39,6 +39,31 @@ def get_clean_period(row):
     return t("Khác", "その他")
 
 def render_project_history():
+    st.markdown("""
+    <style>
+    /* Hide Streamlit dataframe element toolbar right above tables */
+    [data-testid="stDataFrame"] [data-testid="stElementToolbar"],
+    [data-testid="stDataFrame"] div[class*="stElementToolbar"],
+    [data-testid="stDataFrame"] > div:first-child:has(button) {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+        pointer-events: none !important;
+        height: 0px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    /* Pull dataframe upward closer to the subheader */
+    [data-testid="stDataFrame"] {
+        margin-top: -20px !important;
+    }
+    [data-testid="stDataFrame"] > div {
+        margin-top: 0px !important;
+        padding-top: 0px !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600; color: #1e293b; margin-bottom: 4px;'>{t('PHÂN BỔ & LỊCH SỬ DỰ ÁN (OT)', 'プロジェクト分析・履歴')}</h2>", unsafe_allow_html=True)
     st.markdown(f"<div style='font-size: 14.5px; color: #64748b; margin-bottom: 20px;'>{t('Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo tháng/kỳ thanh toán.', 'プロジェクト別の残業時間分布と履歴を月別・案件別に詳細分析します。')}</div>", unsafe_allow_html=True)
 
@@ -206,7 +231,7 @@ def render_project_history():
                 st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
 
             with col_tbl:
-                st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 8px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 0px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
                 display_df = proj_summary.copy()
                 display_df = display_df.rename(columns={
                     'order_name': t('Tên Dự Án', 'プロジェクト名'),
@@ -316,7 +341,7 @@ def render_project_history():
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
 
             with col_t2_list:
-                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>📝 {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 0px;'>📝 {t('Danh Sách Chi Tiết Các Lượt Làm OT', '残業明細一覧')}</div>", unsafe_allow_html=True)
                 detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']].copy()
                 detail_df = detail_df.sort_values(by=['clean_period', 'ot_date'], ascending=[False, False]).reset_index(drop=True)
                 
