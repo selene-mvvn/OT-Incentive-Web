@@ -499,7 +499,7 @@ def render_project_history():
             shared_chart_height = max(300, len(staff_contrib) * 38)
 
             with col_t2_c1:
-                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>👥 {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #3b82f6;'>groups</span> {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
                 max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
                 bar_w_t2 = 0.25 if len(staff_contrib) == 1 else (0.35 if len(staff_contrib) == 2 else (0.45 if len(staff_contrib) == 3 else None))
                 text_colors_t2 = ['#ffffff' if (i >= len(staff_contrib) - 3 and max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.55 * max_hrs_t2) else '#0f172a' for i in range(len(staff_contrib))]
@@ -533,7 +533,7 @@ def render_project_history():
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
 
             with col_t2_c2:
-                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>📈 {t('Diễn Biến Số Giờ OT Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #8b5cf6;'>show_chart</span> {t('Diễn Biến Số Giờ OT Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
                 
                 # Time series chart (by ot_date) sorted chronologically by actual date
                 time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
