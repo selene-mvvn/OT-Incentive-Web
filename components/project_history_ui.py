@@ -421,7 +421,7 @@ def render_project_history():
                     </span>
                 </div>
                 <div style='font-size: 13.5px; color: #475569; font-weight: 500;'>
-                    {t('💡 Mẹo: Có thể chuyển đổi chế độ biểu đồ bên phải để đối chiếu lý do và tiến độ làm việc.', '💡 ヒント: 右側のグラフ表示モードを切り替えて理由や時系列を分析できます。')}
+                    {t('💡 Mẹo: Biểu đồ bên phải theo dõi diễn biến tăng ca theo từng ngày để đánh giá tiến độ làm việc.', '💡 ヒント: 右側のグラフは残業時間の推移を表示し、業務進捗を把握できます。')}
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -506,81 +506,35 @@ def render_project_history():
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
 
             with col_t2_c2:
-                col_c2_hdr1, col_c2_hdr2 = st.columns([5.5, 4.5])
-                with col_c2_hdr1:
-                    st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📈 {t('Phân Tích Tỷ Trọng & Diễn Biến', '理由・推移の分析')}</div>", unsafe_allow_html=True)
-                with col_c2_hdr2:
-                    t2_chart_mode = st.radio(
-                        "mode",
-                        options=[t("💡 Lý do OT", "💡 残業理由"), t("📅 Thời gian", "📅 推移")],
-                        horizontal=True,
-                        label_visibility="collapsed",
-                        key="tab2_right_mode"
-                    )
-
-                if t2_chart_mode == t("💡 Lý do OT", "💡 残業理由"):
-                    reason_df = df_t2.groupby('ot_reason')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=True)
-                    if reason_df.empty:
-                        from components.ui_utils import render_empty_state
-                        render_empty_state(t("Chưa có dữ liệu lý do OT", "残業理由データがありません"), height=shared_chart_height-40)
-                    else:
-                        max_hrs_r = reason_df['ot_hours'].max() if not reason_df.empty else 0
-                        text_colors_r = ['#ffffff' if (i >= len(reason_df) - 3 and max_hrs_r > 0 and reason_df.iloc[i]['ot_hours'] >= 0.55 * max_hrs_r) else '#0f172a' for i in range(len(reason_df))]
-                        pos_list_r = ['inside' if (max_hrs_r > 0 and reason_df.iloc[i]['ot_hours'] >= 0.35 * max_hrs_r) else 'outside' for i in range(len(reason_df))]
-                        fig_r = go.Figure(go.Bar(
-                            x=reason_df['ot_hours'],
-                            y=reason_df['ot_reason'],
-                            orientation='h',
-                            marker=dict(
-                                color=reason_df['ot_hours'],
-                                colorscale=[[0, '#a7f3d0'], [1, '#059669']],
-                            ),
-                            text=reason_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
-                            textposition=pos_list_r,
-                            textangle=0,
-                            cliponaxis=False,
-                            insidetextanchor='end',
-                            insidetextfont=dict(size=12, color=text_colors_r, weight='bold'),
-                            outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
-                        ))
-                        fig_r.update_layout(
-                            font=dict(family="'Times New Roman', serif"),
-                            margin=dict(l=0, r=45, t=10, b=10),
-                            height=shared_chart_height,
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0)',
-                            xaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9'),
-                            yaxis=dict(tickfont=dict(size=12, color='#1e293b'))
-                        )
-                        st.plotly_chart(fig_r, use_container_width=True, config={'displayModeBar': False})
+                st.markdown(f"<div style='font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'>📈 {t('Diễn Biến Số Giờ OT Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
+                
+                # Time series chart (by ot_date)
+                time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index().sort_values(by='ot_date', ascending=True)
+                if time_df.empty:
+                    from components.ui_utils import render_empty_state
+                    render_empty_state(t("Chưa có dữ liệu thời gian", "時系列データがありません"), height=shared_chart_height-40)
                 else:
-                    # Time series chart (by ot_date)
-                    time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index().sort_values(by='ot_date', ascending=True)
-                    if time_df.empty:
-                        from components.ui_utils import render_empty_state
-                        render_empty_state(t("Chưa có dữ liệu thời gian", "時系列データがありません"), height=shared_chart_height-40)
-                    else:
-                        fig_t = go.Figure(go.Bar(
-                            x=time_df['ot_date'],
-                            y=time_df['ot_hours'],
-                            marker=dict(
-                                color=time_df['ot_hours'],
-                                colorscale=[[0, '#fde047'], [1, '#ca8a04']],
-                            ),
-                            text=time_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
-                            textposition='auto',
-                            textfont=dict(size=11, color='#0f172a', weight='bold')
-                        ))
-                        fig_t.update_layout(
-                            font=dict(family="'Times New Roman', serif"),
-                            margin=dict(l=0, r=10, t=10, b=25),
-                            height=shared_chart_height,
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0)',
-                            xaxis=dict(title=t("Ngày OT", "残業日"), gridcolor='#f1f5f9'),
-                            yaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9')
-                        )
-                        st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False})
+                    fig_t = go.Figure(go.Bar(
+                        x=time_df['ot_date'],
+                        y=time_df['ot_hours'],
+                        marker=dict(
+                            color=time_df['ot_hours'],
+                            colorscale=[[0, '#fde047'], [1, '#ca8a04']],
+                        ),
+                        text=time_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
+                        textposition='auto',
+                        textfont=dict(size=11, color='#0f172a', weight='bold')
+                    ))
+                    fig_t.update_layout(
+                        font=dict(family="'Times New Roman', serif"),
+                        margin=dict(l=0, r=10, t=10, b=25),
+                        height=shared_chart_height,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        xaxis=dict(title=t("Ngày OT", "残業日"), gridcolor='#f1f5f9'),
+                        yaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9')
+                    )
+                    st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False})
 
             # Full-Width Detail Table Section across Bottom
             st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
