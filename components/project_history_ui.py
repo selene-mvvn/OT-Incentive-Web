@@ -237,13 +237,13 @@ def render_project_history():
                 with col_pie_hdr2:
                     chart_mode = st.radio(
                         "Chart mode",
-                        options=[t("🥧 Tròn (Donut)", "🥧 ドーナツ"), t("📊 Cột (Bar)", "📊 棒グラフ")],
+                        options=[t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"), t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ")],
                         label_visibility="collapsed",
                         horizontal=True,
                         key="tab1_chart_mode"
                     )
 
-                if chart_mode == t("🥧 Tròn (Donut)", "🥧 ドーナツ"):
+                if chart_mode == t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"):
                     # Display all projects directly without grouping so data is honest and complete
                     pie_df = proj_summary.copy()
                     
