@@ -206,29 +206,97 @@ def render_project_history():
             proj_summary = proj_summary.sort_values(by='Hours', ascending=False).reset_index(drop=True)
 
             with col_pie:
-                st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 8px;'>🎯 {t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} ({period_label})</div>", unsafe_allow_html=True)
-                fig_pie = px.pie(
-                    proj_summary,
-                    values='Hours',
-                    names='order_name',
-                    hole=0.45,
-                    color_discrete_sequence=px.colors.qualitative.Set3
-                )
-                fig_pie.update_traces(
-                    textposition='inside',
-                    textinfo='percent+label',
-                    hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<extra></extra>'
-                )
-                fig_pie.update_layout(
-                    font=dict(family="'Times New Roman', serif"),
-                    margin=dict(t=20, b=20, l=10, r=10),
-                    showlegend=True,
-                    legend=dict(orientation='h', yanchor='top', y=-0.08, xanchor='center', x=0.5, font=dict(size=11)),
-                    height=380,
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    plot_bgcolor='rgba(0,0,0,0)'
-                )
-                st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
+                col_pie_hdr1, col_pie_hdr2 = st.columns([6, 4])
+                with col_pie_hdr1:
+                    st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>🎯 {t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} ({period_label})</div>", unsafe_allow_html=True)
+                with col_pie_hdr2:
+                    chart_mode = st.radio(
+                        "Chart mode",
+                        options=[t("🥧 Tròn (Donut)", "🥧 ドーナツ"), t("📊 Cột (Bar)", "📊 棒グラフ")],
+                        label_visibility="collapsed",
+                        horizontal=True,
+                        key="tab1_chart_mode"
+                    )
+
+                if chart_mode == t("🥧 Tròn (Donut)", "🥧 ドーナツ"):
+                    # Group small projects beyond top 6 for ultra-clean pie slices
+                    pie_df = proj_summary.copy()
+                    if len(pie_df) > 7:
+                        top_df = pie_df.iloc[:6].copy()
+                        other_df = pie_df.iloc[6:].copy()
+                        other_hrs = other_df['Hours'].sum()
+                        other_cost = other_df['Cost'].sum()
+                        other_staff = other_df['StaffCount'].max()
+                        top_df.loc[len(top_df)] = [t('Các dự án khác (<3%)', 'その他 (<3%)'), other_hrs, other_cost, other_staff, round(other_hrs / total_hrs * 100, 1)]
+                        pie_df = top_df
+                    
+                    # Rich saturated curated color palette
+                    curated_colors = ['#0088fe', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#94a3b8']
+                    
+                    fig_pie = px.pie(
+                        pie_df,
+                        values='Hours',
+                        names='order_name',
+                        hole=0.48,
+                        color_discrete_sequence=curated_colors
+                    )
+                    
+                    # Pull top slice slightly for modern 3D emphasis effect
+                    pull_array = [0.05 if i == 0 else 0 for i in range(len(pie_df))]
+                    
+                    fig_pie.update_traces(
+                        textposition='inside',
+                        textinfo='percent',
+                        pull=pull_array,
+                        hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<extra></extra>',
+                        marker=dict(line=dict(color='#ffffff', width=2))
+                    )
+                    fig_pie.update_layout(
+                        font=dict(family="'Times New Roman', serif"),
+                        margin=dict(t=15, b=15, l=10, r=160),
+                        showlegend=True,
+                        legend=dict(
+                            orientation='v',
+                            yanchor='middle',
+                            y=0.5,
+                            xanchor='left',
+                            x=1.02,
+                            font=dict(size=12, color='#1e293b'),
+                            bgcolor='rgba(255,255,255,0.85)',
+                            bordercolor='#cbd5e1',
+                            borderwidth=1
+                        ),
+                        height=380,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)'
+                    )
+                    st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
+                else:
+                    # Horizontal bar chart sorted clearly by hours
+                    bar_df = proj_summary.sort_values(by='Hours', ascending=True)
+                    fig_pbar = go.Figure(go.Bar(
+                        x=bar_df['Hours'],
+                        y=bar_df['order_name'],
+                        orientation='h',
+                        marker=dict(
+                            color=bar_df['Hours'],
+                            colorscale=[[0, '#bae6fd'], [1, '#0284c7']],
+                        ),
+                        text=bar_df.apply(lambda r: f"{r['Hours']:,.1f} h ({r['Percentage']}%)", axis=1),
+                        textposition='auto',
+                        insidetextanchor='end',
+                        textfont=dict(size=12, color='#0f172a')
+                    ))
+                    fig_pbar.update_layout(
+                        font=dict(family="'Times New Roman', serif"),
+                        margin=dict(l=0, r=0, t=15, b=15),
+                        height=max(380, len(bar_df) * 32),
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        xaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9'),
+                        yaxis=dict(tickfont=dict(size=12.5, color='#1e293b'))
+                    )
+                    st.plotly_chart(fig_pbar, use_container_width=True, config={'displayModeBar': False})
 
             with col_tbl:
                 st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
