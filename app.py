@@ -1624,8 +1624,8 @@ else:
         options = [
             header_text,
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
-            t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
+            t(":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
             t(":material/settings: **CÀI ĐẶT CHUNG**", ":material/settings: **一般設定**")
@@ -1717,8 +1717,8 @@ else:
             vn_opts = [
                 ":material/timer: **OVERTIME**",
                 ":material/folder: **DỮ LIỆU DỰ ÁN**",
-                ":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**",
                 ":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**",
+                ":material/analytics: **PHÂN BỔ & LỊCH SỬ DỰ ÁN**",
                 ":material/payments: **INCENTIVE**",
                 ":material/history: **LỊCH SỬ THAO TÁC**",
                 ":material/settings: **CÀI ĐẶT CHUNG**"
@@ -1726,8 +1726,8 @@ else:
             jp_opts = [
                 ":material/timer: **残業代計算**",
                 ":material/folder: **プロジェクト**",
-                ":material/analytics: **プロジェクト分析・履歴**",
                 ":material/edit_document: **一括入力**",
+                ":material/analytics: **プロジェクト分析・履歴**",
                 ":material/payments: **インセンティブ**",
                 ":material/history: **操作履歴**",
                 ":material/settings: **一般設定**"
