@@ -220,7 +220,7 @@ def render_project_history():
             </div>
             """, unsafe_allow_html=True)
 
-            col_pie, col_tbl = st.columns([4.6, 5.4], gap="large")
+            col_pie, col_tbl = st.columns([4.3, 5.7], gap="large")
             
             proj_summary = df_tab1.groupby('order_name').agg(
                 Hours=('ot_hours', 'sum'),
@@ -355,7 +355,7 @@ def render_project_history():
                     column_config={
                         col_proj: st.column_config.TextColumn(
                             col_proj,
-                            width="large"
+                            width="medium"
                         ),
                         col_hrs: st.column_config.TextColumn(
                             col_hrs,
@@ -363,7 +363,7 @@ def render_project_history():
                         ),
                         col_cost: st.column_config.TextColumn(
                             col_cost,
-                            width="medium"
+                            width="small"
                         ),
                         col_staff: st.column_config.TextColumn(
                             col_staff,
@@ -622,7 +622,7 @@ def render_project_history():
                     t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width="medium"),
                     t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width="small"),
                     t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width="small"),
-                    t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width="medium"),
+                    t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width="small"),
                     t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width="medium"),
                     t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'), width="large")
                 }
