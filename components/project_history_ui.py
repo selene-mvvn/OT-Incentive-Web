@@ -528,7 +528,7 @@ def render_project_history():
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
 
             with col_t2_c2:
-                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #10b981;'>show_chart</span> {t('Diễn Biến Số Giờ OT Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #f59e0b;'>show_chart</span> {t('Diễn Biến Số Giờ OT Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
                 
                 # Time series chart (by ot_date) sorted chronologically by actual date
                 time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
