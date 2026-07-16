@@ -128,7 +128,16 @@ def render_project_history():
 
     unique_periods = sorted(df['clean_period'].unique().tolist(), key=sort_key_period, reverse=True)
     all_period_opt = t("🌟 Tất cả các tháng", "🌟 すべての月")
-    period_options = [all_period_opt] + unique_periods
+    
+    years = set()
+    for p in unique_periods:
+        p_str = str(p)
+        if p_str.startswith('T') and '/' in p_str:
+            parts = p_str[1:].split('/')
+            if len(parts) == 2 and parts[1].isdigit():
+                years.add(int(parts[1]))
+    year_options = [t("Tất cả", "すべて")] + sorted(list(years), reverse=True)
+    month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
 
     tab1, tab2 = st.tabs([
         t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
@@ -138,20 +147,37 @@ def render_project_history():
     # ==================== TAB 1: PHÂN BỔ DỰ ÁN ====================
     with tab1:
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
-        col_f1, col_f2 = st.columns([3, 7])
-        with col_f1:
-            sel_period = st.selectbox(
-                t("📅 Chọn tháng / Kỳ thanh toán:", "📅 月・支払期を選択:"),
-                options=period_options,
-                key="tab1_sel_period"
+        col_f1_y, col_f1_m, _ = st.columns([2, 2, 6])
+        with col_f1_y:
+            sel_year_t1 = st.selectbox(
+                t("📅 Chọn năm", "📅 年を選択:"),
+                options=year_options,
+                key="tab1_sel_year"
+            )
+        with col_f1_m:
+            sel_month_t1 = st.selectbox(
+                t("📅 Chọn tháng", "📅 月を選択:"),
+                options=month_options,
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
+                key="tab1_sel_month"
             )
 
-        if sel_period == all_period_opt:
-            df_tab1 = df.copy()
+        df_tab1 = df.copy()
+        period_labels = []
+        
+        if sel_year_t1 not in ["Tất cả", "すべて"]:
+            df_tab1 = df_tab1[df_tab1['clean_period'].astype(str).str.endswith(f"/{sel_year_t1}")]
+            period_labels.append(str(sel_year_t1))
+            
+        if sel_month_t1 not in ["Tất cả", "すべて"]:
+            month_str = f"T{sel_month_t1:02d}/"
+            df_tab1 = df_tab1[df_tab1['clean_period'].astype(str).str.startswith(month_str)]
+            period_labels.append(t(f"Tháng {sel_month_t1}", f"{sel_month_t1}月"))
+            
+        if not period_labels:
             period_label = t("Toàn bộ thời gian", "全期間")
         else:
-            df_tab1 = df[df['clean_period'] == sel_period].copy()
-            period_label = sel_period
+            period_label = " - ".join(period_labels)
 
         if df_tab1.empty or df_tab1['ot_hours'].sum() <= 0:
             from components.ui_utils import render_empty_state
@@ -385,25 +411,42 @@ def render_project_history():
         all_proj_opt = t("📂 --- Tất cả dự án ---", "📂 --- すべてのプロジェクト ---")
         project_options = [all_proj_opt] + unique_projects
 
-        col_t2_1, col_t2_2 = st.columns([5, 5])
+        col_t2_1, col_t2_y, col_t2_m = st.columns([5, 2.5, 2.5])
         with col_t2_1:
             sel_project = st.selectbox(
                 t("📌 Chọn Dự Án Cần Tra Cứu:", "📌 プロジェクトを選択:"),
                 options=project_options,
                 key="tab2_sel_project"
             )
-        with col_t2_2:
-            sel_period_t2 = st.selectbox(
-                t("📅 Lọc theo Tháng / Kỳ thanh toán:", "📅 月・支払期を選択:"),
-                options=period_options,
-                key="tab2_sel_period"
+        with col_t2_y:
+            sel_year_t2 = st.selectbox(
+                t("📅 Lọc theo Năm:", "📅 年を選択:"),
+                options=year_options,
+                key="tab2_sel_year"
+            )
+        with col_t2_m:
+            sel_month_t2 = st.selectbox(
+                t("📅 Lọc theo Tháng:", "📅 月を選択:"),
+                options=month_options,
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
+                key="tab2_sel_month"
             )
 
         df_t2 = df.copy()
         if sel_project != all_proj_opt:
             df_t2 = df_t2[df_t2['order_name'] == sel_project]
-        if sel_period_t2 != all_period_opt:
-            df_t2 = df_t2[df_t2['clean_period'] == sel_period_t2]
+            
+        period_labels_t2 = []
+        if sel_year_t2 not in ["Tất cả", "すべて"]:
+            df_t2 = df_t2[df_t2['clean_period'].astype(str).str.endswith(f"/{sel_year_t2}")]
+            period_labels_t2.append(str(sel_year_t2))
+            
+        if sel_month_t2 not in ["Tất cả", "すべて"]:
+            month_str = f"T{sel_month_t2:02d}/"
+            df_t2 = df_t2[df_t2['clean_period'].astype(str).str.startswith(month_str)]
+            period_labels_t2.append(t(f"Tháng {sel_month_t2}", f"{sel_month_t2}月"))
+            
+        sel_period_t2_label = " - ".join(period_labels_t2) if period_labels_t2 else all_period_opt
 
         if df_t2.empty or df_t2['ot_hours'].sum() <= 0:
             from components.ui_utils import render_empty_state
@@ -417,7 +460,7 @@ def render_project_history():
             # Top Banner & 4 KPI Cards
             st.markdown(f"""
             <h3 style='font-size: 18px; margin-bottom: 20px;'>
-                {sel_project if sel_project != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2 if sel_period_t2 != all_period_opt else t('Toàn bộ thời gian', '全期間')})
+                {sel_project if sel_project != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2_label if sel_period_t2_label != all_period_opt else t('Toàn bộ thời gian', '全期間')})
             </h3>
             """, unsafe_allow_html=True)
 
