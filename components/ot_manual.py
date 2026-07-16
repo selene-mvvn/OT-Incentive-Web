@@ -1301,12 +1301,15 @@ def render_project_data():
                 proj_recs = st.session_state.get('ot_records', [])
                 card_title = t('TỔNG NGÂN SÁCH OT TRONG BẢNG CHỜ XUẤT', '待機リスト全体のOT予算集計')
             total_proj_hrs = sum(float(r.get('ot_hours', 0)) for r in proj_recs)
-            total_proj_cost = 0
+            total_proj_cost = 0.0
             for r in proj_recs:
                 for k, v in r.items():
                     if str(k).endswith('%'):
-                        try: total_proj_cost += float(v)
-                        except: pass
+                        try:
+                            if pd.notna(v) and str(v).strip() not in ['', 'nan', 'None']:
+                                total_proj_cost += float(v)
+                        except:
+                            pass
             emp_set = len(set(str(r.get('employee_name', '')) for r in proj_recs if r.get('employee_name')))
             
             border_color = "#00B0F0"

@@ -11,15 +11,18 @@ def get_record_cost(r):
     for k, v in r.items():
         if str(k).endswith('%'):
             try:
-                cost += float(v)
+                if pd.notna(v) and str(v).strip() not in ['', 'nan', 'None']:
+                    cost += float(v)
             except:
                 pass
-    if cost == 0.0:
+    if pd.isna(cost) or cost == 0.0:
         try:
-            cost = float(r.get('ot_pay', 0.0))
+            val = r.get('ot_pay', 0.0)
+            if pd.notna(val) and str(val).strip() not in ['', 'nan', 'None']:
+                cost = float(val)
         except:
             pass
-    return cost
+    return float(cost) if pd.notna(cost) else 0.0
 
 def get_clean_period(row):
     p = str(row.get('payment_period', '')).strip()
