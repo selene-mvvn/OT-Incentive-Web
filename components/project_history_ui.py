@@ -131,8 +131,8 @@ def render_project_history():
     period_options = [all_period_opt] + unique_periods
 
     tab1, tab2 = st.tabs([
-        t("📊 PHÂN BỔ DỰ ÁN THEO THÁNG", "📊 プロジェクト月別分布"),
-        t("🔍 TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "🔍 プロジェクト別詳細分析")
+        t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
+        t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析")
     ])
 
     # ==================== TAB 1: PHÂN BỔ DỰ ÁN ====================
