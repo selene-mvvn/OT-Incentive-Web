@@ -473,10 +473,10 @@ st.markdown("""
     /* Radio buttons in sidebar */
     [data-testid="stSidebar"] div[role="radiogroup"] label {
         background-color: transparent;
-        padding: 8px 14px;
+        padding: 9px 14px;
         border-radius: 8px;
         border: 1px solid transparent;
-        margin: 2px 15px;
+        margin: 4px 15px;
         transition: all 0.2s ease;
         cursor: pointer;
     }
@@ -513,7 +513,7 @@ st.markdown("""
     }
     [data-testid="stSidebar"] div[role="radiogroup"] > div,
     [data-testid="stSidebar"] div[role="radiogroup"] {
-        gap: 3px !important;
+        gap: 6px !important;
         padding-bottom: 120px !important;
     }
 
@@ -1648,9 +1648,9 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(4) {
                     margin-left: 24px !important;
                     margin-right: 14px !important;
-                    margin-top: 1px !important;
-                    margin-bottom: 1px !important;
-                    padding: 6px 10px !important;
+                    margin-top: 3px !important;
+                    margin-bottom: 3px !important;
+                    padding: 8px 12px !important;
                     border-left: 2px solid rgba(0, 0, 0, 0.1) !important;
                     border-radius: 0 8px 8px 0;
                 }
@@ -1668,7 +1668,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 6px !important;
+                    margin-top: 10px !important;
                 }
             </style>
             """, unsafe_allow_html=True)
@@ -1696,7 +1696,7 @@ else:
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(5),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(6),
                 [data-testid="stSidebar"] div[role="radiogroup"] label:nth-child(7) {
-                    margin-top: 6px !important;
+                    margin-top: 10px !important;
                 }
             </style>
             """, unsafe_allow_html=True)
