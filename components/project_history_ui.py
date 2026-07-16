@@ -121,7 +121,7 @@ def render_project_history():
                             {t('TỔNG GIỜ OT', '残業時間合計')}
                         </div>
                         <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">schedule</span>
+                            <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">schedule</span>
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
@@ -134,7 +134,7 @@ def render_project_history():
                             {t('DỰ TÍNH CHI PHÍ', '予想支出額')}
                         </div>
                         <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">payments</span>
+                            <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">payments</span>
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
@@ -147,7 +147,7 @@ def render_project_history():
                             {t('SỐ DỰ ÁN THAM GIA', '対象プロジェクト数')}
                         </div>
                         <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">folder</span>
+                            <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">folder</span>
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
@@ -160,7 +160,7 @@ def render_project_history():
                             {t('SỐ NHÂN SỰ OT', '対象スタッフ数')}
                         </div>
                         <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); flex-shrink: 0;'>
-                            <span class="material-symbols-rounded" style="font-size: 20px; color: #ffffff !important;">group</span>
+                            <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">group</span>
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
