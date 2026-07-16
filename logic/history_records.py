@@ -73,9 +73,11 @@ def get_records(file_type="ot", filter_active_employees=True):
             emp_df = get_employees_df()
             if not emp_df.empty and "Tên NV" in emp_df.columns:
                 valid_names = set(emp_df["Tên NV"].dropna().astype(str).str.strip())
-                records = [r for r in records if str(r.get("employee_name", "")).strip() in valid_names]
+                records = [r for r in records if isinstance(r, dict) and str(r.get("employee_name", "")).strip() in valid_names]
         except Exception as e:
+            import traceback
             print(f"Error filtering records by active employees: {e}")
+            traceback.print_exc()
             
     return records
 
