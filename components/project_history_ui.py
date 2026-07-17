@@ -585,7 +585,7 @@ def render_project_history():
                         padding: 22px 26px; margin-top: 10px; margin-bottom: 24px;
                         box-shadow: 0 8px 25px rgba(0, 176, 240, 0.12);">
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 14px;">
-                    <span style="font-size: 26px;">📊</span>
+                    <span style="font-size: 26px;">🔬</span>
                     <span style="font-size: 17.5px; font-weight: 800; color: #0284c7; letter-spacing: 0.3px; text-transform: uppercase;">
                         {t('Báo cáo Phân tích đối chứng chuyên sâu (Executive Benchmark Briefing)', 'プロジェクト別 深度比較分析 & 運用効率評価')}
                     </span>
