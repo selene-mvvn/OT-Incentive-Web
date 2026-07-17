@@ -71,8 +71,22 @@ def render_project_history():
         header[data-testid="stHeader"], [data-testid="stToolbar"] { display: none !important; }
         
         /* Hide tabs navigation */
-        [data-testid="stTabs"] > div:first-child { display: none !important; }
+        [data-testid="stTabs"] > div:first-child, [role="tablist"] { display: none !important; }
         
+        /* Force ALL tab contents to display for the report */
+        [role="tabpanel"], [data-testid="stTabs"] > div:not(:first-child) { 
+            display: block !important; 
+            visibility: visible !important; 
+            height: auto !important; 
+            opacity: 1 !important; 
+        }
+        
+        /* Add page break between tabs if needed */
+        [role="tabpanel"]:nth-child(3) {
+            page-break-before: always;
+            break-before: page;
+        }
+
         /* Hide interactive elements: buttons, selectboxes, radios */
         button, [data-testid="stSelectbox"], [data-testid="stRadio"] { display: none !important; }
         
@@ -84,8 +98,8 @@ def render_project_history():
             max-width: 100% !important; 
         }
         
-        /* Hide default footers/menus */
-        #MainMenu, footer { display: none !important; }
+        /* Hide default footers/menus and floating ? button (iframe) */
+        #MainMenu, footer, iframe { display: none !important; }
     }
     </style>
     """, unsafe_allow_html=True)
