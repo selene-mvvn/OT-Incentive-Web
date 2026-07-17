@@ -54,14 +54,21 @@ def render_project_history():
     
     /* PDF Report Formatting */
     @media print {
+        * {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+            color-adjust: exact !important;
+        }
+        
         [data-testid="stSidebar"], header[data-testid="stHeader"], [data-testid="stToolbar"] { display: none !important; }
         button, [data-testid="stSelectbox"], [data-testid="stRadio"] { display: none !important; }
         .block-container { padding: 0 !important; max-width: 100% !important; }
         
         /* Hide all Streamlit Cloud badges and iframes */
         #MainMenu, footer, iframe:not([width="0"]), 
-        .stAppDeployButton, .viewerBadge_container, .stDeployButton, 
-        [data-testid="stAppDeployButton"], [class*="viewerBadge"] { 
+        .stAppDeployButton, .stDeployButton, .viewerBadge_container, 
+        [class*="DeployButton"], [class*="viewerBadge"], [class*="ViewerBadge"],
+        div[style*="position: fixed"][style*="bottom:"] { 
             display: none !important; 
         }
     }
@@ -159,8 +166,8 @@ def render_project_history():
 
     if is_printing:
         tab1 = st.container()
+        st.markdown("<div style='page-break-after: always; display: block;'></div>", unsafe_allow_html=True)
         tab2 = st.container()
-        st.markdown("<div style='page-break-before: always;'></div>", unsafe_allow_html=True)
     else:
         tab1, tab2 = st.tabs([
             t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
