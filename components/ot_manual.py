@@ -435,8 +435,7 @@ def render_base_data():
             head_col1, head_col2 = st.columns([7.8, 2.2])
             with head_col1:
                 st.markdown(
-                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3>"
-                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Quản lý thông tin nhân sự.', 'スタッフ情報の管理。')}</div>",
+                    f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3>",
                     unsafe_allow_html=True
                 )
 
@@ -521,9 +520,12 @@ def render_base_data():
                     display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}").astype(str)
 
             st.markdown(f"""
-            <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: -36px; padding-right: 140px; position: relative; z-index: 999; pointer-events: none;">
-                <div title="{t('Lưu ý: Cột Lương Gross sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.', '注:「総支給額」は保存時に自動計算されます。')}" style="pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; color: #94a3b8; cursor: help; transition: color 0.2s;">
-                    <span class="material-symbols-rounded" style="font-size: 19px;">help</span>
+            <div style="position: relative; width: 100%; height: 0px; z-index: 999; pointer-events: none;">
+                <div title="{t('Lưu ý: Cột Lương Gross sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.', '注:「総支給額」は保存時に自動計算されます。')}" 
+                     style="position: absolute; right: 145px; top: 12px; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #838e9d; cursor: help; opacity: 0.8; transition: opacity 0.2s;">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"/>
+                    </svg>
                 </div>
             </div>
             """, unsafe_allow_html=True)
