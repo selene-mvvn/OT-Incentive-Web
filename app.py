@@ -404,9 +404,6 @@ st.markdown("""
     }
 
     /* Input Fields */
-    div[data-baseweb="input"],
-    div[data-baseweb="base-input"],
-    div[data-baseweb="select"] > div,
     div[data-testid="stTextInput"] > div > div,
     div[data-testid="stNumberInput"] > div > div,
     div[data-testid="stSelectbox"] > div > div {
@@ -417,9 +414,6 @@ st.markdown("""
     }
 
     /* Exclude Data Editor internal inputs from global focus styles to avoid breaking the grid */
-    div[data-baseweb="input"]:not([class*="glide"]):focus-within,
-    div[data-baseweb="base-input"]:not([class*="glide"]):focus-within,
-    div[data-baseweb="select"] > div:focus-within,
     div[data-testid="stTextInput"] > div > div:focus-within,
     div[data-testid="stNumberInput"] > div > div:focus-within,
     div[data-testid="stSelectbox"] > div > div:focus-within {
@@ -1060,8 +1054,7 @@ def show_sticky_note_exit_modal():
     div[data-testid="stModal"] > div:nth-child(2) > div,
     div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
-    div[data-testid="stModal"] [data-testid="stDialog"],
-    [role="dialog"] {
+    div[data-testid="stModal"] [data-testid="stDialog"] {
         width: 530px !important;
         min-width: 530px !important;
         max-width: 95vw !important;
