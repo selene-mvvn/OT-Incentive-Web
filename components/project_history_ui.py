@@ -63,6 +63,16 @@ def render_project_history():
     all_raw = copy.deepcopy(hist_records) + copy.deepcopy(manual_pending) + copy.deepcopy(excel_pending)
     all_records = deduplicate_records(all_raw, "ot")
 
+    # Filter out deleted employees that might be stuck in session state
+    try:
+        from logic.employee_data import get_employees_df
+        emp_df = get_employees_df()
+        if not emp_df.empty and "Tên NV" in emp_df.columns:
+            valid_names = set(emp_df["Tên NV"].dropna().astype(str).str.strip())
+            all_records = [r for r in all_records if str(r.get("employee_name", "")).strip() in valid_names]
+    except Exception:
+        pass
+
     if not all_records:
         from components.ui_utils import render_empty_state
         render_empty_state(t('Chưa có dữ liệu dự án nào trong hệ thống hoặc bảng chờ.', 'システムまたは待機リストにプロジェクトデータがありません。'), icon="folder_open", height=150)

@@ -85,6 +85,13 @@ def save_employees_df(df):
                         r for r in st.session_state["ot_records"] 
                         if str(r.get("employee_name", "")).strip() in valid_names
                     ]
+                
+                # 3. Clean session state for excel OT records
+                if "ot_excel_records" in st.session_state and isinstance(st.session_state["ot_excel_records"], list):
+                    st.session_state["ot_excel_records"] = [
+                        r for r in st.session_state["ot_excel_records"] 
+                        if str(r.get("employee_name", "")).strip() in valid_names
+                    ]
         except Exception as e:
             print(f"Error cleaning up records for deleted employees: {e}")
             
