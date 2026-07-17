@@ -311,8 +311,8 @@ def render_project_history():
                             yanchor='top',
                             y=0.95,
                             xanchor='left',
-                            x=0.84,
-                            font=dict(size=11.5, color='#1e293b'),
+                            x=0.74,
+                            font=dict(size=13.5, color='#1e293b'),
                             bgcolor='rgba(255,255,255,0.85)',
                             bordercolor='#cbd5e1',
                             borderwidth=1
@@ -327,7 +327,7 @@ def render_project_history():
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
                     bar_w_t1 = 0.25 if len(bar_df) == 1 else (0.35 if len(bar_df) == 2 else (0.45 if len(bar_df) == 3 else None))
                     max_hrs_t1 = bar_df['Hours'].max() if not bar_df.empty else 0
-                    text_colors_t1 = ['#ffffff' if (i >= len(bar_df) - 3 and max_hrs_t1 > 0 and bar_df.iloc[i]['Hours'] >= 0.55 * max_hrs_t1) else '#0f172a' for i in range(len(bar_df))]
+                    text_colors_t1 = ['#ffffff' if i == len(bar_df) - 1 else '#0f172a' for i in range(len(bar_df))]
                     pos_list_t1 = ['inside' if (max_hrs_t1 > 0 and bar_df.iloc[i]['Hours'] >= 0.35 * max_hrs_t1) else 'outside' for i in range(len(bar_df))]
                     fig_pbar = go.Figure(go.Bar(
                         x=bar_df['Hours'],
