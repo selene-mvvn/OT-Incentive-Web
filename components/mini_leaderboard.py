@@ -88,13 +88,27 @@ def show_mini_edit_dialog(data_type, df):
     else:
         years = []
     
-    year_options = [t("Tất cả", "すべて")] + years
-    sel_year = st.selectbox(t("Chọn năm:", "年を選択:"), options=year_options, key=f"dialog_year_{data_type}")
+    c_y, c_m = st.columns(2)
+    with c_y:
+        year_options = [t("Tất cả", "すべて")] + years
+        sel_year = st.selectbox(t("Chọn năm:", "年を選択:"), options=year_options, key=f"dialog_year_{data_type}")
     
     if sel_year not in ["Tất cả", "すべて"]:
         edit_df = df[df['date_obj_edit'].dt.year == sel_year].copy()
     else:
         edit_df = df.copy()
+        
+    if date_col in df.columns:
+        months = sorted(edit_df['date_obj_edit'].dt.month.dropna().astype(int).unique().tolist())
+    else:
+        months = []
+        
+    with c_m:
+        month_options = [t("Tất cả", "すべて")] + months
+        sel_month = st.selectbox(t("Chọn tháng:", "月を選択:"), options=month_options, key=f"dialog_month_{data_type}")
+        
+    if sel_month not in ["Tất cả", "すべて"]:
+        edit_df = edit_df[edit_df['date_obj_edit'].dt.month == sel_month].copy()
 
     if data_type == "ot":
         col_order = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df.columns if str(c).endswith("%")]
