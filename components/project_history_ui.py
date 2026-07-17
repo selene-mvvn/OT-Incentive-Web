@@ -587,7 +587,7 @@ def render_project_history():
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 14px;">
                     <span style="font-size: 26px;">🔬</span>
                     <span style="font-size: 17.5px; font-weight: 800; color: #0284c7; letter-spacing: 0.3px; text-transform: uppercase;">
-                        {t('Báo cáo Phân tích đối chứng chuyên sâu (Executive Benchmark Briefing)', 'プロジェクト別 深度比較分析 & 運用効率評価')}
+                        {t('Báo cáo Phân tích đối chứng chuyên sâu', 'プロジェクト別 深度比較分析 & 運用効率評価')}
                     </span>
                 </div>
                 <div style="font-size: 14.5px; color: #334155; line-height: 1.75; display: flex; flex-direction: column; gap: 14px;">
