@@ -71,20 +71,30 @@ def render_project_history():
         header[data-testid="stHeader"], [data-testid="stToolbar"] { display: none !important; }
         
         /* Hide tabs navigation */
-        [data-testid="stTabs"] > div:first-child, [role="tablist"] { display: none !important; }
+        [data-testid="stTabs"] > div:first-child, 
+        [role="tablist"], 
+        [data-baseweb="tab-list"] { 
+            display: none !important; 
+        }
         
         /* Force ALL tab contents to display for the report */
-        [role="tabpanel"], [data-testid="stTabs"] > div:not(:first-child) { 
+        [data-testid="stTabs"] [role="tabpanel"],
+        [data-testid="stTabs"] [data-baseweb="tab-panel"],
+        [data-testid="stTabs"] [hidden],
+        [data-testid="stTabs"] [aria-hidden="true"] { 
             display: block !important; 
             visibility: visible !important; 
             height: auto !important; 
-            opacity: 1 !important; 
+            opacity: 1 !important;
+            position: static !important;
+            transform: none !important;
         }
         
         /* Add page break between tabs if needed */
-        [role="tabpanel"]:nth-child(3) {
-            page-break-before: always;
-            break-before: page;
+        [data-testid="stTabs"] [role="tabpanel"]:nth-of-type(2),
+        [data-testid="stTabs"] [data-baseweb="tab-panel"]:nth-of-type(2) {
+            page-break-before: always !important;
+            break-before: page !important;
         }
 
         /* Hide interactive elements: buttons, selectboxes, radios */
@@ -98,8 +108,13 @@ def render_project_history():
             max-width: 100% !important; 
         }
         
-        /* Hide default footers/menus and floating ? button (iframe) but KEEP the invisible print iframe */
-        #MainMenu, footer, iframe:not([width="0"]) { display: none !important; }
+        /* Hide default footers/menus and floating ? button (ViewerBadge) */
+        #MainMenu, footer, iframe:not([width="0"]), 
+        .viewerBadge_container, .viewerBadge_link, 
+        [class*="viewerBadge"], [data-testid="stAppDeployButton"],
+        [class*="stFloatingActionButton"] { 
+            display: none !important; 
+        }
     }
     </style>
     """, unsafe_allow_html=True)
