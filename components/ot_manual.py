@@ -436,7 +436,7 @@ def render_base_data():
             with head_col1:
                 st.markdown(
                     f"<h3 style='font-size: 20px; font-weight: 600; margin: 0 0 4px 0;'>{t('THÔNG TIN NHÂN SỰ & CƠ CẤU LƯƠNG', 'スタッフ情報と給与構成')}</h3>"
-                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Quản lý thông tin nhân sự. Lưu ý: Cột Lương Gross sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.', 'スタッフ情報の管理。注:「総支給額」は保存時に自動計算されます。')}</div>",
+                    f"<div style='font-size: 13.5px; color: #64748b; margin-bottom: 4px;'>{t('Quản lý thông tin nhân sự.', 'スタッフ情報の管理。')}</div>",
                     unsafe_allow_html=True
                 )
 
@@ -519,6 +519,14 @@ def render_base_data():
                 else:
                     display_df[c] = pd.to_numeric(display_df[c], errors='coerce').fillna(0)
                     display_df[c] = display_df[c].apply(lambda x: f"{int(x):,}").astype(str)
+
+            st.markdown(f"""
+            <div style="display: flex; justify-content: flex-end; width: 100%; margin-bottom: -36px; padding-right: 140px; position: relative; z-index: 999; pointer-events: none;">
+                <div title="{t('Lưu ý: Cột Lương Gross sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.', '注:「総支給額」は保存時に自動計算されます。')}" style="pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; color: #94a3b8; cursor: help; transition: color 0.2s;">
+                    <span class="material-symbols-rounded" style="font-size: 19px;">help</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
 
             edited_emp = st.data_editor(
                 display_df,
