@@ -157,14 +157,14 @@ def render_project_history():
                     <div>{insight_text}</div>
                 </div>
                 """
-        print_html = f"""
-        <div style='text-align: right;'>
-            <button onclick='window.print()' style='background: white; border: 1px solid #cbd5e1; padding: 6px 12px; border-radius: 6px; font-size: 13.5px; font-weight: 600; color: #334155; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);'>
-                <span class="material-symbols-rounded" style="font-size: 18px;">print</span> {t("Xuất Báo Cáo (PDF)", "レポートを印刷 (PDF)")}
-            </button>
-        </div>
-        """
-        st.markdown(f"<div style='display: flex; flex-direction: column; align-items: flex-end;'>{insights_html}{print_html}</div>", unsafe_allow_html=True)
+        if insights_html:
+            st.markdown(insights_html, unsafe_allow_html=True)
+            
+        c_spacer, c_btn = st.columns([6, 4])
+        with c_btn:
+            if st.button(t("🖨️ In Báo Cáo (PDF)", "🖨️ レポートを印刷 (PDF)"), use_container_width=True):
+                import streamlit.components.v1 as components
+                components.html("<script>window.parent.print();</script>", height=0, width=0)
 
     tab1, tab2 = st.tabs([
         t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
