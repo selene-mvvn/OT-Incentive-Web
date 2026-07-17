@@ -61,6 +61,32 @@ def render_project_history():
         margin-top: 0px !important;
         padding-top: 0px !important;
     }
+    
+    /* PDF Report Formatting */
+    @media print {
+        /* Hide sidebar */
+        [data-testid="stSidebar"] { display: none !important; }
+        
+        /* Hide Streamlit top header and toolbar */
+        header[data-testid="stHeader"], [data-testid="stToolbar"] { display: none !important; }
+        
+        /* Hide tabs navigation */
+        [data-testid="stTabs"] > div:first-child { display: none !important; }
+        
+        /* Hide interactive elements: buttons, selectboxes, radios */
+        button, [data-testid="stSelectbox"], [data-testid="stRadio"] { display: none !important; }
+        
+        /* Expand content to full width for printing */
+        .block-container { 
+            padding-top: 0rem !important; 
+            padding-left: 0rem !important; 
+            padding-right: 0rem !important; 
+            max-width: 100% !important; 
+        }
+        
+        /* Hide default footers/menus */
+        #MainMenu, footer { display: none !important; }
+    }
     </style>
     """, unsafe_allow_html=True)
 
