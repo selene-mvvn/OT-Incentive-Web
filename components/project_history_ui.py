@@ -661,12 +661,9 @@ def render_project_history():
             c_left_view, c_right_view = st.columns(2, gap="large")
             
             with c_left_view:
-                st.markdown(f"<div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; border-top: 4px solid #3b82f6;'>", unsafe_allow_html=True)
                 render_project_details(df_t2_main, sel_project, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=True)
-                st.markdown("</div>", unsafe_allow_html=True)
 
             with c_right_view:
-                st.markdown(f"<div style='background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; border-top: 4px solid #ec4899;'>", unsafe_allow_html=True)
                 df_t2_comp = df.copy()
                 if sel_project_compare != all_proj_opt:
                     df_t2_comp = df_t2_comp[df_t2_comp['order_name'] == sel_project_compare]
@@ -677,7 +674,6 @@ def render_project_history():
                     df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.startswith(month_str)]
                 
                 render_project_details(df_t2_comp, sel_project_compare, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=True)
-                st.markdown("</div>", unsafe_allow_html=True)
         else:
             render_project_details(df_t2_main, sel_project, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False)
 
