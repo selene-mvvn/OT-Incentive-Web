@@ -175,8 +175,8 @@ def render_action_history():
         # Removed redundant <br> to reduce gap
         # Get selected IDs directly from Streamlit's native checkbox states
         selected_ids = [
-            k.replace("chk_sel_", "") for k, v in st.session_state.items() 
-            if k.startswith("chk_sel_") and v is True
+            k.replace("log_chk_", "") for k, v in st.session_state.items() 
+            if k.startswith("log_chk_") and v is True
         ]
         if selected_ids:
             import streamlit.components.v1 as components
@@ -419,7 +419,7 @@ def render_action_history():
             with st.container(border=True):
                 c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1.5], vertical_alignment="center")
                 with c_chk:
-                    st.checkbox(" ", key=f"chk_sel_{log_id}")
+                    st.checkbox(" ", key=f"log_chk_{log_id}")
                 with c_head:
                     if is_missing: dot_color = "#e74c3c"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
@@ -533,10 +533,10 @@ def render_action_history():
                 def _do_bulk_delete():
                     for lid in selected_ids:
                         delete_action_log(lid)
-                        if f"chk_sel_{lid}" in st.session_state:
-                            st.session_state[f"chk_sel_{lid}"] = False
+                        if f"log_chk_{lid}" in st.session_state:
+                            st.session_state[f"log_chk_{lid}"] = False
                     for k in list(st.session_state.keys()):
-                        if k.startswith("chk_sel_"):
+                        if k.startswith("log_chk_"):
                             st.session_state[k] = False
 
                 if st.button(t("XÓA", "削除"), key="bulk_delete", on_click=_do_bulk_delete):
@@ -544,10 +544,10 @@ def render_action_history():
 
                 def _do_bulk_uncheck():
                     for lid in selected_ids:
-                        if f"chk_sel_{lid}" in st.session_state:
-                            st.session_state[f"chk_sel_{lid}"] = False
+                        if f"log_chk_{lid}" in st.session_state:
+                            st.session_state[f"log_chk_{lid}"] = False
                     for k in list(st.session_state.keys()):
-                        if k.startswith("chk_sel_"):
+                        if k.startswith("log_chk_"):
                             st.session_state[k] = False
 
                 if st.button(t("BỎ CHỌN", "選択解除"), key="bulk_uncheck", on_click=_do_bulk_uncheck):
