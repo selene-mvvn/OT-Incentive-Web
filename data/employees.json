@@ -1,24 +1,116 @@
 [
-    {
-        "Mã NV": "V050006",
-        "Tên NV": "Phạm Hồng Quân",
-        "Phòng ban": "",
-        "Chức vụ": "",
-        "Lương cơ bản": 0,
-        "PC ăn trưa": 0,
-        "PC khác": 0,
-        "Ngày bắt đầu tính": null,
-        "Lương Gross": 0
-    },
-    {
-        "Mã NV": "V050007",
-        "Tên NV": "Nguyễn Đăng Hưng",
-        "Phòng ban": "",
-        "Chức vụ": "",
-        "Lương cơ bản": 0,
-        "PC ăn trưa": 0,
-        "PC khác": 0,
-        "Ngày bắt đầu tính": null,
-        "Lương Gross": 0
-    }
+  {
+    "Ch\u1ee9c v\u1ee5": "Tr\u01b0\u1edfng ph\u00f2ng",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM028",
+    "Ng\u00e0y b\u1eaft \u0111\u1ea7u t\u00ednh": "2026-07-01",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "\u0110i\u1ec7n \u0111i\u1ec1u khi\u1ec3n",
+    "T\u00ean NV": "H\u00e0 V\u0103n \u0110\u1ea1o"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Tr\u01b0\u1edfng ph\u00f2ng",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM011",
+    "Ng\u00e0y b\u1eaft \u0111\u1ea7u t\u00ednh": "2026-07-06",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "C\u01a1 kh\u00ed",
+    "T\u00ean NV": "L\u00ea V\u0103n Long"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Tr\u01b0\u1edfng ph\u00f2ng",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM012",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "H\u00e0nh ch\u00ednh nh\u00e2n s\u1ef1",
+    "T\u00ean NV": "L\u00ea Thanh Ph\u01b0\u01a1ng"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM022",
+    "Ng\u00e0y b\u1eaft \u0111\u1ea7u t\u00ednh": "2026-01-01",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "\u0110i\u1ec7n \u0111i\u1ec1u khi\u1ec3n",
+    "T\u00ean NV": "Nguy\u1ec5n \u0110\u0103ng H\u01b0ng"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM024",
+    "Ng\u00e0y b\u1eaft \u0111\u1ea7u t\u00ednh": "2026-01-01",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "\u0110i\u1ec7n \u0111i\u1ec1u khi\u1ec3n",
+    "T\u00ean NV": "Ph\u1ea1m H\u1ed3ng Qu\u00e2n"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean Part-time",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM037",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "\u0110i\u1ec7n \u0111i\u1ec1u khi\u1ec3n",
+    "T\u00ean NV": "L\u00ea Th\u1ecb Kh\u00e1nh H\u1eb1ng"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean Part-time",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM038",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "H\u00e0nh ch\u00ednh nh\u00e2n s\u1ef1",
+    "T\u00ean NV": "Nguy\u1ec5n Minh Nguy\u1ec7t"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean c\u0169",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM000",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "C\u01a1 kh\u00ed",
+    "T\u00ean NV": "Nguy\u1ec5n Th\u00e0nh Tu\u1ea5n"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean c\u0169",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM000",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "C\u01a1 kh\u00ed",
+    "T\u00ean NV": "D\u01b0\u01a1ng M\u1ea1nh Ti\u1ebfn"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean c\u0169",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM000",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "C\u01a1 kh\u00ed",
+    "T\u00ean NV": "Minh"
+  },
+  {
+    "Ch\u1ee9c v\u1ee5": "Nh\u00e2n vi\u00ean",
+    "L\u01b0\u01a1ng Gross": 1840000,
+    "L\u01b0\u01a1ng c\u01a1 b\u1ea3n": 1700000,
+    "M\u00e3 NV": "VM039",
+    "PC kh\u00e1c": 100000,
+    "PC \u0103n tr\u01b0a": 40000,
+    "Ph\u00f2ng ban": "C\u01a1 kh\u00ed",
+    "T\u00ean NV": "Nam"
+  }
 ]
