@@ -39,8 +39,6 @@ def get_clean_period(row):
     return t("Khác", "その他")
 
 def render_project_history():
-    is_printing = st.session_state.get('pdf_print_mode', False)
-
     st.markdown("""
     <style>
     /* Hide Streamlit dataframe element toolbar right above tables */
@@ -51,46 +49,11 @@ def render_project_history():
     }
     [data-testid="stDataFrame"] { margin-top: -10px !important; }
     [data-testid="stDataFrame"] > div { margin-top: 0px !important; padding-top: 0px !important; }
-    
-    /* PDF Report Formatting */
-    @media print {
-        * {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-            color-adjust: exact !important;
-        }
-        
-        [data-testid="stSidebar"], header[data-testid="stHeader"], [data-testid="stToolbar"] { display: none !important; }
-        button, [data-testid="stSelectbox"], [data-testid="stRadio"] { display: none !important; }
-        .block-container { padding: 0 !important; max-width: 100% !important; }
-        
-        /* Hide all Streamlit Cloud badges and iframes */
-        #MainMenu, footer, iframe:not([width="0"]), 
-        .stAppDeployButton, .stDeployButton, .viewerBadge_container, 
-        [class*="DeployButton"], [class*="viewerBadge"], [class*="ViewerBadge"],
-        div[style*="position: fixed"][style*="bottom:"] { 
-            display: none !important; 
-        }
-    }
     </style>
     """, unsafe_allow_html=True)
 
-    col_hdr_1, col_hdr_2 = st.columns([8, 2])
-    with col_hdr_1:
-        st.markdown(f"<h2 style='font-size: 28px; font-weight: 600; color: #1e293b; margin-bottom: 4px;'>{t('PHÂN BỔ & LỊCH SỬ DỰ ÁN (OT)', 'プロジェクト分析・履歴')}</h2>", unsafe_allow_html=True)
-        st.markdown(f"<div style='font-size: 14.5px; color: #64748b; margin-bottom: 20px;'>{t('Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo tháng/kỳ thanh toán.', 'プロジェクト別の残業時間分布と履歴を月別・案件別に詳細分析します。')}</div>", unsafe_allow_html=True)
-    with col_hdr_2:
-        st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
-        if not is_printing:
-            if st.button(t("🖨️ Xuất Báo Cáo PDF", "🖨️ PDF出力"), use_container_width=True):
-                st.session_state['pdf_print_mode'] = True
-                st.rerun()
-        else:
-            if st.button(t("🔙 Quay lại giao diện", "🔙 戻る"), use_container_width=True):
-                st.session_state['pdf_print_mode'] = False
-                st.rerun()
-            import streamlit.components.v1 as components
-            components.html("<script>setTimeout(() => window.parent.print(), 500);</script>", height=0, width=0)
+    st.markdown(f"<h2 style='font-size: 28px; font-weight: 600; color: #1e293b; margin-bottom: 4px;'>{t('PHÂN BỔ & LỊCH SỬ DỰ ÁN (OT)', 'プロジェクト分析・履歴')}</h2>", unsafe_allow_html=True)
+    st.markdown(f"<div style='font-size: 14.5px; color: #64748b; margin-bottom: 20px;'>{t('Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo tháng/kỳ thanh toán.', 'プロジェクト別の残業時間分布と履歴を月別・案件別に詳細分析します。')}</div>", unsafe_allow_html=True)
 
     # Combine all records: historical + pending manual session + pending excel session
     hist_records = get_records("ot")
@@ -164,20 +127,13 @@ def render_project_history():
     year_options = [t("Tất cả", "すべて")] + sorted(list(years), reverse=True)
     month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
 
-    if is_printing:
-        tab1 = st.container()
-        st.markdown("<div style='page-break-after: always; display: block;'></div>", unsafe_allow_html=True)
-        tab2 = st.container()
-    else:
-        tab1, tab2 = st.tabs([
-            t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
-            t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析")
-        ])
+    tab1, tab2 = st.tabs([
+        t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
+        t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析")
+    ])
 
     # ==================== TAB 1: PHÂN BỔ DỰ ÁN ====================
     with tab1:
-        if is_printing:
-            st.markdown(f"<h3 style='color: #0284c7; padding-bottom: 10px; border-bottom: 2px solid #0284c7; margin-bottom: 20px;'>{t('1. PHÂN BỔ DỰ ÁN THEO THÁNG', '1. プロジェクト月別分布')}</h3>", unsafe_allow_html=True)
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
         col_f1_y, col_f1_m, _ = st.columns([2, 2, 6])
         with col_f1_y:
@@ -448,8 +404,6 @@ def render_project_history():
 
     # ==================== TAB 2: TRA CỨU CHI TIẾT TỪNG DỰ ÁN ====================
     with tab2:
-        if is_printing:
-            st.markdown(f"<div style='page-break-before: always;'></div><h3 style='color: #0284c7; padding-bottom: 10px; border-bottom: 2px solid #0284c7; margin-bottom: 20px;'>{t('2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN', '2. プロジェクト別詳細分析')}</h3>", unsafe_allow_html=True)
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
         unique_projects = sorted(df['order_name'].unique().tolist())
         all_proj_opt = t("❖ --- Tất cả dự án ---", "❖ --- すべてのプロジェクト ---")
