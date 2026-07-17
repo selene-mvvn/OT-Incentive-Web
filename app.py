@@ -178,7 +178,13 @@ st.markdown("""
         display: none !important;
     }
 
-    h1, h2, h3 {
+    div[data-testid="stMarkdownContainer"] h1, 
+    div[data-testid="stMarkdownContainer"] h2, 
+    div[data-testid="stMarkdownContainer"] h3,
+    [data-testid="stHeader"] h1,
+    [data-testid="stHeader"] h2,
+    [data-testid="stHeader"] h3,
+    .stMarkdownContainer h1, .stMarkdownContainer h2, .stMarkdownContainer h3 {
         color: #2c3e50;
         text-transform: uppercase;
         font-weight: bold !important;
@@ -189,7 +195,11 @@ st.markdown("""
     }
     
     /* Add a custom blue line under h2 and h3 like the reference image */
-    h2::after, h3::after {
+    div[data-testid="stMarkdownContainer"] h2::after, 
+    div[data-testid="stMarkdownContainer"] h3::after,
+    [data-testid="stHeader"] h2::after,
+    [data-testid="stHeader"] h3::after,
+    .stMarkdownContainer h2::after, .stMarkdownContainer h3::after {
         content: "";
         position: absolute;
         left: 0;
