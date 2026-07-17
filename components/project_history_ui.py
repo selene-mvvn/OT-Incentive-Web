@@ -150,11 +150,11 @@ def render_project_history():
                 top1_name = top_proj.index[0]
                 pct = (top_proj.iloc[0] / top_proj.sum()) * 100
                 insight_text = t(
-                    f"<span class='material-symbols-rounded' style='font-size: 17px; color: #0284c7; margin-right: 4px;'>insights</span> <b>Tiêu Điểm:</b> Dự án <b>{top1_name}</b> chiếm nhiều OT nhất (<b>{pct:.1f}%</b>).",
-                    f"<span class='material-symbols-rounded' style='font-size: 17px; color: #0284c7; margin-right: 4px;'>insights</span> <b>自動分析:</b> プロジェクト <b>{top1_name}</b> が残業時間の多くを占めています (<b>{pct:.1f}%</b>)。"
+                    f"<span class='material-symbols-rounded' style='font-size: 18px; color: #38bdf8; margin-right: 6px;'>insights</span> <b style='color: #38bdf8;'>Tiêu Điểm:</b> <span style='margin-left: 4px;'>Dự án <b style='color: #ffffff;'>{top1_name}</b> chiếm <b style='color: #fbbf24;'>{pct:.1f}%</b> OT toàn cục.</span>",
+                    f"<span class='material-symbols-rounded' style='font-size: 18px; color: #38bdf8; margin-right: 6px;'>insights</span> <b style='color: #38bdf8;'>自動分析:</b> <span style='margin-left: 4px;'>案件 <b style='color: #ffffff;'>{top1_name}</b> が全体の <b style='color: #fbbf24;'>{pct:.1f}%</b> を占有。</span>"
                 )
                 insights_html = f"""
-                <div style='background: #ffffff; border: 1px solid #cbd5e1; padding: 7px 12px; border-radius: 6px; font-size: 13px; color: #334155; display: flex; align-items: center; margin-top: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);'>
+                <div style='background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; padding: 7px 14px; border-radius: 8px; font-size: 13.5px; color: #cbd5e1; display: flex; align-items: center; margin-top: 2px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);'>
                     <div style='display: flex; align-items: center;'>{insight_text}</div>
                 </div>
                 """
