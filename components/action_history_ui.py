@@ -173,13 +173,11 @@ def render_action_history():
 
 
         # Removed redundant <br> to reduce gap
-        if 'selected_logs' not in st.session_state:
-            st.session_state['selected_logs'] = {}
-
-        def toggle_log(log_id):
-            st.session_state['selected_logs'][log_id] = not st.session_state['selected_logs'].get(log_id, False)
-
-        selected_ids = [k for k, v in st.session_state.get('selected_logs', {}).items() if v]
+        # Get selected IDs directly from Streamlit's native checkbox states
+        selected_ids = [
+            k.replace("chk_sel_", "") for k, v in st.session_state.items() 
+            if k.startswith("chk_sel_") and v is True
+        ]
         if selected_ids:
             import streamlit.components.v1 as components
             components.html("""
@@ -421,7 +419,7 @@ def render_action_history():
             with st.container(border=True):
                 c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1.5], vertical_alignment="center")
                 with c_chk:
-                    st.checkbox(" ", key=f"chk_sel_{log_id}", value=st.session_state['selected_logs'].get(log_id, False), on_change=toggle_log, args=(log_id,))
+                    st.checkbox(" ", key=f"chk_sel_{log_id}")
                 with c_head:
                     if is_missing: dot_color = "#e74c3c"
                     filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
@@ -537,7 +535,9 @@ def render_action_history():
                         delete_action_log(lid)
                         if f"chk_sel_{lid}" in st.session_state:
                             st.session_state[f"chk_sel_{lid}"] = False
-                    st.session_state['selected_logs'] = {}
+                    for k in list(st.session_state.keys()):
+                        if k.startswith("chk_sel_"):
+                            st.session_state[k] = False
 
                 if st.button(t("XÓA", "削除"), key="bulk_delete", on_click=_do_bulk_delete):
                     pass
@@ -546,7 +546,9 @@ def render_action_history():
                     for lid in selected_ids:
                         if f"chk_sel_{lid}" in st.session_state:
                             st.session_state[f"chk_sel_{lid}"] = False
-                    st.session_state['selected_logs'] = {}
+                    for k in list(st.session_state.keys()):
+                        if k.startswith("chk_sel_"):
+                            st.session_state[k] = False
 
                 if st.button(t("BỎ CHỌN", "選択解除"), key="bulk_uncheck", on_click=_do_bulk_uncheck):
                     pass
