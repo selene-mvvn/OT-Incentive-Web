@@ -128,7 +128,7 @@ def render_project_history():
     month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
 
     tab1, tab2 = st.tabs([
-        t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
+        t("1. PHÂN BỔ DỰ ÁN & NGUỒN LỰC", "1. プロジェクトとリソースの配分"),
         t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析")
     ])
 
@@ -401,6 +401,48 @@ def render_project_history():
                         )
                     }
                 )
+
+            st.markdown("<hr style='margin: 25px 0;'>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px;'>🔥 {t('Ma Trận Phân Bổ Nguồn Lực (Giờ OT)', 'リソース配分マトリックス (残業時間)')}</div>", unsafe_allow_html=True)
+            
+            if not df_tab1.empty:
+                matrix_df = df_tab1.pivot_table(
+                    index='employee_name', 
+                    columns='order_name', 
+                    values='ot_hours', 
+                    aggfunc='sum'
+                ).fillna(0)
+                
+                if not matrix_df.empty:
+                    matrix_df.index.name = t('Nhân Viên', 'スタッフ名')
+                    col_total = t('Tổng (h)', '合計 (h)')
+                    matrix_df[col_total] = matrix_df.sum(axis=1)
+                    matrix_df = matrix_df.sort_values(col_total, ascending=False)
+                    
+                    proj_cols = [c for c in matrix_df.columns if c != col_total]
+                    
+                    def color_cells(val):
+                        if val == 0:
+                            return 'color: #cbd5e1; background-color: transparent;'
+                        elif val < 10:
+                            return 'background-color: #e0f2fe; color: #0284c7;'
+                        elif val < 20:
+                            return 'background-color: #bae6fd; color: #0369a1; font-weight: 500;'
+                        elif val < 40:
+                            return 'background-color: #38bdf8; color: #082f49; font-weight: 600;'
+                        else:
+                            return 'background-color: #0284c7; color: #ffffff; font-weight: 700;'
+                            
+                    if hasattr(matrix_df.style, 'map'):
+                        styled_matrix = matrix_df.style.map(color_cells, subset=proj_cols).format("{:.1f}")
+                    else:
+                        styled_matrix = matrix_df.style.applymap(color_cells, subset=proj_cols).format("{:.1f}")
+                        
+                    st.dataframe(
+                        styled_matrix,
+                        use_container_width=True,
+                        height=min(450, 45 + len(matrix_df) * 36)
+                    )
 
     # ==================== TAB 2: TRA CỨU CHI TIẾT TỪNG DỰ ÁN ====================
     with tab2:
