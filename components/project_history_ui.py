@@ -142,7 +142,7 @@ def render_project_history():
         st.markdown(f"<h2 style='font-size: 28px; font-weight: 600; color: #1e293b; margin-bottom: 4px;'>{t('PHÂN BỔ & LỊCH SỬ DỰ ÁN (OT)', 'プロジェクト分析・履歴')}</h2>", unsafe_allow_html=True)
         st.markdown(f"<div style='font-size: 14.5px; color: #64748b; margin-bottom: 20px;'>{t('Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo tháng/kỳ thanh toán.', 'プロジェクト別の残業時間分布と履歴を月別・案件別に詳細分析します。')}</div>", unsafe_allow_html=True)
     with col_hdr_right:
-        st.markdown("<div style='margin-top: 35px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 30px;'></div>", unsafe_allow_html=True)
         insights_html = ""
         if not df.empty and df['ot_hours'].sum() > 0:
             top_proj = df.groupby('order_name')['ot_hours'].sum().sort_values(ascending=False)
@@ -150,20 +150,21 @@ def render_project_history():
                 top1_name = top_proj.index[0]
                 pct = (top_proj.iloc[0] / top_proj.sum()) * 100
                 insight_text = t(
-                    f"💡 <b>Smart Insight:</b> Dự án <b>{top1_name}</b> đang chiếm nhiều thời gian OT nhất toàn dự án (<b>{pct:.1f}%</b>).",
+                    f"💡 <b>Smart Insight:</b> Dự án <b>{top1_name}</b> chiếm nhiều OT nhất (<b>{pct:.1f}%</b>).",
                     f"💡 <b>Smart Insight:</b> プロジェクト <b>{top1_name}</b> が残業時間の多くを占めています (<b>{pct:.1f}%</b>)。"
                 )
                 insights_html = f"""
-                <div style='background: #f0fdf4; border: 1px solid #bbf7d0; padding: 10px 14px; border-radius: 8px; font-size: 13.5px; color: #166534; display: flex; align-items: flex-start; gap: 8px; margin-top: 4px; margin-bottom: 8px;'>
+                <div style='background: #f0fdf4; border: 1px solid #bbf7d0; padding: 7px 12px; border-radius: 6px; font-size: 13px; color: #166534; display: flex; align-items: center; margin-top: 2px;'>
                     <div>{insight_text}</div>
                 </div>
                 """
-        if insights_html:
-            st.markdown(insights_html, unsafe_allow_html=True)
-            
-        c_spacer, c_btn = st.columns([7, 3])
+        
+        c_insight, c_btn = st.columns([7.5, 2.5])
+        with c_insight:
+            if insights_html:
+                st.markdown(insights_html, unsafe_allow_html=True)
         with c_btn:
-            if st.button(t("🖨️ In Báo Cáo", "🖨️ レポート印刷"), use_container_width=True):
+            if st.button(t("🖨️ In Báo Cáo", "🖨️ 印刷"), use_container_width=True):
                 import streamlit.components.v1 as components
                 components.html("<script>window.parent.print();</script>", height=0, width=0)
 
