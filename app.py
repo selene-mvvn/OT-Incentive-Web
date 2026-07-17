@@ -701,9 +701,13 @@ st.markdown("""
         z-index: 50 !important;
     }
 
-    /* Wrap crisp 2px blue border directly around the actual table grid (last child) */
-    [data-testid="stDataFrame"] > div:last-child,
-    [data-testid="stDataEditor"] > div:last-child {
+    /* Wrap crisp 2px blue border directly around the actual table grid container */
+    [data-testid="stDataFrame"] > div:has(canvas),
+    [data-testid="stDataFrame"] > div:has(table),
+    [data-testid="stDataFrame"] > div[data-testid="stDataFrameResizable"],
+    [data-testid="stDataEditor"] > div:has(canvas),
+    [data-testid="stDataEditor"] > div:has(table),
+    [data-testid="stDataEditor"] > div[data-testid="stDataFrameResizable"] {
         background: #ffffff !important;
         border: 2px solid #00B0F0 !important;
         border-radius: 10px !important;
@@ -715,9 +719,21 @@ st.markdown("""
         padding-bottom: 0 !important;
     }
 
+    /* Prevent dynamic cell editor inputs / overlays from inheriting width or border */
+    [data-testid="stDataEditor"] > div:not(:has(canvas)):not(:has(table)):not([data-testid="stElementToolbar"]) {
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        width: auto !important;
+    }
+
     /* Bảng nằm trong Expander thì dùng viền mảnh hơn */
-    [data-testid="stExpander"] [data-testid="stDataFrame"] > div:last-child,
-    [data-testid="stExpander"] [data-testid="stDataEditor"] > div:last-child {
+    [data-testid="stExpander"] [data-testid="stDataFrame"] > div:has(canvas),
+    [data-testid="stExpander"] [data-testid="stDataFrame"] > div:has(table),
+    [data-testid="stExpander"] [data-testid="stDataFrame"] > div[data-testid="stDataFrameResizable"],
+    [data-testid="stExpander"] [data-testid="stDataEditor"] > div:has(canvas),
+    [data-testid="stExpander"] [data-testid="stDataEditor"] > div:has(table),
+    [data-testid="stExpander"] [data-testid="stDataEditor"] > div[data-testid="stDataFrameResizable"] {
         border: 1px solid rgba(0, 176, 240, 0.4) !important;
         box-shadow: none !important;
     }
