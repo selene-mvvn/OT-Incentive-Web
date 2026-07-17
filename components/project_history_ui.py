@@ -512,7 +512,7 @@ def render_project_history():
                 st.markdown(f"""
                 <div class='kpi-t2-card-3' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);'>
                     <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded kpi-t2-icon-3" style="font-size: 18px; color: #10b981 !important; -webkit-text-fill-color: #10b981 !important;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
-                    <div style='font-size: 20px; font-weight: 800; color: #10b981; margin: 4px 0;'>{p_cost:,.0f} đ</div>
+                    <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_cost:,.0f} đ</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Dựa trên đơn giá OT', '残業単価に基づく')}</div>
                 </div>
                 """, unsafe_allow_html=True)
