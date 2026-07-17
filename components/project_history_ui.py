@@ -542,7 +542,7 @@ def render_project_history():
                 st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #0284c7;'>groups</span> {t('Phân Bổ Số Giờ Theo Nhân Sự', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
                 max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
                 bar_w_t2 = 0.25 if len(staff_contrib) == 1 else (0.35 if len(staff_contrib) == 2 else (0.45 if len(staff_contrib) == 3 else None))
-                text_colors_t2 = ['#ffffff' if (i >= len(staff_contrib) - 3 and max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.55 * max_hrs_t2) else '#0f172a' for i in range(len(staff_contrib))]
+                text_colors_t2 = ['#ffffff' if i == len(staff_contrib) - 1 else '#0f172a' for i in range(len(staff_contrib))]
                 pos_list_t2 = ['inside' if (max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.35 * max_hrs_t2) else 'outside' for i in range(len(staff_contrib))]
                 fig_bar = go.Figure(go.Bar(
                     x=staff_contrib['Hours'],
