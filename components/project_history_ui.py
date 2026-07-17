@@ -38,6 +38,7 @@ def get_clean_period(row):
             pass
     return t("Khác", "その他")
 
+def render_project_history():
     is_printing = st.session_state.get('pdf_print_mode', False)
 
     st.markdown("""
