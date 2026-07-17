@@ -98,8 +98,8 @@ def render_project_history():
             max-width: 100% !important; 
         }
         
-        /* Hide default footers/menus and floating ? button (iframe) */
-        #MainMenu, footer, iframe { display: none !important; }
+        /* Hide default footers/menus and floating ? button (iframe) but KEEP the invisible print iframe */
+        #MainMenu, footer, iframe:not([width="0"]) { display: none !important; }
     }
     </style>
     """, unsafe_allow_html=True)
