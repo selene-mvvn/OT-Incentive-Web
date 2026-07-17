@@ -38,7 +38,8 @@ def get_clean_period(row):
             pass
     return t("Khác", "その他")
 
-def render_project_history():
+    is_printing = st.session_state.get('pdf_print_mode', False)
+
     st.markdown("""
     <style>
     /* Hide Streamlit dataframe element toolbar right above tables */
@@ -46,73 +47,20 @@ def render_project_history():
     [data-testid="stDataFrame"] div[class*="stElementToolbar"],
     [data-testid="stDataFrame"] > div:first-child:has(button) {
         display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        pointer-events: none !important;
-        height: 0px !important;
-        margin: 0 !important;
-        padding: 0 !important;
     }
-    /* Pull dataframe upward closer to the subheader without being too tight */
-    [data-testid="stDataFrame"] {
-        margin-top: -10px !important;
-    }
-    [data-testid="stDataFrame"] > div {
-        margin-top: 0px !important;
-        padding-top: 0px !important;
-    }
+    [data-testid="stDataFrame"] { margin-top: -10px !important; }
+    [data-testid="stDataFrame"] > div { margin-top: 0px !important; padding-top: 0px !important; }
     
     /* PDF Report Formatting */
     @media print {
-        /* Hide sidebar */
-        [data-testid="stSidebar"] { display: none !important; }
-        
-        /* Hide Streamlit top header and toolbar */
-        header[data-testid="stHeader"], [data-testid="stToolbar"] { display: none !important; }
-        
-        /* Hide tabs navigation */
-        [data-testid="stTabs"] > div:first-child, 
-        [role="tablist"], 
-        [data-baseweb="tab-list"] { 
-            display: none !important; 
-        }
-        
-        /* Force ALL tab contents to display for the report */
-        [data-testid="stTabs"] [role="tabpanel"],
-        [data-testid="stTabs"] [data-baseweb="tab-panel"],
-        [data-testid="stTabs"] [hidden],
-        [data-testid="stTabs"] [aria-hidden="true"] { 
-            display: block !important; 
-            visibility: visible !important; 
-            height: auto !important; 
-            opacity: 1 !important;
-            position: static !important;
-            transform: none !important;
-        }
-        
-        /* Add page break between tabs if needed */
-        [data-testid="stTabs"] [role="tabpanel"]:nth-of-type(2),
-        [data-testid="stTabs"] [data-baseweb="tab-panel"]:nth-of-type(2) {
-            page-break-before: always !important;
-            break-before: page !important;
-        }
-
-        /* Hide interactive elements: buttons, selectboxes, radios */
+        [data-testid="stSidebar"], header[data-testid="stHeader"], [data-testid="stToolbar"] { display: none !important; }
         button, [data-testid="stSelectbox"], [data-testid="stRadio"] { display: none !important; }
+        .block-container { padding: 0 !important; max-width: 100% !important; }
         
-        /* Expand content to full width for printing */
-        .block-container { 
-            padding-top: 0rem !important; 
-            padding-left: 0rem !important; 
-            padding-right: 0rem !important; 
-            max-width: 100% !important; 
-        }
-        
-        /* Hide default footers/menus and floating ? button (ViewerBadge) */
+        /* Hide all Streamlit Cloud badges and iframes */
         #MainMenu, footer, iframe:not([width="0"]), 
-        .viewerBadge_container, .viewerBadge_link, 
-        [class*="viewerBadge"], [data-testid="stAppDeployButton"],
-        [class*="stFloatingActionButton"] { 
+        .stAppDeployButton, .viewerBadge_container, .stDeployButton, 
+        [data-testid="stAppDeployButton"], [class*="viewerBadge"] { 
             display: none !important; 
         }
     }
@@ -125,9 +73,16 @@ def render_project_history():
         st.markdown(f"<div style='font-size: 14.5px; color: #64748b; margin-bottom: 20px;'>{t('Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo tháng/kỳ thanh toán.', 'プロジェクト別の残業時間分布と履歴を月別・案件別に詳細分析します。')}</div>", unsafe_allow_html=True)
     with col_hdr_2:
         st.markdown("<div style='margin-top: 5px;'></div>", unsafe_allow_html=True)
-        if st.button(t("🖨️ Xuất Báo Cáo PDF", "🖨️ PDF出力"), use_container_width=True):
+        if not is_printing:
+            if st.button(t("🖨️ Xuất Báo Cáo PDF", "🖨️ PDF出力"), use_container_width=True):
+                st.session_state['pdf_print_mode'] = True
+                st.rerun()
+        else:
+            if st.button(t("🔙 Quay lại giao diện", "🔙 戻る"), use_container_width=True):
+                st.session_state['pdf_print_mode'] = False
+                st.rerun()
             import streamlit.components.v1 as components
-            components.html("<script>window.parent.print();</script>", height=0, width=0)
+            components.html("<script>setTimeout(() => window.parent.print(), 500);</script>", height=0, width=0)
 
     # Combine all records: historical + pending manual session + pending excel session
     hist_records = get_records("ot")
@@ -201,13 +156,20 @@ def render_project_history():
     year_options = [t("Tất cả", "すべて")] + sorted(list(years), reverse=True)
     month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
 
-    tab1, tab2 = st.tabs([
-        t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
-        t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析")
-    ])
+    if is_printing:
+        tab1 = st.container()
+        tab2 = st.container()
+        st.markdown("<div style='page-break-before: always;'></div>", unsafe_allow_html=True)
+    else:
+        tab1, tab2 = st.tabs([
+            t("1. PHÂN BỔ DỰ ÁN THEO THÁNG", "1. プロジェクト月別分布"),
+            t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析")
+        ])
 
     # ==================== TAB 1: PHÂN BỔ DỰ ÁN ====================
     with tab1:
+        if is_printing:
+            st.markdown(f"<h3 style='color: #0284c7; padding-bottom: 10px; border-bottom: 2px solid #0284c7; margin-bottom: 20px;'>{t('1. PHÂN BỔ DỰ ÁN THEO THÁNG', '1. プロジェクト月別分布')}</h3>", unsafe_allow_html=True)
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
         col_f1_y, col_f1_m, _ = st.columns([2, 2, 6])
         with col_f1_y:
@@ -478,6 +440,8 @@ def render_project_history():
 
     # ==================== TAB 2: TRA CỨU CHI TIẾT TỪNG DỰ ÁN ====================
     with tab2:
+        if is_printing:
+            st.markdown(f"<div style='page-break-before: always;'></div><h3 style='color: #0284c7; padding-bottom: 10px; border-bottom: 2px solid #0284c7; margin-bottom: 20px;'>{t('2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN', '2. プロジェクト別詳細分析')}</h3>", unsafe_allow_html=True)
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
         unique_projects = sorted(df['order_name'].unique().tolist())
         all_proj_opt = t("❖ --- Tất cả dự án ---", "❖ --- すべてのプロジェクト ---")
