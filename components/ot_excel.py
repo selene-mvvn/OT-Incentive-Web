@@ -152,6 +152,7 @@ def render_ot_excel():
         
         if uploaded_file is None:
             st.session_state['ot_excel_records'] = []
+            st.session_state['ot_excel_downloaded'] = False
             
         if uploaded_file is not None:
             try:
