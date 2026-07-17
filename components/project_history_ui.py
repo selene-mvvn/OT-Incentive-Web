@@ -142,27 +142,9 @@ def render_project_history():
         st.markdown(f"<h2 style='font-size: 28px; font-weight: 600; color: #1e293b; margin-bottom: 4px;'>{t('PHÂN BỔ & LỊCH SỬ DỰ ÁN (OT)', 'プロジェクト分析・履歴')}</h2>", unsafe_allow_html=True)
         st.markdown(f"<div style='font-size: 14.5px; color: #64748b; margin-bottom: 20px;'>{t('Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo tháng/kỳ thanh toán.', 'プロジェクト別の残業時間分布と履歴を月別・案件別に詳細分析します。')}</div>", unsafe_allow_html=True)
     with col_hdr_right:
-        st.markdown("<div style='margin-top: 50px;'></div>", unsafe_allow_html=True)
-        insights_html = ""
-        if not df.empty and df['ot_hours'].sum() > 0:
-            top_proj = df.groupby('order_name')['ot_hours'].sum().sort_values(ascending=False)
-            if not top_proj.empty:
-                top1_name = top_proj.index[0]
-                pct = (top_proj.iloc[0] / top_proj.sum()) * 100
-                insight_text = t(
-                    f"<span class='material-symbols-rounded' style='font-size: 18px; color: #38bdf8; margin-right: 6px;'>insights</span> <b style='color: #38bdf8;'>Tiêu Điểm:</b> <span style='margin-left: 4px;'>Dự án <b style='color: #ffffff;'>{top1_name}</b> chiếm <b style='color: #fbbf24;'>{pct:.1f}%</b> OT toàn cục.</span>",
-                    f"<span class='material-symbols-rounded' style='font-size: 18px; color: #38bdf8; margin-right: 6px;'>insights</span> <b style='color: #38bdf8;'>自動分析:</b> <span style='margin-left: 4px;'>案件 <b style='color: #ffffff;'>{top1_name}</b> が全体の <b style='color: #fbbf24;'>{pct:.1f}%</b> を占有。</span>"
-                )
-                insights_html = f"""
-                <div style='background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid #334155; padding: 7px 14px; border-radius: 8px; font-size: 13.5px; color: #cbd5e1; display: flex; align-items: center; margin-top: 2px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);'>
-                    <div style='display: flex; align-items: center;'>{insight_text}</div>
-                </div>
-                """
+        st.markdown("<div style='margin-top: 40px;'></div>", unsafe_allow_html=True)
         
-        c_insight, c_btn = st.columns([7.5, 2.5])
-        with c_insight:
-            if insights_html:
-                st.markdown(insights_html, unsafe_allow_html=True)
+        c_spacer, c_btn = st.columns([7.5, 2.5])
         with c_btn:
             if st.button(t("🖨️ In Báo Cáo", "🖨️ 印刷"), use_container_width=True):
                 import streamlit.components.v1 as components
