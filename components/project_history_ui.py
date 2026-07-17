@@ -403,7 +403,7 @@ def render_project_history():
                 )
 
             st.markdown("<hr style='margin: 25px 0;'>", unsafe_allow_html=True)
-            st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px;'>🔥 {t('Ma Trận Phân Bổ Nguồn Lực (Giờ OT)', 'リソース配分マトリックス (残業時間)')}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px; display: flex; align-items: center; gap: 6px;'><span class='material-symbols-rounded' style='color: #0284c7; font-size: 20px;'>table_chart</span> {t('Bảng Phân Bổ Nguồn Lực Chi Tiết (Giờ OT)', 'リソース配分マトリックス (残業時間)')}</div>", unsafe_allow_html=True)
             
             if not df_tab1.empty:
                 matrix_df = df_tab1.pivot_table(
