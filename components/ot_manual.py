@@ -613,6 +613,37 @@ def render_base_data():
                 width: max-content !important;
                 gap: 6px !important;
             }}
+            [data-testid="stFileUploader"] {{
+                padding: 0 !important;
+                margin-top: -12px !important;
+                margin-bottom: 4px !important;
+            }}
+            [data-testid="stFileUploaderDropzone"] {{
+                border: 2px dashed #3498db !important;
+                border-radius: 12px !important;
+                background-color: #ffffff !important;
+                padding: 16px 20px !important;
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            }}
+            [data-testid="stFileUploaderDropzone"]:hover {{
+                background-color: #ebf5ff !important;
+                border-color: #2980b9 !important;
+                transform: translateY(-2px) !important;
+                box-shadow: 0 8px 24px rgba(52, 152, 219, 0.15) !important;
+            }}
+            /* Prevent styling the uploaded file SVGs by excluding them */
+            [data-testid="stFileUploaderDropzone"] div > svg:first-child {{
+                color: #3498db !important;
+                transition: all 0.3s ease !important;
+            }}
+            @keyframes bounceCloud {{
+                0%, 100% {{ transform: translateY(0); }}
+                50% {{ transform: translateY(-5px); }}
+            }}
+            [data-testid="stFileUploaderDropzone"]:hover div > svg:first-child {{
+                animation: bounceCloud 1.5s infinite ease-in-out !important;
+                color: #2980b9 !important;
+            }}
             </style>
             <h3 style='font-size: 18px; font-weight: 600; color: #1e293b; text-transform: uppercase;'>{t('QUẢN LÝ FILE EXCEL MẪU', 'EXCELテンプレート管理')}</h3>
             """, unsafe_allow_html=True)
