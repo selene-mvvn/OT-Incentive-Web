@@ -316,22 +316,22 @@ def render_ot_excel():
                     </div>
                     <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;">
                         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📅 {t('Cột Ngày Tăng Ca', '残業日列')}</div>
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 15px; color: #0284c7;">calendar_month</span> {t('Cột Ngày Tăng Ca', '残業日列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ngay or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ngay else badge_missing}</div>
                         </div>
                         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">👤 {t('Cột Tên Nhân Viên', 'スタッフ名列')}</div>
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 15px; color: #0284c7;">person</span> {t('Cột Tên Nhân Viên', 'スタッフ名列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ten or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ten else badge_missing}</div>
                         </div>
                         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">⏱️ {t('Cột Số Giờ OT', '残業時間列')}</div>
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 15px; color: #0284c7;">schedule</span> {t('Cột Số Giờ OT', '残業時間列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_ot or t('Chưa nhận diện', '未検出')}</div>
                             <div>{badge_ok if preview_ot else badge_missing}</div>
                         </div>
                         <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06);">
-                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px;">📝 {t('Cột Lý Do OT', '残業理由列')}</div>
+                            <div style="font-size: 12px; color: #64748b; font-weight: 600; margin-bottom: 4px; display: flex; align-items: center; gap: 4px;"><span class="material-symbols-rounded" style="font-size: 15px; color: #0284c7;">edit_note</span> {t('Cột Lý Do OT', '残業理由列')}</div>
                             <div style="font-size: 14px; font-weight: 700; color: #1e293b; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{preview_lydo or t('Mặc định (Trống)', 'デフォルト/空')}</div>
                             <div>{badge_ok if preview_lydo else badge_opt}</div>
                         </div>
