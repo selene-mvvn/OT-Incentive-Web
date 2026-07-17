@@ -439,9 +439,10 @@ def render_project_history():
             p_staff = df_t2['employee_name'].nunique()
             p_records = len(df_t2)
 
+            min_h = "min-height: 54px; display: flex; align-items: flex-start;" if is_compare else ""
             st.markdown(f"""
-            <h3 style='font-size: 18px; margin-bottom: 20px;'>
-                {proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2_label if sel_period_t2_label != all_period_opt else t('Toàn bộ thời gian', '全期間')})
+            <h3 style='font-size: 18px; margin-bottom: 20px; {min_h}'>
+                <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2_label if sel_period_t2_label != all_period_opt else t('Toàn bộ thời gian', '全期間')})</div>
             </h3>
             """, unsafe_allow_html=True)
 
