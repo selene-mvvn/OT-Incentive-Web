@@ -453,8 +453,11 @@ def render_project_history():
                 cols_k = st.columns(4)
 
             with cols_k[0]:
+                pad_kpi = "8px 12px" if is_compare else "12px 16px"
+                marg_kpi = "8px" if is_compare else "15px"
+                
                 st.markdown(f"""
-                <div class='kpi-t2-card-1' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 15px;'>
+                <div class='kpi-t2-card-1' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #0284c7; border-radius: 8px; padding: {pad_kpi}; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: {marg_kpi};'>
                     <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #0284c7;">schedule</span>{t('Tổng Số Giờ OT', '総残業時間')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_hrs:,.1f} h</div>
                     <div style='font-size: 12px; color: #475569;'>{t('TB:', '平均:')} <b>{p_hrs/p_records:,.1f} h</b>/{t('lượt', '回')}</div>
@@ -462,7 +465,7 @@ def render_project_history():
                 """, unsafe_allow_html=True)
             with cols_k[1]:
                 st.markdown(f"""
-                <div class='kpi-t2-card-2' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #8b5cf6; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 15px;'>
+                <div class='kpi-t2-card-2' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #8b5cf6; border-radius: 8px; padding: {pad_kpi}; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: {marg_kpi};'>
                     <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #8b5cf6;">group</span>{t('Nhân Sự Tham Gia', '参加スタッフ数')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_staff} {t('người', '名')}</div>
                     <div style='font-size: 12px; color: #475569;'><b>{p_records}</b> {t('lượt ghi nhận OT', '件の残業記録')}</div>
@@ -470,7 +473,7 @@ def render_project_history():
                 """, unsafe_allow_html=True)
             with cols_k[2]:
                 st.markdown(f"""
-                <div class='kpi-t2-card-3' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 15px;'>
+                <div class='kpi-t2-card-3' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #10b981; border-radius: 8px; padding: {pad_kpi}; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: {marg_kpi};'>
                     <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #10b981;">payments</span>{t('Dự Tính Chi Phí', '予想コスト')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{p_cost:,.0f} đ</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Dựa trên đơn giá OT', '残業単価に基づく')}</div>
@@ -478,25 +481,27 @@ def render_project_history():
                 """, unsafe_allow_html=True)
             with cols_k[3]:
                 st.markdown(f"""
-                <div class='kpi-t2-card-4' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; border-radius: 8px; padding: 12px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: 15px;'>
+                <div class='kpi-t2-card-4' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 4px solid #f59e0b; border-radius: 8px; padding: {pad_kpi}; box-shadow: 0 1px 3px rgba(0,0,0,0.04); margin-bottom: {marg_kpi};'>
                     <div style='font-size: 12px; font-weight: 600; color: #64748b; text-transform: uppercase; display: flex; align-items: center; gap: 6px;'><span class="material-symbols-rounded" style="font-size: 18px; color: #f59e0b;">calendar_month</span>{t('Tần Suất Làm Việc', '残業頻度')}</div>
                     <div style='font-size: 20px; font-weight: 800; color: #0f172a; margin: 4px 0;'>{df_t2['ot_date'].nunique()} {t('ngày', '日')}</div>
                     <div style='font-size: 12px; color: #475569;'>{t('Có phát sinh OT', '残業発生日数')}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
-            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
             if is_compare:
-                st.markdown("<hr style='margin-bottom: 20px;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='margin-top: 5px; margin-bottom: 15px;'>", unsafe_allow_html=True)
                 c_left, c_right = st.container(), st.container()
             else:
+                st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
                 c_left, c_right = st.columns([5, 5], gap="large")
 
             staff_contrib = df_t2.groupby('employee_name').agg(
                 Hours=('ot_hours', 'sum')
             ).reset_index().sort_values(by='Hours', ascending=True)
 
-            shared_chart_height = max(300, len(staff_contrib) * 38)
+            base_chart_h = 160 if is_compare else 300
+            mult_chart_h = 28 if is_compare else 38
+            shared_chart_height = max(base_chart_h, len(staff_contrib) * mult_chart_h)
 
             with c_left:
                 st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #0284c7;'>groups</span> {t('Phân Bổ Số Giờ', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
@@ -533,7 +538,7 @@ def render_project_history():
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False}, key=f"bar_{proj_name}_{'comp' if is_compare else 'main'}")
 
             if is_compare:
-                st.markdown("<hr style='margin-bottom: 20px;'>", unsafe_allow_html=True)
+                st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
 
             with c_right:
                 st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #f59e0b;'>show_chart</span> {t('Diễn Biến Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
@@ -569,7 +574,10 @@ def render_project_history():
                     )
                     st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False}, key=f"time_{proj_name}_{'comp' if is_compare else 'main'}")
 
-            st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+            if not is_compare:
+                st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+            else:
+                st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
             detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']].copy()
             detail_df = detail_df.sort_values(by=['clean_period', 'ot_date'], ascending=[False, False]).reset_index(drop=True)
             
@@ -589,7 +597,7 @@ def render_project_history():
                 detail_df,
                 use_container_width=True,
                 hide_index=True,
-                height=max(280, min(400, len(detail_df) * 38)),
+                height=max(200, min(350, len(detail_df) * 38)) if is_compare else max(280, min(400, len(detail_df) * 38)),
                 column_config={
                     t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width=75),
                     t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width=140),
