@@ -531,7 +531,7 @@ def render_project_history():
                 DaysCount=('ot_date', 'nunique')
             ).reset_index().sort_values(by='Hours', ascending=True)
 
-            shared_chart_height = max(300, len(staff_contrib) * 38)
+            shared_chart_height = max(100, len(staff_contrib) * 45 + 50)
             st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-bottom: 4px;'>{t('Phân Bổ Theo Nhân Sự', 'スタッフ別残業')}</div>", unsafe_allow_html=True)
             
             max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
@@ -561,11 +561,11 @@ def render_project_history():
             st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-top: 15px; margin-bottom: 4px;'>{t('Diễn Biến Thời Gian', '日別推移')}</div>", unsafe_allow_html=True)
             time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
             time_df['_sort_dt'] = pd.to_datetime(time_df['ot_date'], format='%d/%m/%Y', errors='coerce')
-            time_df = time_df.sort_values(by='_sort_dt', ascending=True).drop(columns=['_sort_dt'])
+            time_df = time_df.sort_values(by='_sort_dt', ascending=True)
             
             if not time_df.empty:
                 fig_t = go.Figure(go.Bar(
-                    x=time_df['ot_date'],
+                    x=time_df['_sort_dt'],
                     y=time_df['ot_hours'],
                     marker=dict(color=time_df['ot_hours'], colorscale=[[0, '#fde047'], [1, '#ca8a04']]),
                     text=time_df['ot_hours'].apply(lambda x: f"{x:,.1f}"),
@@ -576,12 +576,13 @@ def render_project_history():
                 # Add Trendline
                 if len(time_df) > 1:
                     import numpy as np
-                    x_vals = np.arange(len(time_df))
+                    # Use timestamps for accurate mathematical regression over time
+                    x_vals = time_df['_sort_dt'].astype(np.int64) / 10**9
                     y_vals = time_df['ot_hours'].values
                     A = np.vstack([x_vals, np.ones(len(x_vals))]).T
                     m, c = np.linalg.lstsq(A, y_vals, rcond=None)[0]
                     fig_t.add_trace(go.Scatter(
-                        x=time_df['ot_date'], 
+                        x=time_df['_sort_dt'], 
                         y=m * x_vals + c, 
                         mode='lines', 
                         name=t('Xu hướng', 'トレンド'), 
@@ -596,7 +597,7 @@ def render_project_history():
                     showlegend=False,
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
-                    xaxis=dict(gridcolor='#f1f5f9'),
+                    xaxis=dict(gridcolor='#f1f5f9', type='date', tickformat='%d/%m/%Y'),
                     yaxis=dict(gridcolor='#f1f5f9')
                 )
                 st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False}, key=f"time_{suffix_key}")
