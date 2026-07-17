@@ -178,13 +178,7 @@ st.markdown("""
         display: none !important;
     }
 
-    div[data-testid="stMarkdownContainer"] h1, 
-    div[data-testid="stMarkdownContainer"] h2, 
-    div[data-testid="stMarkdownContainer"] h3,
-    [data-testid="stHeader"] h1,
-    [data-testid="stHeader"] h2,
-    [data-testid="stHeader"] h3,
-    .stMarkdownContainer h1, .stMarkdownContainer h2, .stMarkdownContainer h3 {
+    h1, h2, h3 {
         color: #2c3e50;
         text-transform: uppercase;
         font-weight: bold !important;
@@ -195,11 +189,7 @@ st.markdown("""
     }
     
     /* Add a custom blue line under h2 and h3 like the reference image */
-    div[data-testid="stMarkdownContainer"] h2::after, 
-    div[data-testid="stMarkdownContainer"] h3::after,
-    [data-testid="stHeader"] h2::after,
-    [data-testid="stHeader"] h3::after,
-    .stMarkdownContainer h2::after, .stMarkdownContainer h3::after {
+    h2::after, h3::after {
         content: "";
         position: absolute;
         left: 0;
@@ -210,32 +200,32 @@ st.markdown("""
     }
     
     /* Disable global blue line on Streamlit dialog main title, but keep on h3 section headings */
-    div[data-testid="stModal"] [role="dialog"] h1::after,
-    div[data-testid="stModal"] [role="dialog"] h2::after,
+    [role="dialog"] h1::after,
+    [role="dialog"] h2::after,
     [data-testid="stDialogTitle"]::after {
         display: none !important;
     }
     
     /* Eliminate awkward top gap between dialog title bar and dialog body content */
-    div[data-testid="stModal"] [role="dialog"] > div > div:first-child,
+    [role="dialog"] > div > div:first-child,
     [data-testid="stDialog"] > div > div:first-child,
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogHeader"],
+    [role="dialog"] [data-testid="stDialogHeader"],
     [data-testid="stDialog"] [data-testid="stDialogHeader"] {
         padding-bottom: 0.25rem !important;
         margin-bottom: 0px !important;
     }
-    div[data-testid="stModal"] [role="dialog"] > div > div:nth-child(2),
+    [role="dialog"] > div > div:nth-child(2),
     [data-testid="stDialog"] > div > div:nth-child(2),
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogBody"],
+    [role="dialog"] [data-testid="stDialogBody"],
     [data-testid="stDialog"] [data-testid="stDialogBody"],
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stVerticalBlock"],
+    [role="dialog"] div[data-testid="stVerticalBlock"],
     [data-testid="stDialog"] div[data-testid="stVerticalBlock"] {
         padding-top: 0.25rem !important;
         margin-top: 0px !important;
     }
 
     /* Enable blue horizontal underline bar under small headings (h3) inside dialogs like main UI */
-    div[data-testid="stModal"] [role="dialog"] h3,
+    [role="dialog"] h3,
     [data-testid="stDialog"] h3 {
         color: #2c3e50 !important;
         text-transform: uppercase !important;
@@ -247,13 +237,13 @@ st.markdown("""
         width: fit-content !important;
         font-size: 18px !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"] > div:first-child h3,
+    [role="dialog"] [data-testid="stVerticalBlock"] > div:first-child h3,
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] > div:first-child h3,
-    div[data-testid="stModal"] [role="dialog"] h3:first-of-type,
+    [role="dialog"] h3:first-of-type,
     [data-testid="stDialog"] h3:first-of-type {
         margin-top: 0px !important;
     }
-    div[data-testid="stModal"] [role="dialog"] h3::after,
+    [role="dialog"] h3::after,
     [data-testid="stDialog"] h3::after {
         content: "" !important;
         position: absolute !important;
@@ -266,9 +256,9 @@ st.markdown("""
     }
 
     /* Style all dialog popup titles with blue frame and white text */
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    div[data-testid="stModal"] [role="dialog"] h2:first-of-type,
+    [role="dialog"] h2:first-of-type,
     [data-testid="stDialog"] h2:first-of-type {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
@@ -283,17 +273,17 @@ st.markdown("""
         display: block !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogTitle"] *,
+    [role="dialog"] [data-testid="stDialogTitle"] *,
     [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
-    div[data-testid="stModal"] [role="dialog"] h2:first-of-type *,
+    [role="dialog"] h2:first-of-type *,
     [data-testid="stDialog"] h2:first-of-type * {
         color: #ffffff !important;
     }
     
     /* Dialog close button styled as clean circle to stand out against blue banner */
-    div[data-testid="stModal"] [role="dialog"] button[aria-label="Close"],
+    [role="dialog"] button[aria-label="Close"],
     [data-testid="stDialog"] button[aria-label="Close"],
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogCloseButton"],
+    [role="dialog"] [data-testid="stDialogCloseButton"],
     [data-testid="stDialog"] [data-testid="stDialogCloseButton"] {
         color: #2c3e50 !important;
         background-color: #ffffff !important;
@@ -309,9 +299,9 @@ st.markdown("""
         z-index: 9999 !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
     }
-    div[data-testid="stModal"] [role="dialog"] button[aria-label="Close"] svg,
+    [role="dialog"] button[aria-label="Close"] svg,
     [data-testid="stDialog"] button[aria-label="Close"] svg,
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogCloseButton"] svg,
+    [role="dialog"] [data-testid="stDialogCloseButton"] svg,
     [data-testid="stDialog"] [data-testid="stDialogCloseButton"] svg {
         fill: #00B0F0 !important;
         color: #00B0F0 !important;
@@ -320,8 +310,8 @@ st.markdown("""
     /* Buttons */
 
     [data-testid="stMain"] .stButton button,
-    divdiv[data-testid="stModal"] [role="dialog"] .stButton button,
-    divdiv[data-testid="stModal"] [role="dialog"] div[data-testid="stButton"] button,
+    div[role="dialog"] .stButton button,
+    div[role="dialog"] div[data-testid="stButton"] button,
     div[data-testid="stModal"] .stButton button,
     div[data-testid="stDialog"] .stButton button {
         border-radius: 30px !important;
@@ -335,8 +325,8 @@ st.markdown("""
         transition: all 0.3s ease !important;
     }
     [data-testid="stMain"] .stButton button:hover,
-    divdiv[data-testid="stModal"] [role="dialog"] .stButton button:hover,
-    divdiv[data-testid="stModal"] [role="dialog"] div[data-testid="stButton"] button:hover,
+    div[role="dialog"] .stButton button:hover,
+    div[role="dialog"] div[data-testid="stButton"] button:hover,
     div[data-testid="stModal"] .stButton button:hover,
     div[data-testid="stDialog"] .stButton button:hover {
         background-color: #00B0F0 !important;
@@ -345,8 +335,8 @@ st.markdown("""
         box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3) !important;
     }
     [data-testid="stMain"] .stButton button p,
-    divdiv[data-testid="stModal"] [role="dialog"] .stButton button p,
-    divdiv[data-testid="stModal"] [role="dialog"] div[data-testid="stButton"] button p,
+    div[role="dialog"] .stButton button p,
+    div[role="dialog"] div[data-testid="stButton"] button p,
     div[data-testid="stModal"] .stButton button p,
     div[data-testid="stDialog"] .stButton button p {
         color: inherit !important;
@@ -414,16 +404,21 @@ st.markdown("""
     }
 
     /* Input Fields */
+    div[data-baseweb="input"],
+    div[data-baseweb="base-input"],
+    div[data-baseweb="select"] > div,
     div[data-testid="stTextInput"] > div > div,
     div[data-testid="stNumberInput"] > div > div,
     div[data-testid="stSelectbox"] > div > div {
         border-radius: 8px !important;
         border: 1px solid #cbd5e1 !important;
         background-color: #f8fafc !important;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
+        transition: all 0.3s ease !important;
     }
 
-    /* Exclude Data Editor internal inputs from global focus styles to avoid breaking the grid */
+    div[data-baseweb="input"]:focus-within,
+    div[data-baseweb="base-input"]:focus-within,
+    div[data-baseweb="select"] > div:focus-within,
     div[data-testid="stTextInput"] > div > div:focus-within,
     div[data-testid="stNumberInput"] > div > div:focus-within,
     div[data-testid="stSelectbox"] > div > div:focus-within {
@@ -791,9 +786,9 @@ from logic.i18n import t
 def show_user_guide():
         st.markdown("""<style>
     /* Style big dialog title with blue frame and white text specifically for this dialog */
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    div[data-testid="stModal"] [role="dialog"] h2:first-of-type,
+    [role="dialog"] h2:first-of-type,
     [data-testid="stDialog"] h2:first-of-type {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
@@ -808,9 +803,9 @@ def show_user_guide():
         display: block !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogTitle"] *,
+    [role="dialog"] [data-testid="stDialogTitle"] *,
     [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
-    div[data-testid="stModal"] [role="dialog"] h2:first-of-type *,
+    [role="dialog"] h2:first-of-type *,
     [data-testid="stDialog"] h2:first-of-type * {
         color: #ffffff !important;
     }
@@ -1064,24 +1059,25 @@ def show_sticky_note_exit_modal():
     div[data-testid="stModal"] > div:nth-child(2) > div,
     div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
-    div[data-testid="stModal"] [data-testid="stDialog"] {
+    div[data-testid="stModal"] [data-testid="stDialog"],
+    [role="dialog"] {
         width: 530px !important;
         min-width: 530px !important;
         max-width: 95vw !important;
         margin: auto !important;
         box-sizing: border-box !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"],
+    [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"],
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"],
+    [role="dialog"] [data-testid="stVerticalBlock"],
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] {
         width: 100% !important;
         padding-right: 18px !important;
         box-sizing: border-box !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    div[data-testid="stModal"] [role="dialog"] h2:first-of-type,
+    [role="dialog"] h2:first-of-type,
     [data-testid="stDialog"] h2:first-of-type {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
@@ -1099,18 +1095,18 @@ def show_sticky_note_exit_modal():
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
     /* Eliminate white gap below dialog title */
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"],
+    [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         padding-top: 0px !important;
         margin-top: -24px !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"],
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] {
         margin-top: -14px !important;
         gap: 0.3rem !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(1),
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(2),
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(1),
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(2),
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(1),
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:nth-child(2) {
         height: 0px !important;
@@ -1119,11 +1115,11 @@ def show_sticky_note_exit_modal():
         padding: 0px !important;
     }
     /* Hide top-right 'X' close button on dialog */
-    div[data-testid="stModal"] [role="dialog"] header[data-testid="stDialogHeader"] button,
+    [role="dialog"] header[data-testid="stDialogHeader"] button,
     [data-testid="stDialog"] header[data-testid="stDialogHeader"] button,
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogHeader"] button,
+    [role="dialog"] div[data-testid="stDialogHeader"] button,
     [data-testid="stDialog"] div[data-testid="stDialogHeader"] button,
-    div[data-testid="stModal"] [role="dialog"] button[aria-label="Close"],
+    [role="dialog"] button[aria-label="Close"],
     [data-testid="stDialog"] button[aria-label="Close"],
     [data-testid="stModalCloseButton"],
     div:has(> [data-testid="stDialogTitle"]) > button {
@@ -1137,7 +1133,7 @@ def show_sticky_note_exit_modal():
         padding: 0 !important;
     }
     /* Ensure 2 columns for buttons sit side-by-side on 1 row with equal 50% width */
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"],
+    [role="dialog"] [data-testid="stHorizontalBlock"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
@@ -1150,7 +1146,7 @@ def show_sticky_note_exit_modal():
         margin: 8px 0 3px 0 !important;
         padding: 0 !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+    [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
         width: calc(50% - 6px) !important;
         min-width: calc(50% - 6px) !important;
@@ -1159,7 +1155,7 @@ def show_sticky_note_exit_modal():
         margin: 0 !important;
         padding: 0 !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div,
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div {
         width: 100% !important;
         max-width: 100% !important;
@@ -1167,9 +1163,9 @@ def show_sticky_note_exit_modal():
         padding: 0 !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button,
+    [role="dialog"] div[data-testid="stDialogContent"] button,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button,
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"] button,
+    [role="dialog"] [data-testid="stVerticalBlock"] button,
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button {
         padding: 10px 4px !important;
         width: 100% !important;
@@ -1184,9 +1180,9 @@ def show_sticky_note_exit_modal():
         box-sizing: border-box !important;
         white-space: nowrap !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button p,
+    [role="dialog"] div[data-testid="stDialogContent"] button p,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button p,
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"] button p,
+    [role="dialog"] [data-testid="stVerticalBlock"] button p,
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button p {
         white-space: nowrap !important;
         font-size: 13.5px !important;
@@ -1197,11 +1193,11 @@ def show_sticky_note_exit_modal():
         display: inline-flex !important;
         align-items: center !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
+    [role="dialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded,
+    [role="dialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded {
         font-size: 19px !important;
         width: 19px !important;
@@ -1215,16 +1211,16 @@ def show_sticky_note_exit_modal():
         color: #ef4444 !important;
     }
     /* Icon in Xong button -> Green */
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button [data-testid="stIconMaterial"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button [data-testid="stIconMaterial"],
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button .material-symbols-rounded,
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button .material-symbols-rounded,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(1) button .material-symbols-rounded {
         color: #16a34a !important;
     }
     /* Icon in Để hôm sau button -> Yellow/Orange */
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button [data-testid="stIconMaterial"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button [data-testid="stIconMaterial"],
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded,
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded {
         color: #f59e0b !important;
     }
@@ -1235,7 +1231,7 @@ def show_sticky_note_exit_modal():
     <script>
     setTimeout(() => {
         const doc = window.parent.document;
-        const dialog = doc.querySelector('div[data-testid="stModal"] [role="dialog"]') || doc.querySelector('[data-testid="stDialog"]');
+        const dialog = doc.querySelector('[role="dialog"]') || doc.querySelector('[data-testid="stDialog"]');
         if (dialog) {
             const closeBtns = dialog.querySelectorAll('button[aria-label="Close"], button[title="Close"], [data-testid="stModalCloseButton"]');
             closeBtns.forEach(b => b.style.display = 'none');
@@ -1332,24 +1328,24 @@ def show_sticky_note_editor_modal():
     div[data-testid="stModal"] > div:nth-child(2) > div > div,
     div[data-testid="stModal"] [role="dialog"],
     div[data-testid="stModal"] [data-testid="stDialog"],
-    div[data-testid="stModal"] [role="dialog"] {
+    [role="dialog"] {
         width: 530px !important;
         min-width: 530px !important;
         max-width: 95vw !important;
         margin: auto !important;
         box-sizing: border-box !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"],
+    [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"],
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"],
+    [role="dialog"] [data-testid="stVerticalBlock"],
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] {
         width: 100% !important;
         padding-right: 18px !important;
         box-sizing: border-box !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    div[data-testid="stModal"] [role="dialog"] h2:first-of-type,
+    [role="dialog"] h2:first-of-type,
     [data-testid="stDialog"] h2:first-of-type {
         background-color: #00B0F0 !important;
         color: #ffffff !important;
@@ -1367,12 +1363,12 @@ def show_sticky_note_editor_modal():
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
     /* Eliminate white space below dialog title */
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"],
+    [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         padding-top: 0px !important;
         margin-top: -10px !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
+    [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
         display: none !important;
         height: 0px !important;
@@ -1380,9 +1376,9 @@ def show_sticky_note_editor_modal():
         padding: 0px !important;
     }
     /* Style Close X button cleanly in the blue header banner */
-    div[data-testid="stModal"] [role="dialog"] header[data-testid="stDialogHeader"] button,
+    [role="dialog"] header[data-testid="stDialogHeader"] button,
     [data-testid="stDialog"] header[data-testid="stDialogHeader"] button,
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogHeader"] button,
+    [role="dialog"] div[data-testid="stDialogHeader"] button,
     [data-testid="stDialog"] div[data-testid="stDialogHeader"] button {
         padding: 4px !important;
         width: 30px !important;
@@ -1398,9 +1394,9 @@ def show_sticky_note_editor_modal():
         margin-left: 10px !important;
         cursor: pointer !important;
     }
-    div[data-testid="stModal"] [role="dialog"] header[data-testid="stDialogHeader"] button svg,
+    [role="dialog"] header[data-testid="stDialogHeader"] button svg,
     [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg,
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogHeader"] button svg,
+    [role="dialog"] div[data-testid="stDialogHeader"] button svg,
     [data-testid="stDialog"] div[data-testid="stDialogHeader"] button svg {
         width: 16px !important;
         height: 16px !important;
@@ -1409,7 +1405,7 @@ def show_sticky_note_editor_modal():
         color: #ffffff !important;
     }
     /* Ensure 2 columns for buttons sit side-by-side on 1 row with equal 50% width */
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"],
+    [role="dialog"] [data-testid="stHorizontalBlock"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
@@ -1422,7 +1418,7 @@ def show_sticky_note_editor_modal():
         margin: 8px 0 3px 0 !important;
         padding: 0 !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
+    [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
         width: calc(50% - 6px) !important;
         min-width: calc(50% - 6px) !important;
@@ -1431,7 +1427,7 @@ def show_sticky_note_editor_modal():
         margin: 0 !important;
         padding: 0 !important;
     }
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div,
+    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div {
         width: 100% !important;
         max-width: 100% !important;
@@ -1439,9 +1435,9 @@ def show_sticky_note_editor_modal():
         padding: 0 !important;
     }
     /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button,
+    [role="dialog"] div[data-testid="stDialogContent"] button,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button,
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"] button,
+    [role="dialog"] [data-testid="stVerticalBlock"] button,
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button {
         padding: 10px 4px !important;
         width: 100% !important;
@@ -1456,9 +1452,9 @@ def show_sticky_note_editor_modal():
         box-sizing: border-box !important;
         white-space: nowrap !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button p,
+    [role="dialog"] div[data-testid="stDialogContent"] button p,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button p,
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"] button p,
+    [role="dialog"] [data-testid="stVerticalBlock"] button p,
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button p {
         white-space: nowrap !important;
         font-size: 13.5px !important;
@@ -1469,11 +1465,11 @@ def show_sticky_note_editor_modal():
         display: inline-flex !important;
         align-items: center !important;
     }
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
+    [role="dialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
-    div[data-testid="stModal"] [role="dialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
+    [role="dialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
     [data-testid="stDialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
-    div[data-testid="stModal"] [role="dialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded,
+    [role="dialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded {
         font-size: 19px !important;
         width: 19px !important;
@@ -1532,8 +1528,8 @@ else:
         }
     
     [data-testid="stMain"] .stButton button,
-    divdiv[data-testid="stModal"] [role="dialog"] .stButton button,
-    divdiv[data-testid="stModal"] [role="dialog"] div[data-testid="stButton"] button,
+    div[role="dialog"] .stButton button,
+    div[role="dialog"] div[data-testid="stButton"] button,
     div[data-testid="stModal"] .stButton button,
     div[data-testid="stDialog"] .stButton button {
             background-color: #ffffff !important;
