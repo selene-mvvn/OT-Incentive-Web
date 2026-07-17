@@ -528,7 +528,7 @@ def render_project_history():
             shared_chart_height = max(base_chart_h, len(staff_contrib) * mult_chart_h)
 
             with c_left:
-                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #0284c7;'>groups</span> {t('Phân Bổ Số Giờ', 'スタッフ別残業時間')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #0284c7;'>groups</span> {t('Biểu đồ Phân Bổ Số Giờ', 'スタッフ別残業時間グラフ')}</div>", unsafe_allow_html=True)
                 max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
                 bar_w_t2 = 0.25 if len(staff_contrib) == 1 else (0.35 if len(staff_contrib) == 2 else (0.45 if len(staff_contrib) == 3 else None))
                 text_colors_t2 = ['#ffffff' if i == len(staff_contrib) - 1 else '#0f172a' for i in range(len(staff_contrib))]
@@ -565,7 +565,7 @@ def render_project_history():
                 if is_compare:
                     st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
                 
-                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #f59e0b;'>show_chart</span> {t('Diễn Biến Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #f59e0b;'>show_chart</span> {t('Biểu đồ Diễn Biến Theo Thời Gian', '日別残業時間の推移グラフ')}</div>", unsafe_allow_html=True)
                 time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
                 time_df['_sort_dt'] = pd.to_datetime(time_df['ot_date'], format='%d/%m/%Y', errors='coerce')
                 time_df = time_df.sort_values(by='_sort_dt', ascending=True).drop(columns=['_sort_dt'])
