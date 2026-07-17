@@ -534,7 +534,7 @@ def render_project_history():
             col_chart1, col_chart2 = st.columns(2)
             
             with col_chart1:
-                shared_chart_height = max(120, len(staff_contrib) * 45 + 50)
+                shared_chart_height = max(150, len(staff_contrib) * 55 + 60)
                 st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-bottom: 4px;'>{t('Phân Bổ Theo Nhân Sự', 'スタッフ別残業')}</div>", unsafe_allow_html=True)
                 
                 max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
@@ -552,8 +552,9 @@ def render_project_history():
                 ))
                 fig_bar.update_layout(
                     font=dict(family="'Times New Roman', serif"),
-                    margin=dict(l=0, r=40, t=5, b=5),
+                    margin=dict(l=0, r=40, t=15, b=15),
                     height=shared_chart_height,
+                    bargap=0.35,
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
                     xaxis=dict(visible=False),
