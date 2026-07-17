@@ -662,7 +662,8 @@ def render_base_data():
                 if st.session_state.get('mask_salary_mode', True):
                     for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
                         if c in edited_emp.columns and c in emp_df.columns:
-                            edited_emp[c] = emp_df[c].values
+                            edited_emp[c] = emp_df[c]
+                            edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
                 else:
                     for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
                         if c in edited_emp.columns:

@@ -1,1 +1,24 @@
-[]
+[
+    {
+        "Mã NV": "V050006",
+        "Tên NV": "Phạm Hồng Quân",
+        "Phòng ban": "",
+        "Chức vụ": "",
+        "Lương cơ bản": 0,
+        "PC ăn trưa": 0,
+        "PC khác": 0,
+        "Ngày bắt đầu tính": null,
+        "Lương Gross": 0
+    },
+    {
+        "Mã NV": "V050007",
+        "Tên NV": "Nguyễn Đăng Hưng",
+        "Phòng ban": "",
+        "Chức vụ": "",
+        "Lương cơ bản": 0,
+        "PC ăn trưa": 0,
+        "PC khác": 0,
+        "Ngày bắt đầu tính": null,
+        "Lương Gross": 0
+    }
+]
