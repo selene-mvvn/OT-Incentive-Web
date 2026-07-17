@@ -531,76 +531,80 @@ def render_project_history():
                 DaysCount=('ot_date', 'nunique')
             ).reset_index().sort_values(by='Hours', ascending=True)
 
-            shared_chart_height = max(100, len(staff_contrib) * 45 + 50)
-            st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-bottom: 4px;'>{t('Phân Bổ Theo Nhân Sự', 'スタッフ別残業')}</div>", unsafe_allow_html=True)
+            col_chart1, col_chart2 = st.columns(2)
             
-            max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
-            text_colors_t2 = ['#ffffff' if i == len(staff_contrib) - 1 else '#0f172a' for i in range(len(staff_contrib))]
-            pos_list_t2 = ['inside' if (max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.35 * max_hrs_t2) else 'outside' for i in range(len(staff_contrib))]
-            fig_bar = go.Figure(go.Bar(
-                x=staff_contrib['Hours'],
-                y=staff_contrib['employee_name'],
-                orientation='h',
-                marker=dict(color=staff_contrib['Hours'], colorscale=[[0, '#7dd3fc'], [1, '#0284c7']]),
-                text=staff_contrib['Hours'].apply(lambda x: f"{x:,.1f} h"),
-                textposition=pos_list_t2,
-                insidetextfont=dict(size=12, color=text_colors_t2, weight='bold'),
-                outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
-            ))
-            fig_bar.update_layout(
-                font=dict(family="'Times New Roman', serif"),
-                margin=dict(l=0, r=40, t=5, b=5),
-                height=shared_chart_height,
-                paper_bgcolor='rgba(0,0,0,0)',
-                plot_bgcolor='rgba(0,0,0,0)',
-                xaxis=dict(visible=False),
-                yaxis=dict(tickfont=dict(size=12, color='#1e293b'))
-            )
-            st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False}, key=f"bar_{suffix_key}")
-
-            st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-top: 15px; margin-bottom: 4px;'>{t('Diễn Biến Thời Gian', '日別推移')}</div>", unsafe_allow_html=True)
-            time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
-            time_df['_sort_dt'] = pd.to_datetime(time_df['ot_date'], format='%d/%m/%Y', errors='coerce')
-            time_df = time_df.sort_values(by='_sort_dt', ascending=True)
-            
-            if not time_df.empty:
-                fig_t = go.Figure(go.Bar(
-                    x=time_df['_sort_dt'],
-                    y=time_df['ot_hours'],
-                    marker=dict(color=time_df['ot_hours'], colorscale=[[0, '#fde047'], [1, '#ca8a04']]),
-                    text=time_df['ot_hours'].apply(lambda x: f"{x:,.1f}"),
-                    textposition='auto',
-                    textfont=dict(size=11, color='#0f172a', weight='bold')
-                ))
+            with col_chart1:
+                shared_chart_height = max(250, len(staff_contrib) * 45 + 50)
+                st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-bottom: 4px;'>{t('Phân Bổ Theo Nhân Sự', 'スタッフ別残業')}</div>", unsafe_allow_html=True)
                 
-                # Add Trendline
-                if len(time_df) > 1:
-                    import numpy as np
-                    # Use timestamps for accurate mathematical regression over time
-                    x_vals = time_df['_sort_dt'].astype(np.int64) / 10**9
-                    y_vals = time_df['ot_hours'].values
-                    A = np.vstack([x_vals, np.ones(len(x_vals))]).T
-                    m, c = np.linalg.lstsq(A, y_vals, rcond=None)[0]
-                    fig_t.add_trace(go.Scatter(
-                        x=time_df['_sort_dt'], 
-                        y=m * x_vals + c, 
-                        mode='lines', 
-                        name=t('Xu hướng', 'トレンド'), 
-                        line=dict(dash='dash', color='#ef4444', width=2),
-                        hoverinfo='skip'
-                    ))
-
-                fig_t.update_layout(
+                max_hrs_t2 = staff_contrib['Hours'].max() if not staff_contrib.empty else 0
+                text_colors_t2 = ['#ffffff' if i == len(staff_contrib) - 1 else '#0f172a' for i in range(len(staff_contrib))]
+                pos_list_t2 = ['inside' if (max_hrs_t2 > 0 and staff_contrib.iloc[i]['Hours'] >= 0.35 * max_hrs_t2) else 'outside' for i in range(len(staff_contrib))]
+                fig_bar = go.Figure(go.Bar(
+                    x=staff_contrib['Hours'],
+                    y=staff_contrib['employee_name'],
+                    orientation='h',
+                    marker=dict(color=staff_contrib['Hours'], colorscale=[[0, '#7dd3fc'], [1, '#0284c7']]),
+                    text=staff_contrib['Hours'].apply(lambda x: f"{x:,.1f} h"),
+                    textposition=pos_list_t2,
+                    insidetextfont=dict(size=12, color=text_colors_t2, weight='bold'),
+                    outsidetextfont=dict(size=12, color='#0f172a', weight='bold')
+                ))
+                fig_bar.update_layout(
                     font=dict(family="'Times New Roman', serif"),
-                    margin=dict(l=0, r=0, t=5, b=25),
-                    height=250,
-                    showlegend=False,
+                    margin=dict(l=0, r=40, t=5, b=5),
+                    height=shared_chart_height,
                     paper_bgcolor='rgba(0,0,0,0)',
                     plot_bgcolor='rgba(0,0,0,0)',
-                    xaxis=dict(gridcolor='#f1f5f9', type='date', tickformat='%d/%m/%Y'),
-                    yaxis=dict(gridcolor='#f1f5f9')
+                    xaxis=dict(visible=False),
+                    yaxis=dict(tickfont=dict(size=12, color='#1e293b'))
                 )
-                st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False}, key=f"time_{suffix_key}")
+                st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False}, key=f"bar_{suffix_key}")
+
+            with col_chart2:
+                st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-bottom: 4px;'>{t('Diễn Biến Thời Gian', '日別推移')}</div>", unsafe_allow_html=True)
+                time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
+                time_df['_sort_dt'] = pd.to_datetime(time_df['ot_date'], format='%d/%m/%Y', errors='coerce')
+                time_df = time_df.sort_values(by='_sort_dt', ascending=True)
+                
+                if not time_df.empty:
+                    fig_t = go.Figure(go.Bar(
+                        x=time_df['_sort_dt'],
+                        y=time_df['ot_hours'],
+                        marker=dict(color=time_df['ot_hours'], colorscale=[[0, '#fde047'], [1, '#ca8a04']]),
+                        text=time_df['ot_hours'].apply(lambda x: f"{x:,.1f}"),
+                        textposition='auto',
+                        textfont=dict(size=11, color='#0f172a', weight='bold')
+                    ))
+                    
+                    # Add Trendline
+                    if len(time_df) > 1:
+                        import numpy as np
+                        # Normalize timestamps to days offset for stable linear regression calculation
+                        x_vals = (time_df['_sort_dt'] - time_df['_sort_dt'].min()).dt.total_seconds().values / 86400.0
+                        y_vals = time_df['ot_hours'].values
+                        A = np.vstack([x_vals, np.ones(len(x_vals))]).T
+                        m, c = np.linalg.lstsq(A, y_vals, rcond=None)[0]
+                        fig_t.add_trace(go.Scatter(
+                            x=time_df['_sort_dt'], 
+                            y=m * x_vals + c, 
+                            mode='lines', 
+                            name=t('Xu hướng', 'トレンド'), 
+                            line=dict(dash='dash', color='#ef4444', width=2),
+                            hoverinfo='skip'
+                        ))
+
+                    fig_t.update_layout(
+                        font=dict(family="'Times New Roman', serif"),
+                        margin=dict(l=0, r=0, t=5, b=25),
+                        height=250,
+                        showlegend=False,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        xaxis=dict(gridcolor='#f1f5f9', type='date', tickformat='%d/%m/%Y'),
+                        yaxis=dict(gridcolor='#f1f5f9')
+                    )
+                    st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False}, key=f"time_{suffix_key}")
 
             st.markdown(f"<div style='font-size: 15px; font-weight: 600; color: #334155; margin-top: 15px; margin-bottom: 4px;'>{t('Danh Sách Chi Tiết', '明細一覧')}</div>", unsafe_allow_html=True)
             detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'ot_reason']].copy()
