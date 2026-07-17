@@ -413,11 +413,12 @@ st.markdown("""
         border-radius: 8px !important;
         border: 1px solid #cbd5e1 !important;
         background-color: #f8fafc !important;
-        transition: all 0.3s ease !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
     }
 
-    div[data-baseweb="input"]:focus-within,
-    div[data-baseweb="base-input"]:focus-within,
+    /* Exclude Data Editor internal inputs from global focus styles to avoid breaking the grid */
+    div[data-baseweb="input"]:not([class*="glide"]):focus-within,
+    div[data-baseweb="base-input"]:not([class*="glide"]):focus-within,
     div[data-baseweb="select"] > div:focus-within,
     div[data-testid="stTextInput"] > div > div:focus-within,
     div[data-testid="stNumberInput"] > div > div:focus-within,
