@@ -150,12 +150,12 @@ def render_project_history():
                 top1_name = top_proj.index[0]
                 pct = (top_proj.iloc[0] / top_proj.sum()) * 100
                 insight_text = t(
-                    f"💡 <b>Smart Insight:</b> Dự án <b>{top1_name}</b> chiếm nhiều OT nhất (<b>{pct:.1f}%</b>).",
-                    f"💡 <b>Smart Insight:</b> プロジェクト <b>{top1_name}</b> が残業時間の多くを占めています (<b>{pct:.1f}%</b>)。"
+                    f"<span class='material-symbols-rounded' style='font-size: 17px; color: #0284c7; margin-right: 4px;'>insights</span> <b>Tiêu Điểm:</b> Dự án <b>{top1_name}</b> chiếm nhiều OT nhất (<b>{pct:.1f}%</b>).",
+                    f"<span class='material-symbols-rounded' style='font-size: 17px; color: #0284c7; margin-right: 4px;'>insights</span> <b>自動分析:</b> プロジェクト <b>{top1_name}</b> が残業時間の多くを占めています (<b>{pct:.1f}%</b>)。"
                 )
                 insights_html = f"""
-                <div style='background: #f0fdf4; border: 1px solid #bbf7d0; padding: 7px 12px; border-radius: 6px; font-size: 13px; color: #166534; display: flex; align-items: center; margin-top: 2px;'>
-                    <div>{insight_text}</div>
+                <div style='background: #ffffff; border: 1px solid #cbd5e1; padding: 7px 12px; border-radius: 6px; font-size: 13px; color: #334155; display: flex; align-items: center; margin-top: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);'>
+                    <div style='display: flex; align-items: center;'>{insight_text}</div>
                 </div>
                 """
         
