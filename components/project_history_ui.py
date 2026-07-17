@@ -425,7 +425,7 @@ def render_project_history():
     with tab2:
         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
         unique_projects = sorted(df['order_name'].unique().tolist())
-        all_proj_opt = t("📂 --- Tất cả dự án ---", "📂 --- すべてのプロジェクト ---")
+        all_proj_opt = t("❖ --- Tất cả dự án ---", "❖ --- すべてのプロジェクト ---")
         project_options = [all_proj_opt] + unique_projects
 
         def render_project_details(df_t2, proj_name, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False):
