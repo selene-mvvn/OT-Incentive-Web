@@ -309,7 +309,7 @@ def render_project_history():
                         legend=dict(
                             orientation='v',
                             yanchor='top',
-                            y=0.95,
+                            y=0.85,
                             xanchor='left',
                             x=0.74,
                             font=dict(size=13.5, color='#1e293b'),
