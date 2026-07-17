@@ -619,7 +619,7 @@ def render_project_history():
                 key="tab2_sel_project"
             )
         with col_t2_compare:
-            compare_options = [t(":material/close: Không so sánh", ":material/close: 比較しない")] + unique_projects
+            compare_options = [t("✖ Không so sánh", "✖ 比較しない")] + unique_projects
             sel_project_compare = st.selectbox(
                 t("⚖️ Dự Án So Sánh:", "⚖️ 比較プロジェクト:"),
                 options=compare_options,
@@ -658,7 +658,7 @@ def render_project_history():
             month_str = f"T{sel_month_t2:02d}/"
             df_t2_main = df_t2_main[df_t2_main['clean_period'].astype(str).str.startswith(month_str)]
 
-        if sel_project_compare != t(":material/close: Không so sánh", ":material/close: 比較しない"):
+        if sel_project_compare != t("✖ Không so sánh", "✖ 比較しない"):
             c_left_view, c_right_view = st.columns(2, gap="large")
             
             with c_left_view:
