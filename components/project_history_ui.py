@@ -461,6 +461,145 @@ def render_project_history():
         all_proj_opt = t("❖ --- Tất cả dự án ---", "❖ --- すべてのプロジェクト ---")
         project_options = [all_proj_opt] + unique_projects
 
+        def render_project_comparison_commentary(df_A, name_A, df_B, name_B, period_label, all_proj_opt):
+            display_A = name_A if name_A != all_proj_opt else t('Tất cả dự án (A)', 'すべてのプロジェクト (A)')
+            display_B = name_B if name_B != all_proj_opt else t('Tất cả dự án (B)', 'すべてのプロジェクト (B)')
+
+            hrs_A = float(df_A['ot_hours'].sum()) if not df_A.empty else 0.0
+            cost_A = float(df_A['est_cost'].sum()) if not df_A.empty else 0.0
+            rate_A = cost_A / hrs_A if hrs_A > 0 else 0.0
+
+            hrs_B = float(df_B['ot_hours'].sum()) if not df_B.empty else 0.0
+            cost_B = float(df_B['est_cost'].sum()) if not df_B.empty else 0.0
+            rate_B = cost_B / hrs_B if hrs_B > 0 else 0.0
+
+            # Calculate high multiplier hours (>= 270%)
+            def get_high_mult_info(df_sub):
+                h_high = 0.0
+                if df_sub.empty:
+                    return 0.0
+                for _, r in df_sub.iterrows():
+                    found_b = False
+                    for k, v in r.items():
+                        if str(k).endswith('%'):
+                            try:
+                                val = float(v)
+                                if val > 0:
+                                    found_b = True
+                                    m = float(str(k).replace('%', '').strip())
+                                    if m >= 270:
+                                        h_high += val
+                            except:
+                                pass
+                    if not found_b:
+                        try:
+                            m = float(str(r.get('multiplier', 0)).replace('%', '').strip())
+                            if m >= 270:
+                                h_high += float(r.get('ot_hours', 0.0))
+                        except:
+                            pass
+                return h_high
+
+            high_A = get_high_mult_info(df_A)
+            high_B = get_high_mult_info(df_B)
+            pct_high_A = (high_A / hrs_A * 100.0) if hrs_A > 0 else 0.0
+            pct_high_B = (high_B / hrs_B * 100.0) if hrs_B > 0 else 0.0
+
+            # Resource intersection
+            staff_A = set(df_A['employee_name'].astype(str).str.strip().unique()) if not df_A.empty else set()
+            staff_B = set(df_B['employee_name'].astype(str).str.strip().unique()) if not df_B.empty else set()
+            staff_A.discard('')
+            staff_A.discard(t('Chưa rõ', '未定'))
+            staff_B.discard('')
+            staff_B.discard(t('Chưa rõ', '未定'))
+            shared_staff = sorted(list(staff_A.intersection(staff_B)))
+
+            # Narrative building
+            # 1. Cost & Hours text
+            if hrs_A == 0 and hrs_B == 0:
+                cost_text = t("Cả hai dự án đều chưa phát sinh số giờ hay chi phí tăng ca nào trong kỳ này.", "両プロジェクトともに、この期間の残業時間や費用は発生していません。")
+            else:
+                diff_cost = cost_A - cost_B
+                diff_rate = rate_A - rate_B
+                if cost_A > cost_B:
+                    cost_comp_str = t(f"tổng chi phí thực tế cao hơn <b>{diff_cost:,.0f} VNĐ</b>", f"実際の総費用は<b>{diff_cost:,.0f} VND</b>高い")
+                elif cost_A < cost_B:
+                    cost_comp_str = t(f"tổng chi phí thực tế thấp hơn <b>{abs(diff_cost):,.0f} VNĐ</b>", f"実際の総費用は<b>{abs(diff_cost):,.0f} VND</b>低い")
+                else:
+                    cost_comp_str = t("tổng chi phí thực tế tương đương nhau", "実際の総費用は同等")
+
+                rate_reason_str = ""
+                if abs(diff_rate) > 5000:
+                    if rate_A > rate_B:
+                        rate_reason_str = t(f"<br>👉 <i>Nguyên nhân chênh lệch đơn giá:</i> Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>đắt hơn {diff_rate:,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) do có tới <b>{pct_high_A:.1f}%</b> số giờ rơi vào khung ngày nghỉ/Lễ (hệ số cao $\\ge 270\\%$), trong khi tỷ lệ này bên {display_B} chỉ là <b>{pct_high_B:.1f}%</b>.", 
+                                          f"<br>👉 <i>単価差異の原因:</i> <b>{display_A}</b>の平均単価({rate_A:,.0f} VND/時間)が<b>{display_B}</b>({rate_B:,.0f} VND/時間)より<b>{diff_rate:,.0f} VND/時間高い</b>のは、休日/祝日(高倍率 $\\ge 270\\%$)の残業割合が<b>{pct_high_A:.1f}%</b>(対して{display_B}は<b>{pct_high_B:.1f}%</b>)を占めているためです。")
+                    else:
+                        rate_reason_str = t(f"<br>👉 <i>Nguyên nhân chênh lệch đơn giá:</i> Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường ($150\\%$), chỉ có <b>{pct_high_A:.1f}%</b> giờ hệ số cao so với <b>{pct_high_B:.1f}%</b> của {display_B}.", 
+                                          f"<br>👉 <i>単価差異の原因:</i> <b>{display_A}</b>の平均単価({rate_A:,.0f} VND/時間)は、通常時間帯($150\\%$)を優先したため、<b>{display_B}</b>({rate_B:,.0f} VND/時間)より<b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は{display_A}が<b>{pct_high_A:.1f}%</b>(対して{display_B}は<b>{pct_high_B:.1f}%</b>)です。")
+
+                cost_text = t(
+                    f"Trong kỳ <b>{period_label}</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br>📊 Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
+                    f"期間<b>{period_label}</b>中、<b>{display_A}</b>は<b>{hrs_A:,.1f}時間の残業</b>(費用<b>{cost_A:,.0f} VND</b>)であり、<b>{display_B}</b>は<b>{hrs_B:,.1f}時間</b>(費用<b>{cost_B:,.0f} VND</b>)を記録しました。<br>📊 結果として、<b>{display_A}</b>は<b>{display_B}</b>と比べ{cost_comp_str}です。{rate_reason_str}"
+                )
+
+            # 2. Resource & Intersection text
+            if len(shared_staff) > 0:
+                shared_names_str = ", ".join([f"<b>{s}</b>" for s in shared_staff[:4]])
+                if len(shared_staff) > 4:
+                    shared_names_str += t(f" và {len(shared_staff)-4} người khác", f" 他{len(shared_staff)-4}名")
+                
+                shared_hrs_A = df_A[df_A['employee_name'].isin(shared_staff)]['ot_hours'].sum() if not df_A.empty else 0
+                shared_hrs_B = df_B[df_B['employee_name'].isin(shared_staff)]['ot_hours'].sum() if not df_B.empty else 0
+                
+                resource_text = t(
+                    f"🤝 <b>Sự giao thoa nhân sự:</b> Phát hiện có <b>{len(shared_staff)} nhân sự nòng cốt</b> ({shared_names_str}) đang cống hiến OT cho <b>CẢ 2 DỰ ÁN</b> trong cùng kỳ này (đóng góp {shared_hrs_A:,.1f}h bên {display_A} và {shared_hrs_B:,.1f}h bên {display_B}).<br>⚠️ <i>Khuyến nghị điều phối:</i> Việc hai dự án cùng chia sẻ nhân sự nòng cốt cần được lưu ý sắp xếp lịch trình hợp lý để tránh quá tải hoặc kiệt sức cho nhóm nhân sự này.",
+                    f"🤝 <b>人的リソースの重複:</b> 期間中、<b>{len(shared_staff)}名の中核スタッフ</b> ({shared_names_str})が<b>両方のプロジェクト</b>に従事していることが確認されました({display_A}で{shared_hrs_A:,.1f}時間、{display_B}で{shared_hrs_B:,.1f}時間貢献)。<br>⚠️ <i>推奨事項:</i> 双方のプロジェクトで中核人材を共有しているため、過労や業務遅延を防ぐためのスケジュール調整が必要です。"
+                )
+            else:
+                resource_text = t(
+                    f"👥 <b>Phân bổ đội ngũ độc lập:</b> Hai dự án sử dụng hai lực lượng nhân sự hoàn toàn riêng biệt (<b>{len(staff_A)} người</b> tham gia bên {display_A} và <b>{len(staff_B)} người</b> bên {display_B}). Không xảy ra tình trạng chồng chéo hay chia sẻ nhân sự giữa 2 bên trong kỳ này.",
+                    f"👥 <b>独立した人員配置:</b> 両プロジェクトは完全に独立したスタッフ構成で作動しています({display_A}に<b>{len(staff_A)}名</b>、{display_B}に<b>{len(staff_B)}名</b>)。この期間中、両者間での人的リソースの重複はありません。"
+                )
+
+            # 3. Smart Verdict Badge
+            if rate_A > 0 and rate_B > 0 and abs(rate_A - rate_B) > 1000:
+                if rate_A < rate_B:
+                    verdict_winner = display_A
+                    verdict_rate = rate_A
+                    verdict_save = (rate_B - rate_A) / rate_B * 100.0
+                else:
+                    verdict_winner = display_B
+                    verdict_rate = rate_B
+                    verdict_save = (rate_A - rate_B) / rate_A * 100.0
+                
+                verdict_text = t(
+                    f"🏆 <b>Chẩn đoán đơn giá bình quân tối ưu hơn:</b> <span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VNĐ/h, tiết kiệm hơn {verdict_save:.1f}%)",
+                    f"🏆 <b>より平均単価がお得:</b> <span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VND/時間、{verdict_save:.1f}%コスト優位)"
+                )
+            else:
+                verdict_text = t("🏆 <b>Chẩn đoán:</b> Đơn giá bình quân của hai dự án đang ở mức cân bằng tương đương nhau.", "🏆 <b>評価:</b> 両プロジェクトの平均単価は同等レベルにバランスされています。")
+
+            st.markdown(f"""
+            <div style="background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+                        border: 1.5px solid #00B0F0; border-radius: 14px;
+                        padding: 22px 26px; margin-top: 10px; margin-bottom: 24px;
+                        box-shadow: 0 8px 25px rgba(0, 176, 240, 0.12);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 14px;">
+                    <span style="font-size: 26px;">🤖</span>
+                    <span style="font-size: 17.5px; font-weight: 800; color: #0284c7; letter-spacing: 0.3px; text-transform: uppercase;">
+                        {t('Tóm tắt đối chứng 3 chiều (AI Executive Commentary)', '3軸比較サマリー (AI EXECUTIVE COMMENTARY)')}
+                    </span>
+                </div>
+                <div style="font-size: 14.5px; color: #334155; line-height: 1.75; display: flex; flex-direction: column; gap: 14px;">
+                    <div>💰 {cost_text}</div>
+                    <div>{resource_text}</div>
+                    <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px;">
+                        {verdict_text}
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
         def render_project_details(df_t2, proj_name, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False):
             if df_t2.empty or df_t2['ot_hours'].sum() <= 0:
                 from components.ui_utils import render_empty_state
@@ -692,21 +831,24 @@ def render_project_history():
             df_t2_main = df_t2_main[df_t2_main['clean_period'].astype(str).str.startswith(month_str)]
 
         if sel_project_compare != t("✖ Không so sánh", "✖ 比較しない"):
+            df_t2_comp = df.copy()
+            if sel_project_compare != all_proj_opt:
+                df_t2_comp = df_t2_comp[df_t2_comp['order_name'] == sel_project_compare]
+            if sel_year_t2 not in ["Tất cả", "すべて"]:
+                df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.endswith(f"/{sel_year_t2}")]
+            if sel_month_t2 not in ["Tất cả", "すべて"]:
+                month_str = f"T{sel_month_t2:02d}/"
+                df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.startswith(month_str)]
+
+            # Render 3-Way AI Executive Commentary summary block right before columns
+            render_project_comparison_commentary(df_t2_main, sel_project, df_t2_comp, sel_project_compare, sel_period_t2_label, all_proj_opt)
+
             c_left_view, c_right_view = st.columns(2, gap="large")
             
             with c_left_view:
                 render_project_details(df_t2_main, sel_project, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=True)
 
             with c_right_view:
-                df_t2_comp = df.copy()
-                if sel_project_compare != all_proj_opt:
-                    df_t2_comp = df_t2_comp[df_t2_comp['order_name'] == sel_project_compare]
-                if sel_year_t2 not in ["Tất cả", "すべて"]:
-                    df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.endswith(f"/{sel_year_t2}")]
-                if sel_month_t2 not in ["Tất cả", "すべて"]:
-                    month_str = f"T{sel_month_t2:02d}/"
-                    df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.startswith(month_str)]
-                
                 render_project_details(df_t2_comp, sel_project_compare, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=True)
         else:
             render_project_details(df_t2_main, sel_project, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False)
