@@ -531,15 +531,15 @@ def render_project_history():
                 rate_reason_str = ""
                 if abs(diff_rate) > 5000:
                     if rate_A > rate_B:
-                        rate_reason_str = t(f"<br>👉 <i>Nguyên nhân chênh lệch đơn giá:</i> Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>đắt hơn {diff_rate:,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) do có tới <b>{pct_high_A:.1f}%</b> số giờ rơi vào khung ngày nghỉ/Lễ (hệ số cao $\\ge 270\\%$), trong khi tỷ lệ này bên {display_B} chỉ là <b>{pct_high_B:.1f}%</b>.", 
-                                          f"<br>👉 <i>単価差異の原因:</i> <b>{display_A}</b>の平均単価({rate_A:,.0f} VND/時間)が<b>{display_B}</b>({rate_B:,.0f} VND/時間)より<b>{diff_rate:,.0f} VND/時間高い</b>のは、休日/祝日(高倍率 $\\ge 270\\%$)の残業割合が<b>{pct_high_A:.1f}%</b>(対して{display_B}は<b>{pct_high_B:.1f}%</b>)を占めているためです。")
+                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i> Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>đắt hơn {diff_rate:,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) do có tới <b>{pct_high_A:.1f}%</b> số giờ rơi vào khung ngày nghỉ/Lễ (hệ số cao $\\ge 270\\%$), trong khi tỷ lệ này bên {display_B} chỉ là <b>{pct_high_B:.1f}%</b>.", 
+                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i> <b>{display_A}</b>の平均単価({rate_A:,.0f} VND/時間)が<b>{display_B}</b>({rate_B:,.0f} VND/時間)より<b>{diff_rate:,.0f} VND/時間高い</b>のは、休日/祝日(高倍率 $\\ge 270\\%$)の残業割合が<b>{pct_high_A:.1f}%</b>(対して{display_B}は<b>{pct_high_B:.1f}%</b>)を占めているためです。")
                     else:
-                        rate_reason_str = t(f"<br>👉 <i>Nguyên nhân chênh lệch đơn giá:</i> Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường ($150\\%$), chỉ có <b>{pct_high_A:.1f}%</b> giờ hệ số cao so với <b>{pct_high_B:.1f}%</b> của {display_B}.", 
-                                          f"<br>👉 <i>単価差異の原因:</i> <b>{display_A}</b>の平均単価({rate_A:,.0f} VND/時間)は、通常時間帯($150\\%$)を優先したため、<b>{display_B}</b>({rate_B:,.0f} VND/時間)より<b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は{display_A}が<b>{pct_high_A:.1f}%</b>(対して{display_B}は<b>{pct_high_B:.1f}%</b>)です。")
+                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i> Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường ($150\\%$), chỉ có <b>{pct_high_A:.1f}%</b> giờ hệ số cao so với <b>{pct_high_B:.1f}%</b> của {display_B}.", 
+                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i> <b>{display_A}</b>の平均単価({rate_A:,.0f} VND/時間)は、通常時間帯($150\\%$)を優先したため、<b>{display_B}</b>({rate_B:,.0f} VND/時間)より<b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は{display_A}が<b>{pct_high_A:.1f}%</b>(対して{display_B}は<b>{pct_high_B:.1f}%</b>)です。")
 
                 cost_text = t(
-                    f"Trong kỳ <b>{period_label}</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br>📊 Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
-                    f"期間<b>{period_label}</b>中、<b>{display_A}</b>は<b>{hrs_A:,.1f}時間の残業</b>(費用<b>{cost_A:,.0f} VND</b>)であり、<b>{display_B}</b>は<b>{hrs_B:,.1f}時間</b>(費用<b>{cost_B:,.0f} VND</b>)を記録しました。<br>📊 結果として、<b>{display_A}</b>は<b>{display_B}</b>と比べ{cost_comp_str}です。{rate_reason_str}"
+                    f"Trong kỳ <b>{period_label}</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
+                    f"期間<b>{period_label}</b>中、<b>{display_A}</b>は<b>{hrs_A:,.1f}時間の残業</b>(費用<b>{cost_A:,.0f} VND</b>)であり、<b>{display_B}</b>は<b>{hrs_B:,.1f}時間</b>(費用<b>{cost_B:,.0f} VND</b>)を記録しました。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>結果として、<b>{display_A}</b>は<b>{display_B}</b>と比べ{cost_comp_str}です。{rate_reason_str}"
                 )
 
             # 2. Resource & Intersection text
@@ -552,13 +552,13 @@ def render_project_history():
                 shared_hrs_B = df_B[df_B['employee_name'].isin(shared_staff)]['ot_hours'].sum() if not df_B.empty else 0
                 
                 resource_text = t(
-                    f"🤝 <b>Sự giao thoa nhân sự:</b> Phát hiện có <b>{len(shared_staff)} nhân sự nòng cốt</b> ({shared_names_str}) đang cống hiến OT cho <b>CẢ 2 DỰ ÁN</b> trong cùng kỳ này (đóng góp {shared_hrs_A:,.1f}h bên {display_A} và {shared_hrs_B:,.1f}h bên {display_B}).<br>⚠️ <i>Khuyến nghị điều phối:</i> Việc hai dự án cùng chia sẻ nhân sự nòng cốt cần được lưu ý sắp xếp lịch trình hợp lý để tránh quá tải hoặc kiệt sức cho nhóm nhân sự này.",
-                    f"🤝 <b>人的リソースの重複:</b> 期間中、<b>{len(shared_staff)}名の中核スタッフ</b> ({shared_names_str})が<b>両方のプロジェクト</b>に従事していることが確認されました({display_A}で{shared_hrs_A:,.1f}時間、{display_B}で{shared_hrs_B:,.1f}時間貢献)。<br>⚠️ <i>推奨事項:</i> 双方のプロジェクトで中核人材を共有しているため、過労や業務遅延を防ぐためのスケジュール調整が必要です。"
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #d97706; vertical-align: -5px; margin-right: 5px;'>handshake</span><b>Sự giao thoa nhân sự:</b> Phát hiện có <b>{len(shared_staff)} nhân sự nòng cốt</b> ({shared_names_str}) đang cống hiến OT cho <b>CẢ 2 DỰ ÁN</b> trong cùng kỳ này (đóng góp {shared_hrs_A:,.1f}h bên {display_A} và {shared_hrs_B:,.1f}h bên {display_B}).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #d97706; vertical-align: -4px; margin-right: 4px;'>warning</span><i>Khuyến nghị điều phối:</i> Việc hai dự án cùng chia sẻ nhân sự nòng cốt cần được lưu ý sắp xếp lịch trình hợp lý để tránh quá tải hoặc kiệt sức cho nhóm nhân sự này.",
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #d97706; vertical-align: -5px; margin-right: 5px;'>handshake</span><b>人的リソースの重複:</b> 期間中、<b>{len(shared_staff)}名の中核スタッフ</b> ({shared_names_str})が<b>両方のプロジェクト</b>に従事していることが確認されました({display_A}で{shared_hrs_A:,.1f}時間、{display_B}で{shared_hrs_B:,.1f}時間貢献)。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #d97706; vertical-align: -4px; margin-right: 4px;'>warning</span><i>推奨事項:</i> 双方のプロジェクトで中核人材を共有しているため、過労や業務遅延を防ぐためのスケジュール調整が必要です。"
                 )
             else:
                 resource_text = t(
-                    f"👥 <b>Phân bổ đội ngũ độc lập:</b> Hai dự án sử dụng hai lực lượng nhân sự hoàn toàn riêng biệt (<b>{len(staff_A)} người</b> tham gia bên {display_A} và <b>{len(staff_B)} người</b> bên {display_B}). Không xảy ra tình trạng chồng chéo hay chia sẻ nhân sự giữa 2 bên trong kỳ này.",
-                    f"👥 <b>独立した人員配置:</b> 両プロジェクトは完全に独立したスタッフ構成で作動しています({display_A}に<b>{len(staff_A)}名</b>、{display_B}に<b>{len(staff_B)}名</b>)。この期間中、両者間での人的リソースの重複はありません。"
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>groups</span><b>Phân bổ đội ngũ độc lập:</b> Hai dự án sử dụng hai lực lượng nhân sự hoàn toàn riêng biệt (<b>{len(staff_A)} người</b> tham gia bên {display_A} và <b>{len(staff_B)} người</b> bên {display_B}). Không xảy ra tình trạng chồng chéo hay chia sẻ nhân sự giữa 2 bên trong kỳ này.",
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>groups</span><b>独立した人員配置:</b> 両プロジェクトは完全に独立したスタッフ構成で作動しています({display_A}に<b>{len(staff_A)}名</b>、{display_B}に<b>{len(staff_B)}名</b>)。この期間中、両者間での人的リソースの重複はありません。"
                 )
 
             # 3. Smart Verdict Badge
@@ -573,11 +573,11 @@ def render_project_history():
                     verdict_save = (rate_A - rate_B) / rate_A * 100.0
                 
                 verdict_text = t(
-                    f"🏆 <b>Chẩn đoán đơn giá bình quân tối ưu hơn:</b> <span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VNĐ/h, tiết kiệm hơn {verdict_save:.1f}%)",
-                    f"🏆 <b>より平均単価がお得:</b> <span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VND/時間、{verdict_save:.1f}%コスト優位)"
+                    f"<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>Chẩn đoán đơn giá bình quân tối ưu hơn:</b> <span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VNĐ/h, tiết kiệm hơn {verdict_save:.1f}%)",
+                    f"<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>より平均単価がお得:</b> <span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VND/時間、{verdict_save:.1f}%コスト優位)"
                 )
             else:
-                verdict_text = t("🏆 <b>Chẩn đoán:</b> Đơn giá bình quân của hai dự án đang ở mức cân bằng tương đương nhau.", "🏆 <b>評価:</b> 両プロジェクトの平均単価は同等レベルにバランスされています。")
+                verdict_text = t("<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>Chẩn đoán:</b> Đơn giá bình quân của hai dự án đang ở mức cân bằng tương đương nhau.", "<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>評価:</b> 両プロジェクトの平均単価は同等レベルにバランスされています。")
 
             st.markdown(f"""
             <div style="background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
@@ -585,15 +585,15 @@ def render_project_history():
                         padding: 22px 26px; margin-top: 10px; margin-bottom: 24px;
                         box-shadow: 0 8px 25px rgba(0, 176, 240, 0.12);">
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; border-bottom: 1px dashed #cbd5e1; padding-bottom: 14px;">
-                    <span style="font-size: 26px;">🤖</span>
+                    <span class="material-symbols-rounded" style="font-size: 28px; color: #0284c7;">analytics</span>
                     <span style="font-size: 17.5px; font-weight: 800; color: #0284c7; letter-spacing: 0.3px; text-transform: uppercase;">
-                        {t('Tóm tắt đối chứng 3 chiều (AI Executive Commentary)', '3軸比較サマリー (AI EXECUTIVE COMMENTARY)')}
+                        {t('Báo cáo Phân tích đối chứng chuyên sâu (Executive Benchmark Briefing)', 'プロジェクト別 深度比較分析 & 運用効率評価')}
                     </span>
                 </div>
                 <div style="font-size: 14.5px; color: #334155; line-height: 1.75; display: flex; flex-direction: column; gap: 14px;">
-                    <div>💰 {cost_text}</div>
+                    <div><span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>payments</span>{cost_text}</div>
                     <div>{resource_text}</div>
-                    <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px;">
+                    <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px; display: flex; align-items: center;">
                         {verdict_text}
                     </div>
                 </div>
