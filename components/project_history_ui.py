@@ -537,10 +537,10 @@ def render_project_history():
                 )
                 st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False}, key=f"bar_{proj_name}_{'comp' if is_compare else 'main'}")
 
-            if is_compare:
-                st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
-
             with c_right:
+                if is_compare:
+                    st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
+                
                 st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #f59e0b;'>show_chart</span> {t('Diễn Biến Theo Thời Gian', '日別残業時間の推移')}</div>", unsafe_allow_html=True)
                 time_df = df_t2.groupby('ot_date')['ot_hours'].sum().reset_index()
                 time_df['_sort_dt'] = pd.to_datetime(time_df['ot_date'], format='%d/%m/%Y', errors='coerce')
@@ -578,6 +578,7 @@ def render_project_history():
                 st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
             else:
                 st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
+            
             detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']].copy()
             detail_df = detail_df.sort_values(by=['clean_period', 'ot_date'], ascending=[False, False]).reset_index(drop=True)
             
