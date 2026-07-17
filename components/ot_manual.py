@@ -521,9 +521,9 @@ def render_base_data():
 
             st.markdown(f"""
             <style>
-            div.element-container:has(#gross-tooltip) {
+            div.element-container:has(#gross-tooltip) {{
                 margin-bottom: -1rem;
-            }
+            }}
             </style>
             <div id="gross-tooltip" style="position: relative; width: 100%; height: 0px; z-index: 999; pointer-events: none;">
                 <div title="{t('Lưu ý: Cột Lương Gross sẽ được tính TỰ ĐỘNG khi bạn bấm Lưu.', '注:「総支給額」は保存時に自動計算されます。')}" 
