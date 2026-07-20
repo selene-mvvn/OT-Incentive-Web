@@ -789,78 +789,27 @@ def render_project_history():
                     from components.ui_utils import render_empty_state
                     render_empty_state(t("Chưa có dữ liệu thời gian", "時系列データがありません"), height=shared_chart_height-40)
                 else:
-                    max_bar = time_df['ot_hours'].max() * 1.15
-                    
-                    frames = []
-                    slider_steps = []
-                    for i in range(1, len(time_df) + 1):
-                        frame_df = time_df.iloc[:i]
-                        frame_name = f"frame_{i}"
-                        frames.append(go.Frame(
-                            data=[
-                                go.Bar(
-                                    x=frame_df['ot_date'], y=frame_df['ot_hours'],
-                                    text=frame_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
-                                    marker=dict(color=frame_df['ot_hours'], colorscale=[[0, '#fde047'], [1, '#ca8a04']]),
-                                    textposition='auto', textfont=dict(size=11, color='#0f172a', weight='bold'),
-                                    name=t("Giờ OT/Ngày", "日別残業"), yaxis='y1'
-                                )
-                            ],
-                            name=frame_name
-                        ))
-                        slider_steps.append(dict(
-                            method='animate',
-                            args=[[frame_name], dict(mode='immediate', frame=dict(duration=500, redraw=True), transition=dict(duration=250))],
-                            label=time_df.iloc[i-1]['ot_date']
-                        ))
-                    
-                    full_df = time_df
-                    bar_w_t = 0.25 if len(full_df) == 1 else (0.35 if len(full_df) == 2 else (0.45 if len(full_df) == 3 else None))
-                    fig_t = go.Figure(
-                        data=[
-                            go.Bar(
-                                x=full_df['ot_date'], y=full_df['ot_hours'], width=bar_w_t,
-                                text=full_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
-                                marker=dict(color=full_df['ot_hours'], colorscale=[[0, '#fde047'], [1, '#ca8a04']]),
-                                textposition='auto', textfont=dict(size=11, color='#0f172a', weight='bold'),
-                                name=t("Giờ OT/Ngày", "日別残業"), yaxis='y1'
-                            )
-                        ],
-                        frames=frames
-                    )
-
+                    bar_w_t = 0.25 if len(time_df) == 1 else (0.35 if len(time_df) == 2 else (0.45 if len(time_df) == 3 else None))
+                    fig_t = go.Figure(go.Bar(
+                        x=time_df['ot_date'],
+                        y=time_df['ot_hours'],
+                        width=bar_w_t,
+                        marker=dict(
+                            color=time_df['ot_hours'],
+                            colorscale=[[0, '#fde047'], [1, '#ca8a04']],
+                        ),
+                        text=time_df['ot_hours'].apply(lambda x: f"{x:,.1f} h"),
+                        textposition='auto',
+                        textfont=dict(size=11, color='#0f172a', weight='bold')
+                    ))
                     fig_t.update_layout(
                         font=dict(family="'Times New Roman', serif"),
-                        margin=dict(l=0, r=20, t=10, b=75),
-                        height=shared_chart_height + 65,
-                        paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
-                        showlegend=False,
-                        xaxis=dict(
-                            title=t("Ngày OT", "残業日"), gridcolor='#f1f5f9',
-                            range=[-0.5, len(time_df)-0.5], tickangle=-45
-                        ),
-                        yaxis=dict(
-                            title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9',
-                            range=[0, max_bar]
-                        ),
-                        updatemenus=[dict(
-                            type="buttons", showactive=False,
-                            y=-0.28, x=0.0, xanchor="left", yanchor="top",
-                            direction="right", pad=dict(r=10, t=0),
-                            buttons=[
-                                dict(label="▶", method="animate", args=[None, dict(frame=dict(duration=500, redraw=True), transition=dict(duration=250), fromcurrent=True, mode="immediate")]),
-                                dict(label="⏸", method="animate", args=[[None], dict(frame=dict(duration=0, redraw=False), mode="immediate", transition=dict(duration=0))])
-                            ]
-                        )],
-                        sliders=[dict(
-                            active=len(time_df)-1,
-                            yanchor="top", xanchor="left",
-                            currentvalue=dict(font=dict(size=13, color='#0284c7', weight='bold'), prefix="", visible=True, xanchor="left"),
-                            transition=dict(duration=250, easing="cubic-in-out"),
-                            pad=dict(b=0, t=0),
-                            len=0.88, x=0.12, y=-0.28,
-                            steps=slider_steps
-                        )]
+                        margin=dict(l=0, r=10, t=10, b=25),
+                        height=shared_chart_height,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        xaxis=dict(title=t("Ngày OT", "残業日"), gridcolor='#f1f5f9'),
+                        yaxis=dict(title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9')
                     )
                     st.plotly_chart(fig_t, use_container_width=True, config={'displayModeBar': False}, key=f"time_{proj_name}_{'comp' if is_compare else 'main'}")
 
