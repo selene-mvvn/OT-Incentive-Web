@@ -126,6 +126,39 @@ def render_project_history():
 
     unique_periods = sorted(df['clean_period'].unique().tolist(), key=sort_key_period, reverse=True)
     all_period_opt = t("Toàn bộ thời gian", "全期間")
+
+    def format_period_range_label(df_sub, base_label):
+        if df_sub.empty or base_label not in [all_period_opt, t("Toàn bộ thời gian", "全期間"), "Toàn bộ thời gian", "TOÀN BỘ THỜI GIAN", "全期間"]:
+            return base_label
+        ym_set = set()
+        for _, row in df_sub.iterrows():
+            cp = str(row.get('clean_period', '')).strip()
+            if cp.startswith('T') and '/' in cp:
+                parts = cp[1:].split('/')
+                if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
+                    ym_set.add((int(parts[1]), int(parts[0])))
+            pp = str(row.get('payment_period', '')).strip()
+            if pp.startswith('T') and '/' in pp:
+                parts = pp[1:].split('/')
+                if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
+                    ym_set.add((int(parts[1]), int(parts[0])))
+            d_str = str(row.get('ot_date', '')).strip()
+            if d_str and d_str not in ['nan', 'None', '']:
+                try:
+                    dt = pd.to_datetime(d_str, dayfirst=True)
+                    if pd.notna(dt):
+                        ym_set.add((int(dt.year), int(dt.month)))
+                except:
+                    pass
+        ym_list = sorted(list(ym_set))
+        if not ym_list:
+            return base_label
+        min_ym = ym_list[0]
+        max_ym = ym_list[-1]
+        if min_ym == max_ym:
+            return t(f"{base_label}: Kỳ T{min_ym[1]:02d}/{min_ym[0]}", f"{base_label}: {min_ym[0]}年{min_ym[1]}月分")
+        else:
+            return t(f"{base_label}: từ T{min_ym[1]:02d}/{min_ym[0]} đến T{max_ym[1]:02d}/{max_ym[0]}", f"{base_label}: {min_ym[0]}年{min_ym[1]}月 〜 {max_ym[0]}年{max_ym[1]}月")
     
     years = set()
     for p in unique_periods:
@@ -174,7 +207,7 @@ def render_project_history():
             period_labels.append(t(f"Tháng {sel_month_t1}", f"{sel_month_t1}月"))
             
         if not period_labels:
-            period_label = t("Toàn bộ thời gian", "全期間")
+            period_label = format_period_range_label(df_tab1, all_period_opt)
         else:
             period_label = " - ".join(period_labels)
 
@@ -556,10 +589,16 @@ def render_project_history():
                         rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường (150%), chỉ có <b>{pct_high_A:.1f}%</b> giờ hệ số cao so với <b>{pct_high_B:.1f}%</b> của {display_B}.", 
                                           f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) は、通常時間帯 (150%) を優先したため、<b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は {display_A} が <b>{pct_high_A:.1f}%</b> (対して {display_B} は <b>{pct_high_B:.1f}%</b>) です。")
 
-                if period_label == all_period_opt or period_label == t("Toàn bộ thời gian", "全期間") or period_label == t("🌟 Tất cả các tháng", "🌟 すべての月"):
+                is_all_time = (period_label == all_period_opt or period_label == t("Toàn bộ thời gian", "全期間") or period_label == t("🌟 Tất cả các tháng", "🌟 すべての月") or str(period_label).strip().lower().startswith("toàn bộ thời gian") or str(period_label).strip().startswith("全期間"))
+                if is_all_time:
+                    df_comb = pd.concat([df_A, df_B], ignore_index=True) if not df_A.empty or not df_B.empty else df_A
+                    comb_label = format_period_range_label(df_comb, all_period_opt)
+                    range_str = comb_label.replace(all_period_opt, "").strip(" :-()")
+                    time_desc_vn = f"Tính trên toàn bộ thời gian (từ {range_str})" if range_str and "từ" not in range_str.lower() and "kỳ" not in range_str.lower() else (f"Tính trên toàn bộ thời gian ({range_str})" if range_str else "Tính trên toàn bộ thời gian")
+                    time_desc_jp = f"全期間 ({range_str}) の合計" if range_str else "全期間の合計"
                     cost_text = t(
-                        f"<b>Tính trên toàn bộ thời gian</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
-                        f"<b>全期間の合計</b>において、<b>{display_A}</b> は <b>{hrs_A:,.1f}時間の残業</b> (費用 <b>{cost_A:,.0f} VND</b>) であり、<b>{display_B}</b> は <b>{hrs_B:,.1f}時間</b> (費用 <b>{cost_B:,.0f} VND</b>) を記録しました。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>結果として、<b>{display_A}</b> は <b>{display_B}</b> と比べ {cost_comp_str} です。{rate_reason_str}"
+                        f"<b>{time_desc_vn}</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
+                        f"<b>{time_desc_jp}</b>において、<b>{display_A}</b> は <b>{hrs_A:,.1f}時間の残業</b> (費用 <b>{cost_A:,.0f} VND</b>) であり、<b>{display_B}</b> は <b>{hrs_B:,.1f}時間</b> (費用 <b>{cost_B:,.0f} VND</b>) を記録しました。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>結果として、<b>{display_A}</b> は <b>{display_B}</b> と比べ {cost_comp_str} です。{rate_reason_str}"
                     )
                 else:
                     cost_text = t(
@@ -636,10 +675,12 @@ def render_project_history():
             p_staff = df_t2['employee_name'].nunique()
             p_records = len(df_t2)
 
+            display_period_label = format_period_range_label(df_t2, sel_period_t2_label) if sel_period_t2_label == all_period_opt else sel_period_t2_label
+
             min_h = "min-height: 54px; display: flex; align-items: flex-start;" if is_compare else ""
             st.markdown(f"""
             <h3 style='font-size: 18px; margin-bottom: 20px; {min_h}'>
-                <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2_label})</div>
+                <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({display_period_label})</div>
             </h3>
             """, unsafe_allow_html=True)
 
