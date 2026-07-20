@@ -2128,9 +2128,10 @@ else:
                                 }
                             });
                             
-                            // Trigger popup reliably when mouse moves out towards the top-right Close Window (X) or top bar area
+                            // Trigger popup reliably only when mouse moves out towards the top-right Close Window (X) area
                             const handleTopExit = (e) => {
-                                if (e.clientY <= 40 || (!e.relatedTarget && e.clientY <= 55)) {
+                                const isTopRightArea = e.clientX >= (window.parent.innerWidth - 220);
+                                if (isTopRightArea && (e.clientY <= 45 || (!e.relatedTarget && e.clientY <= 55))) {
                                     if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
                                 }
                             };
