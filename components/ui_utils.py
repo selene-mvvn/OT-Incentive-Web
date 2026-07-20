@@ -288,3 +288,42 @@ def render_empty_state(text, subtitle=None, icon="inbox", height=200):
         </div>
     """, unsafe_allow_html=True)
 
+@st.cache_data(ttl=3600)
+def get_weather_widget_html():
+    try:
+        import requests
+        lang = st.session_state.get('lang', 'VN')
+        lat = 21.0285 if lang == 'VN' else 35.6895
+        lon = 105.8542 if lang == 'VN' else 139.6917
+        city = "Hà Nội" if lang == 'VN' else "Tokyo"
+        
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
+        r = requests.get(url, timeout=3)
+        if r.status_code == 200:
+            data = r.json()
+            temp = data['current_weather']['temperature']
+            code = data['current_weather']['weathercode']
+            
+            icon = "🌤️"
+            cond = t("Nắng ấm", "晴れ")
+            
+            if code in [0, 1]: icon = "☀️"; cond = t("Trời Nắng", "快晴")
+            elif code in [2, 3]: icon = "☁️"; cond = t("Nhiều Mây", "曇り")
+            elif code in [45, 48]: icon = "🌫️"; cond = t("Sương Mù", "霧")
+            elif code in [51, 53, 55, 61, 63, 65, 80, 81, 82]: icon = "🌧️"; cond = t("Có Mưa", "雨")
+            elif code in [71, 73, 75]: icon = "❄️"; cond = t("Tuyết rơi", "雪")
+            elif code in [95, 96, 99]: icon = "⛈️"; cond = t("Mưa Giông", "雷雨")
+            
+            return f"""
+            <div style="background: rgba(255,255,255,0.85); border: 1px solid rgba(0, 176, 240, 0.3); box-shadow: 0 4px 10px rgba(0,176,240,0.1); padding: 4px 12px; border-radius: 20px; font-size: 13.5px; color: #334155; display: inline-flex; align-items: center; gap: 8px;">
+                <span style="font-weight: 600; color: #00B0F0;">{city}</span>
+                <span style="color: #cbd5e1;">|</span>
+                <span style="font-size: 16px;">{icon}</span>
+                <span style="font-weight: 700;">{temp}°C</span>
+                <span style="color: #cbd5e1;">|</span>
+                <span>{cond}</span>
+            </div>
+            """
+    except Exception:
+        pass
+    return ""

@@ -858,7 +858,14 @@ def render_base_data():
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
-            st.markdown(f"<h3 id='holiday-heading' style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
+            from components.ui_utils import get_weather_widget_html
+            weather_html = get_weather_widget_html()
+            st.markdown(f"""
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 5px; margin-top: 5px;">
+                    <h3 id='holiday-heading' style='font-size: 20px; font-weight: 600; margin: 0;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>
+                    {weather_html}
+                </div>
+            """, unsafe_allow_html=True)
 
             guide_text = t(
                 "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>HƯỚNG DẪN:</b><br>- <b>Thêm mới:</b> Bấm vào dấu <b>+</b> mờ mờ ở góc dưới cùng bên trái của bảng.<br>- <b>Chọn ngày/Sửa:</b> Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- <b>Xóa:</b> Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím <b>Delete</b> trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).</div>",
