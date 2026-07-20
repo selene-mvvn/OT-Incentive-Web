@@ -289,10 +289,9 @@ def render_empty_state(text, subtitle=None, icon="inbox", height=200):
     """, unsafe_allow_html=True)
 
 @st.cache_data(ttl=3600)
-def get_weather_widget_html():
+def get_weather_widget_html(lang='VN'):
     try:
         import requests
-        lang = st.session_state.get('lang', 'VN')
         lat = 21.0285 if lang == 'VN' else 35.6895
         lon = 105.8542 if lang == 'VN' else 139.6917
         city = "Hà Nội" if lang == 'VN' else "Tokyo"
@@ -305,14 +304,14 @@ def get_weather_widget_html():
             code = data['current_weather']['weathercode']
             
             icon = "🌤️"
-            cond = t("Nắng ấm", "晴れ")
+            cond = t("Nắng ấm", "晴れ") if 't' in globals() else "Nắng ấm"
             
-            if code in [0, 1]: icon = "☀️"; cond = t("Trời Nắng", "快晴")
-            elif code in [2, 3]: icon = "☁️"; cond = t("Nhiều Mây", "曇り")
-            elif code in [45, 48]: icon = "🌫️"; cond = t("Sương Mù", "霧")
-            elif code in [51, 53, 55, 61, 63, 65, 80, 81, 82]: icon = "🌧️"; cond = t("Có Mưa", "雨")
-            elif code in [71, 73, 75]: icon = "❄️"; cond = t("Tuyết rơi", "雪")
-            elif code in [95, 96, 99]: icon = "⛈️"; cond = t("Mưa Giông", "雷雨")
+            if code in [0, 1]: icon = "☀️"; cond = t("Trời Nắng", "快晴") if 't' in globals() else "Trời Nắng"
+            elif code in [2, 3]: icon = "☁️"; cond = t("Nhiều Mây", "曇り") if 't' in globals() else "Nhiều Mây"
+            elif code in [45, 48]: icon = "🌫️"; cond = t("Sương Mù", "霧") if 't' in globals() else "Sương Mù"
+            elif code in [51, 53, 55, 61, 63, 65, 80, 81, 82]: icon = "🌧️"; cond = t("Có Mưa", "雨") if 't' in globals() else "Có Mưa"
+            elif code in [71, 73, 75]: icon = "❄️"; cond = t("Tuyết rơi", "雪") if 't' in globals() else "Tuyết rơi"
+            elif code in [95, 96, 99]: icon = "⛈️"; cond = t("Mưa Giông", "雷雨") if 't' in globals() else "Mưa Giông"
             
             return f"""
             <div style="background: rgba(255,255,255,0.85); border: 1px solid rgba(0, 176, 240, 0.3); box-shadow: 0 4px 10px rgba(0,176,240,0.1); padding: 4px 12px; border-radius: 20px; font-size: 13.5px; color: #334155; display: inline-flex; align-items: center; gap: 8px;">
