@@ -1623,6 +1623,8 @@ else:
                 height: 52px !important; min-height: 52px !important; 
                 width: 72px !important; max-width: 72px !important;
                 margin: 0 auto !important;
+                position: relative !important;
+                top: 12px !important;
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
