@@ -773,13 +773,13 @@ def render_project_history():
             detail_df[t('Chi Phí VNĐ', '予想支出額')] = detail_df[t('Chi Phí VNĐ', '予想支出額')].apply(lambda x: f"{x:,.0f}" if x > 0 else "-")
 
             col_cfg = {
-                t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width=75),
-                t('Tên Dự Án', 'プロジェクト名'): st.column_config.TextColumn(t('Tên Dự Án', 'プロジェクト名'), width=180),
-                t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width=140),
-                t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width=85),
-                t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width=65),
-                t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width=95),
-                t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width=130),
+                t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width=55),
+                t('Tên Dự Án', 'プロジェクト名'): st.column_config.TextColumn(t('Tên Dự Án', 'プロジェクト名'), width=260),
+                t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width=125),
+                t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width=75),
+                t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width=55),
+                t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width=85),
+                t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width=180),
                 t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'))
             }
 
