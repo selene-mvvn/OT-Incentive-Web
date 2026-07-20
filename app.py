@@ -2121,17 +2121,41 @@ else:
                         if (!window.parent._otStickyNoteExitAttached) {
                             window.parent._otStickyNoteExitAttached = true;
                             
-                            // Reset exit check cooldown whenever user moves mouse back into normal page area
+                            // Reset exit check cooldown whenever user moves mouse back into normal page area and track trajectory
+                            window.parent._otMouseHistory = [];
                             window.parent.document.addEventListener('mousemove', (e) => {
                                 if (e.clientY > 50) {
                                     window.parent._otExitModalFired = false;
                                 }
+                                const now = Date.now();
+                                window.parent._otMouseHistory.push({x: e.clientX, y: e.clientY, t: now});
+                                if (window.parent._otMouseHistory.length > 20) {
+                                    window.parent._otMouseHistory.shift();
+                                }
                             });
                             
                             // Trigger popup reliably exclusively when mouse moves out towards the top-right Close Window (X) button area
+                            // Trajectory prediction handles diagonal movement from center/left towards X close button
                             const handleTopExit = (e) => {
-                                const isCloseButtonArea = e.clientX >= (window.parent.innerWidth - 58);
-                                if (isCloseButtonArea && (e.clientY <= 45 || (!e.relatedTarget && e.clientY <= 55))) {
+                                if (e.clientY > 45 && e.relatedTarget) return;
+                                const W = window.parent.innerWidth;
+                                let isCloseTarget = e.clientX >= (W - 58);
+                                
+                                // Predict diagonal path if moving upwards out of the page
+                                if (!isCloseTarget && e.clientX >= (W - 400) && window.parent._otMouseHistory && window.parent._otMouseHistory.length > 1) {
+                                    const hist = window.parent._otMouseHistory;
+                                    const p0 = hist[0];
+                                    const p1 = {x: e.clientX, y: e.clientY};
+                                    if (p1.y < p0.y && (p0.y - p1.y) >= 10) {
+                                        const slope = (p1.x - p0.x) / (p1.y - p0.y);
+                                        const projectedX = p1.x + slope * (-75 - p1.y);
+                                        if (projectedX >= (W - 68)) {
+                                            isCloseTarget = true;
+                                        }
+                                    }
+                                }
+                                
+                                if (isCloseTarget && (e.clientY <= 45 || (!e.relatedTarget && e.clientY <= 55))) {
                                     if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
                                 }
                             };
