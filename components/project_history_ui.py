@@ -872,9 +872,7 @@ def render_project_history():
                     analysis_text_jp=f"プロジェクト{proj_name}の残業コストと時間の概要レポートです。総計{p_hrs:,.1f}時間、推定コスト{p_cost:,.0f} VND、参加スタッフ{p_staff}名です。",
                     total_hrs=p_hrs,
                     total_cost=p_cost,
-                    total_staff=p_staff,
-                    fig_emp=fig_bar,
-                    fig_time=fig_t
+                    total_staff=p_staff
                 )
                 
                 st.download_button(

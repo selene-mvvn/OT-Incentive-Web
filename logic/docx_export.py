@@ -1,8 +1,10 @@
 import io
 import re
+import pandas as pd
 from docx import Document
 from docx.shared import Cm, Pt, Inches, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
+import matplotlib.pyplot as plt
 
 def strip_html_tags(text):
     clean = re.compile('<.*?>')
@@ -17,7 +19,7 @@ def apply_font_to_table(table, font_name="Times New Roman"):
                 for run in paragraph.runs:
                     run.font.name = font_name
 
-def generate_project_executive_docx(df_project, project_name, period_label, analysis_text_vn, analysis_text_jp, total_hrs, total_cost, total_staff, fig_emp, fig_time):
+def generate_project_executive_docx(df_project, project_name, period_label, analysis_text_vn, analysis_text_jp, total_hrs, total_cost, total_staff):
     doc = Document()
     
     # 1. Setup Page (A4)
@@ -98,31 +100,63 @@ def generate_project_executive_docx(df_project, project_name, period_label, anal
             
         apply_font_to_table(emp_table)
             
-    # Add Charts
+    # Add Charts using Matplotlib
     doc.add_page_break()
     doc.add_heading('4. PHÂN TÍCH BIỂU ĐỒ', level=1)
     
-    if fig_emp:
+    if not df_project.empty:
         try:
-            # Generate PNG from plotly figure
-            img_bytes = fig_emp.to_image(format="png", width=900, height=450, scale=2)
-            img_io = io.BytesIO(img_bytes)
-            p_img1 = doc.add_paragraph("Biểu đồ Phân Bổ Số Giờ:")
-            p_img1.runs[0].bold = True
-            doc.add_picture(img_io, width=Inches(6.5))
-        except Exception as e:
-            doc.add_paragraph(f"Không thể render biểu đồ 1: {e}")
+            # 1. Employee Distribution Chart (fig_emp)
+            staff_contrib = df_project.groupby('employee_name')['ot_hours'].sum().reset_index()
+            staff_contrib.columns = ['employee_name', 'Hours']
+            staff_contrib = staff_contrib.sort_values(by='Hours', ascending=True)
             
-    if fig_time:
-        try:
-            img_bytes2 = fig_time.to_image(format="png", width=900, height=450, scale=2)
-            img_io2 = io.BytesIO(img_bytes2)
-            p_img2 = doc.add_paragraph("Biểu đồ Xu Hướng Bù Đắp OT:")
-            p_img2.runs[0].bold = True
+            plt.figure(figsize=(9, 4.5))
+            bars = plt.barh(staff_contrib['employee_name'], staff_contrib['Hours'], color='#0284c7')
+            plt.title('Biểu đồ Phân Bổ Số Giờ', fontname='Times New Roman', fontsize=14, fontweight='bold')
+            plt.xlabel('Số giờ (h)', fontname='Times New Roman')
+            
+            # Add labels
+            for bar in bars:
+                plt.text(bar.get_width(), bar.get_y() + bar.get_height()/2, f'{bar.get_width():,.1f} h', 
+                         va='center', ha='right', color='white', fontweight='bold', fontname='Times New Roman')
+            
+            plt.tight_layout()
+            img_io1 = io.BytesIO()
+            plt.savefig(img_io1, format='png', dpi=150)
+            img_io1.seek(0)
+            plt.close()
+            
+            p_img1 = doc.add_paragraph()
+            doc.add_picture(img_io1, width=Inches(6.5))
+            
+            # 2. Time Trend Chart (fig_time)
+            time_df = df_project.groupby('ot_date')['ot_hours'].sum().reset_index()
+            time_df['_sort_dt'] = pd.to_datetime(time_df['ot_date'], format='%d/%m/%Y', errors='coerce')
+            time_df = time_df.sort_values(by='_sort_dt', ascending=True)
+            
+            plt.figure(figsize=(9, 4.5))
+            bars = plt.bar(time_df['ot_date'], time_df['ot_hours'], color='#ca8a04')
+            plt.title('Biểu đồ Xu Hướng Bù Đắp OT', fontname='Times New Roman', fontsize=14, fontweight='bold')
+            plt.xlabel('Ngày OT', fontname='Times New Roman')
+            plt.ylabel('Số giờ (h)', fontname='Times New Roman')
+            plt.xticks(rotation=45, ha='right')
+            
+            for bar in bars:
+                plt.text(bar.get_x() + bar.get_width()/2, bar.get_height(), f'{bar.get_height():,.1f} h', 
+                         va='bottom', ha='center', color='black', fontweight='bold', fontname='Times New Roman')
+                         
+            plt.tight_layout()
+            img_io2 = io.BytesIO()
+            plt.savefig(img_io2, format='png', dpi=150)
+            img_io2.seek(0)
+            plt.close()
+            
+            p_img2 = doc.add_paragraph()
             doc.add_picture(img_io2, width=Inches(6.5))
+            
         except Exception as e:
-            doc.add_paragraph(f"Không thể render biểu đồ 2: {e}")
-
+            doc.add_paragraph(f"Không thể render biểu đồ: {e}")
             
     # Fix Times New Roman fallback in styles
     for style in doc.styles:
