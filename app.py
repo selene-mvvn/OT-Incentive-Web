@@ -2139,17 +2139,20 @@ else:
                             const handleTopExit = (e) => {
                                 if (e.clientY > 45 && e.relatedTarget) return;
                                 const W = window.parent.innerWidth;
-                                let isCloseTarget = e.clientX >= (W - 58);
+                                // Close X button is 0px to 46px from right edge. Maximize is 46px to 92px.
+                                // W - 44 ensures direct exit is strictly under Close X and never inside Maximize.
+                                let isCloseTarget = e.clientX >= (W - 44);
                                 
-                                // Predict diagonal path if moving upwards out of the page
-                                if (!isCloseTarget && e.clientX >= (W - 400) && window.parent._otMouseHistory && window.parent._otMouseHistory.length > 1) {
+                                // Predict diagonal path only if moving rightwards and upwards towards Close X
+                                if (!isCloseTarget && e.clientX >= (W - 160) && window.parent._otMouseHistory && window.parent._otMouseHistory.length > 1) {
                                     const hist = window.parent._otMouseHistory;
                                     const p0 = hist[0];
                                     const p1 = {x: e.clientX, y: e.clientY};
-                                    if (p1.y < p0.y && (p0.y - p1.y) >= 10) {
+                                    if (p1.y < p0.y && (p0.y - p1.y) >= 25 && p1.x > p0.x) {
                                         const slope = (p1.x - p0.x) / (p1.y - p0.y);
-                                        const projectedX = p1.x + slope * (-75 - p1.y);
-                                        if (projectedX >= (W - 68)) {
+                                        const projectedX = p1.x + slope * (-70 - p1.y);
+                                        // W - 32 ensures projected target lands precisely on Close X and cannot trigger Maximize/Minimize
+                                        if (projectedX >= (W - 32)) {
                                             isCloseTarget = true;
                                         }
                                     }
