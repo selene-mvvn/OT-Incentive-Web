@@ -1609,7 +1609,7 @@ else:
                 justify-content: center !important;
                 align-items: center !important;
                 width: 100% !important;
-                margin: -40px 0 12px -1px !important;
+                margin: -24px 0 12px 2px !important;
                 visibility: visible !important;
                 opacity: 1 !important;
             }}
@@ -1858,11 +1858,18 @@ else:
             #collapsed-sticky-note-btn {{
                 display: none !important;
             }}
+            [data-testid="stSidebar"][aria-expanded="false"] div.element-container:has(#collapsed-sticky-note-btn),
+            [data-testid="stSidebar"][aria-expanded="false"] div.stElementContainer:has(#collapsed-sticky-note-btn),
+            [data-testid="stSidebar"][aria-expanded="false"] div:has(#collapsed-sticky-note-btn) {{
+                margin-top: -15px !important;
+                margin-bottom: 0px !important;
+                padding-top: 0px !important;
+            }}
             [data-testid="stSidebar"][aria-expanded="false"] #collapsed-sticky-note-btn {{
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
-                margin-top: 8px !important;
+                margin-top: 0px !important;
                 margin-left: -1rem;
                 width: 100px;
                 cursor: pointer;
