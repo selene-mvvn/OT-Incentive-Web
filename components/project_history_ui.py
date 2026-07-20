@@ -789,8 +789,6 @@ def render_project_history():
                     from components.ui_utils import render_empty_state
                     render_empty_state(t("Chưa có dữ liệu thời gian", "時系列データがありません"), height=shared_chart_height-40)
                 else:
-                    time_df['cum_hours'] = time_df['ot_hours'].cumsum()
-                    max_cum = time_df['cum_hours'].max() * 1.1
                     max_bar = time_df['ot_hours'].max() * 1.15
                     
                     frames = []
@@ -806,15 +804,6 @@ def render_project_history():
                                     marker=dict(color=frame_df['ot_hours'], colorscale=[[0, '#fde047'], [1, '#ca8a04']]),
                                     textposition='auto', textfont=dict(size=11, color='#0f172a', weight='bold'),
                                     name=t("Giờ OT/Ngày", "日別残業"), yaxis='y1'
-                                ),
-                                go.Scatter(
-                                    x=frame_df['ot_date'], y=frame_df['cum_hours'],
-                                    mode='lines+markers+text',
-                                    line=dict(color='#ef4444', width=3),
-                                    marker=dict(size=8, color='#ef4444'),
-                                    text=frame_df['cum_hours'].apply(lambda x: f"{x:,.1f} h"),
-                                    textposition='top center', textfont=dict(color='#ef4444', size=11, weight='bold'),
-                                    name=t("Lũy kế OT", "累計残業"), yaxis='y2'
                                 )
                             ],
                             name=frame_name
@@ -835,15 +824,6 @@ def render_project_history():
                                 marker=dict(color=full_df['ot_hours'], colorscale=[[0, '#fde047'], [1, '#ca8a04']]),
                                 textposition='auto', textfont=dict(size=11, color='#0f172a', weight='bold'),
                                 name=t("Giờ OT/Ngày", "日別残業"), yaxis='y1'
-                            ),
-                            go.Scatter(
-                                x=full_df['ot_date'], y=full_df['cum_hours'],
-                                mode='lines+markers+text',
-                                line=dict(color='#ef4444', width=3),
-                                marker=dict(size=8, color='#ef4444'),
-                                text=full_df['cum_hours'].apply(lambda x: f"{x:,.1f} h"),
-                                textposition='top center', textfont=dict(color='#ef4444', size=11, weight='bold'),
-                                name=t("Lũy kế OT", "累計残業"), yaxis='y2'
                             )
                         ],
                         frames=frames
@@ -851,7 +831,7 @@ def render_project_history():
 
                     fig_t.update_layout(
                         font=dict(family="'Times New Roman', serif"),
-                        margin=dict(l=0, r=40, t=10, b=75),
+                        margin=dict(l=0, r=20, t=10, b=75),
                         height=shared_chart_height + 65,
                         paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)',
                         showlegend=False,
@@ -860,14 +840,8 @@ def render_project_history():
                             range=[-0.5, len(time_df)-0.5], tickangle=-45
                         ),
                         yaxis=dict(
-                            title=t("Giờ/Ngày", "時間/日"), gridcolor='#f1f5f9',
+                            title=t("Số giờ (h)", "時間 (h)"), gridcolor='#f1f5f9',
                             range=[0, max_bar]
-                        ),
-                        yaxis2=dict(
-                            title=t("Lũy kế (h)", "累計 (h)"),
-                            overlaying='y', side='right',
-                            showgrid=False,
-                            range=[0, max_cum]
                         ),
                         updatemenus=[dict(
                             type="buttons", showactive=False,
