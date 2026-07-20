@@ -576,7 +576,7 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] {
-        margin-top: -30px !important;
+        margin-top: 5px !important;
         width: 100px !important;
         margin-left: -1rem !important; /* override Streamlit sidebar padding */
         display: flex !important;
@@ -608,7 +608,7 @@ st.markdown("""
     [data-testid="stSidebar"][aria-expanded="false"] img,
     [data-testid="stSidebar"][aria-expanded="false"] h2,
     [data-testid="stSidebar"][aria-expanded="false"] .sidebar-footer-text,
-    [data-testid="stSidebar"][aria-expanded="false"] .stButton {
+    [data-testid="stSidebar"][aria-expanded="false"] .stButton:not(:has(button[key="sidebar_mini_logo_btn"])) {
         display: none !important;
     }
 
@@ -1590,6 +1590,56 @@ else:
                 border: none !important;
                 box-shadow: none !important;
             }}
+            [data-testid="stSidebar"]:not([aria-expanded="false"]) .sidebar-mini-logo-marker,
+            [data-testid="stSidebar"]:not([aria-expanded="false"]) div:has(> .sidebar-mini-logo-marker) + div,
+            [data-testid="stSidebar"]:not([aria-expanded="false"]) div.stElementContainer:has(.sidebar-mini-logo-marker) + div.stElementContainer,
+            [data-testid="stSidebar"]:not([aria-expanded="false"]) button[key="sidebar_mini_logo_btn"] {{
+                display: none !important;
+            }}
+            [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"] {{
+                display: none !important;
+            }}
+            [data-testid="stSidebar"][aria-expanded="false"] div:has(> .sidebar-mini-logo-marker) + div,
+            [data-testid="stSidebar"][aria-expanded="false"] div.stElementContainer:has(.sidebar-mini-logo-marker) + div.stElementContainer,
+            [data-testid="stSidebar"][aria-expanded="false"] div.stElementContainer:has(button[key="sidebar_mini_logo_btn"]) {{
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                width: 100% !important;
+                margin: 5px 0 10px 0 !important;
+            }}
+            [data-testid="stSidebar"][aria-expanded="false"] div:has(> .sidebar-mini-logo-marker) + div button,
+            [data-testid="stSidebar"][aria-expanded="false"] div.stElementContainer:has(.sidebar-mini-logo-marker) + div.stElementContainer button,
+            [data-testid="stSidebar"][aria-expanded="false"] button[key="sidebar_mini_logo_btn"] {{
+                background-image: url("data:image/{ext};base64,{encoded}") !important;
+                background-size: contain !important;
+                background-repeat: no-repeat !important;
+                background-position: center !important;
+                height: 52px !important; min-height: 52px !important; 
+                width: 72px !important; max-width: 72px !important;
+                margin: 0 auto !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+                display: block !important;
+                cursor: pointer !important;
+                padding: 0 !important;
+                transform: none !important;
+            }}
+            [data-testid="stSidebar"][aria-expanded="false"] div:has(> .sidebar-mini-logo-marker) + div button p,
+            [data-testid="stSidebar"][aria-expanded="false"] div.stElementContainer:has(.sidebar-mini-logo-marker) + div.stElementContainer button p,
+            [data-testid="stSidebar"][aria-expanded="false"] button[key="sidebar_mini_logo_btn"] p {{
+                visibility: hidden !important;
+            }}
+            [data-testid="stSidebar"][aria-expanded="false"] div:has(> .sidebar-mini-logo-marker) + div button:hover,
+            [data-testid="stSidebar"][aria-expanded="false"] div.stElementContainer:has(.sidebar-mini-logo-marker) + div.stElementContainer button:hover,
+            [data-testid="stSidebar"][aria-expanded="false"] button[key="sidebar_mini_logo_btn"]:hover {{
+                transform: scale(1.08) !important;
+                transition: transform 0.2s ease !important;
+                background-color: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
+            }}
             </style>
             """, unsafe_allow_html=True)
             col1, col2, col3 = st.columns([1, 4, 1])
@@ -1600,6 +1650,14 @@ else:
                     if 'last_rendered_tab' in st.session_state:
                         del st.session_state['last_rendered_tab']
                     st.rerun()
+
+            st.markdown("<div class='sidebar-mini-logo-marker'></div>", unsafe_allow_html=True)
+            if st.button("HOME_MINI", key="sidebar_mini_logo_btn", use_container_width=True):
+                st.session_state['current_page'] = 'welcome'
+                st.session_state['show_page_transition'] = True
+                if 'last_rendered_tab' in st.session_state:
+                    del st.session_state['last_rendered_tab']
+                st.rerun()
         else:
             if st.button(t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True):
                 st.session_state['current_page'] = 'welcome'
