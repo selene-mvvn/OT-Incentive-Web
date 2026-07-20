@@ -125,7 +125,7 @@ def render_project_history():
         return 0
 
     unique_periods = sorted(df['clean_period'].unique().tolist(), key=sort_key_period, reverse=True)
-    all_period_opt = t("🌟 Tất cả các tháng", "🌟 すべての月")
+    all_period_opt = t("Toàn bộ thời gian", "全期間")
     
     years = set()
     for p in unique_periods:
@@ -537,10 +537,16 @@ def render_project_history():
                         rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường ($150\\%$), chỉ có <b>{pct_high_A:.1f}%</b> giờ hệ số cao so với <b>{pct_high_B:.1f}%</b> của {display_B}.", 
                                           f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) は、通常時間帯 ($150\\%$) を優先したため、<b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は {display_A} が <b>{pct_high_A:.1f}%</b> (対して {display_B} は <b>{pct_high_B:.1f}%</b>) です。")
 
-                cost_text = t(
-                    f"Trong kỳ <b>{period_label}</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
-                    f"期間 <b>{period_label}</b> 中、<b>{display_A}</b> は <b>{hrs_A:,.1f}時間の残業</b> (費用 <b>{cost_A:,.0f} VND</b>) であり、<b>{display_B}</b> は <b>{hrs_B:,.1f}時間</b> (費用 <b>{cost_B:,.0f} VND</b>) を記録しました。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>結果として、<b>{display_A}</b> は <b>{display_B}</b> と比べ {cost_comp_str} です。{rate_reason_str}"
-                )
+                if period_label == all_period_opt or period_label == t("Toàn bộ thời gian", "全期間") or period_label == t("🌟 Tất cả các tháng", "🌟 すべての月"):
+                    cost_text = t(
+                        f"<b>Tính trên toàn bộ thời gian</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
+                        f"<b>全期間の合計</b>において、<b>{display_A}</b> は <b>{hrs_A:,.1f}時間の残業</b> (費用 <b>{cost_A:,.0f} VND</b>) であり、<b>{display_B}</b> は <b>{hrs_B:,.1f}時間</b> (費用 <b>{cost_B:,.0f} VND</b>) を記録しました。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>結果として、<b>{display_A}</b> は <b>{display_B}</b> と比べ {cost_comp_str} です。{rate_reason_str}"
+                    )
+                else:
+                    cost_text = t(
+                        f"Trong kỳ <b>{period_label}</b>, <b>{display_A}</b> ghi nhận <b>{hrs_A:,.1f} giờ OT</b> (tổng tiền <b>{cost_A:,.0f} VNĐ</b>), trong khi <b>{display_B}</b> ghi nhận <b>{hrs_B:,.1f} giờ OT</b> (tổng tiền <b>{cost_B:,.0f} VNĐ</b>).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>Như vậy, <b>{display_A}</b> có {cost_comp_str} so với <b>{display_B}</b>.{rate_reason_str}",
+                        f"期間 <b>{period_label}</b> 中、<b>{display_A}</b> は <b>{hrs_A:,.1f}時間の残業</b> (費用 <b>{cost_A:,.0f} VND</b>) であり、<b>{display_B}</b> は <b>{hrs_B:,.1f}時間</b> (費用 <b>{cost_B:,.0f} VND</b>) を記録しました。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>leaderboard</span>結果として、<b>{display_A}</b> は <b>{display_B}</b> と比べ {cost_comp_str} です。{rate_reason_str}"
+                    )
 
             # 2. Resource & Intersection text
             if len(shared_staff) > 0:
@@ -552,13 +558,13 @@ def render_project_history():
                 shared_hrs_B = df_B[df_B['employee_name'].isin(shared_staff)]['ot_hours'].sum() if not df_B.empty else 0
                 
                 resource_text = t(
-                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #d97706; vertical-align: -5px; margin-right: 5px;'>handshake</span><b>Sự giao thoa nhân sự:</b>&nbsp;Phát hiện có <b>{len(shared_staff)} nhân sự nòng cốt</b> ({shared_names_str}) đang cống hiến OT cho <b>CẢ 2 DỰ ÁN</b> trong cùng kỳ này (đóng góp {shared_hrs_A:,.1f}h bên {display_A} và {shared_hrs_B:,.1f}h bên {display_B}).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #d97706; vertical-align: -4px; margin-right: 4px;'>warning</span><i>Khuyến nghị điều phối:</i>&nbsp;Việc hai dự án cùng chia sẻ nhân sự nòng cốt cần được lưu ý sắp xếp lịch trình hợp lý để tránh quá tải hoặc kiệt sức cho nhóm nhân sự này.",
-                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #d97706; vertical-align: -5px; margin-right: 5px;'>handshake</span><b>人的リソースの重複:</b>&nbsp;期間中、<b>{len(shared_staff)}名の中核スタッフ</b> ({shared_names_str}) が <b>両方のプロジェクト</b> に従事していることが確認されました ({display_A} で {shared_hrs_A:,.1f}時間、{display_B} で {shared_hrs_B:,.1f}時間貢献)。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #d97706; vertical-align: -4px; margin-right: 4px;'>warning</span><i>推奨事項:</i>&nbsp;双方のプロジェクトで中核人材を共有しているため、過労や業務遅延を防ぐためのスケジュール調整が必要です。"
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #d97706; vertical-align: -5px; margin-right: 5px;'>handshake</span><b>Sự giao thoa nhân sự:</b>&nbsp;Phát hiện có <b>{len(shared_staff)} nhân sự nòng cốt</b> ({shared_names_str}) đang cống hiến OT cho <b>CẢ 2 DỰ ÁN</b> trong phạm vi thời gian này (đóng góp {shared_hrs_A:,.1f}h bên {display_A} và {shared_hrs_B:,.1f}h bên {display_B}).<br><span class='material-symbols-rounded' style='font-size: 18px; color: #d97706; vertical-align: -4px; margin-right: 4px;'>warning</span><i>Khuyến nghị điều phối:</i>&nbsp;Việc hai dự án cùng chia sẻ nhân sự nòng cốt cần được lưu ý sắp xếp lịch trình hợp lý để tránh quá tải hoặc kiệt sức cho nhóm nhân sự này.",
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #d97706; vertical-align: -5px; margin-right: 5px;'>handshake</span><b>人的リソースの重複:</b>&nbsp;対象期間において、<b>{len(shared_staff)}名の中核スタッフ</b> ({shared_names_str}) が <b>両方のプロジェクト</b> に従事していることが確認されました ({display_A} で {shared_hrs_A:,.1f}時間、{display_B} で {shared_hrs_B:,.1f}時間貢献)。<br><span class='material-symbols-rounded' style='font-size: 18px; color: #d97706; vertical-align: -4px; margin-right: 4px;'>warning</span><i>推奨事項:</i>&nbsp;双方のプロジェクトで中核人材を共有しているため、過労や業務遅延を防ぐためのスケジュール調整が必要です。"
                 )
             else:
                 resource_text = t(
-                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>groups</span><b>Phân bổ đội ngũ độc lập:</b>&nbsp;Hai dự án sử dụng hai lực lượng nhân sự hoàn toàn riêng biệt (<b>{len(staff_A)} người</b> tham gia bên {display_A} và <b>{len(staff_B)} người</b> bên {display_B}). Không xảy ra tình trạng chồng chéo hay chia sẻ nhân sự giữa 2 bên trong kỳ này.",
-                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>groups</span><b>独立した人員配置:</b>&nbsp;両プロジェクトは完全に独立したスタッフ構成で作動しています ({display_A} に <b>{len(staff_A)}名</b>、{display_B} に <b>{len(staff_B)}名</b>)。この期間中、両者間での人的リソースの重複はありません。"
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>groups</span><b>Phân bổ đội ngũ độc lập:</b>&nbsp;Hai dự án sử dụng hai lực lượng nhân sự hoàn toàn riêng biệt (<b>{len(staff_A)} người</b> tham gia bên {display_A} và <b>{len(staff_B)} người</b> bên {display_B}). Không xảy ra tình trạng chồng chéo hay chia sẻ nhân sự giữa 2 bên trong phạm vi thời gian này.",
+                    f"<span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>groups</span><b>独立した人員配置:</b>&nbsp;両プロジェクトは完全に独立したスタッフ構成で作動しています ({display_A} に <b>{len(staff_A)}名</b>、{display_B} に <b>{len(staff_B)}名</b>)。対象期間において、両者間での人的リソースの重複はありません。"
                 )
 
             # 3. Smart Verdict Badge
@@ -614,7 +620,7 @@ def render_project_history():
             min_h = "min-height: 54px; display: flex; align-items: flex-start;" if is_compare else ""
             st.markdown(f"""
             <h3 style='font-size: 18px; margin-bottom: 20px; {min_h}'>
-                <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2_label if sel_period_t2_label != all_period_opt else t('Toàn bộ thời gian', '全期間')})</div>
+                <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({sel_period_t2_label})</div>
             </h3>
             """, unsafe_allow_html=True)
 
