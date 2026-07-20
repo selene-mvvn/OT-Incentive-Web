@@ -752,35 +752,43 @@ def render_project_history():
             else:
                 st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
             
-            detail_df = df_t2[['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']].copy()
+            show_proj_col = (proj_name == all_proj_opt)
+            cols_to_select = ['clean_period', 'order_name', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason'] if show_proj_col else ['clean_period', 'employee_name', 'ot_date', 'ot_hours', 'est_cost', 'manager_name', 'ot_reason']
+            
+            detail_df = df_t2[cols_to_select].copy()
             detail_df = detail_df.sort_values(by=['clean_period', 'ot_date'], ascending=[False, False]).reset_index(drop=True)
             
-            detail_df = detail_df.rename(columns={
+            rename_map = {
                 'clean_period': t('Tháng/Kỳ', '月'),
+                'order_name': t('Tên Dự Án', 'プロジェクト名'),
                 'employee_name': t('Tên NV', 'スタッフ名'),
                 'ot_date': t('Ngày OT', '残業日'),
                 'ot_hours': t('Số Giờ', '時間'),
                 'est_cost': t('Chi Phí VNĐ', '予想支出額'),
                 'manager_name': t('PM', 'PM'),
                 'ot_reason': t('Lý Do', '残業理由')
-            })
+            }
+            detail_df = detail_df.rename(columns=rename_map)
             detail_df[t('Số Giờ', '時間')] = detail_df[t('Số Giờ', '時間')].apply(lambda x: f"{x:,.1f}")
             detail_df[t('Chi Phí VNĐ', '予想支出額')] = detail_df[t('Chi Phí VNĐ', '予想支出額')].apply(lambda x: f"{x:,.0f}" if x > 0 else "-")
+
+            col_cfg = {
+                t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width=75),
+                t('Tên Dự Án', 'プロジェクト名'): st.column_config.TextColumn(t('Tên Dự Án', 'プロジェクト名'), width=180),
+                t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width=140),
+                t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width=85),
+                t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width=65),
+                t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width=95),
+                t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width=130),
+                t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'))
+            }
 
             st.dataframe(
                 detail_df,
                 use_container_width=True,
                 hide_index=True,
                 height=max(200, min(350, len(detail_df) * 38)) if is_compare else max(280, min(400, len(detail_df) * 38)),
-                column_config={
-                    t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width=75),
-                    t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width=140),
-                    t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width=85),
-                    t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width=65),
-                    t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width=95),
-                    t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width=130),
-                    t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'))
-                }
+                column_config=col_cfg
             )
 
         col_t2_1, col_t2_compare, col_t2_y, col_t2_m = st.columns([3, 3, 2, 2])
