@@ -1657,7 +1657,7 @@ else:
             """, unsafe_allow_html=True)
             col1, col2, col3 = st.columns([1, 4, 1])
             with col2:
-                if st.button("HOME", use_container_width=True, title=t("Quay về trang chủ", "ホームに戻る")):
+                if st.button("HOME", use_container_width=True, help=t("Quay về trang chủ", "ホームに戻る")):
                     st.session_state['current_page'] = 'welcome'
                     st.session_state['show_page_transition'] = True
                     if 'last_rendered_tab' in st.session_state:
@@ -1666,7 +1666,7 @@ else:
         else:
             col1, col2, col3 = st.columns([1, 4, 1])
             with col2:
-                if st.button(":material/home: " + t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True, title=t("Quay về trang chủ", "ホームに戻る")):
+                if st.button(":material/home: " + t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True, help=t("Quay về trang chủ", "ホームに戻る")):
                     st.session_state['current_page'] = 'welcome'
                     st.session_state['show_page_transition'] = True
                     if 'last_rendered_tab' in st.session_state:
