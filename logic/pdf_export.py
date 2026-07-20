@@ -16,14 +16,15 @@ def ensure_font_downloaded():
     font_path = os.path.join(font_dir, "Roboto-Regular.ttf")
     font_bold_path = os.path.join(font_dir, "Roboto-Bold.ttf")
     
-    if not os.path.exists(font_path):
-        url = "https://github.com/google/fonts/raw/main/apache/roboto/Roboto-Regular.ttf"
+    # Check if files exist and are valid TTF (size > 100KB)
+    if not os.path.exists(font_path) or os.path.getsize(font_path) < 100000:
+        url = "https://github.com/googlefonts/roboto/raw/main/src/hinted/Roboto-Regular.ttf"
         r = requests.get(url, allow_redirects=True)
         with open(font_path, 'wb') as f:
             f.write(r.content)
             
-    if not os.path.exists(font_bold_path):
-        url_bold = "https://github.com/google/fonts/raw/main/apache/roboto/Roboto-Bold.ttf"
+    if not os.path.exists(font_bold_path) or os.path.getsize(font_bold_path) < 100000:
+        url_bold = "https://github.com/googlefonts/roboto/raw/main/src/hinted/Roboto-Bold.ttf"
         r = requests.get(url_bold, allow_redirects=True)
         with open(font_bold_path, 'wb') as f:
             f.write(r.content)
