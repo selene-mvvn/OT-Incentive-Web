@@ -1609,7 +1609,7 @@ else:
                 justify-content: center !important;
                 align-items: center !important;
                 width: 100% !important;
-                margin: -40px 0 12px 4px !important;
+                margin: -40px 0 12px -1px !important;
                 visibility: visible !important;
                 opacity: 1 !important;
             }}
@@ -1862,7 +1862,7 @@ else:
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
-                margin-top: 25px;
+                margin-top: 8px !important;
                 margin-left: -1rem;
                 width: 100px;
                 cursor: pointer;
