@@ -576,7 +576,7 @@ st.markdown("""
     }
     
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] {
-        margin-top: 24px !important;
+        margin-top: 8px !important;
         width: 100px !important;
         margin-left: -1rem !important; /* override Streamlit sidebar padding */
         display: flex !important;
