@@ -857,6 +857,32 @@ def render_project_history():
                 column_config=col_cfg
             )
 
+            st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+            
+            try:
+                from logic.pdf_export import generate_project_executive_pdf
+                pdf_bytes = generate_project_executive_pdf(
+                    df_project=df_t2,
+                    project_name=proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト'),
+                    period_label=display_period_label,
+                    analysis_text_vn=f"Báo cáo tổng quan chi phí và giờ làm thêm cho dự án {proj_name}. Tổng thời gian ghi nhận là {p_hrs:,.1f} giờ với chi phí ước tính khoảng {p_cost:,.0f} VNĐ, phân bổ cho {p_staff} nhân sự.",
+                    analysis_text_jp=f"プロジェクト{proj_name}の残業コストと時間の概要レポートです。総計{p_hrs:,.1f}時間、推定コスト{p_cost:,.0f} VND、参加スタッフ{p_staff}名です。",
+                    total_hrs=p_hrs,
+                    total_cost=p_cost,
+                    total_staff=p_staff
+                )
+                
+                st.download_button(
+                    label=t("📥 Tải Báo cáo Executive Summary (PDF)", "📥 Executive Summary レポートダウンロード (PDF)"),
+                    data=pdf_bytes,
+                    file_name=f"Executive_Summary.pdf",
+                    mime="application/pdf",
+                    key=f"dl_pdf_{proj_name}_{'comp' if is_compare else 'main'}_{p_hrs}",
+                    use_container_width=True
+                )
+            except Exception as e:
+                st.error(f"Cannot generate PDF: {str(e)}")
+
         col_t2_1, col_t2_compare, col_t2_y, col_t2_m = st.columns([3, 3, 2, 2])
         with col_t2_1:
             sel_project = st.selectbox(
