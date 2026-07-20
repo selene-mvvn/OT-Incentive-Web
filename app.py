@@ -1609,7 +1609,7 @@ else:
                 justify-content: center !important;
                 align-items: center !important;
                 width: 100% !important;
-                margin: -24px 0 12px 2px !important;
+                margin: -4px 0 12px 2px !important;
                 visibility: visible !important;
                 opacity: 1 !important;
             }}
