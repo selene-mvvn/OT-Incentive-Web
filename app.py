@@ -613,8 +613,9 @@ st.markdown("""
         display: none !important;
     }
 
-    /* Top Logo & Home button in collapsed sidebar */
-    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type {
+    /* Top Logo & Home button in collapsed vs expanded sidebar */
+    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type,
+    [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type {
         display: flex !important;
         flex-direction: row !important;
         justify-content: center !important;
@@ -625,14 +626,17 @@ st.markdown("""
         margin-bottom: 5px !important;
     }
     [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(1),
-    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(3) {
+    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(3),
+    [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(1),
+    [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(3) {
         display: none !important;
         width: 0 !important;
         min-width: 0 !important;
         margin: 0 !important;
         padding: 0 !important;
     }
-    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(2) {
+    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(2),
+    [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(2) {
         display: flex !important;
         justify-content: center !important;
         align-items: center !important;
@@ -643,7 +647,9 @@ st.markdown("""
         padding: 0 !important;
     }
     [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type .stButton,
-    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button {
+    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button,
+    [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type .stButton,
+    [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type button {
         display: flex !important;
         width: 58px !important;
         min-width: 58px !important;
@@ -659,9 +665,28 @@ st.markdown("""
         border-radius: 12px !important;
         cursor: pointer !important;
     }
-    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button:hover {
+    [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button:hover,
+    [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type button:hover {
         transform: scale(1.08) !important;
         transition: transform 0.2s ease !important;
+    }
+
+    /* Expanded sidebar explicitly */
+    [data-testid="stSidebar"]:not([aria-expanded="false"]):not(.sidebar-collapsed) [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(2),
+    [data-testid="stSidebar"].sidebar-expanded [data-testid="stHorizontalBlock"]:first-of-type [data-testid="column"]:nth-of-type(2) {
+        width: 100% !important;
+        max-width: none !important;
+    }
+    [data-testid="stSidebar"]:not([aria-expanded="false"]):not(.sidebar-collapsed) [data-testid="stHorizontalBlock"]:first-of-type button,
+    [data-testid="stSidebar"].sidebar-expanded [data-testid="stHorizontalBlock"]:first-of-type button {
+        width: 100% !important;
+        max-width: none !important;
+        height: 85px !important;
+        min-height: 85px !important;
+        background-size: contain !important;
+        background-repeat: no-repeat !important;
+        background-position: center !important;
+        transform: translateY(-15px) !important;
     }
 
     [data-testid="stSidebar"][aria-expanded="false"] div[role="radiogroup"] label:nth-child(1) p::after {
@@ -1621,41 +1646,46 @@ else:
             ext = "png" if logo_path.endswith(".png") else "jpeg"
             st.markdown(f"""
             <style>
-            [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button {{
+            [data-testid="stSidebar"]:not([aria-expanded="false"]):not(.sidebar-collapsed) [data-testid="stHorizontalBlock"]:first-of-type button,
+            [data-testid="stSidebar"].sidebar-expanded [data-testid="stHorizontalBlock"]:first-of-type button {{
                 background-image: url("data:image/{ext};base64,{encoded}") !important;
                 background-size: contain !important;
                 background-repeat: no-repeat !important;
                 background-position: center !important;
-                height: 80px !important; min-height: 80px !important; width: 100% !important;
+                height: 85px !important; min-height: 85px !important; width: 100% !important;
+                max-width: none !important;
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
-                transform: translateY(-20px) !important;
+                transform: translateY(-15px) !important;
             }}
             [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button p {{
                 visibility: hidden !important;
             }}
-            [data-testid="stSidebar"] [data-testid="stHorizontalBlock"]:first-of-type button:hover {{
-                transform: translateY(-20px) scale(1.05) !important;
+            [data-testid="stSidebar"]:not([aria-expanded="false"]):not(.sidebar-collapsed) [data-testid="stHorizontalBlock"]:first-of-type button:hover,
+            [data-testid="stSidebar"].sidebar-expanded [data-testid="stHorizontalBlock"]:first-of-type button:hover {{
+                transform: translateY(-15px) scale(1.05) !important;
                 transition: transform 0.3s !important;
                 background-color: transparent !important;
                 border: none !important;
                 box-shadow: none !important;
             }}
             /* Override specifically when sidebar is collapsed */
-            [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button {{
+            [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button,
+            [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type button {{
                 background-image: url("data:image/{ext};base64,{encoded}") !important;
                 width: 58px !important; min-width: 58px !important; max-width: 58px !important;
                 height: 58px !important; min-height: 58px !important; max-height: 58px !important;
                 transform: none !important;
                 margin: 0 auto !important;
             }}
-            [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button:hover {{
+            [data-testid="stSidebar"][aria-expanded="false"] [data-testid="stHorizontalBlock"]:first-of-type button:hover,
+            [data-testid="stSidebar"].sidebar-collapsed [data-testid="stHorizontalBlock"]:first-of-type button:hover {{
                 transform: scale(1.08) !important;
             }}
             </style>
             """, unsafe_allow_html=True)
-            col1, col2, col3 = st.columns([1, 4, 1])
+            col1, col2, col3 = st.columns([0.1, 5.8, 0.1])
             with col2:
                 if st.button("HOME", use_container_width=True, help=t("Quay về trang chủ", "ホームに戻る")):
                     st.session_state['current_page'] = 'welcome'
@@ -1664,7 +1694,7 @@ else:
                         del st.session_state['last_rendered_tab']
                     st.rerun()
         else:
-            col1, col2, col3 = st.columns([1, 4, 1])
+            col1, col2, col3 = st.columns([0.1, 5.8, 0.1])
             with col2:
                 if st.button(":material/home: " + t("QUAY LẠI TRANG CHỦ", "ホームに戻る"), use_container_width=True, help=t("Quay về trang chủ", "ホームに戻る")):
                     st.session_state['current_page'] = 'welcome'
@@ -2037,7 +2067,14 @@ else:
                         const updateMenuTooltips = () => {
                             const radiogroup = sidebar.querySelector('div[role="radiogroup"]');
                             if (radiogroup) {
-                                const isCollapsed = sidebar.getAttribute('aria-expanded') === 'false' || sidebar.getBoundingClientRect().width < 200;
+                                const isCollapsed = sidebar.getBoundingClientRect().width < 200 || sidebar.getAttribute('aria-expanded') === 'false';
+                                if (sidebar.getBoundingClientRect().width < 200) {
+                                    sidebar.classList.add('sidebar-collapsed');
+                                    sidebar.classList.remove('sidebar-expanded');
+                                } else {
+                                    sidebar.classList.add('sidebar-expanded');
+                                    sidebar.classList.remove('sidebar-collapsed');
+                                }
                                 const liveFooter = doc.querySelector('.sidebar-footer-container');
                                 const lang = (liveFooter && liveFooter.getAttribute('data-lang')) || 'VN';
                                 const tooltipsVN = [
