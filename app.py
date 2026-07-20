@@ -2101,12 +2101,14 @@ else:
                         }
                         
                         window.parent._otTriggerExitCheck = () => {
-                            const liveFooter = doc.querySelector('.sidebar-footer-container');
+                            const pDoc = window.parent.document;
+                            const liveFooter = pDoc.querySelector('.sidebar-footer-container');
                             const isLiveActive = liveFooter && liveFooter.getAttribute('data-has-note') === 'true';
-                            if (isLiveActive && !window.parent._otExitModalFired) {
+                            const hasNoteInStorage = window.parent.localStorage.getItem('ot_sidebar_sticky_note') === 'active';
+                            if ((isLiveActive || hasNoteInStorage) && !window.parent._otExitModalFired) {
                                 window.parent._otExitModalFired = true;
                                 setTimeout(() => { window.parent._otExitModalFired = false; }, 3500);
-                                const stBtns = doc.querySelectorAll('button');
+                                const stBtns = pDoc.querySelectorAll('button');
                                 stBtns.forEach(b => {
                                     const txt = (b.innerText || b.textContent || '');
                                     if (txt.includes('open_sticky_note_exit_trigger')) {
@@ -2121,22 +2123,23 @@ else:
                             
                             // Reset exit check cooldown whenever user moves mouse back into normal page area
                             window.parent.document.addEventListener('mousemove', (e) => {
-                                if (e.clientY > 45) {
+                                if (e.clientY > 50) {
                                     window.parent._otExitModalFired = false;
                                 }
                             });
                             
-                            // Trigger popup reliably when mouse moves out towards the top-right Close Window (X) area
-                            window.parent.document.addEventListener('mouseleave', (e) => {
-                                if (e.clientY <= 25 && e.clientX >= (window.parent.innerWidth - 320)) {
+                            // Trigger popup reliably when mouse moves out towards the top-right Close Window (X) or top bar area
+                            const handleTopExit = (e) => {
+                                if (e.clientY <= 40 || (!e.relatedTarget && e.clientY <= 55)) {
                                     if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
                                 }
-                            });
-                            window.parent.document.addEventListener('mouseout', (e) => {
-                                if (!e.relatedTarget && e.clientY <= 25 && e.clientX >= (window.parent.innerWidth - 320)) {
-                                    if (window.parent._otTriggerExitCheck) window.parent._otTriggerExitCheck();
-                                }
-                            });
+                            };
+                            window.parent.document.addEventListener('mouseleave', handleTopExit);
+                            window.parent.document.addEventListener('mouseout', handleTopExit);
+                            if (window.parent.document.documentElement) {
+                                window.parent.document.documentElement.addEventListener('mouseleave', handleTopExit);
+                            }
+                            window.parent.addEventListener('mouseout', handleTopExit);
                             
                             const checkUnload = function(e) {
                                 const liveFooter = doc.querySelector('.sidebar-footer-container');
