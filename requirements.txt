@@ -1,5 +1,4 @@
 streamlit
-streamlit
 pandas
 openpyxl
 xlsxwriter
@@ -7,5 +6,3 @@ plotly
 requests
 
 jpholiday
-python-docx
-matplotlib

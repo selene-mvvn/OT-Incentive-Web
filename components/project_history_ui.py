@@ -741,9 +741,6 @@ def render_project_history():
             base_chart_h = 160 if is_compare else 300
             mult_chart_h = 28 if is_compare else 38
             shared_chart_height = max(base_chart_h, len(staff_contrib) * mult_chart_h)
-            
-            fig_bar = None
-            fig_t = None
 
             with c_left:
                 st.markdown(f"<div style='display: flex; align-items: center; font-size: 15.5px; font-weight: 600; color: #334155; margin-bottom: 8px;'><span class='material-symbols-rounded' style='margin-right: 6px; font-size: 20px; color: #0284c7;'>groups</span> {t('Biểu đồ Phân Bổ Số Giờ', 'スタッフ別残業時間グラフ')}</div>", unsafe_allow_html=True)
@@ -859,32 +856,6 @@ def render_project_history():
                 height=max(200, min(350, len(detail_df) * 38)) if is_compare else max(280, min(400, len(detail_df) * 38)),
                 column_config=col_cfg
             )
-
-            st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
-            
-            try:
-                from logic.docx_export import generate_project_executive_docx
-                docx_bytes = generate_project_executive_docx(
-                    df_project=df_t2,
-                    project_name=proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト'),
-                    period_label=display_period_label,
-                    analysis_text_vn=f"Báo cáo tổng quan chi phí và giờ làm thêm cho dự án {proj_name}. Tổng thời gian ghi nhận là {p_hrs:,.1f} giờ với chi phí ước tính khoảng {p_cost:,.0f} VNĐ, phân bổ cho {p_staff} nhân sự.",
-                    analysis_text_jp=f"プロジェクト{proj_name}の残業コストと時間の概要レポートです。総計{p_hrs:,.1f}時間、推定コスト{p_cost:,.0f} VND、参加スタッフ{p_staff}名です。",
-                    total_hrs=p_hrs,
-                    total_cost=p_cost,
-                    total_staff=p_staff
-                )
-                
-                st.download_button(
-                    label=t("📥 Tải Báo cáo Executive Summary (Word)", "📥 Executive Summary レポートダウンロード (Word)"),
-                    data=docx_bytes,
-                    file_name=f"Executive_Summary.docx",
-                    mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                    key=f"dl_docx_{proj_name}_{'comp' if is_compare else 'main'}_{p_hrs}",
-                    use_container_width=True
-                )
-            except Exception as e:
-                st.error(f"Cannot generate PDF: {str(e)}")
 
         col_t2_1, col_t2_compare, col_t2_y, col_t2_m = st.columns([3, 3, 2, 2])
         with col_t2_1:
