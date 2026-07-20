@@ -1,4 +1,5 @@
 streamlit
+streamlit
 pandas
 openpyxl
 xlsxwriter
@@ -7,4 +8,4 @@ requests
 
 jpholiday
 python-docx
-kaleido==0.1.0.post1
+kaleido
