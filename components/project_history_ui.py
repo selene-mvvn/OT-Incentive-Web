@@ -479,31 +479,50 @@ def render_project_history():
                 if df_sub.empty:
                     return 0.0
                 for _, r in df_sub.iterrows():
-                    found_b = False
+                    # Check if explicit 'multiplier' field exists (e.g. from manual entry)
+                    try:
+                        mult_raw = str(r.get('multiplier', '')).replace('%', '').strip()
+                        if mult_raw and mult_raw not in ['nan', 'None', '0', '0.0']:
+                            m = float(mult_raw)
+                            if m >= 270:
+                                h_high += float(str(r.get('ot_hours', 0.0)).replace(',', '').strip())
+                            continue
+                    except:
+                        pass
+
+                    # Check breakdown percentage columns (e.g. from Excel grid where percentage keys store pay amounts)
+                    try:
+                        hr_rate = float(str(r.get('hourly_rate', 0.0)).replace(',', '').strip())
+                    except:
+                        hr_rate = 0.0
+                    
+                    row_ot_hrs = 0.0
+                    try:
+                        row_ot_hrs = float(str(r.get('ot_hours', 0.0)).replace(',', '').strip())
+                    except:
+                        pass
+
+                    total_row_cost = get_record_cost(r)
+                    
                     for k, v in r.items():
                         if str(k).endswith('%'):
                             try:
-                                val = float(v)
-                                if val > 0:
-                                    found_b = True
-                                    m = float(str(k).replace('%', '').strip())
-                                    if m >= 270:
-                                        h_high += val
+                                m = float(str(k).replace('%', '').strip())
+                                if m >= 270:
+                                    val = float(str(v).replace(',', '').strip())
+                                    if val > 0:
+                                        if hr_rate > 0 and m > 0:
+                                            h_high += val / (hr_rate * (m / 100.0))
+                                        elif total_row_cost > 0 and row_ot_hrs > 0:
+                                            h_high += (val / total_row_cost) * row_ot_hrs
                             except:
                                 pass
-                    if not found_b:
-                        try:
-                            m = float(str(r.get('multiplier', 0)).replace('%', '').strip())
-                            if m >= 270:
-                                h_high += float(r.get('ot_hours', 0.0))
-                        except:
-                            pass
                 return h_high
 
             high_A = get_high_mult_info(df_A)
             high_B = get_high_mult_info(df_B)
-            pct_high_A = (high_A / hrs_A * 100.0) if hrs_A > 0 else 0.0
-            pct_high_B = (high_B / hrs_B * 100.0) if hrs_B > 0 else 0.0
+            pct_high_A = min(100.0, max(0.0, (high_A / hrs_A * 100.0) if hrs_A > 0 else 0.0))
+            pct_high_B = min(100.0, max(0.0, (high_B / hrs_B * 100.0) if hrs_B > 0 else 0.0))
 
             # Resource intersection
             staff_A = set(df_A['employee_name'].astype(str).str.strip().unique()) if not df_A.empty else set()
@@ -531,11 +550,11 @@ def render_project_history():
                 rate_reason_str = ""
                 if abs(diff_rate) > 5000:
                     if rate_A > rate_B:
-                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>đắt hơn {diff_rate:,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) do có tới <b>{pct_high_A:.1f}%</b> số giờ rơi vào khung ngày nghỉ/Lễ (hệ số cao $\\ge 270\\%$), trong khi tỷ lệ này bên {display_B} chỉ là <b>{pct_high_B:.1f}%</b>.", 
-                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) が <b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{diff_rate:,.0f} VND/時間高い</b>のは、休日/祝日 (高倍率 $\\ge 270\\%$) の残業割合が <b>{pct_high_A:.1f}%</b> (対して {display_B} は <b>{pct_high_B:.1f}%</b>) を占めているためです。")
+                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>đắt hơn {diff_rate:,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) do có tới <b>{pct_high_A:.1f}%</b> số giờ rơi vào khung ngày nghỉ/Lễ (hệ số cao &ge; 270%), trong khi tỷ lệ này bên {display_B} chỉ là <b>{pct_high_B:.1f}%</b>.", 
+                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) が <b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{diff_rate:,.0f} VND/時間高い</b>のは、休日/祝日 (高倍率 &ge; 270%) の残業割合が <b>{pct_high_A:.1f}%</b> (対して {display_B} は <b>{pct_high_B:.1f}%</b>) を占めているためです。")
                     else:
-                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường ($150\\%$), chỉ có <b>{pct_high_A:.1f}%</b> giờ hệ số cao so với <b>{pct_high_B:.1f}%</b> của {display_B}.", 
-                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) は、通常時間帯 ($150\\%$) を優先したため、<b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は {display_A} が <b>{pct_high_A:.1f}%</b> (対して {display_B} は <b>{pct_high_B:.1f}%</b>) です。")
+                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường (150%), chỉ có <b>{pct_high_A:.1f}%</b> giờ hệ số cao so với <b>{pct_high_B:.1f}%</b> của {display_B}.", 
+                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) は、通常時間帯 (150%) を優先したため、<b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は {display_A} が <b>{pct_high_A:.1f}%</b> (対して {display_B} は <b>{pct_high_B:.1f}%</b>) です。")
 
                 if period_label == all_period_opt or period_label == t("Toàn bộ thời gian", "全期間") or period_label == t("🌟 Tất cả các tháng", "🌟 すべての月"):
                     cost_text = t(
