@@ -328,7 +328,12 @@ def render_incentive():
                     st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Lưu Dữ Liệu** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「データ保存」ボタンを押してください。"))
                     c_name, c_save, c_dl, c_del = st.columns([3.5, 2.0, 2.0, 2.5])
                     with c_name:
-                        export_name = st.text_input("📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), value=default_name, key=f"incentive_filename_v2_{st.session_state.get('lang', 'VN')}")
+                        export_name = st.text_input(
+                            "📝 " + t("Tên file tải xuống:", "ダウンロードファイル名:"), 
+                            value=default_name, 
+                            key=f"incentive_filename_v2_{st.session_state.get('lang', 'VN')}",
+                            help=t("Nhấn Enter (↵) sau khi gõ xong để hoàn tất việc đổi tên.", "ファイル名を変更した後、Enter（↵）キーを押して確定してください。")
+                        )
                         if not export_name.endswith(".xlsx"):
                             export_name += ".xlsx"
                     with c_save:
