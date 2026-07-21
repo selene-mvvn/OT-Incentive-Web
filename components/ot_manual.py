@@ -1023,8 +1023,17 @@ def render_base_data():
                 time.sleep(0.5)
                 st.rerun()
 
-        with c2:
-            location_lbl = t("HÀ NỘI", "ハノイ")
+            is_jp = st.session_state.get('lang', 'VN') == 'JP'
+            cities = [
+                {"name": "HÀ NỘI" if not is_jp else "ハノイ", "val": "21.0285,105.8542,Asia/Bangkok"},
+                {"name": "TP. HCM" if not is_jp else "ホーチミン", "val": "10.8231,106.6297,Asia/Bangkok"},
+                {"name": "ĐÀ NẴNG" if not is_jp else "ダナン", "val": "16.0678,108.2208,Asia/Bangkok"},
+                {"name": "TOKYO" if not is_jp else "東京", "val": "35.6895,139.6917,Asia/Tokyo"},
+                {"name": "OSAKA" if not is_jp else "大阪", "val": "34.6937,135.5023,Asia/Tokyo"},
+                {"name": "FUKUOKA" if not is_jp else "福岡", "val": "33.5902,130.4017,Asia/Tokyo"},
+            ]
+            options_html = "".join([f'<option value="{c["val"]}">{c["name"]}</option>' for c in cities])
+            
             lbl_today = t("Hôm nay", "今日")
             lbl_tmr = t("Ngày mai", "明日")
             import streamlit.components.v1 as components
@@ -1046,7 +1055,27 @@ def render_base_data():
                     white-space: nowrap;
                     gap: 12px;
                 ">
-                    <span style="font-weight: 700; color: #0284c7; letter-spacing: 0.3px;">{location_lbl}</span>
+                    <select id="city-select" onchange="fetchWeather()" style="
+                        background: rgba(2, 132, 199, 0.05);
+                        border: 1px solid rgba(2, 132, 199, 0.15);
+                        border-radius: 12px;
+                        font-family: inherit;
+                        font-weight: 700;
+                        color: #0284c7;
+                        letter-spacing: 0.3px;
+                        font-size: 14.5px;
+                        padding: 2px 24px 2px 10px;
+                        outline: none;
+                        cursor: pointer;
+                        appearance: none;
+                        -webkit-appearance: none;
+                        background-image: url('data:image/svg+xml;utf8,<svg fill=\"%230284c7\" height=\"20\" viewBox=\"0 0 24 24\" width=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>');
+                        background-repeat: no-repeat;
+                        background-position: right 2px center;
+                        transition: all 0.2s;
+                    ">
+                        {options_html}
+                    </select>
                     <span style="border-left: 1px solid rgba(0,0,0,0.1); padding-left: 12px; display: flex; align-items: center;">
                         <span style="color: #64748b; margin-right: 6px;">{lbl_today} (<span id="w-curr-date">--/--</span>):</span>
                         <span id="w-curr-icon" style="margin-right: 4px; font-size: 14.5px;">⏳</span>
@@ -1075,25 +1104,38 @@ def render_base_data():
                 if(parts.length === 3) return parseInt(parts[2]) + "/" + parseInt(parts[1]);
                 return "--/--";
             }};
-            fetch("https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FBangkok&forecast_days=2")
-              .then(r => r.json())
-              .then(data => {{
-                  const w = data.current_weather;
-                  document.getElementById("w-curr-icon").innerText = mapCode(w.weathercode);
-                  document.getElementById("w-curr-temp").innerText = Math.round(w.temperature) + "°C";
-                  document.getElementById("w-curr-date").innerText = fDate(data.daily.time[0]);
-                  
-                  document.getElementById("w-tmr-date").innerText = fDate(data.daily.time[1]);
-                  document.getElementById("w-tmr-icon").innerText = mapCode(data.daily.weathercode[1]);
-                  const minT = Math.round(data.daily.temperature_2m_min[1]);
-                  const maxT = Math.round(data.daily.temperature_2m_max[1]);
-                  document.getElementById("w-tmr-temp").innerText = minT + "-" + maxT + "°C";
-              }}).catch(e => {{
-                  document.getElementById("w-curr-icon").innerText = "☁️";
-                  document.getElementById("w-curr-temp").innerText = "--°C";
-                  document.getElementById("w-tmr-icon").innerText = "☁️";
-                  document.getElementById("w-tmr-temp").innerText = "--°C";
-              }});
+            const fetchWeather = () => {{
+                const val = document.getElementById("city-select").value.split(",");
+                const lat = val[0];
+                const lon = val[1];
+                const tz = val[2];
+                
+                document.getElementById("w-curr-icon").innerText = "⏳";
+                document.getElementById("w-curr-temp").innerText = "--°C";
+                document.getElementById("w-tmr-icon").innerText = "⏳";
+                document.getElementById("w-tmr-temp").innerText = "--°C";
+                
+                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${{lat}}&longitude=${{lon}}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=${{encodeURIComponent(tz)}}&forecast_days=2`)
+                  .then(r => r.json())
+                  .then(data => {{
+                      const w = data.current_weather;
+                      document.getElementById("w-curr-icon").innerText = mapCode(w.weathercode);
+                      document.getElementById("w-curr-temp").innerText = Math.round(w.temperature) + "°C";
+                      document.getElementById("w-curr-date").innerText = fDate(data.daily.time[0]);
+                      
+                      document.getElementById("w-tmr-date").innerText = fDate(data.daily.time[1]);
+                      document.getElementById("w-tmr-icon").innerText = mapCode(data.daily.weathercode[1]);
+                      const minT = Math.round(data.daily.temperature_2m_min[1]);
+                      const maxT = Math.round(data.daily.temperature_2m_max[1]);
+                      document.getElementById("w-tmr-temp").innerText = minT + "-" + maxT + "°C";
+                  }}).catch(e => {{
+                      document.getElementById("w-curr-icon").innerText = "☁️";
+                      document.getElementById("w-curr-temp").innerText = "--°C";
+                      document.getElementById("w-tmr-icon").innerText = "☁️";
+                      document.getElementById("w-tmr-temp").innerText = "--°C";
+                  }});
+            }};
+            fetchWeather();
             </script>
             """, height=60)
             
