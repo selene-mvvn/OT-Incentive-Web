@@ -1096,6 +1096,9 @@ def render_base_data():
               }});
             </script>
             """, height=60)
+            
+            st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+            
             import json
             import streamlit.components.v1 as components
             holidays_list = []
