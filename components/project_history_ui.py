@@ -354,9 +354,9 @@ def render_project_history():
                     
                     # Rich saturated curated color palette with enough colors for all projects
                     curated_colors = [
-                        '#00a8e8', '#e63946', '#2a9d8f', '#8338ec', '#f77f00', '#ff006e', '#55a630', '#023e8a',
-                        '#9c89b8', '#d90429', '#00b4d8', '#e76f51', '#264653', '#d4a373', '#7b2cbf', '#3a86ff',
-                        '#a7c957', '#9d0208', '#6c757d', '#1d3557'
+                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
+                        '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
+                        '#84cc16', '#d946ef', '#64748b', '#0d9488'
                     ]
                     
                     fig_pie = px.pie(
@@ -442,25 +442,19 @@ def render_project_history():
                     sunburst_df = sunburst_df[sunburst_df['ot_hours'] > 0]
                     sunburst_df['Company'] = t('Tổng Công Ty', '全社')
                     
-                    curated_colors = [
-                        '#00a8e8', '#e63946', '#2a9d8f', '#8338ec', '#f77f00', '#ff006e', '#55a630', '#023e8a',
-                        '#9c89b8', '#d90429', '#00b4d8', '#e76f51', '#264653', '#d4a373', '#7b2cbf', '#3a86ff',
-                        '#a7c957', '#9d0208', '#6c757d', '#1d3557'
-                    ]
-                    
                     fig_tree = px.treemap(
                         sunburst_df,
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
-                        color='order_name',
-                        color_discrete_sequence=curated_colors
+                        color='ot_hours',
+                        color_continuous_scale=[[0, '#e0f2fe'], [0.5, '#38bdf8'], [1, '#0284c7']]
                     )
                     
                     fig_tree.update_traces(
                         texttemplate="%{label}<br>%{value} h",
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h<br>' + t('Tỷ trọng (nhóm)', 'グループ割合') + ': %{percentParent:.1%}<extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=1)),
-                        textfont=dict(family="'Times New Roman', serif", size=14, color='#ffffff')
+                        textfont=dict(family="'Times New Roman', serif", size=14)
                     )
                     
                     fig_tree.update_layout(
