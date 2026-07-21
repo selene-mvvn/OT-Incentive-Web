@@ -1037,8 +1037,8 @@ def render_base_data():
                     border: 1px solid rgba(15, 23, 42, 0.08);
                     border-radius: 20px;
                     padding: 4px 14px;
-                    font-family: 'Segoe UI', system-ui, sans-serif;
-                    font-size: 13.5px;
+                    font-family: 'Times New Roman', serif;
+                    font-size: 14.5px;
                     color: #334155;
                     box-shadow: 0 2px 6px rgba(0,0,0,0.03);
                     white-space: nowrap;
