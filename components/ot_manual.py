@@ -1093,6 +1093,8 @@ def render_base_data():
                             letter-spacing: 0.3px;
                             font-size: 14.5px;
                             padding: 2px 20px 2px 8px;
+                            width: 95px;
+                            text-overflow: ellipsis;
                             outline: none;
                             cursor: pointer;
                             appearance: none;
