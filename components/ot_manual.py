@@ -1024,39 +1024,7 @@ def render_base_data():
                 st.rerun()
 
         with c2:
-            is_jp = st.session_state.get('lang', 'VN') == 'JP'
-            cities_vn = [
-                {"name": "HÀ NỘI" if not is_jp else "ハノイ", "val": "21.0285,105.8542,Asia/Bangkok"},
-                {"name": "TP. HCM" if not is_jp else "ホーチミン", "val": "10.8231,106.6297,Asia/Bangkok"},
-                {"name": "ĐÀ NẴNG" if not is_jp else "ダナン", "val": "16.0678,108.2208,Asia/Bangkok"},
-                {"name": "HẢI PHÒNG" if not is_jp else "ハイフォン", "val": "20.8648,106.6835,Asia/Bangkok"},
-                {"name": "CẦN THƠ" if not is_jp else "カントー", "val": "10.0333,105.7833,Asia/Bangkok"},
-                {"name": "HUẾ" if not is_jp else "フエ", "val": "16.4667,107.6000,Asia/Bangkok"},
-                {"name": "HẠ LONG" if not is_jp else "ハロン", "val": "20.9505,107.0733,Asia/Bangkok"},
-                {"name": "THANH HÓA" if not is_jp else "タインホア", "val": "19.8070,105.7760,Asia/Bangkok"},
-                {"name": "VINH" if not is_jp else "ヴィン", "val": "18.6667,105.6667,Asia/Bangkok"},
-                {"name": "THÁI NGUYÊN" if not is_jp else "タイグエン", "val": "21.5928,105.8442,Asia/Bangkok"},
-                {"name": "LÀO CAI" if not is_jp else "ラオカイ", "val": "22.4856,103.9707,Asia/Bangkok"},
-                {"name": "TUYÊN QUANG" if not is_jp else "トゥエンクアン", "val": "21.8211,105.2144,Asia/Bangkok"},
-                {"name": "NHA TRANG" if not is_jp else "ニャチャン", "val": "12.2451,109.1943,Asia/Bangkok"},
-                {"name": "ĐÀ LẠT" if not is_jp else "ダラット", "val": "11.9404,108.4583,Asia/Bangkok"},
-                {"name": "VŨNG TÀU" if not is_jp else "ブンタウ", "val": "10.3460,107.0843,Asia/Bangkok"},
-                {"name": "BUÔN MA THUỘT" if not is_jp else "バンメトート", "val": "12.6667,108.0500,Asia/Bangkok"}
-            ]
-            cities_jp = [
-                {"name": "TOKYO" if not is_jp else "東京", "val": "35.6895,139.6917,Asia/Tokyo"},
-                {"name": "OSAKA" if not is_jp else "大阪", "val": "34.6937,135.5023,Asia/Tokyo"},
-                {"name": "FUKUOKA" if not is_jp else "福岡", "val": "33.5902,130.4017,Asia/Tokyo"},
-                {"name": "SAPPORO" if not is_jp else "札幌", "val": "43.0642,141.3469,Asia/Tokyo"},
-                {"name": "KYOTO" if not is_jp else "京都", "val": "35.0116,135.7681,Asia/Tokyo"},
-                {"name": "NAGOYA" if not is_jp else "名古屋", "val": "35.1815,136.9066,Asia/Tokyo"},
-                {"name": "YOKOHAMA" if not is_jp else "横浜", "val": "35.4437,139.6380,Asia/Tokyo"}
-            ]
-            
-            import json
-            cities_vn_json = json.dumps(cities_vn)
-            cities_jp_json = json.dumps(cities_jp)
-            
+            location_lbl = t("HÀ NỘI", "ハノイ")
             lbl_today = t("Hôm nay", "今日")
             lbl_tmr = t("Ngày mai", "明日")
             import streamlit.components.v1 as components
@@ -1078,43 +1046,7 @@ def render_base_data():
                     white-space: nowrap;
                     gap: 12px;
                 ">
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <button id="country-toggle" onclick="toggleCountry()" style="
-                            background: rgba(16, 185, 129, 0.1); 
-                            border: 1px solid rgba(16, 185, 129, 0.3);
-                            border-radius: 12px;
-                            color: #10b981;
-                            font-weight: bold;
-                            padding: 2px 8px;
-                            cursor: pointer;
-                            outline: none;
-                            font-size: 13px;
-                            transition: all 0.2s;
-                        ">VN</button>
-                        
-                        <select id="city-select" onchange="fetchWeather()" style="
-                            background: rgba(2, 132, 199, 0.05);
-                            border: 1px solid rgba(2, 132, 199, 0.15);
-                            border-radius: 12px;
-                            font-family: inherit;
-                            font-weight: 700;
-                            color: #0284c7;
-                            letter-spacing: 0.3px;
-                            font-size: 14.5px;
-                            padding: 2px 20px 2px 8px;
-                            width: 115px;
-                            text-overflow: ellipsis;
-                            outline: none;
-                            cursor: pointer;
-                            appearance: none;
-                            -webkit-appearance: none;
-                            background-image: url('data:image/svg+xml;utf8,<svg fill=\"%230284c7\" height=\"20\" viewBox=\"0 0 24 24\" width=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>');
-                            background-repeat: no-repeat;
-                            background-position: right 2px center;
-                            transition: all 0.2s;
-                        ">
-                        </select>
-                    </div>
+                    <span style="font-weight: 700; color: #0284c7; letter-spacing: 0.3px;">{location_lbl}</span>
                     <span style="border-left: 1px solid rgba(0,0,0,0.1); padding-left: 12px; display: flex; align-items: center;">
                         <span style="color: #64748b; margin-right: 6px;">{lbl_today} (<span id="w-curr-date">--/--</span>):</span>
                         <span id="w-curr-icon" style="margin-right: 4px; font-size: 14.5px;">⏳</span>
@@ -1128,10 +1060,6 @@ def render_base_data():
                 </div>
             </div>
             <script>
-            const citiesVN = {cities_vn_json};
-            const citiesJP = {cities_jp_json};
-            let currentCountry = 'VN';
-
             const mapCode = (code) => {{
                 if(code >= 1 && code <= 3) return "⛅";
                 if(code >= 45 && code <= 48) return "🌫️";
@@ -1147,65 +1075,25 @@ def render_base_data():
                 if(parts.length === 3) return parseInt(parts[2]) + "/" + parseInt(parts[1]);
                 return "--/--";
             }};
-            
-            const renderOptions = () => {{
-                const select = document.getElementById('city-select');
-                const cities = currentCountry === 'VN' ? citiesVN : citiesJP;
-                select.innerHTML = cities.map(c => `<option value="${{c.val}}">${{c.name}}</option>`).join('');
-                fetchWeather();
-            }};
-
-            const toggleCountry = () => {{
-                const btn = document.getElementById('country-toggle');
-                if(currentCountry === 'VN') {{
-                    currentCountry = 'JP';
-                    btn.innerText = 'JP';
-                    btn.style.background = 'rgba(239, 68, 68, 0.1)';
-                    btn.style.border = '1px solid rgba(239, 68, 68, 0.3)';
-                    btn.style.color = '#ef4444';
-                }} else {{
-                    currentCountry = 'VN';
-                    btn.innerText = 'VN';
-                    btn.style.background = 'rgba(16, 185, 129, 0.1)';
-                    btn.style.border = '1px solid rgba(16, 185, 129, 0.3)';
-                    btn.style.color = '#10b981';
-                }}
-                renderOptions();
-            }};
-
-            const fetchWeather = () => {{
-                const val = document.getElementById("city-select").value.split(",");
-                const lat = val[0];
-                const lon = val[1];
-                const tz = val[2];
-                
-                document.getElementById("w-curr-icon").innerText = "⏳";
-                document.getElementById("w-curr-temp").innerText = "--°C";
-                document.getElementById("w-tmr-icon").innerText = "⏳";
-                document.getElementById("w-tmr-temp").innerText = "--°C";
-                
-                fetch(`https://api.open-meteo.com/v1/forecast?latitude=${{lat}}&longitude=${{lon}}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=${{encodeURIComponent(tz)}}&forecast_days=2`)
-                  .then(r => r.json())
-                  .then(data => {{
-                      const w = data.current_weather;
-                      document.getElementById("w-curr-icon").innerText = mapCode(w.weathercode);
-                      document.getElementById("w-curr-temp").innerText = Math.round(w.temperature) + "°C";
-                      document.getElementById("w-curr-date").innerText = fDate(data.daily.time[0]);
-                      
-                      document.getElementById("w-tmr-date").innerText = fDate(data.daily.time[1]);
-                      document.getElementById("w-tmr-icon").innerText = mapCode(data.daily.weathercode[1]);
-                      const minT = Math.round(data.daily.temperature_2m_min[1]);
-                      const maxT = Math.round(data.daily.temperature_2m_max[1]);
-                      document.getElementById("w-tmr-temp").innerText = minT + "-" + maxT + "°C";
-                  }}).catch(e => {{
-                      document.getElementById("w-curr-icon").innerText = "☁️";
-                      document.getElementById("w-curr-temp").innerText = "--°C";
-                      document.getElementById("w-tmr-icon").innerText = "☁️";
-                      document.getElementById("w-tmr-temp").innerText = "--°C";
-                  }});
-            }};
-            
-            renderOptions();
+            fetch("https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FBangkok&forecast_days=2")
+              .then(r => r.json())
+              .then(data => {{
+                  const w = data.current_weather;
+                  document.getElementById("w-curr-icon").innerText = mapCode(w.weathercode);
+                  document.getElementById("w-curr-temp").innerText = Math.round(w.temperature) + "°C";
+                  document.getElementById("w-curr-date").innerText = fDate(data.daily.time[0]);
+                  
+                  document.getElementById("w-tmr-date").innerText = fDate(data.daily.time[1]);
+                  document.getElementById("w-tmr-icon").innerText = mapCode(data.daily.weathercode[1]);
+                  const minT = Math.round(data.daily.temperature_2m_min[1]);
+                  const maxT = Math.round(data.daily.temperature_2m_max[1]);
+                  document.getElementById("w-tmr-temp").innerText = minT + "-" + maxT + "°C";
+              }}).catch(e => {{
+                  document.getElementById("w-curr-icon").innerText = "☁️";
+                  document.getElementById("w-curr-temp").innerText = "--°C";
+                  document.getElementById("w-tmr-icon").innerText = "☁️";
+                  document.getElementById("w-tmr-temp").innerText = "--°C";
+              }});
             </script>
             """, height=60)
             
