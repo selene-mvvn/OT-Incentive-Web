@@ -309,6 +309,13 @@ def render_project_history():
             ).reset_index()
             proj_summary = pd.merge(proj_summary, top_contributors, on='order_name', how='left')
             proj_summary['Percentage'] = (proj_summary['Hours'] / total_hrs * 100.0).round(1)
+            
+            def format_top_hover(row):
+                if pd.isna(row.get('TopEmployee')):
+                    return t('Chưa có', 'なし')
+                hrs = float(row.get('TopEmployeeHours', 0.0))
+                return f"{row['TopEmployee']} ({hrs:.1f} h)"
+            proj_summary['TopEmployeeHover'] = proj_summary.apply(format_top_hover, axis=1)
             proj_summary = proj_summary.sort_values(by='Hours', ascending=False).reset_index(drop=True)
 
             with col_pie:
@@ -353,8 +360,8 @@ def render_project_history():
                         pull=0,
                         rotation=80,
                         domain=dict(x=[0.05, 0.72], y=[0.05, 0.98]),
-                        customdata=pie_df[['TopEmployee', 'TopEmployeeHours']].values,
-                        hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<br>🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[0]}</b> (%{customdata[1]:.1f} h)<extra></extra>',
+                        customdata=pie_df[['TopEmployeeHover']].values,
+                        hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<br>🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[0]}</b><extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=2))
                     )
                     fig_pie.update_layout(
@@ -393,7 +400,7 @@ def render_project_history():
                             color=bar_df['Hours'],
                             colorscale=[[0, '#7dd3fc'], [1, '#0284c7']],
                         ),
-                        customdata=bar_df[['Percentage', 'TopEmployee', 'TopEmployeeHours']].values,
+                        customdata=bar_df[['Percentage', 'TopEmployeeHover']].values,
                         text=bar_df.apply(lambda r: f"{r['Hours']:,.1f} h ({r['Percentage']}%)", axis=1),
                         textposition=pos_list_t1,
                         textangle=0,
@@ -401,7 +408,7 @@ def render_project_history():
                         insidetextanchor='end',
                         insidetextfont=dict(size=12, color=text_colors_t1, weight='bold'),
                         outsidetextfont=dict(size=12, color='#0f172a', weight='bold'),
-                        hovertemplate='<b>%{y}</b><br>' + t('Số giờ', '残業時間') + ': %{x:,.1f} h (%{customdata[0]}%)<br>🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[1]}</b> (%{customdata[2]:.1f} h)<extra></extra>'
+                        hovertemplate='<b>%{y}</b><br>' + t('Số giờ', '残業時間') + ': %{x:,.1f} h (%{customdata[0]}%)<br>🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[1]}</b><extra></extra>'
                     ))
                     fig_pbar.update_layout(
                         font=dict(family="'Times New Roman', serif"),
