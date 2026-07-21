@@ -447,14 +447,14 @@ def render_project_history():
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
                         color='ot_hours',
-                        color_continuous_scale=[[0, '#a7f3d0'], [0.33, '#bae6fd'], [0.66, '#c7d2fe'], [1, '#fbcfe8']]
+                        color_continuous_scale=[[0, '#00a8e8'], [0.5, '#6366f1'], [1, '#a855f7']]
                     )
                     
                     fig_tree.update_traces(
                         texttemplate="%{label}<br>%{value} h",
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h<br>' + t('Tỷ trọng (nhóm)', 'グループ割合') + ': %{percentParent:.1%}<extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=1)),
-                        textfont=dict(family="'Times New Roman', serif", size=14)
+                        textfont=dict(family="'Times New Roman', serif", size=14, color='#ffffff')
                     )
                     
                     fig_tree.update_layout(
