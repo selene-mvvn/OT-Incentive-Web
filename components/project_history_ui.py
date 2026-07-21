@@ -113,19 +113,6 @@ def render_project_history():
     df['ot_hours'] = pd.to_numeric(df['ot_hours'], errors='coerce').fillna(0.0)
     df['order_name'] = df.apply(get_full_project_name, axis=1)
     df['employee_name'] = df['employee_name'].astype(str).str.strip().replace({'': t('Chưa rõ', '未定')})
-    
-    # Map department
-    try:
-        from logic.employee_data import get_employees_df
-        emp_df2 = get_employees_df()
-        if not emp_df2.empty and "Tên NV" in emp_df2.columns and "Phòng ban" in emp_df2.columns:
-            emp_dept_map = dict(zip(emp_df2["Tên NV"].astype(str).str.strip(), emp_df2["Phòng ban"]))
-            df['department'] = df['employee_name'].map(emp_dept_map).fillna(t('Khác / Chưa rõ', 'その他/未定'))
-        else:
-            df['department'] = t('Khác / Chưa rõ', 'その他/未定')
-    except:
-        df['department'] = t('Khác / Chưa rõ', 'その他/未定')
-
     df['clean_period'] = df.apply(get_clean_period, axis=1)
     df['est_cost'] = df.apply(get_record_cost, axis=1)
 
@@ -338,11 +325,7 @@ def render_project_history():
                 with col_pie_hdr2:
                     chart_mode = st.radio(
                         "Chart mode",
-                        options=[
-                            t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"), 
-                            t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ"),
-                            t(":material/account_tree: Cấu trúc cây (Treemap)", ":material/account_tree: ツリーマップ")
-                        ],
+                        options=[t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"), t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ")],
                         label_visibility="collapsed",
                         horizontal=True,
                         key="tab1_chart_mode"
@@ -354,7 +337,7 @@ def render_project_history():
                     
                     # Rich saturated curated color palette with enough colors for all projects
                     curated_colors = [
-                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
+                        '#0088fe', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
                         '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
                         '#84cc16', '#d946ef', '#64748b', '#0d9488'
                     ]
@@ -401,7 +384,7 @@ def render_project_history():
                         plot_bgcolor='rgba(0,0,0,0)'
                     )
                     st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
-                elif chart_mode == t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ"):
+                else:
                     # Horizontal bar chart sorted clearly by hours
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
                     bar_w_t1 = 0.25 if len(bar_df) == 1 else (0.35 if len(bar_df) == 2 else (0.45 if len(bar_df) == 3 else None))
@@ -437,54 +420,6 @@ def render_project_history():
                         yaxis=dict(tickfont=dict(size=12.5, color='#1e293b'))
                     )
                     st.plotly_chart(fig_pbar, use_container_width=True, config={'displayModeBar': False})
-                else:
-                    sunburst_df = df_tab1.groupby(['department', 'order_name', 'employee_name'])['ot_hours'].sum().reset_index()
-                    sunburst_df = sunburst_df[sunburst_df['ot_hours'] > 0]
-                    sunburst_df['Company'] = t('Tổng Công Ty', '全社')
-                    
-                    curated_colors = [
-                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
-                        '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
-                        '#84cc16', '#d946ef', '#64748b', '#0d9488'
-                    ]
-                    
-                    fig_tree = px.treemap(
-                        sunburst_df,
-                        path=['Company', 'department', 'order_name', 'employee_name'],
-                        values='ot_hours',
-                        color='order_name',
-                        color_discrete_sequence=curated_colors
-                    )
-                    
-                    if hasattr(fig_tree.data[0], 'marker') and fig_tree.data[0].marker.colors is not None:
-                        new_colors = list(fig_tree.data[0].marker.colors)
-                        dept_list = list(sunburst_df['department'].unique())
-                        dept_colors = ['#4a607a', '#4a7a60', '#7a4a60', '#7a604a', '#5a5a7a', '#7a7a5a']
-                        root_name = t('Tổng Công Ty', '全社')
-                        for i, label in enumerate(fig_tree.data[0].labels):
-                            if label == root_name:
-                                new_colors[i] = '#00a8e8'
-                            elif label in dept_list:
-                                idx = dept_list.index(label)
-                                new_colors[i] = dept_colors[idx % len(dept_colors)]
-                        fig_tree.data[0].marker.colors = new_colors
-                    
-                    fig_tree.update_traces(
-                        texttemplate="%{label}<br>%{value} h",
-                        hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h<br>' + t('Tỷ trọng (nhóm)', 'グループ割合') + ': %{percentParent:.1%}<extra></extra>',
-                        marker=dict(line=dict(color='#ffffff', width=1)),
-                        textfont=dict(family="'Times New Roman', serif", size=14, color='#ffffff')
-                    )
-                    
-                    fig_tree.update_layout(
-                        font=dict(family="'Times New Roman', serif"),
-                        margin=dict(t=5, b=5, l=0, r=0),
-                        height=420,
-                        paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0)',
-                        uniformtext=dict(minsize=11, mode='hide')
-                    )
-                    st.plotly_chart(fig_tree, use_container_width=True, config={'displayModeBar': False})
 
             with col_tbl:
                 st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
