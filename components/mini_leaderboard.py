@@ -189,7 +189,7 @@ def show_mini_edit_dialog(data_type, df):
         with col_btn1:
             if st.button(t("❌ Hủy bỏ", "❌ キャンセル"), use_container_width=True):
                 st.session_state[preview_key] = False
-                st.rerun()
+                st.rerun(scope="fragment")
         with col_btn2:
             if st.button(t("✅ Xác nhận Lưu", "✅ 保存を確認"), type="primary", use_container_width=True):
                 untouched_df = df.loc[~df.index.isin(edit_df.index)].copy()
@@ -209,7 +209,7 @@ def show_mini_edit_dialog(data_type, df):
         if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
             st.session_state[staged_key] = edited_df
             st.session_state[preview_key] = True
-            st.rerun()
+            st.rerun(scope="fragment")
 
 def render_mini_leaderboard(data_type="ot"):
     records = get_records(data_type)
