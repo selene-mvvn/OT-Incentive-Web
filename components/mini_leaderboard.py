@@ -182,6 +182,37 @@ def show_mini_edit_dialog(data_type, df):
                 st.info(t(f"Chỉnh sửa {num_mods} dòng", f"{num_mods}行を編集"))
                 diff_count += num_mods
                 
+                col_label_map = {
+                    "ot_date": t("Ngày OT", "残業日"), "employee_name": t("Nhân sự", "担当者"),
+                    "ot_hours": t("Giờ OT", "残業時間"), "ot_reason": t("Lý do", "残業理由"),
+                    "manager_name": t("Quản lý", "PM"), "project_type": t("Loại dự án", "プロジェクト種別"),
+                    "order_id": t("Mã dự án", "注文番号"), "order_name": t("Tên dự án", "注文名"),
+                    "client_order_id": t("Mã đơn khách", "客先注文番号"), "hourly_rate": t("Lương/h", "時給"),
+                    "payment_period": t("Kỳ thanh toán", "支払期間"), "standard_days": t("Số ngày chuẩn", "基準日数"),
+                    "gross_salary": t("Lương Gross", "総支給額"), "date": t("Ngày ghi nhận", "記録日"),
+                    "project_name": t("Tên dự án", "案件名"), "target_hours": t("Giờ công KH", "目標工数"),
+                    "actual_hours": t("Giờ công TT", "実工数"), "unit_price": t("Đơn giá", "単価"),
+                    "company_charge": t("Company Charge", "会社運用ﾁｬｰｼﾞ"), "profit": t("Lợi nhuận", "利益"),
+                    "standard_incentive": t("Incentive TC", "基準金額"), "final_incentive": t("Nhận được", "受取額"),
+                    "notes": t("Ghi chú", "備考")
+                }
+                details = []
+                for idx in common_idx[mod_mask.any(axis=1)]:
+                    changed_cols = mod_mask.columns[mod_mask.loc[idx]].tolist()
+                    row_name = str(edit_df.loc[idx, 'employee_name']) if 'employee_name' in edit_df.columns else f"Dòng {idx}"
+                    changes_str = []
+                    for c in changed_cols:
+                        if c in ['date_obj_edit', 'date_obj']: continue
+                        col_label = col_label_map.get(c, str(c))
+                        old_val = edit_df.loc[idx, c]
+                        new_val = staged_df.loc[idx, c]
+                        changes_str.append(f"**{col_label}**: `{old_val}` ➡️ `{new_val}`")
+                    if changes_str:
+                        details.append(f"- **{row_name}**: " + ", ".join(changes_str))
+                if details:
+                    with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
+                        st.markdown("\n".join(details))
+                
         if diff_count == 0:
             st.write(t("Không có thay đổi nào.", "変更はありません。"))
             
