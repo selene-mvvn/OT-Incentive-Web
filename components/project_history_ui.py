@@ -171,7 +171,7 @@ def render_project_history():
                             <span class="material-symbols-rounded">smart_toy</span>
                         </div>
                         <div style='font-size: 15.5px; color: #1e293b; line-height: 1.6; padding-top: 2px;'>
-                            <div style='font-weight: 800; color: #0052cc; margin-bottom: 2px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;'>Trợ lý AI phân tích</div>
+                            <div style='font-weight: 800; color: #0052cc; margin-bottom: 2px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;'>Phân tích dữ liệu thông minh</div>
                             {answer}
                         </div>
                     </div>
