@@ -281,70 +281,46 @@ def render_incentive():
                 
                 st.markdown(f"""
                 <div style='margin-top: 25px; padding: 20px; border-radius: 16px; background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border: 1px solid #fde68a; box-shadow: 0 10px 25px -5px rgba(251, 191, 36, 0.3); position: relative; overflow: hidden;'>
-                    <style>
-                        @keyframes flyCoin {{
-                            0% {{ transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0; }}
-                            20% {{ opacity: 1; }}
-                            100% {{ transform: translate(120px, -40px) scale(0.5) rotate(360deg); opacity: 0; }}
-                        }}
-                        .coin-anim {{
-                            position: absolute;
-                            font-size: 24px;
-                            left: 30px;
-                            bottom: 20px;
-                            animation: flyCoin 1.5s ease-in-out forwards;
-                            animation-iteration-count: 3;
-                            z-index: 10;
-                            pointer-events: none;
-                        }}
-                        .coin-1 {{ animation-delay: 0.1s; }}
-                        .coin-2 {{ animation-delay: 0.4s; left: 50px; }}
-                        .coin-3 {{ animation-delay: 0.7s; left: 40px; bottom: 30px; }}
-                        
-                        @keyframes pulsePiggy {{
-                            0% {{ transform: scale(1); }}
-                            50% {{ transform: scale(1.1); }}
-                            100% {{ transform: scale(1); }}
-                        }}
-                        .piggy-icon {{
-                            font-size: 48px;
-                            animation: pulsePiggy 1.5s ease-in-out infinite;
-                            display: inline-block;
-                        }}
-                        
-                        @keyframes fillBar {{
-                            from {{ width: {pct_start}%; }}
-                            to {{ width: {pct_end}%; }}
-                        }}
-                        .progress-fill {{
-                            animation: fillBar 1.5s ease-out forwards;
-                        }}
-                    </style>
-                    
-                    <div class="coin-anim coin-1">🪙</div>
-                    <div class="coin-anim coin-2">🪙</div>
-                    <div class="coin-anim coin-3">🪙</div>
-                    
-                    <div style='display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2;'>
-                        <div style='flex: 1;'>
-                            <div style='font-size: 14px; font-weight: 700; color: #d97706; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;'>
-                                {t('QUỸ TÍCH LŨY CỦA', '累積ファンド')} {emp_display}
-                            </div>
-                            <div style='font-size: 32px; font-weight: 800; color: #92400e; line-height: 1.1;'>
-                                {new_total:,.0f} <span style='font-size: 18px; color: #b45309;'>JPY</span>
-                            </div>
-                            <div style='font-size: 13px; color: #b45309; margin-top: 5px; font-weight: 500;'>
-                                🎉 {t('Vừa cộng thêm', '追加されました')}: <b>+{current_inc:,.0f} JPY</b>
-                            </div>
-                        </div>
-                        <div style='margin-left: 20px;'>
-                            <span class="piggy-icon">🐷</span>
-                        </div>
-                    </div>
-                    
-                    <div style='margin-top: 15px; height: 8px; background: #fde68a; border-radius: 4px; overflow: hidden; position: relative; z-index: 2;'>
-                        <div class="progress-fill" style='height: 100%; background: linear-gradient(90deg, #f59e0b, #d97706); border-radius: 4px;'></div>
-                    </div>
+                <style>
+                @keyframes flyCoin {{
+                    0% {{ transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0; }}
+                    20% {{ opacity: 1; }}
+                    100% {{ transform: translate(120px, -40px) scale(0.5) rotate(360deg); opacity: 0; }}
+                }}
+                .coin-anim {{
+                    position: absolute; font-size: 24px; left: 30px; bottom: 20px;
+                    animation: flyCoin 1.5s ease-in-out forwards; animation-iteration-count: 3;
+                    z-index: 10; pointer-events: none;
+                }}
+                .coin-1 {{ animation-delay: 0.1s; }}
+                .coin-2 {{ animation-delay: 0.4s; left: 50px; }}
+                .coin-3 {{ animation-delay: 0.7s; left: 40px; bottom: 30px; }}
+                @keyframes pulsePiggy {{
+                    0% {{ transform: scale(1); }}
+                    50% {{ transform: scale(1.1); }}
+                    100% {{ transform: scale(1); }}
+                }}
+                .piggy-icon {{ font-size: 48px; animation: pulsePiggy 1.5s ease-in-out infinite; display: inline-block; }}
+                @keyframes fillBar {{
+                    from {{ width: {pct_start}%; }}
+                    to {{ width: {pct_end}%; }}
+                }}
+                .progress-fill {{ animation: fillBar 1.5s ease-out forwards; }}
+                </style>
+                <div class="coin-anim coin-1">🪙</div>
+                <div class="coin-anim coin-2">🪙</div>
+                <div class="coin-anim coin-3">🪙</div>
+                <div style='display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2;'>
+                <div style='flex: 1;'>
+                <div style='font-size: 14px; font-weight: 700; color: #d97706; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;'>{t('QUỸ TÍCH LŨY CỦA', '累積ファンド')} {emp_display}</div>
+                <div style='font-size: 32px; font-weight: 800; color: #92400e; line-height: 1.1;'>{new_total:,.0f} <span style='font-size: 18px; color: #b45309;'>JPY</span></div>
+                <div style='font-size: 13px; color: #b45309; margin-top: 5px; font-weight: 500;'>🎉 {t('Vừa cộng thêm', '追加されました')}: <b>+{current_inc:,.0f} JPY</b></div>
+                </div>
+                <div style='margin-left: 20px;'><span class="piggy-icon">🐷</span></div>
+                </div>
+                <div style='margin-top: 15px; height: 8px; background: #fde68a; border-radius: 4px; overflow: hidden; position: relative; z-index: 2;'>
+                <div class="progress-fill" style='height: 100%; background: linear-gradient(90deg, #f59e0b, #d97706); border-radius: 4px;'></div>
+                </div>
                 </div>
                 """, unsafe_allow_html=True)
                 st.markdown("<div style='height: 15px;'></div>", unsafe_allow_html=True)
