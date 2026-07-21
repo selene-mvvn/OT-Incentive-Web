@@ -1023,6 +1023,7 @@ def render_base_data():
                 time.sleep(0.5)
                 st.rerun()
 
+        with c2:
             is_jp = st.session_state.get('lang', 'VN') == 'JP'
             cities = [
                 {"name": "HÀ NỘI" if not is_jp else "ハノイ", "val": "21.0285,105.8542,Asia/Bangkok"},
