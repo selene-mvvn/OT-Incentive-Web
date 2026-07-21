@@ -354,9 +354,9 @@ def render_project_history():
                     
                     # Rich saturated curated color palette with enough colors for all projects
                     curated_colors = [
-                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
-                        '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
-                        '#84cc16', '#d946ef', '#64748b', '#0d9488'
+                        '#00a8e8', '#e63946', '#2a9d8f', '#8338ec', '#f77f00', '#ff006e', '#55a630', '#023e8a',
+                        '#9c89b8', '#d90429', '#00b4d8', '#e76f51', '#264653', '#d4a373', '#7b2cbf', '#3a86ff',
+                        '#a7c957', '#9d0208', '#6c757d', '#1d3557'
                     ]
                     
                     fig_pie = px.pie(
@@ -443,9 +443,9 @@ def render_project_history():
                     sunburst_df['Company'] = t('Tổng Công Ty', '全社')
                     
                     curated_colors = [
-                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
-                        '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
-                        '#84cc16', '#d946ef', '#64748b', '#0d9488'
+                        '#00a8e8', '#e63946', '#2a9d8f', '#8338ec', '#f77f00', '#ff006e', '#55a630', '#023e8a',
+                        '#9c89b8', '#d90429', '#00b4d8', '#e76f51', '#264653', '#d4a373', '#7b2cbf', '#3a86ff',
+                        '#a7c957', '#9d0208', '#6c757d', '#1d3557'
                     ]
                     
                     fig_tree = px.treemap(
