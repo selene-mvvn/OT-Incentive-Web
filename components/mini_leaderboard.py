@@ -178,6 +178,10 @@ def show_mini_edit_dialog(data_type, df):
                 row_parts.append(f"{row_df.loc[idx, 'order_id']} ({row_df.loc[idx, 'order_name']})")
             elif 'project_name' in row_df.columns:
                 row_parts.append(str(row_df.loc[idx, 'project_name']))
+            if 'ot_hours' in row_df.columns:
+                row_parts.append(f"Giờ OT: {row_df.loc[idx, 'ot_hours']}")
+            elif 'actual_hours' in row_df.columns:
+                row_parts.append(f"Giờ TT: {row_df.loc[idx, 'actual_hours']}")
             return " | ".join(row_parts) if row_parts else f"Dòng {idx}"
 
         details = []
