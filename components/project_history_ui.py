@@ -448,9 +448,10 @@ def render_project_history():
                         '#84cc16', '#d946ef', '#64748b', '#0d9488'
                     ]
                     
-                    color_map = {t('Tổng Công Ty', '全社'): '#1e293b', '(?)': '#334155'}
-                    for dept in sunburst_df['department'].unique():
-                        color_map[dept] = '#334155'
+                    color_map = {t('Tổng Công Ty', '全社'): '#00a8e8', '(?)': '#334155'}
+                    dept_colors = ['#1e3a8a', '#064e3b', '#4c1d95', '#7f1d1d', '#78350f', '#0f766e']
+                    for idx, dept in enumerate(sunburst_df['department'].unique()):
+                        color_map[dept] = dept_colors[idx % len(dept_colors)]
 
                     fig_tree = px.treemap(
                         sunburst_df,
