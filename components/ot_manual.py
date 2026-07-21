@@ -525,7 +525,7 @@ def render_base_data():
                 margin-bottom: -1rem;
             }}
             .st-tooltip-wrapper {{
-                position: absolute; right: 128px; top: 0px; z-index: 9999;
+                position: absolute; right: 128px; top: -3px; z-index: 9999;
             }}
             .st-tooltip-icon {{
                 pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #838e9d; cursor: help; opacity: 0.8; transition: opacity 0.2s;
