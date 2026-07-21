@@ -142,23 +142,59 @@ def render_project_history():
                     pass
 
             if not df_search.empty:
+                def render_ai_msg(answer):
+                    html = f"""
+                    <div style='
+                        background: linear-gradient(135deg, #f0f8ff 0%, #e6f2ff 100%);
+                        border-left: 4px solid #00B0F0;
+                        border-radius: 8px;
+                        padding: 16px 20px;
+                        box-shadow: 0 4px 12px rgba(0, 176, 240, 0.15);
+                        display: flex;
+                        align-items: flex-start;
+                        gap: 16px;
+                        margin-top: 5px;
+                    '>
+                        <div style='
+                            background: linear-gradient(135deg, #00B0F0, #0052cc);
+                            border-radius: 50%;
+                            width: 42px;
+                            height: 42px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: white;
+                            font-size: 24px;
+                            flex-shrink: 0;
+                            box-shadow: 0 4px 8px rgba(0, 176, 240, 0.4);
+                        '>
+                            <span class="material-symbols-rounded">smart_toy</span>
+                        </div>
+                        <div style='font-size: 15.5px; color: #1e293b; line-height: 1.6; padding-top: 2px;'>
+                            <div style='font-weight: 800; color: #0052cc; margin-bottom: 2px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;'>Trợ lý AI phân tích</div>
+                            {answer}
+                        </div>
+                    </div>
+                    """
+                    st.markdown(html, unsafe_allow_html=True)
+
                 if any(kw in sq for kw in ["tiền", "chi phí", "cost", "コスト", "お金"]):
                     top_cost = df_search.groupby('order_name')['est_cost'].sum().reset_index().sort_values(by='est_cost', ascending=False)
                     if not top_cost.empty:
                         top_1 = top_cost.iloc[0]
-                        st.info(f"💡 **Trợ lý AI trả lời:** Dự án tốn nhiều chi phí nhất {period_str} là **{top_1['order_name']}** với tổng chi phí **{top_1['est_cost']:,.0f} VNĐ**.")
+                        render_ai_msg(f"Dự án tốn nhiều chi phí nhất {period_str} là <b style='color: #e74c3c;'>{top_1['order_name']}</b> với tổng chi phí <b style='color: #e74c3c; font-size: 17px;'>{top_1['est_cost']:,.0f} VNĐ</b>.")
                 elif any(kw in sq for kw in ["ai", "nhân viên", "người", "who", "誰", "スタッフ"]):
                     top_emp = df_search.groupby('employee_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
                     if not top_emp.empty:
                         top_1 = top_emp.iloc[0]
-                        st.info(f"💡 **Trợ lý AI trả lời:** Nhân sự OT nhiều nhất {period_str} là **{top_1['employee_name']}** với tổng cộng **{top_1['ot_hours']:,.1f} giờ**.")
+                        render_ai_msg(f"Nhân sự OT nhiều nhất {period_str} là <b style='color: #e74c3c;'>{top_1['employee_name']}</b> với tổng cộng <b style='color: #e74c3c; font-size: 17px;'>{top_1['ot_hours']:,.1f} giờ</b>.")
                 elif any(kw in sq for kw in ["giờ", "hours", "時間", "dự án nào", "dự án gì", "nhiều nhất"]):
                     top_hr = df_search.groupby('order_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
                     if not top_hr.empty:
                         top_1 = top_hr.iloc[0]
-                        st.info(f"💡 **Trợ lý AI trả lời:** Dự án có số giờ OT cao nhất {period_str} là **{top_1['order_name']}** với **{top_1['ot_hours']:,.1f} giờ**.")
+                        render_ai_msg(f"Dự án có số giờ OT cao nhất {period_str} là <b style='color: #e74c3c;'>{top_1['order_name']}</b> với <b style='color: #e74c3c; font-size: 17px;'>{top_1['ot_hours']:,.1f} giờ</b>.")
                 else:
-                    st.info("🤖 **Trợ lý AI:** " + t("Xin lỗi, tôi chưa hiểu rõ. Bạn hãy thử hỏi về 'Ai OT nhiều nhất' hoặc 'Dự án nào tốn tiền nhất' nhé!", "すみません、意図がわかりません。「誰が一番残業したか」や「どのプロジェクトが一番コストがかかっているか」などを聞いてみてください。"))
+                    render_ai_msg("Xin lỗi, tôi chưa hiểu rõ. Bạn hãy thử hỏi về <b style='color: #00B0F0;'>'Ai OT nhiều nhất'</b> hoặc <b style='color: #00B0F0;'>'Dự án nào tốn tiền nhất'</b> nhé!")
     st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
     # -----------------------------------------------------------------
 
