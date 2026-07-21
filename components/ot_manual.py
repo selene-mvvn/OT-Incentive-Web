@@ -1031,8 +1031,17 @@ def render_base_data():
                 {"name": "ĐÀ NẴNG" if not is_jp else "ダナン", "val": "16.0678,108.2208,Asia/Bangkok"},
                 {"name": "HẢI PHÒNG" if not is_jp else "ハイフォン", "val": "20.8648,106.6835,Asia/Bangkok"},
                 {"name": "CẦN THƠ" if not is_jp else "カントー", "val": "10.0333,105.7833,Asia/Bangkok"},
+                {"name": "HUẾ" if not is_jp else "フエ", "val": "16.4667,107.6000,Asia/Bangkok"},
+                {"name": "HẠ LONG" if not is_jp else "ハロン", "val": "20.9505,107.0733,Asia/Bangkok"},
+                {"name": "THANH HÓA" if not is_jp else "タインホア", "val": "19.8070,105.7760,Asia/Bangkok"},
+                {"name": "VINH" if not is_jp else "ヴィン", "val": "18.6667,105.6667,Asia/Bangkok"},
+                {"name": "THÁI NGUYÊN" if not is_jp else "タイグエン", "val": "21.5928,105.8442,Asia/Bangkok"},
+                {"name": "LÀO CAI" if not is_jp else "ラオカイ", "val": "22.4856,103.9707,Asia/Bangkok"},
+                {"name": "TUYÊN QUANG" if not is_jp else "トゥエンクアン", "val": "21.8211,105.2144,Asia/Bangkok"},
                 {"name": "NHA TRANG" if not is_jp else "ニャチャン", "val": "12.2451,109.1943,Asia/Bangkok"},
-                {"name": "HUẾ" if not is_jp else "フエ", "val": "16.4667,107.6000,Asia/Bangkok"}
+                {"name": "ĐÀ LẠT" if not is_jp else "ダラット", "val": "11.9404,108.4583,Asia/Bangkok"},
+                {"name": "VŨNG TÀU" if not is_jp else "ブンタウ", "val": "10.3460,107.0843,Asia/Bangkok"},
+                {"name": "BUÔN MA THUỘT" if not is_jp else "バンメトート", "val": "12.6667,108.0500,Asia/Bangkok"}
             ]
             cities_jp = [
                 {"name": "TOKYO" if not is_jp else "東京", "val": "35.6895,139.6917,Asia/Tokyo"},
@@ -1093,7 +1102,7 @@ def render_base_data():
                             letter-spacing: 0.3px;
                             font-size: 14.5px;
                             padding: 2px 20px 2px 8px;
-                            width: 95px;
+                            width: 115px;
                             text-overflow: ellipsis;
                             outline: none;
                             cursor: pointer;
