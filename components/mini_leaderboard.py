@@ -246,7 +246,7 @@ def show_mini_edit_dialog(data_type, df):
                     st.rerun()
     else:
         edited_df = st.data_editor(edit_df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
-        if st.button(t(":material/save: Lưu Thay Đổi", ":material/save: 変更を保存"), use_container_width=True):
+        if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
             st.session_state[staged_key] = edited_df
             st.session_state[preview_key] = True
             st.rerun(scope="fragment")
