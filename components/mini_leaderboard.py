@@ -199,14 +199,23 @@ def show_mini_edit_dialog(data_type, df):
                 details = []
                 for idx in common_idx[mod_mask.any(axis=1)]:
                     changed_cols = mod_mask.columns[mod_mask.loc[idx]].tolist()
-                    row_name = str(edit_df.loc[idx, 'employee_name']) if 'employee_name' in edit_df.columns else f"Dòng {idx}"
+                    row_parts = []
+                    if 'ot_date' in edit_df.columns: row_parts.append(str(edit_df.loc[idx, 'ot_date']))
+                    elif 'date' in edit_df.columns: row_parts.append(str(edit_df.loc[idx, 'date']))
+                    if 'employee_name' in edit_df.columns: row_parts.append(str(edit_df.loc[idx, 'employee_name']))
+                    if 'order_id' in edit_df.columns and 'order_name' in edit_df.columns:
+                        row_parts.append(f"{edit_df.loc[idx, 'order_id']} ({edit_df.loc[idx, 'order_name']})")
+                    elif 'project_name' in edit_df.columns:
+                        row_parts.append(str(edit_df.loc[idx, 'project_name']))
+                    row_name = " | ".join(row_parts) if row_parts else f"Dòng {idx}"
+                    
                     changes_str = []
                     for c in changed_cols:
                         if c in ['date_obj_edit', 'date_obj']: continue
                         col_label = col_label_map.get(c, str(c))
                         old_val = edit_df.loc[idx, c]
                         new_val = staged_df.loc[idx, c]
-                        changes_str.append(f"**{col_label}**: `{old_val}` ➡️ `{new_val}`")
+                        changes_str.append(f"**{col_label}**: `{old_val}` -> `{new_val}`")
                     if changes_str:
                         details.append(f"- **{row_name}**: " + ", ".join(changes_str))
                 if details:
