@@ -178,23 +178,27 @@ def render_project_history():
                     """
                     st.markdown(html, unsafe_allow_html=True)
 
-                if any(kw in sq for kw in ["tiền", "chi phí", "cost", "コスト", "お金"]):
-                    top_cost = df_search.groupby('order_name')['est_cost'].sum().reset_index().sort_values(by='est_cost', ascending=False)
+                is_least = any(kw in sq for kw in ["ít", "thấp", "nhỏ", "least", "min", "đáy"])
+                order_str = "ít nhất" if is_least else "nhiều nhất"
+                order_str_hr = "thấp nhất" if is_least else "cao nhất"
+
+                if any(kw in sq for kw in ["tiền", "chi phí", "cost", "コスト", "お金", "tốn"]):
+                    top_cost = df_search.groupby('order_name')['est_cost'].sum().reset_index().sort_values(by='est_cost', ascending=is_least)
                     if not top_cost.empty:
                         top_1 = top_cost.iloc[0]
-                        render_ai_msg(f"Dự án tốn nhiều chi phí nhất {period_str} là <b style='color: #e74c3c;'>{top_1['order_name']}</b> với tổng chi phí <b style='color: #e74c3c; font-size: 17px;'>{top_1['est_cost']:,.0f} VNĐ</b>.")
+                        render_ai_msg(f"Dự án tốn {order_str} chi phí {period_str} là <b style='color: #e74c3c;'>{top_1['order_name']}</b> với tổng chi phí <b style='color: #e74c3c; font-size: 17px;'>{top_1['est_cost']:,.0f} VNĐ</b>.")
                 elif any(kw in sq for kw in ["ai", "nhân viên", "nhân sự", "người", "who", "誰", "スタッフ"]):
-                    top_emp = df_search.groupby('employee_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
+                    top_emp = df_search.groupby('employee_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=is_least)
                     if not top_emp.empty:
                         top_1 = top_emp.iloc[0]
-                        render_ai_msg(f"Nhân sự OT nhiều nhất {period_str} là <b style='color: #e74c3c;'>{top_1['employee_name']}</b> với tổng cộng <b style='color: #e74c3c; font-size: 17px;'>{top_1['ot_hours']:,.1f} giờ</b>.")
+                        render_ai_msg(f"Nhân sự OT {order_str} {period_str} là <b style='color: #e74c3c;'>{top_1['employee_name']}</b> với tổng cộng <b style='color: #e74c3c; font-size: 17px;'>{top_1['ot_hours']:,.1f} giờ</b>.")
                 elif any(kw in sq for kw in ["giờ", "hours", "時間", "dự án", "project", "プロジェクト"]):
-                    top_hr = df_search.groupby('order_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
+                    top_hr = df_search.groupby('order_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=is_least)
                     if not top_hr.empty:
                         top_1 = top_hr.iloc[0]
-                        render_ai_msg(f"Dự án có số giờ OT cao nhất {period_str} là <b style='color: #e74c3c;'>{top_1['order_name']}</b> với <b style='color: #e74c3c; font-size: 17px;'>{top_1['ot_hours']:,.1f} giờ</b>.")
+                        render_ai_msg(f"Dự án có số giờ OT {order_str_hr} {period_str} là <b style='color: #e74c3c;'>{top_1['order_name']}</b> với <b style='color: #e74c3c; font-size: 17px;'>{top_1['ot_hours']:,.1f} giờ</b>.")
                 else:
-                    render_ai_msg("Xin lỗi, tôi chưa hiểu rõ. Bạn hãy thử hỏi về <b style='color: #00B0F0;'>'Ai/Nhân sự nào OT nhiều nhất'</b> hoặc <b style='color: #00B0F0;'>'Dự án nào tốn tiền nhất'</b> nhé!")
+                    render_ai_msg("Xin lỗi, tôi chưa hiểu rõ. Bạn hãy thử hỏi về <b style='color: #00B0F0;'>'Ai/Nhân sự nào OT nhiều/ít nhất'</b> hoặc <b style='color: #00B0F0;'>'Dự án nào tốn nhiều/ít tiền nhất'</b> nhé!")
     st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
     # -----------------------------------------------------------------
 
