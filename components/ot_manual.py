@@ -1029,7 +1029,7 @@ def render_base_data():
             lbl_tmr = t("Ngày mai", "明日")
             import streamlit.components.v1 as components
             components.html(f"""
-            <div style="display: flex; justify-content: center; padding-top: 2px;">
+            <div style="display: flex; justify-content: center; padding-top: 15px;">
                 <div style="
                     display: inline-flex;
                     align-items: center;
@@ -1095,7 +1095,7 @@ def render_base_data():
                   document.getElementById("w-tmr-temp").innerText = "--°C";
               }});
             </script>
-            """, height=42)
+            """, height=60)
             import json
             import streamlit.components.v1 as components
             holidays_list = []
@@ -1157,7 +1157,7 @@ def render_base_data():
             html_code = f"""
             <style>
             body {{ font-family: 'Times New Roman', serif; margin: 0; padding: 0; color: #334155; }}
-            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 0px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
+            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 15px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
             .cal-header {{ display: flex; justify-content: space-between; align-items: center; padding: 5px 0 15px 0; }}
             .cal-header button {{ background: white; border: none; border-radius: 4px; padding: 4px 14px; cursor: pointer; color: #00B0F0; font-weight: bold; transition: all 0.2s; font-size: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
             .cal-header button:hover {{ background: #f8fafc; color: #0089b8; }}
