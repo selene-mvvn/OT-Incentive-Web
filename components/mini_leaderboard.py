@@ -215,12 +215,12 @@ def show_mini_edit_dialog(data_type, df):
                         col_label = col_label_map.get(c, str(c))
                         old_val = edit_df.loc[idx, c]
                         new_val = staged_df.loc[idx, c]
-                        changes_str.append(f"**{col_label}**: `{old_val}` -> `{new_val}`")
+                        changes_str.append(f"**{col_label}**: <span style='color: #ef4444; font-weight: bold; font-size: 15px;'>{old_val}</span> ➔ <span style='color: #10b981; font-weight: bold; font-size: 15px;'>{new_val}</span>")
                     if changes_str:
                         details.append(f"- **{row_name}**: " + ", ".join(changes_str))
                 if details:
                     with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
-                        st.markdown("\n".join(details))
+                        st.markdown("\n".join(details), unsafe_allow_html=True)
                 
         if diff_count == 0:
             st.write(t("Không có thay đổi nào.", "変更はありません。"))
