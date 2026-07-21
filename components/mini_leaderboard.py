@@ -110,6 +110,11 @@ def show_mini_edit_dialog(data_type, df):
     if sel_month not in ["Tất cả", "すべて"]:
         edit_df = edit_df[edit_df['date_obj_edit'].dt.month == sel_month].copy()
 
+    search_term = st.text_input(t("🔍 Tìm kiếm nhanh (Tên, Mã dự án...):", "🔍 クイック検索:"), key=f"dialog_search_{data_type}")
+    if search_term:
+        mask = edit_df.apply(lambda row: row.astype(str).str.contains(search_term, case=False, na=False).any(), axis=1)
+        edit_df = edit_df[mask].copy()
+
     if data_type == "ot":
         col_order = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df.columns if str(c).endswith("%")]
         col_order = [c for c in col_order if c in df.columns] + [c for c in df.columns if c not in col_order]
@@ -151,21 +156,59 @@ def show_mini_edit_dialog(data_type, df):
     col_cfg["date_obj"] = None
     col_cfg["date_obj_edit"] = None
 
-    edited_df = st.data_editor(edit_df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
-    if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
-        if sel_year not in ["Tất cả", "すべて"]:
-            other_years_df = df[df['date_obj_edit'].dt.year != sel_year].copy()
-            save_df = pd.concat([other_years_df, edited_df], ignore_index=True)
-        else:
-            save_df = edited_df.copy()
+    preview_key = f"dialog_preview_{data_type}"
+    staged_key = f"dialog_staged_{data_type}"
+
+    if st.session_state.get(preview_key, False):
+        st.markdown(f"### {t('⚠️ Xem trước thay đổi', '⚠️ 変更のプレビュー')}")
+        staged_df = st.session_state[staged_key]
+        
+        diff_count = 0
+        added = len(staged_df) - len(edit_df) if len(staged_df) > len(edit_df) else 0
+        deleted = len(edit_df) - len(staged_df) if len(edit_df) > len(staged_df) else 0
+        
+        if added > 0:
+            st.success(t(f"Thêm mới {added} dòng", f"{added}行を追加"))
+            diff_count += added
+        if deleted > 0:
+            st.error(t(f"Xóa {deleted} dòng", f"{deleted}行を削除"))
+            diff_count += deleted
             
-        if 'date_obj_edit' in save_df.columns:
-            save_df = save_df.drop(columns=['date_obj_edit'])
-        if 'date_obj' in save_df.columns:
-            save_df = save_df.drop(columns=['date_obj'])
+        common_idx = edit_df.index.intersection(staged_df.index)
+        if len(common_idx) > 0:
+            mod_mask = (edit_df.loc[common_idx] != staged_df.loc[common_idx]) & ~(edit_df.loc[common_idx].isnull() & staged_df.loc[common_idx].isnull())
+            num_mods = mod_mask.any(axis=1).sum()
+            if num_mods > 0:
+                st.info(t(f"Chỉnh sửa {num_mods} dòng", f"{num_mods}行を編集"))
+                diff_count += num_mods
+                
+        if diff_count == 0:
+            st.write(t("Không có thay đổi nào.", "変更はありません。"))
             
-        if save_all_records(data_type, save_df.to_dict('records')):
-            st.session_state['pending_toast'] = t("Đã lưu thành công!", "保存しました！")
+        col_btn1, col_btn2 = st.columns(2)
+        with col_btn1:
+            if st.button(t("❌ Hủy bỏ", "❌ キャンセル"), use_container_width=True):
+                st.session_state[preview_key] = False
+                st.rerun()
+        with col_btn2:
+            if st.button(t("✅ Xác nhận Lưu", "✅ 保存を確認"), type="primary", use_container_width=True):
+                untouched_df = df.loc[~df.index.isin(edit_df.index)].copy()
+                save_df = pd.concat([untouched_df, staged_df], ignore_index=True)
+                
+                if 'date_obj_edit' in save_df.columns:
+                    save_df = save_df.drop(columns=['date_obj_edit'])
+                if 'date_obj' in save_df.columns:
+                    save_df = save_df.drop(columns=['date_obj'])
+                    
+                if save_all_records(data_type, save_df.to_dict('records')):
+                    st.session_state['pending_toast'] = t("Đã lưu thành công!", "保存しました！")
+                    st.session_state[preview_key] = False
+                    st.rerun()
+    else:
+        edited_df = st.data_editor(edit_df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
+        if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
+            st.session_state[staged_key] = edited_df
+            st.session_state[preview_key] = True
             st.rerun()
 
 def render_mini_leaderboard(data_type="ot"):
