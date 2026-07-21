@@ -429,7 +429,7 @@ def render_project_history():
                 col_cost = t('Chi Phí VNĐ', '予想支出額')
                 col_staff = t('Số NV', '人数')
 
-                display_df = proj_summary.drop(columns=['TopEmployee', 'TopEmployeeHours'], errors='ignore').copy()
+                display_df = proj_summary.drop(columns=['TopEmployee', 'TopEmployeeHours', 'TopEmployeeHover'], errors='ignore').copy()
                 display_df = display_df.rename(columns={
                     'order_name': col_proj,
                     'Hours': col_hrs,
