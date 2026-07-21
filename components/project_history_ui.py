@@ -449,7 +449,7 @@ def render_project_history():
                     
                     fig_tree = px.treemap(
                         sunburst_df,
-                        path=['department', 'order_name', 'employee_name'],
+                        path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
                         color='order_name',
                         color_discrete_sequence=curated_colors
