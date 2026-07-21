@@ -456,7 +456,7 @@ def render_project_history():
                     )
                     
                     fig_tree.update_traces(
-                        textinfo="label+value",
+                        texttemplate="%{label}<br>%{value} h",
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h<br>' + t('Tỷ trọng (nhóm)', 'グループ割合') + ': %{percentParent:.1%}<extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=1)),
                         textfont=dict(family="'Times New Roman', serif", size=14, color='#ffffff')
