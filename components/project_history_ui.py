@@ -116,6 +116,32 @@ def render_project_history():
     df['clean_period'] = df.apply(get_clean_period, axis=1)
     df['est_cost'] = df.apply(get_record_cost, axis=1)
 
+    # ------------------ SMART SEARCH / AI ASSISTANT ------------------
+    st.markdown("<div style='margin-bottom: -5px;'></div>", unsafe_allow_html=True)
+    search_query = st.text_input("🔍 " + t("Hỏi trợ lý AI (VD: Dự án nào tốn tiền nhất, ai OT nhiều nhất?)", "AIアシスタントに質問する (例: どのプロジェクトが一番コストがかかっているか？)"), key="smart_search")
+    if search_query:
+        sq = search_query.lower()
+        if not df.empty:
+            if any(kw in sq for kw in ["tiền", "chi phí", "cost", "コスト", "お金"]):
+                top_cost = df.groupby('order_name')['est_cost'].sum().reset_index().sort_values(by='est_cost', ascending=False)
+                if not top_cost.empty:
+                    top_1 = top_cost.iloc[0]
+                    st.info(f"💡 **Trợ lý AI trả lời:** Dự án tốn nhiều chi phí nhất là **{top_1['order_name']}** với tổng chi phí **{top_1['est_cost']:,.0f} VNĐ**.")
+            elif any(kw in sq for kw in ["ai", "nhân viên", "người", "who", "誰", "スタッフ"]):
+                top_emp = df.groupby('employee_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
+                if not top_emp.empty:
+                    top_1 = top_emp.iloc[0]
+                    st.info(f"💡 **Trợ lý AI trả lời:** Nhân sự OT nhiều nhất toàn hệ thống là **{top_1['employee_name']}** với tổng cộng **{top_1['ot_hours']:,.1f} giờ**.")
+            elif any(kw in sq for kw in ["giờ", "hours", "時間", "dự án nào", "dự án gì", "nhiều nhất"]):
+                top_hr = df.groupby('order_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
+                if not top_hr.empty:
+                    top_1 = top_hr.iloc[0]
+                    st.info(f"💡 **Trợ lý AI trả lời:** Dự án có số giờ OT cao nhất là **{top_1['order_name']}** với **{top_1['ot_hours']:,.1f} giờ**.")
+            else:
+                st.info("🤖 **Trợ lý AI:** " + t("Xin lỗi, tôi chưa hiểu rõ. Bạn hãy thử hỏi về 'Ai OT nhiều nhất' hoặc 'Dự án nào tốn tiền nhất' nhé!", "すみません、意図がわかりません。「誰が一番残業したか」や「どのプロジェクトが一番コストがかかっているか」などを聞いてみてください。"))
+    st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
+    # -----------------------------------------------------------------
+
     # Sort periods chronologically (e.g. T07/2026 -> 2026-07)
     def sort_key_period(p):
         if p.startswith('T') and '/' in p:
