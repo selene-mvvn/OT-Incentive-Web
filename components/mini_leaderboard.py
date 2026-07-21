@@ -110,7 +110,7 @@ def show_mini_edit_dialog(data_type, df):
     if sel_month not in ["Tất cả", "すべて"]:
         edit_df = edit_df[edit_df['date_obj_edit'].dt.month == sel_month].copy()
 
-    search_term = st.text_input(t("🔍 Tìm kiếm nhanh (Tên, Mã dự án...):", "🔍 クイック検索:"), key=f"dialog_search_{data_type}")
+    search_term = st.text_input(t(":material/search: Tìm kiếm nhanh (Tên, Mã dự án...):", ":material/search: クイック検索:"), key=f"dialog_search_{data_type}")
     if search_term:
         mask = edit_df.apply(lambda row: row.astype(str).str.contains(search_term, case=False, na=False).any(), axis=1)
         edit_df = edit_df[mask].copy()
@@ -160,7 +160,7 @@ def show_mini_edit_dialog(data_type, df):
     staged_key = f"dialog_staged_{data_type}"
 
     if st.session_state.get(preview_key, False):
-        st.markdown(f"### {t('⚠️ Xem trước thay đổi', '⚠️ 変更のプレビュー')}")
+        st.markdown(f"### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
         staged_df = st.session_state[staged_key]
         
         diff_count = 0
@@ -187,11 +187,11 @@ def show_mini_edit_dialog(data_type, df):
             
         col_btn1, col_btn2 = st.columns(2)
         with col_btn1:
-            if st.button(t("❌ Hủy bỏ", "❌ キャンセル"), use_container_width=True):
+            if st.button(t(":material/close: Hủy bỏ", ":material/close: キャンセル"), use_container_width=True):
                 st.session_state[preview_key] = False
                 st.rerun(scope="fragment")
         with col_btn2:
-            if st.button(t("✅ Xác nhận Lưu", "✅ 保存を確認"), type="primary", use_container_width=True):
+            if st.button(t(":material/check_circle: Xác nhận Lưu", ":material/check_circle: 保存を確認"), type="primary", use_container_width=True):
                 untouched_df = df.loc[~df.index.isin(edit_df.index)].copy()
                 save_df = pd.concat([untouched_df, staged_df], ignore_index=True)
                 
@@ -206,7 +206,7 @@ def show_mini_edit_dialog(data_type, df):
                     st.rerun()
     else:
         edited_df = st.data_editor(edit_df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
-        if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
+        if st.button(t(":material/save: Lưu Thay Đổi", ":material/save: 変更を保存"), use_container_width=True):
             st.session_state[staged_key] = edited_df
             st.session_state[preview_key] = True
             st.rerun(scope="fragment")
