@@ -686,14 +686,7 @@ def render_base_data():
                             details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
             
             if diff_count > 0:
-                prev_c1, prev_c2 = st.columns([7.5, 2.5])
-                with prev_c1:
-                    st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
-                with prev_c2:
-                    st.markdown("<div style='margin-top: 4px;'></div>", unsafe_allow_html=True)
-                    if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes", icon=":material/undo:", use_container_width=True):
-                        st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
-                        st.rerun()
+                st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
                 with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
                     st.markdown("\n".join(details), unsafe_allow_html=True)
                 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -767,7 +760,17 @@ def render_base_data():
                         st.rerun()
 
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary"):
+            
+            btn_col1, btn_col2, _ = st.columns([3, 2.5, 4.5])
+            with btn_col1:
+                save_clicked = st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary", use_container_width=True)
+            with btn_col2:
+                if diff_count > 0:
+                    if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes", icon=":material/undo:", use_container_width=True):
+                        st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
+                        st.rerun()
+            
+            if save_clicked:
                 if uploaded_template is not None:
                     if not os.path.exists("data"):
                         os.makedirs("data")
