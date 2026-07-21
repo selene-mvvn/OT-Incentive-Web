@@ -452,7 +452,7 @@ def render_project_history():
                         sunburst_df,
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
-                        color='order_name',
+                        color='department',
                         color_discrete_sequence=curated_colors
                     )
                     
