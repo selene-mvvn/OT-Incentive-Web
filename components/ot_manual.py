@@ -1081,7 +1081,7 @@ def render_base_data():
                             outline: none;
                             font-size: 13px;
                             transition: all 0.2s;
-                        ">🇻🇳 VN</button>
+                        ">VN</button>
                         
                         <select id="city-select" onchange="fetchWeather()" style="
                             background: rgba(2, 132, 199, 0.05);
@@ -1092,7 +1092,7 @@ def render_base_data():
                             color: #0284c7;
                             letter-spacing: 0.3px;
                             font-size: 14.5px;
-                            padding: 2px 24px 2px 10px;
+                            padding: 2px 20px 2px 8px;
                             outline: none;
                             cursor: pointer;
                             appearance: none;
@@ -1148,13 +1148,13 @@ def render_base_data():
                 const btn = document.getElementById('country-toggle');
                 if(currentCountry === 'VN') {{
                     currentCountry = 'JP';
-                    btn.innerText = '🇯🇵 JP';
+                    btn.innerText = 'JP';
                     btn.style.background = 'rgba(239, 68, 68, 0.1)';
                     btn.style.border = '1px solid rgba(239, 68, 68, 0.3)';
                     btn.style.color = '#ef4444';
                 }} else {{
                     currentCountry = 'VN';
-                    btn.innerText = '🇻🇳 VN';
+                    btn.innerText = 'VN';
                     btn.style.background = 'rgba(16, 185, 129, 0.1)';
                     btn.style.border = '1px solid rgba(16, 185, 129, 0.3)';
                     btn.style.color = '#10b981';
