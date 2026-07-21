@@ -354,7 +354,7 @@ def render_project_history():
                     
                     # Rich saturated curated color palette with enough colors for all projects
                     curated_colors = [
-                        '#0088fe', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
+                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
                         '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
                         '#84cc16', '#d946ef', '#64748b', '#0d9488'
                     ]
@@ -442,7 +442,7 @@ def render_project_history():
                     sunburst_df = sunburst_df[sunburst_df['ot_hours'] > 0]
                     
                     curated_colors = [
-                        '#0088fe', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
+                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
                         '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
                         '#84cc16', '#d946ef', '#64748b', '#0d9488'
                     ]
