@@ -459,7 +459,7 @@ def render_project_history():
                     if hasattr(fig_tree.data[0], 'marker') and fig_tree.data[0].marker.colors is not None:
                         new_colors = list(fig_tree.data[0].marker.colors)
                         dept_list = list(sunburst_df['department'].unique())
-                        dept_colors = ['#1e3a8a', '#064e3b', '#4c1d95', '#7f1d1d', '#78350f', '#0f766e']
+                        dept_colors = ['#4a607a', '#4a7a60', '#7a4a60', '#7a604a', '#5a5a7a', '#7a7a5a']
                         root_name = t('Tổng Công Ty', '全社')
                         for i, label in enumerate(fig_tree.data[0].labels):
                             if label == root_name:
