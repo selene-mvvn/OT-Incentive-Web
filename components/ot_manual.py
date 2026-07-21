@@ -686,7 +686,7 @@ def render_base_data():
                             details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
             
             if diff_count > 0:
-                st.markdown(f"<h4 style='font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #1e293b;'>{t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}</h4>", unsafe_allow_html=True)
+                st.markdown(f"#### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
                 with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
                     st.markdown("\n".join(details), unsafe_allow_html=True)
                 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
