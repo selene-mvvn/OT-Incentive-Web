@@ -577,7 +577,7 @@ def render_base_data():
                 use_container_width=True,
                 column_config=col_cfg,
                 column_order=["Mã NV", "Tên NV", "Phòng ban", "Chức vụ", "Lương cơ bản"] + allowance_cols + ["Lương Gross"],
-                key="employees_editor_v2"
+                key=f"employees_editor_v2_{st.session_state.get('emp_editor_reset_key', 0)}"
             )
 
             ex_col1, ex_col2 = st.columns(2)
@@ -686,7 +686,13 @@ def render_base_data():
                             details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
             
             if diff_count > 0:
-                st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
+                prev_c1, prev_c2 = st.columns([8.5, 1.5])
+                with prev_c1:
+                    st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
+                with prev_c2:
+                    if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes", icon=":material/undo:", use_container_width=True):
+                        st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
+                        st.rerun()
                 with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
                     st.markdown("\n".join(details), unsafe_allow_html=True)
                 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
