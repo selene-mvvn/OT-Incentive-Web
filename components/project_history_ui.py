@@ -447,7 +447,7 @@ def render_project_history():
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
                         color='ot_hours',
-                        color_continuous_scale='Turbo'
+                        color_continuous_scale=[[0, '#00a8e8'], [0.5, '#8b5cf6'], [1, '#ec4899']]
                     )
                     
                     fig_tree.update_traces(
