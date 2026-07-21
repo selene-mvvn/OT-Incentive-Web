@@ -117,7 +117,7 @@ def render_project_history():
     df['est_cost'] = df.apply(get_record_cost, axis=1)
 
     # ------------------ SMART SEARCH / AI ASSISTANT ------------------
-    st.markdown("<div style='margin-bottom: -5px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: -35px; margin-bottom: -10px;'></div>", unsafe_allow_html=True)
     search_query = st.text_input("🔍 " + t("Hỏi trợ lý AI (VD: Dự án nào tốn tiền nhất, ai OT nhiều nhất?)", "AIアシスタントに質問する (例: どのプロジェクトが一番コストがかかっているか？)"), key="smart_search")
     if search_query:
         sq = search_query.lower()
