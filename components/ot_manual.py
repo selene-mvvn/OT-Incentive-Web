@@ -1025,6 +1025,8 @@ def render_base_data():
 
         with c2:
             location_lbl = t("HÀ NỘI", "ハノイ")
+            lbl_today = t("Hôm nay", "今日")
+            lbl_tmr = t("Ngày mai", "明日")
             import streamlit.components.v1 as components
             components.html(f"""
             <div style="display: flex; justify-content: center; padding-top: 2px;">
@@ -1042,30 +1044,55 @@ def render_base_data():
                     color: #334155;
                     box-shadow: 0 2px 6px rgba(0,0,0,0.03);
                     white-space: nowrap;
+                    gap: 12px;
                 ">
-                    <span style="font-weight: 700; margin-right: 8px; color: #0284c7; letter-spacing: 0.3px;">{location_lbl}</span>
-                    <span id="w-icon" style="margin-right: 5px; font-size: 14.5px;">⏳</span>
-                    <span id="w-temp" style="font-weight: 600; letter-spacing: -0.2px;">--°C</span>
+                    <span style="font-weight: 700; color: #0284c7; letter-spacing: 0.3px;">{location_lbl}</span>
+                    <span style="border-left: 1px solid rgba(0,0,0,0.1); padding-left: 12px; display: flex; align-items: center;">
+                        <span style="color: #64748b; margin-right: 6px;">{lbl_today} (<span id="w-curr-date">--/--</span>):</span>
+                        <span id="w-curr-icon" style="margin-right: 4px; font-size: 14.5px;">⏳</span>
+                        <span id="w-curr-temp" style="font-weight: 600; letter-spacing: -0.2px;">--°C</span>
+                    </span>
+                    <span style="border-left: 1px solid rgba(0,0,0,0.1); padding-left: 12px; display: flex; align-items: center;">
+                        <span style="color: #64748b; margin-right: 6px;">{lbl_tmr} (<span id="w-tmr-date">--/--</span>):</span>
+                        <span id="w-tmr-icon" style="margin-right: 4px; font-size: 14.5px;">⏳</span>
+                        <span id="w-tmr-temp" style="font-weight: 600; letter-spacing: -0.2px;">--°C</span>
+                    </span>
                 </div>
             </div>
             <script>
-            fetch("https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current_weather=true")
+            const mapCode = (code) => {{
+                if(code >= 1 && code <= 3) return "⛅";
+                if(code >= 45 && code <= 48) return "🌫️";
+                if(code >= 51 && code <= 67) return "🌧️";
+                if(code >= 71 && code <= 77) return "❄️";
+                if(code >= 80 && code <= 82) return "🌦️";
+                if(code >= 95) return "⛈️";
+                return "☀️";
+            }};
+            const fDate = (dStr) => {{
+                if(!dStr) return "--/--";
+                const parts = dStr.split("-");
+                if(parts.length === 3) return parseInt(parts[2]) + "/" + parseInt(parts[1]);
+                return "--/--";
+            }};
+            fetch("https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min&timezone=Asia%2FBangkok&forecast_days=2")
               .then(r => r.json())
               .then(data => {{
                   const w = data.current_weather;
-                  let icon = "☀️";
-                  if(w.weathercode >= 1 && w.weathercode <= 3) icon = "⛅";
-                  if(w.weathercode >= 45 && w.weathercode <= 48) icon = "🌫️";
-                  if(w.weathercode >= 51 && w.weathercode <= 67) icon = "🌧️";
-                  if(w.weathercode >= 71 && w.weathercode <= 77) icon = "❄️";
-                  if(w.weathercode >= 80 && w.weathercode <= 82) icon = "🌦️";
-                  if(w.weathercode >= 95) icon = "⛈️";
+                  document.getElementById("w-curr-icon").innerText = mapCode(w.weathercode);
+                  document.getElementById("w-curr-temp").innerText = Math.round(w.temperature) + "°C";
+                  document.getElementById("w-curr-date").innerText = fDate(data.daily.time[0]);
                   
-                  document.getElementById("w-icon").innerText = icon;
-                  document.getElementById("w-temp").innerText = Math.round(w.temperature) + "°C";
+                  document.getElementById("w-tmr-date").innerText = fDate(data.daily.time[1]);
+                  document.getElementById("w-tmr-icon").innerText = mapCode(data.daily.weathercode[1]);
+                  const minT = Math.round(data.daily.temperature_2m_min[1]);
+                  const maxT = Math.round(data.daily.temperature_2m_max[1]);
+                  document.getElementById("w-tmr-temp").innerText = minT + "-" + maxT + "°C";
               }}).catch(e => {{
-                  document.getElementById("w-icon").innerText = "☁️";
-                  document.getElementById("w-temp").innerText = "--°C";
+                  document.getElementById("w-curr-icon").innerText = "☁️";
+                  document.getElementById("w-curr-temp").innerText = "--°C";
+                  document.getElementById("w-tmr-icon").innerText = "☁️";
+                  document.getElementById("w-tmr-temp").innerText = "--°C";
               }});
             </script>
             """, height=42)
