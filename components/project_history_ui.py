@@ -202,7 +202,8 @@ def render_project_history():
             period_labels.append(str(sel_year_t1))
             
         if sel_month_t1 not in ["Tất cả", "すべて"]:
-            month_str = f"T{int(sel_month_t1):02d}/"
+            m_val = int(str(sel_month_t1).replace("Tháng ", "").replace("月", "").strip())
+            month_str = f"T{m_val:02d}/"
             df_tab1 = df_tab1[df_tab1['clean_period'].astype(str).str.startswith(month_str)]
             period_labels.append(t(f"Tháng {sel_month_t1}", f"{sel_month_t1}月"))
             
@@ -917,7 +918,8 @@ def render_project_history():
         if sel_year_t2 not in ["Tất cả", "すべて"]:
             df_t2_main = df_t2_main[df_t2_main['clean_period'].astype(str).str.endswith(f"/{sel_year_t2}")]
         if sel_month_t2 not in ["Tất cả", "すべて"]:
-            month_str = f"T{int(sel_month_t2):02d}/"
+            m_val = int(str(sel_month_t2).replace("Tháng ", "").replace("月", "").strip())
+            month_str = f"T{m_val:02d}/"
             df_t2_main = df_t2_main[df_t2_main['clean_period'].astype(str).str.startswith(month_str)]
 
         if sel_project_compare != t("✖ Không so sánh", "✖ 比較しない"):
@@ -927,7 +929,8 @@ def render_project_history():
             if sel_year_t2 not in ["Tất cả", "すべて"]:
                 df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.endswith(f"/{sel_year_t2}")]
             if sel_month_t2 not in ["Tất cả", "すべて"]:
-                month_str = f"T{int(sel_month_t2):02d}/"
+                m_val = int(str(sel_month_t2).replace("Tháng ", "").replace("月", "").strip())
+                month_str = f"T{m_val:02d}/"
                 df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.startswith(month_str)]
 
             # Render 3-Way AI Executive Commentary summary block right before columns
