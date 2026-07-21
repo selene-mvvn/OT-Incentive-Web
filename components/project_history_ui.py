@@ -122,23 +122,43 @@ def render_project_history():
     if search_query:
         sq = search_query.lower()
         if not df.empty:
-            if any(kw in sq for kw in ["tiền", "chi phí", "cost", "コスト", "お金"]):
-                top_cost = df.groupby('order_name')['est_cost'].sum().reset_index().sort_values(by='est_cost', ascending=False)
-                if not top_cost.empty:
-                    top_1 = top_cost.iloc[0]
-                    st.info(f"💡 **Trợ lý AI trả lời:** Dự án tốn nhiều chi phí nhất là **{top_1['order_name']}** với tổng chi phí **{top_1['est_cost']:,.0f} VNĐ**.")
-            elif any(kw in sq for kw in ["ai", "nhân viên", "người", "who", "誰", "スタッフ"]):
-                top_emp = df.groupby('employee_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
-                if not top_emp.empty:
-                    top_1 = top_emp.iloc[0]
-                    st.info(f"💡 **Trợ lý AI trả lời:** Nhân sự OT nhiều nhất toàn hệ thống là **{top_1['employee_name']}** với tổng cộng **{top_1['ot_hours']:,.1f} giờ**.")
-            elif any(kw in sq for kw in ["giờ", "hours", "時間", "dự án nào", "dự án gì", "nhiều nhất"]):
-                top_hr = df.groupby('order_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
-                if not top_hr.empty:
-                    top_1 = top_hr.iloc[0]
-                    st.info(f"💡 **Trợ lý AI trả lời:** Dự án có số giờ OT cao nhất là **{top_1['order_name']}** với **{top_1['ot_hours']:,.1f} giờ**.")
-            else:
-                st.info("🤖 **Trợ lý AI:** " + t("Xin lỗi, tôi chưa hiểu rõ. Bạn hãy thử hỏi về 'Ai OT nhiều nhất' hoặc 'Dự án nào tốn tiền nhất' nhé!", "すみません、意図がわかりません。「誰が一番残業したか」や「どのプロジェクトが一番コストがかかっているか」などを聞いてみてください。"))
+            import re
+            df_search = df.copy()
+            month_match = re.search(r'tháng\s*(\d+)|t(\d+)', sq)
+            period_str = "toàn hệ thống"
+            if month_match:
+                m_val = month_match.group(1) if month_match.group(1) else month_match.group(2)
+                try:
+                    m_int = int(m_val)
+                    m_str = f"T{m_int:02d}/"
+                    df_filtered = df_search[df_search['clean_period'].str.contains(m_str, na=False)]
+                    if not df_filtered.empty:
+                        df_search = df_filtered
+                        period_str = f"trong tháng {m_int}"
+                    else:
+                        st.warning(f"Không tìm thấy dữ liệu nào cho tháng {m_int}.")
+                        df_search = pd.DataFrame()
+                except:
+                    pass
+
+            if not df_search.empty:
+                if any(kw in sq for kw in ["tiền", "chi phí", "cost", "コスト", "お金"]):
+                    top_cost = df_search.groupby('order_name')['est_cost'].sum().reset_index().sort_values(by='est_cost', ascending=False)
+                    if not top_cost.empty:
+                        top_1 = top_cost.iloc[0]
+                        st.info(f"💡 **Trợ lý AI trả lời:** Dự án tốn nhiều chi phí nhất {period_str} là **{top_1['order_name']}** với tổng chi phí **{top_1['est_cost']:,.0f} VNĐ**.")
+                elif any(kw in sq for kw in ["ai", "nhân viên", "người", "who", "誰", "スタッフ"]):
+                    top_emp = df_search.groupby('employee_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
+                    if not top_emp.empty:
+                        top_1 = top_emp.iloc[0]
+                        st.info(f"💡 **Trợ lý AI trả lời:** Nhân sự OT nhiều nhất {period_str} là **{top_1['employee_name']}** với tổng cộng **{top_1['ot_hours']:,.1f} giờ**.")
+                elif any(kw in sq for kw in ["giờ", "hours", "時間", "dự án nào", "dự án gì", "nhiều nhất"]):
+                    top_hr = df_search.groupby('order_name')['ot_hours'].sum().reset_index().sort_values(by='ot_hours', ascending=False)
+                    if not top_hr.empty:
+                        top_1 = top_hr.iloc[0]
+                        st.info(f"💡 **Trợ lý AI trả lời:** Dự án có số giờ OT cao nhất {period_str} là **{top_1['order_name']}** với **{top_1['ot_hours']:,.1f} giờ**.")
+                else:
+                    st.info("🤖 **Trợ lý AI:** " + t("Xin lỗi, tôi chưa hiểu rõ. Bạn hãy thử hỏi về 'Ai OT nhiều nhất' hoặc 'Dự án nào tốn tiền nhất' nhé!", "すみません、意図がわかりません。「誰が一番残業したか」や「どのプロジェクトが一番コストがかかっているか」などを聞いてみてください。"))
     st.markdown("<div style='margin-bottom: 25px;'></div>", unsafe_allow_html=True)
     # -----------------------------------------------------------------
 
