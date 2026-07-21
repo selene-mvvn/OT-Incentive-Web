@@ -865,11 +865,48 @@ def render_base_data():
                 import streamlit.components.v1 as components
                 location_lbl = t("HÀ NỘI", "ハノイ")
                 components.html(f"""
-                <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="{location_lbl}" data-font="Roboto" data-icons="Climacons Animated" data-mode="Current" data-theme="pure" data-textcolor="#334155" style="display: block; position: relative; top: -15px; pointer-events: none;">{location_lbl}</a>
+                <div style="display: flex; justify-content: flex-end; padding-top: 5px;">
+                    <div style="
+                        display: inline-flex;
+                        align-items: center;
+                        background: rgba(255, 255, 255, 0.6);
+                        backdrop-filter: blur(8px);
+                        -webkit-backdrop-filter: blur(8px);
+                        border: 1px solid rgba(15, 23, 42, 0.08);
+                        border-radius: 20px;
+                        padding: 4px 14px;
+                        font-family: 'Segoe UI', system-ui, sans-serif;
+                        font-size: 13.5px;
+                        color: #334155;
+                        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+                        white-space: nowrap;
+                    ">
+                        <span style="font-weight: 700; margin-right: 8px; color: #0284c7; letter-spacing: 0.3px;">{location_lbl}</span>
+                        <span id="w-icon" style="margin-right: 5px; font-size: 14.5px;">⏳</span>
+                        <span id="w-temp" style="font-weight: 600; letter-spacing: -0.2px;">--°C</span>
+                    </div>
+                </div>
                 <script>
-                !function(d,s,id){{var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){{js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}}}(document,'script','weatherwidget-io-js');
+                fetch("https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current_weather=true")
+                  .then(r => r.json())
+                  .then(data => {{
+                      const w = data.current_weather;
+                      let icon = "☀️";
+                      if(w.weathercode >= 1 && w.weathercode <= 3) icon = "⛅";
+                      if(w.weathercode >= 45 && w.weathercode <= 48) icon = "🌫️";
+                      if(w.weathercode >= 51 && w.weathercode <= 67) icon = "🌧️";
+                      if(w.weathercode >= 71 && w.weathercode <= 77) icon = "❄️";
+                      if(w.weathercode >= 80 && w.weathercode <= 82) icon = "🌦️";
+                      if(w.weathercode >= 95) icon = "⛈️";
+                      
+                      document.getElementById("w-icon").innerText = icon;
+                      document.getElementById("w-temp").innerText = Math.round(w.temperature) + "°C";
+                  }}).catch(e => {{
+                      document.getElementById("w-icon").innerText = "☁️";
+                      document.getElementById("w-temp").innerText = "--°C";
+                  }});
                 </script>
-                """, height=70)
+                """, height=50)
 
             guide_text = t(
                 "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>HƯỚNG DẪN:</b><br>- <b>Thêm mới:</b> Bấm vào dấu <b>+</b> mờ mờ ở góc dưới cùng bên trái của bảng.<br>- <b>Chọn ngày/Sửa:</b> Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- <b>Xóa:</b> Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím <b>Delete</b> trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).</div>",
