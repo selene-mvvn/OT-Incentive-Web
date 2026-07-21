@@ -440,6 +440,7 @@ def render_project_history():
                 else:
                     sunburst_df = df_tab1.groupby(['department', 'order_name', 'employee_name'])['ot_hours'].sum().reset_index()
                     sunburst_df = sunburst_df[sunburst_df['ot_hours'] > 0]
+                    sunburst_df['Company'] = t('Tổng Công Ty', '全社')
                     
                     curated_colors = [
                         '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
