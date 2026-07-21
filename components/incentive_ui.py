@@ -256,13 +256,18 @@ def render_incentive():
                 pass
 
             # Cumulative Piggybank Animation
-            if result['final_incentive'] > 0 and employee_name:
+            emp_name = inputs.get("employee_name", "") if 'inputs' in locals() else employee_name
+            if not emp_name: 
+                emp_name = employee_name
+                
+            if result.get('final_incentive', 0) > 0:
+                emp_display = emp_name if emp_name else t("Nhân viên", "スタッフ")
                 from logic.history_records import get_records
                 hist_inc = get_records("incentive")
                 pending_inc = st.session_state.get('incentive_records', [])
                 acc = 0.0
                 for r in hist_inc + pending_inc:
-                    if str(r.get('employee_name', '')).strip() == str(employee_name).strip():
+                    if str(r.get('employee_name', '')).strip() == str(emp_display).strip():
                         try:
                             acc += float(str(r.get('final_incentive', 0)).replace(',', '').strip())
                         except:
@@ -323,7 +328,7 @@ def render_incentive():
                     <div style='display: flex; align-items: center; justify-content: space-between; position: relative; z-index: 2;'>
                         <div style='flex: 1;'>
                             <div style='font-size: 14px; font-weight: 700; color: #d97706; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;'>
-                                {t('QUỸ TÍCH LŨY CỦA', '累積ファンド')} {employee_name}
+                                {t('QUỸ TÍCH LŨY CỦA', '累積ファンド')} {emp_display}
                             </div>
                             <div style='font-size: 32px; font-weight: 800; color: #92400e; line-height: 1.1;'>
                                 {new_total:,.0f} <span style='font-size: 18px; color: #b45309;'>JPY</span>
