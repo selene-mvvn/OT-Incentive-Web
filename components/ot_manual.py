@@ -524,32 +524,35 @@ def render_base_data():
             div.element-container:has(#gross-tooltip) {{
                 margin-bottom: -1rem;
             }}
+            .st-tooltip-wrapper {{
+                position: absolute; right: 128px; top: 12px; z-index: 9999;
+            }}
             .st-tooltip-icon {{
-                position: absolute; right: 130px; top: 4px; pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #838e9d; cursor: help; opacity: 0.8; transition: opacity 0.2s;
+                pointer-events: auto; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; color: #838e9d; cursor: help; opacity: 0.8; transition: opacity 0.2s;
             }}
             .st-tooltip-text {{
                 visibility: hidden;
-                width: max-content;
-                max-width: 250px;
+                width: 250px;
                 background-color: #ffffff;
                 color: #0f172a;
                 text-align: left;
                 border-radius: 8px;
                 padding: 10px 14px;
                 position: absolute;
-                z-index: 9999;
                 top: 28px;
-                right: -4px;
+                right: -10px;
                 box-shadow: 0 4px 16px rgba(0,0,0,0.12);
                 opacity: 0;
                 transition: opacity 0.2s, visibility 0.2s;
-                font-size: 14.5px;
+                font-size: 13px;
                 border: 1px solid #e2e8f0;
                 pointer-events: none;
                 font-family: 'Segoe UI', system-ui, sans-serif;
-                line-height: 1.4;
+                line-height: 1.5;
+                white-space: normal;
+                word-wrap: break-word;
             }}
-            .st-tooltip-icon:hover .st-tooltip-text {{
+            .st-tooltip-wrapper:hover .st-tooltip-text {{
                 visibility: visible;
                 opacity: 1;
             }}
