@@ -686,10 +686,11 @@ def render_base_data():
                             details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
             
             if diff_count > 0:
-                prev_c1, prev_c2 = st.columns([8.5, 1.5])
+                prev_c1, prev_c2 = st.columns([7.5, 2.5])
                 with prev_c1:
                     st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
                 with prev_c2:
+                    st.markdown("<div style='margin-top: 4px;'></div>", unsafe_allow_html=True)
                     if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes", icon=":material/undo:", use_container_width=True):
                         st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
                         st.rerun()
