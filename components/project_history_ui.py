@@ -481,7 +481,8 @@ def render_project_history():
                         margin=dict(t=5, b=5, l=0, r=0),
                         height=420,
                         paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0)'
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        uniformtext=dict(minsize=11, mode='hide')
                     )
                     st.plotly_chart(fig_tree, use_container_width=True, config={'displayModeBar': False})
 
