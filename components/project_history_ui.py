@@ -168,7 +168,7 @@ def render_project_history():
                             flex-shrink: 0;
                             box-shadow: 0 4px 8px rgba(0, 176, 240, 0.4);
                         '>
-                            <span class="material-symbols-rounded">smart_toy</span>
+                            <span class="material-symbols-rounded" style="color: #ffffff !important;">insights</span>
                         </div>
                         <div style='font-size: 15.5px; color: #1e293b; line-height: 1.6; padding-top: 2px;'>
                             <div style='font-weight: 800; color: #0052cc; margin-bottom: 2px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;'>Phân tích dữ liệu thông minh</div>
