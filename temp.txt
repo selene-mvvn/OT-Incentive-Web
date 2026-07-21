@@ -1,0 +1,23 @@
+50:     [data-testid="stDataFrame"] { margin-top: -10px !important; }
+51:     [data-testid="stDataFrame"] > div { margin-top: 0px !important; padding-top: 0px !important; }
+180:         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+225:             <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 20px; margin-top: 8px;'>
+283:             top_contributors = df_tab1.groupby(['order_name', 'employee_name'])['ot_hours'].sum().reset_index()
+284:             top_contributors = top_contributors.sort_values(['order_name', 'ot_hours'], ascending=[True, False])
+285:             top_contributors = top_contributors.drop_duplicates(subset=['order_name'])
+286:             top_contributors = top_contributors.rename(columns={'employee_name': 'TopEmployee', 'ot_hours': 'TopEmployeeHours'})
+293:             proj_summary = pd.merge(proj_summary, top_contributors, on='order_name', how='left')
+339:                         customdata=pie_df[['TopEmployee', 'TopEmployeeHours']].values,
+340:                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h (%{percent})<br>🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[0]}</b> (%{customdata[1]:.1f} h)<extra></extra>',
+349:                             yanchor='top',
+379:                         customdata=bar_df[['Percentage', 'TopEmployee', 'TopEmployeeHours']].values,
+387:                         hovertemplate='<b>%{y}</b><br>' + t('Số giờ', '残業時間') + ': %{x:,.1f} h (%{customdata[0]}%)<br>🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[1]}</b> (%{customdata[2]:.1f} h)<extra></extra>'
+408:                 display_df = proj_summary.drop(columns=['TopEmployee', 'TopEmployeeHours'], errors='ignore').copy()
+492:         st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+649:                         padding: 22px 26px; margin-top: 10px; margin-bottom: 24px;
+660:                     <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px; display: flex; align-items: center;">
+731:                 st.markdown("<hr style='margin-top: 5px; margin-bottom: 15px;'>", unsafe_allow_html=True)
+734:                 st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+781:                     st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
+817:                 st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+819:                 st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)

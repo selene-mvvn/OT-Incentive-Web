@@ -281,9 +281,25 @@ def render_project_history():
             col_pie, col_tbl = st.columns([5.5, 4.5], gap="large")
             
             top_contributors = df_tab1.groupby(['order_name', 'employee_name'])['ot_hours'].sum().reset_index()
-            top_contributors = top_contributors.sort_values(['order_name', 'ot_hours'], ascending=[True, False])
-            top_contributors = top_contributors.drop_duplicates(subset=['order_name'])
-            top_contributors = top_contributors.rename(columns={'employee_name': 'TopEmployee', 'ot_hours': 'TopEmployeeHours'})
+            # Calculate max hours for each project
+            max_hrs_df = top_contributors.groupby('order_name')['ot_hours'].max().reset_index()
+            # Get all employees that have the max hours
+            top_ties = pd.merge(top_contributors, max_hrs_df, on=['order_name', 'ot_hours'])
+            
+            def format_top_names(group):
+                names = group['employee_name'].tolist()
+                first_name = names[0]
+                if len(names) > 1:
+                    lang = st.session_state.get('lang', 'VN')
+                    if lang == 'JP':
+                        return f"{first_name} (+{len(names)-1}名)"
+                    else:
+                        return f"{first_name} (+{len(names)-1} người)"
+                return first_name
+                
+            top_emp_str = top_ties.groupby('order_name').apply(format_top_names).reset_index(name='TopEmployee')
+            top_contributors = pd.merge(max_hrs_df, top_emp_str, on='order_name')
+            top_contributors = top_contributors.rename(columns={'ot_hours': 'TopEmployeeHours'})
             
             proj_summary = df_tab1.groupby('order_name').agg(
                 Hours=('ot_hours', 'sum'),
