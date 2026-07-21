@@ -442,12 +442,18 @@ def render_project_history():
                     sunburst_df = sunburst_df[sunburst_df['ot_hours'] > 0]
                     sunburst_df['Company'] = t('Tổng Công Ty', '全社')
                     
+                    curated_colors = [
+                        '#00a8e8', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
+                        '#10b981', '#f59e0b', '#6366f1', '#ef4444', '#14b8a6', '#a855f7', '#f97316', '#0ea5e9',
+                        '#84cc16', '#d946ef', '#64748b', '#0d9488'
+                    ]
+                    
                     fig_tree = px.treemap(
                         sunburst_df,
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
-                        color='ot_hours',
-                        color_continuous_scale=[[0, '#00a8e8'], [0.5, '#6366f1'], [1, '#a855f7']]
+                        color='order_name',
+                        color_discrete_sequence=curated_colors
                     )
                     
                     fig_tree.update_traces(
@@ -462,8 +468,7 @@ def render_project_history():
                         margin=dict(t=5, b=5, l=0, r=0),
                         height=420,
                         paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0)',
-                        coloraxis_showscale=False
+                        plot_bgcolor='rgba(0,0,0,0)'
                     )
                     st.plotly_chart(fig_tree, use_container_width=True, config={'displayModeBar': False})
 
