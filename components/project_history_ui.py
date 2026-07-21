@@ -321,7 +321,7 @@ def render_project_history():
             with col_pie:
                 col_pie_hdr1, col_pie_hdr2 = st.columns([6, 4])
                 with col_pie_hdr1:
-                    st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>🎯 {t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} ({period_label})</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'><span style='flex-shrink: 0;'>🎯</span> <span>{t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} ({period_label})</span></div>", unsafe_allow_html=True)
                 with col_pie_hdr2:
                     chart_mode = st.radio(
                         "Chart mode",
@@ -422,7 +422,7 @@ def render_project_history():
                     st.plotly_chart(fig_pbar, use_container_width=True, config={'displayModeBar': False})
 
             with col_tbl:
-                st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'><span style='flex-shrink: 0;'>📋</span> <span>{t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</span></div>", unsafe_allow_html=True)
                 col_proj = t('Tên Dự Án', 'プロジェクト名')
                 col_hrs = t('Số Giờ (h)', '時間 (h)')
                 col_pct = t('Tỷ Lệ (%)', '割合 (%)')
@@ -470,7 +470,7 @@ def render_project_history():
                 )
 
             st.markdown("<hr style='margin: 25px 0;'>", unsafe_allow_html=True)
-            st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px;'>📊 {t('Bảng Phân Bổ Nguồn Lực Chi Tiết (Giờ OT)', 'リソース配分マトリックス (残業時間)')}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 12px;'><span style='flex-shrink: 0;'>📊</span> <span>{t('Bảng Phân Bổ Nguồn Lực Chi Tiết (Giờ OT)', 'リソース配分マトリックス (残業時間)')}</span></div>", unsafe_allow_html=True)
             
             if not df_tab1.empty:
                 matrix_df = df_tab1.pivot_table(
