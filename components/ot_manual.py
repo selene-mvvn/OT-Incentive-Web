@@ -580,56 +580,6 @@ def render_base_data():
                 key="employees_editor_v2"
             )
 
-            # --- PREVIEW DIFF ---
-            diff_count = 0
-            added_idx = edited_emp.index.difference(display_df.index)
-            deleted_idx = display_df.index.difference(edited_emp.index)
-            added = len(added_idx)
-            deleted = len(deleted_idx)
-            
-            def format_emp_row(row_df, idx):
-                ma_nv = str(row_df.loc[idx, 'Mã NV']) if 'Mã NV' in row_df.columns and pd.notna(row_df.loc[idx, 'Mã NV']) else ''
-                ten_nv = str(row_df.loc[idx, 'Tên NV']) if 'Tên NV' in row_df.columns and pd.notna(row_df.loc[idx, 'Tên NV']) else ''
-                if ma_nv and ten_nv: return f"{ma_nv} - {ten_nv}"
-                if ten_nv: return ten_nv
-                if ma_nv: return ma_nv
-                return f"Dòng {idx}"
-
-            details = []
-            if added > 0:
-                diff_count += added
-                for idx in added_idx:
-                    details.append(f"- :material/add_circle: **{t('Thêm mới', '追加')}**: <span style='color: #10b981;'>{format_emp_row(edited_emp, idx)}</span>")
-                    
-            if deleted > 0:
-                diff_count += deleted
-                for idx in deleted_idx:
-                    details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='text-decoration: line-through; color: #ef4444;'>{format_emp_row(display_df, idx)}</span>")
-
-            common_idx = display_df.index.intersection(edited_emp.index)
-            if len(common_idx) > 0:
-                mod_mask = (display_df.loc[common_idx].astype(str) != edited_emp.loc[common_idx].astype(str)) & ~(display_df.loc[common_idx].isnull() & edited_emp.loc[common_idx].isnull())
-                num_mods = mod_mask.any(axis=1).sum()
-                if num_mods > 0:
-                    diff_count += num_mods
-                    for idx in common_idx[mod_mask.any(axis=1)]:
-                        changed_cols = mod_mask.columns[mod_mask.loc[idx]].tolist()
-                        row_name = format_emp_row(display_df, idx)
-                        changes_str = []
-                        for c in changed_cols:
-                            old_val = display_df.loc[idx, c]
-                            new_val = edited_emp.loc[idx, c]
-                            changes_str.append(f"**{c}**: <span style='color: #ef4444; font-weight: bold; font-size: 15px;'>{old_val}</span> ➔ <span style='color: #10b981; font-weight: bold; font-size: 15px;'>{new_val}</span>")
-                        if changes_str:
-                            details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
-            
-            if diff_count > 0:
-                st.markdown(f"### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
-                with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
-                    st.markdown("\n".join(details), unsafe_allow_html=True)
-                st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            # --------------------
-
             ex_col1, ex_col2 = st.columns(2)
             with ex_col1:
                 with st.expander(t("➕ Thêm / Xóa Cột Phụ Cấp", "➕ 手当項目の追加・削除")):
@@ -691,6 +641,57 @@ def render_base_data():
                             st.session_state['qa_form_key'] += 1
                             import time; time.sleep(0.5)
                             st.rerun()
+
+            # --- PREVIEW DIFF ---
+            diff_count = 0
+            added_idx = edited_emp.index.difference(display_df.index)
+            deleted_idx = display_df.index.difference(edited_emp.index)
+            added = len(added_idx)
+            deleted = len(deleted_idx)
+            
+            def format_emp_row(row_df, idx):
+                ma_nv = str(row_df.loc[idx, 'Mã NV']) if 'Mã NV' in row_df.columns and pd.notna(row_df.loc[idx, 'Mã NV']) else ''
+                ten_nv = str(row_df.loc[idx, 'Tên NV']) if 'Tên NV' in row_df.columns and pd.notna(row_df.loc[idx, 'Tên NV']) else ''
+                if ma_nv and ten_nv: return f"{ma_nv} - {ten_nv}"
+                if ten_nv: return ten_nv
+                if ma_nv: return ma_nv
+                return f"Dòng {idx}"
+
+            details = []
+            if added > 0:
+                diff_count += added
+                for idx in added_idx:
+                    details.append(f"- :material/add_circle: **{t('Thêm mới', '追加')}**: <span style='color: #10b981;'>{format_emp_row(edited_emp, idx)}</span>")
+                    
+            if deleted > 0:
+                diff_count += deleted
+                for idx in deleted_idx:
+                    details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='text-decoration: line-through; color: #ef4444;'>{format_emp_row(display_df, idx)}</span>")
+
+            common_idx = display_df.index.intersection(edited_emp.index)
+            if len(common_idx) > 0:
+                mod_mask = (display_df.loc[common_idx].astype(str) != edited_emp.loc[common_idx].astype(str)) & ~(display_df.loc[common_idx].isnull() & edited_emp.loc[common_idx].isnull())
+                num_mods = mod_mask.any(axis=1).sum()
+                if num_mods > 0:
+                    diff_count += num_mods
+                    for idx in common_idx[mod_mask.any(axis=1)]:
+                        changed_cols = mod_mask.columns[mod_mask.loc[idx]].tolist()
+                        row_name = format_emp_row(display_df, idx)
+                        changes_str = []
+                        for c in changed_cols:
+                            old_val = display_df.loc[idx, c]
+                            new_val = edited_emp.loc[idx, c]
+                            changes_str.append(f"**{c}**: <span style='color: #ef4444; font-weight: bold; font-size: 15px;'>{old_val}</span> ➔ <span style='color: #10b981; font-weight: bold; font-size: 15px;'>{new_val}</span>")
+                        if changes_str:
+                            details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
+            
+            if diff_count > 0:
+                st.markdown(f"<h4 style='font-size: 16px; font-weight: 600; margin-bottom: 5px; color: #1e293b;'>{t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}</h4>", unsafe_allow_html=True)
+                with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
+                    st.markdown("\n".join(details), unsafe_allow_html=True)
+                st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+            # --------------------
+
             st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
             st.markdown(f"""
             <style>
