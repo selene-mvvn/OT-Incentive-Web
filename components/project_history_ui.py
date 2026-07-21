@@ -341,7 +341,7 @@ def render_project_history():
                         options=[
                             t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"), 
                             t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ"),
-                            t(":material/donut_small: Đa tầng (Sunburst)", ":material/donut_small: サンバースト")
+                            t(":material/account_tree: Cấu trúc cây (Treemap)", ":material/account_tree: ツリーマップ")
                         ],
                         label_visibility="collapsed",
                         horizontal=True,
@@ -440,7 +440,6 @@ def render_project_history():
                 else:
                     sunburst_df = df_tab1.groupby(['department', 'order_name', 'employee_name'])['ot_hours'].sum().reset_index()
                     sunburst_df = sunburst_df[sunburst_df['ot_hours'] > 0]
-                    sunburst_df['Company'] = t('Tổng Công Ty', '全社')
                     
                     curated_colors = [
                         '#0088fe', '#00c49f', '#ffbb28', '#ff8042', '#8b5cf6', '#ec4899', '#06b6d4', '#3b82f6',
@@ -448,29 +447,29 @@ def render_project_history():
                         '#84cc16', '#d946ef', '#64748b', '#0d9488'
                     ]
                     
-                    fig_sun = px.sunburst(
+                    fig_tree = px.treemap(
                         sunburst_df,
-                        path=['Company', 'department', 'order_name', 'employee_name'],
+                        path=['department', 'order_name', 'employee_name'],
                         values='ot_hours',
                         color='order_name',
                         color_discrete_sequence=curated_colors
                     )
                     
-                    fig_sun.update_traces(
-                        textinfo="label",
-                        insidetextorientation='radial',
+                    fig_tree.update_traces(
+                        textinfo="label+value",
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h<br>' + t('Tỷ trọng (nhóm)', 'グループ割合') + ': %{percentParent:.1%}<extra></extra>',
-                        marker=dict(line=dict(color='#ffffff', width=1))
+                        marker=dict(line=dict(color='#ffffff', width=1)),
+                        textfont=dict(family="'Times New Roman', serif", size=14, color='#ffffff')
                     )
                     
-                    fig_sun.update_layout(
+                    fig_tree.update_layout(
                         font=dict(family="'Times New Roman', serif"),
                         margin=dict(t=5, b=5, l=0, r=0),
-                        height=550,
+                        height=420,
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)'
                     )
-                    st.plotly_chart(fig_sun, use_container_width=True, config={'displayModeBar': False})
+                    st.plotly_chart(fig_tree, use_container_width=True, config={'displayModeBar': False})
 
             with col_tbl:
                 st.markdown(f"<div style='font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'>📋 {t('Bảng Tổng Hợp Chi Tiết Dự Án', 'プロジェクト別集計表')}</div>", unsafe_allow_html=True)
