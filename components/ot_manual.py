@@ -858,55 +858,7 @@ def render_base_data():
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
-            col_heading, col_weather = st.columns([1.5, 1])
-            with col_heading:
-                st.markdown(f"<h3 id='holiday-heading' style='font-size: 20px; font-weight: 600; margin-top: 10px;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
-            with col_weather:
-                import streamlit.components.v1 as components
-                location_lbl = t("HÀ NỘI", "ハノイ")
-                components.html(f"""
-                <div style="display: flex; justify-content: flex-end; padding-top: 5px;">
-                    <div style="
-                        display: inline-flex;
-                        align-items: center;
-                        background: rgba(255, 255, 255, 0.6);
-                        backdrop-filter: blur(8px);
-                        -webkit-backdrop-filter: blur(8px);
-                        border: 1px solid rgba(15, 23, 42, 0.08);
-                        border-radius: 20px;
-                        padding: 4px 14px;
-                        font-family: 'Segoe UI', system-ui, sans-serif;
-                        font-size: 13.5px;
-                        color: #334155;
-                        box-shadow: 0 2px 6px rgba(0,0,0,0.03);
-                        white-space: nowrap;
-                    ">
-                        <span style="font-weight: 700; margin-right: 8px; color: #0284c7; letter-spacing: 0.3px;">{location_lbl}</span>
-                        <span id="w-icon" style="margin-right: 5px; font-size: 14.5px;">⏳</span>
-                        <span id="w-temp" style="font-weight: 600; letter-spacing: -0.2px;">--°C</span>
-                    </div>
-                </div>
-                <script>
-                fetch("https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current_weather=true")
-                  .then(r => r.json())
-                  .then(data => {{
-                      const w = data.current_weather;
-                      let icon = "☀️";
-                      if(w.weathercode >= 1 && w.weathercode <= 3) icon = "⛅";
-                      if(w.weathercode >= 45 && w.weathercode <= 48) icon = "🌫️";
-                      if(w.weathercode >= 51 && w.weathercode <= 67) icon = "🌧️";
-                      if(w.weathercode >= 71 && w.weathercode <= 77) icon = "❄️";
-                      if(w.weathercode >= 80 && w.weathercode <= 82) icon = "🌦️";
-                      if(w.weathercode >= 95) icon = "⛈️";
-                      
-                      document.getElementById("w-icon").innerText = icon;
-                      document.getElementById("w-temp").innerText = Math.round(w.temperature) + "°C";
-                  }}).catch(e => {{
-                      document.getElementById("w-icon").innerText = "☁️";
-                      document.getElementById("w-temp").innerText = "--°C";
-                  }});
-                </script>
-                """, height=50)
+            st.markdown(f"<h3 id='holiday-heading' style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
 
             guide_text = t(
                 "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>HƯỚNG DẪN:</b><br>- <b>Thêm mới:</b> Bấm vào dấu <b>+</b> mờ mờ ở góc dưới cùng bên trái của bảng.<br>- <b>Chọn ngày/Sửa:</b> Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- <b>Xóa:</b> Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím <b>Delete</b> trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).</div>",
@@ -1072,7 +1024,51 @@ def render_base_data():
                 st.rerun()
 
         with c2:
-            st.markdown("<div style='margin-top: 45px;'></div>", unsafe_allow_html=True)
+            location_lbl = t("HÀ NỘI", "ハノイ")
+            import streamlit.components.v1 as components
+            components.html(f"""
+            <div style="display: flex; justify-content: center; padding-top: 2px;">
+                <div style="
+                    display: inline-flex;
+                    align-items: center;
+                    background: rgba(255, 255, 255, 0.6);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    border: 1px solid rgba(15, 23, 42, 0.08);
+                    border-radius: 20px;
+                    padding: 4px 14px;
+                    font-family: 'Segoe UI', system-ui, sans-serif;
+                    font-size: 13.5px;
+                    color: #334155;
+                    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+                    white-space: nowrap;
+                ">
+                    <span style="font-weight: 700; margin-right: 8px; color: #0284c7; letter-spacing: 0.3px;">{location_lbl}</span>
+                    <span id="w-icon" style="margin-right: 5px; font-size: 14.5px;">⏳</span>
+                    <span id="w-temp" style="font-weight: 600; letter-spacing: -0.2px;">--°C</span>
+                </div>
+            </div>
+            <script>
+            fetch("https://api.open-meteo.com/v1/forecast?latitude=21.0285&longitude=105.8542&current_weather=true")
+              .then(r => r.json())
+              .then(data => {{
+                  const w = data.current_weather;
+                  let icon = "☀️";
+                  if(w.weathercode >= 1 && w.weathercode <= 3) icon = "⛅";
+                  if(w.weathercode >= 45 && w.weathercode <= 48) icon = "🌫️";
+                  if(w.weathercode >= 51 && w.weathercode <= 67) icon = "🌧️";
+                  if(w.weathercode >= 71 && w.weathercode <= 77) icon = "❄️";
+                  if(w.weathercode >= 80 && w.weathercode <= 82) icon = "🌦️";
+                  if(w.weathercode >= 95) icon = "⛈️";
+                  
+                  document.getElementById("w-icon").innerText = icon;
+                  document.getElementById("w-temp").innerText = Math.round(w.temperature) + "°C";
+              }}).catch(e => {{
+                  document.getElementById("w-icon").innerText = "☁️";
+                  document.getElementById("w-temp").innerText = "--°C";
+              }});
+            </script>
+            """, height=42)
             import json
             import streamlit.components.v1 as components
             holidays_list = []
@@ -1134,7 +1130,7 @@ def render_base_data():
             html_code = f"""
             <style>
             body {{ font-family: 'Times New Roman', serif; margin: 0; padding: 0; color: #334155; }}
-            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 45px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
+            .calendar-container {{ border: 2px solid #00B0F0; border-radius: 8px; padding: 15px; background: #00B0F0; margin-top: 0px; box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3); }}
             .cal-header {{ display: flex; justify-content: space-between; align-items: center; padding: 5px 0 15px 0; }}
             .cal-header button {{ background: white; border: none; border-radius: 4px; padding: 4px 14px; cursor: pointer; color: #00B0F0; font-weight: bold; transition: all 0.2s; font-size: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }}
             .cal-header button:hover {{ background: #f8fafc; color: #0089b8; }}
