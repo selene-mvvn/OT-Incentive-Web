@@ -447,7 +447,7 @@ def render_project_history():
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
                         color='ot_hours',
-                        color_continuous_scale=[[0, '#e0f2fe'], [0.5, '#38bdf8'], [1, '#0284c7']]
+                        color_continuous_scale='Turbo'
                     )
                     
                     fig_tree.update_traces(
@@ -462,7 +462,8 @@ def render_project_history():
                         margin=dict(t=5, b=5, l=0, r=0),
                         height=420,
                         paper_bgcolor='rgba(0,0,0,0)',
-                        plot_bgcolor='rgba(0,0,0,0)'
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        coloraxis_showscale=False
                     )
                     st.plotly_chart(fig_tree, use_container_width=True, config={'displayModeBar': False})
 
