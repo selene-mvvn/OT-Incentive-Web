@@ -452,12 +452,13 @@ def render_project_history():
                         sunburst_df,
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
-                        color='department',
+                        color='order_name',
                         color_discrete_sequence=curated_colors
                     )
                     
                     fig_sun.update_traces(
-                        textinfo="label+percent parent",
+                        textinfo="label",
+                        insidetextorientation='radial',
                         hovertemplate='<b>%{label}</b><br>' + t('Số giờ', '残業時間') + ': %{value:,.1f} h<br>' + t('Tỷ trọng (nhóm)', 'グループ割合') + ': %{percentParent:.1%}<extra></extra>',
                         marker=dict(line=dict(color='#ffffff', width=1))
                     )
@@ -465,7 +466,7 @@ def render_project_history():
                     fig_sun.update_layout(
                         font=dict(family="'Times New Roman', serif"),
                         margin=dict(t=5, b=5, l=0, r=0),
-                        height=420,
+                        height=550,
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)'
                     )
