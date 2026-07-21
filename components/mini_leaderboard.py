@@ -164,15 +164,34 @@ def show_mini_edit_dialog(data_type, df):
         staged_df = st.session_state[staged_key]
         
         diff_count = 0
-        added = len(staged_df) - len(edit_df) if len(staged_df) > len(edit_df) else 0
-        deleted = len(edit_df) - len(staged_df) if len(edit_df) > len(staged_df) else 0
+        added_idx = staged_df.index.difference(edit_df.index)
+        deleted_idx = edit_df.index.difference(staged_df.index)
+        added = len(added_idx)
+        deleted = len(deleted_idx)
         
+        def format_row_name(row_df, idx):
+            row_parts = []
+            if 'ot_date' in row_df.columns: row_parts.append(str(row_df.loc[idx, 'ot_date']))
+            elif 'date' in row_df.columns: row_parts.append(str(row_df.loc[idx, 'date']))
+            if 'employee_name' in row_df.columns: row_parts.append(str(row_df.loc[idx, 'employee_name']))
+            if 'order_id' in row_df.columns and 'order_name' in row_df.columns:
+                row_parts.append(f"{row_df.loc[idx, 'order_id']} ({row_df.loc[idx, 'order_name']})")
+            elif 'project_name' in row_df.columns:
+                row_parts.append(str(row_df.loc[idx, 'project_name']))
+            return " | ".join(row_parts) if row_parts else f"Dòng {idx}"
+
+        details = []
         if added > 0:
             st.success(t(f"Thêm mới {added} dòng", f"{added}行を追加"))
             diff_count += added
+            for idx in added_idx:
+                details.append(f"- :material/add_circle: **Thêm mới**: <span style='color: #10b981;'>{format_row_name(staged_df, idx)}</span>")
+                
         if deleted > 0:
             st.error(t(f"Xóa {deleted} dòng", f"{deleted}行を削除"))
             diff_count += deleted
+            for idx in deleted_idx:
+                details.append(f"- :material/cancel: **Đã xóa**: <span style='text-decoration: line-through; color: #ef4444;'>{format_row_name(edit_df, idx)}</span>")
             
         common_idx = edit_df.index.intersection(staged_df.index)
         if len(common_idx) > 0:
@@ -196,19 +215,9 @@ def show_mini_edit_dialog(data_type, df):
                     "standard_incentive": t("Incentive TC", "基準金額"), "final_incentive": t("Nhận được", "受取額"),
                     "notes": t("Ghi chú", "備考")
                 }
-                details = []
                 for idx in common_idx[mod_mask.any(axis=1)]:
                     changed_cols = mod_mask.columns[mod_mask.loc[idx]].tolist()
-                    row_parts = []
-                    if 'ot_date' in edit_df.columns: row_parts.append(str(edit_df.loc[idx, 'ot_date']))
-                    elif 'date' in edit_df.columns: row_parts.append(str(edit_df.loc[idx, 'date']))
-                    if 'employee_name' in edit_df.columns: row_parts.append(str(edit_df.loc[idx, 'employee_name']))
-                    if 'order_id' in edit_df.columns and 'order_name' in edit_df.columns:
-                        row_parts.append(f"{edit_df.loc[idx, 'order_id']} ({edit_df.loc[idx, 'order_name']})")
-                    elif 'project_name' in edit_df.columns:
-                        row_parts.append(str(edit_df.loc[idx, 'project_name']))
-                    row_name = " | ".join(row_parts) if row_parts else f"Dòng {idx}"
-                    
+                    row_name = format_row_name(edit_df, idx)
                     changes_str = []
                     for c in changed_cols:
                         if c in ['date_obj_edit', 'date_obj']: continue
@@ -217,10 +226,11 @@ def show_mini_edit_dialog(data_type, df):
                         new_val = staged_df.loc[idx, c]
                         changes_str.append(f"**{col_label}**: <span style='color: #ef4444; font-weight: bold; font-size: 15px;'>{old_val}</span> ➔ <span style='color: #10b981; font-weight: bold; font-size: 15px;'>{new_val}</span>")
                     if changes_str:
-                        details.append(f"- **{row_name}**: " + ", ".join(changes_str))
-                if details:
-                    with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
-                        st.markdown("\n".join(details), unsafe_allow_html=True)
+                        details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
+                        
+        if details:
+            with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
+                st.markdown("\n".join(details), unsafe_allow_html=True)
                 
         if diff_count == 0:
             st.write(t("Không có thay đổi nào.", "変更はありません。"))
