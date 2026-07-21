@@ -448,12 +448,17 @@ def render_project_history():
                         '#84cc16', '#d946ef', '#64748b', '#0d9488'
                     ]
                     
+                    color_map = {t('Tổng Công Ty', '全社'): '#1e293b', '(?)': '#334155'}
+                    for dept in sunburst_df['department'].unique():
+                        color_map[dept] = '#334155'
+
                     fig_tree = px.treemap(
                         sunburst_df,
                         path=['Company', 'department', 'order_name', 'employee_name'],
                         values='ot_hours',
-                        color='department',
-                        color_discrete_sequence=curated_colors
+                        color='order_name',
+                        color_discrete_sequence=curated_colors,
+                        color_discrete_map=color_map
                     )
                     
                     fig_tree.update_traces(
