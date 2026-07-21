@@ -858,7 +858,18 @@ def render_base_data():
     with tab2:
         c1, c2 = st.columns([1.4, 0.9], gap="large")
         with c1:
-            st.markdown(f"<h3 id='holiday-heading' style='font-size: 20px; font-weight: 600;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
+            col_heading, col_weather = st.columns([1.5, 1])
+            with col_heading:
+                st.markdown(f"<h3 id='holiday-heading' style='font-size: 20px; font-weight: 600; margin-top: 5px;'>{t('DANH SÁCH NGÀY NGHỈ / LỄ', '休日・祭日一覧')}</h3>", unsafe_allow_html=True)
+            with col_weather:
+                import streamlit.components.v1 as components
+                location_lbl = t("HÀ NỘI", "ハノイ")
+                components.html(f"""
+                <a class="weatherwidget-io" href="https://forecast7.com/en/21d03105d83/hanoi/" data-label_1="{location_lbl}" data-font="Roboto" data-icons="Climacons Animated" data-mode="Current" data-theme="clear" data-textcolor="#334155" style="display: block; position: relative; top: -5px; pointer-events: none;">{location_lbl}</a>
+                <script>
+                !function(d,s,id){{var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){{js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}}}(document,'script','weatherwidget-io-js');
+                </script>
+                """, height=45)
 
             guide_text = t(
                 "<div style='margin-top: 12px; margin-bottom: 12px;'>✨ <b>HƯỚNG DẪN:</b><br>- <b>Thêm mới:</b> Bấm vào dấu <b>+</b> mờ mờ ở góc dưới cùng bên trái của bảng.<br>- <b>Chọn ngày/Sửa:</b> Click đúp (2 lần) vào ô cần sửa hoặc chọn ngày trên lịch.<br>- <b>Xóa:</b> Click chọn ô vuông ngoài cùng bên trái của dòng đó, sau đó nhấn phím <b>Delete</b> trên bàn phím (hoặc bấm biểu tượng Thùng rác hiện ra ở góc phải).</div>",
