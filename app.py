@@ -1529,19 +1529,26 @@ def show_sticky_note_editor_modal():
     </style>""", unsafe_allow_html=True)
 
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
-    st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -40px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
-
-    current_mode = st.session_state.get('sticky_note_mode', 'edit')
-    
-    st.markdown('<div class="sticky-note-radio"></div>', unsafe_allow_html=True)
-    st.markdown("""<style>
-        div.element-container:has(.sticky-note-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] {
+    st.markdown(f"""
+        <style>
+        div.element-container:has(.sticky-note-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] {{
             display: grid !important;
             grid-template-columns: 1fr 1fr;
             column-gap: 16px;
-            margin-bottom: 8px;
-        }
-    </style>""", unsafe_allow_html=True)
+            margin-bottom: 5px;
+        }}
+        /* Pull the radio group UP to remove the awkward gap */
+        div.element-container:has(.sticky-note-radio) {{
+            margin-bottom: -40px !important;
+        }}
+        </style>
+        <div style="font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -40px; margin-bottom: 10px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;">
+            📌 {desc_text}
+        </div>
+        <div class="sticky-note-radio"></div>
+    """, unsafe_allow_html=True)
+    
+    current_mode = st.session_state.get('sticky_note_mode', 'edit')
     
     opt_edit = t(":material/edit_document: Soạn thảo", ":material/edit_document: 編集")
     opt_check = t(":material/fact_check: Checklist", ":material/fact_check: チェックリスト")
@@ -2414,6 +2421,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
