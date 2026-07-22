@@ -1517,28 +1517,88 @@ def show_sticky_note_editor_modal():
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
     st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -5px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
 
-    note_val = st.text_area(
-        t("Nội dung ghi chú", "メモ内容"),
-        value=st.session_state.get('sidebar_sticky_note', ''),
-        key="txt_popup_sticky_note",
-        placeholder=t("Nhập việc cần nhớ (VD: Kiểm tra OT dự án V050010)...", "メモを入力..."),
-        height=130,
-        label_visibility="collapsed"
-    )
-    st.session_state['sidebar_sticky_note'] = note_val
+    # Parse existing note data safely
+    raw_note = st.session_state.get('sidebar_sticky_note', '')
+    if raw_note.strip().startswith('{') and raw_note.strip().endswith('}'):
+        try:
+            notes_dict = json.loads(raw_note)
+            if not isinstance(notes_dict, dict) or "Urgent" not in notes_dict:
+                notes_dict = {"Urgent": raw_note, "Project": "", "Personal": ""}
+        except Exception:
+            notes_dict = {"Urgent": raw_note, "Project": "", "Personal": ""}
+    else:
+        notes_dict = {"Urgent": raw_note, "Project": "", "Personal": ""}
+
+    # UI Controls
+    st.markdown("<style>div[data-testid='stRadio'] > div {gap: 20px;} div[data-testid='stTabs'] button p {font-family: 'Comic Sans MS', cursive, sans-serif !important; font-weight: bold;}</style>", unsafe_allow_html=True)
+    mode = st.radio(t("Chế độ", "モード"), [t("✍️ Viết tay", "✍️ 手書き"), t("✅ Checklist", "✅ チェックリスト")], horizontal=True, label_visibility="collapsed")
+    
+    tab_titles = [t("🔴 Cấp bách", "🔴 至急"), t("🟡 Dự án", "🟡 プロジェクト"), t("🟢 Cá nhân", "🟢 個人")]
+    tab_keys = ["Urgent", "Project", "Personal"]
+    tabs = st.tabs(tab_titles)
+    
+    new_notes_dict = {}
+    
+    for i, tab in enumerate(tabs):
+        with tab:
+            k = tab_keys[i]
+            val = notes_dict.get(k, "")
+            
+            if "Viết tay" in mode or "手書き" in mode:
+                new_val = st.text_area(
+                    t(f"Nội dung {k}", f"{k} メモ"),
+                    value=val,
+                    key=f"txt_popup_sticky_note_{k}",
+                    placeholder=t("Nhập việc cần nhớ...", "メモを入力..."),
+                    height=130,
+                    label_visibility="collapsed"
+                )
+                new_notes_dict[k] = new_val
+            else:
+                # Checklist mode
+                st.markdown("<div style='min-height: 130px; padding: 10px 15px; background-color: #ffffff; border: 1px solid #d4d4d8; border-radius: 4px 10px 10px 4px; border-left: 14px dotted #cbd5e1; box-shadow: 2px 2px 10px rgba(0,0,0,0.04) inset;'>", unsafe_allow_html=True)
+                lines = val.split('\n')
+                new_lines = []
+                
+                for j, line in enumerate(lines):
+                    if not line.strip():
+                        new_lines.append(line)
+                        continue
+                    
+                    is_checked = line.startswith('[x] ') or line.startswith('[X] ')
+                    clean_line = line
+                    if line.startswith('[x] ') or line.startswith('[X] ') or line.startswith('[ ] '):
+                        clean_line = line[4:]
+                    
+                    # Strike-through if checked
+                    display_line = f"~~{clean_line}~~" if is_checked else clean_line
+                    
+                    checked = st.checkbox(display_line, value=is_checked, key=f"chk_{k}_{j}")
+                    
+                    if checked:
+                        new_lines.append(f"[x] {clean_line}")
+                    else:
+                        new_lines.append(f"[ ] {clean_line}")
+                
+                new_notes_dict[k] = '\n'.join(new_lines)
+                st.markdown("</div>", unsafe_allow_html=True)
+
+    # Save to session immediately for interactivity
+    combined_json = json.dumps(new_notes_dict, ensure_ascii=False)
+    st.session_state['sidebar_sticky_note'] = combined_json
 
     col_save, col_delete = st.columns(2, gap="small")
     with col_save:
         if st.button(t("Lưu & Đóng", "保存して閉じる"), icon=":material/save:", key="btn_save_close_note", use_container_width=True, type="primary"):
-            save_sticky_note(note_val)
-            st.session_state['sidebar_sticky_note'] = note_val
+            save_sticky_note(combined_json)
             st.session_state['pending_toast'] = t("Đã lưu ghi chú thành công!", "メモを保存しました！")
             st.rerun()
     with col_delete:
-        if st.button(t("Xóa ghi chú", "メモを削除"), icon=":material/delete:", key="btn_delete_sticky_note", use_container_width=True):
-            save_sticky_note("")
-            st.session_state['sidebar_sticky_note'] = ""
-            st.session_state['pending_toast'] = t("Đã xóa ghi chú thành công!", "メモを削除しました！")
+        if st.button(t("Xóa sạch sổ tay", "全て削除"), icon=":material/delete:", key="btn_delete_sticky_note", use_container_width=True):
+            empty_json = json.dumps({"Urgent": "", "Project": "", "Personal": ""})
+            save_sticky_note(empty_json)
+            st.session_state['sidebar_sticky_note'] = empty_json
+            st.session_state['pending_toast'] = t("Đã xóa sạch sổ tay!", "メモを削除しました！")
             st.rerun()
 
 
@@ -2333,6 +2393,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
