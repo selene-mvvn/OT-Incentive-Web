@@ -1102,11 +1102,15 @@ def render_project_history():
                 const parentDoc = window.parent.document;
                 
                 // For integers
-                const targets = parentDoc.querySelectorAll('.count-up-target:not(.animated)');
+                const targets = parentDoc.querySelectorAll('.count-up-target');
                 targets.forEach(el => {
-                    el.classList.add('animated');
                     const targetStr = el.getAttribute('data-target');
                     if (!targetStr) return;
+                    
+                    const lastAnimated = el.getAttribute('data-last-animated');
+                    if (lastAnimated === targetStr) return;
+                    el.setAttribute('data-last-animated', targetStr);
+                    
                     const target = parseFloat(targetStr.replace(/,/g, '')) || 0;
                     const duration = 1500;
                     const frameRate = 30;
@@ -1126,11 +1130,15 @@ def render_project_history():
                 });
 
                 // For floats (1 decimal)
-                const floatTargets = parentDoc.querySelectorAll('.count-up-target-float:not(.animated)');
+                const floatTargets = parentDoc.querySelectorAll('.count-up-target-float');
                 floatTargets.forEach(el => {
-                    el.classList.add('animated');
                     const targetStr = el.getAttribute('data-target');
                     if (!targetStr) return;
+                    
+                    const lastAnimated = el.getAttribute('data-last-animated');
+                    if (lastAnimated === targetStr) return;
+                    el.setAttribute('data-last-animated', targetStr);
+                    
                     const target = parseFloat(targetStr.replace(/,/g, '')) || 0;
                     const duration = 1500;
                     const frameRate = 30;
