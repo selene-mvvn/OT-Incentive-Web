@@ -328,7 +328,8 @@ def render_project_history():
                         options=[
                             t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"),
                             t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ"),
-                            t(":material/hub: Mạng lưới", ":material/hub: ネットワーク")
+                            t(":material/hub: Mạng lưới", ":material/hub: ネットワーク"),
+                            t(":material/account_tree: Khối nhiệt", ":material/account_tree: ツリーマップ")
                         ],
                         label_visibility="collapsed",
                         horizontal=True,
@@ -494,6 +495,53 @@ def render_project_history():
                             st.info(t("Không có dữ liệu hợp lệ.", "有効なデータがありません。"))
                     except Exception as e:
                         st.error(t(f"Không thể tải mạng lưới: {str(e)}", f"ネットワークを読み込めません: {str(e)}"))
+                elif chart_mode == t(":material/account_tree: Khối nhiệt", ":material/account_tree: ツリーマップ"):
+                    tree_df = proj_summary[proj_summary['Hours'] > 0].copy()
+                    if not tree_df.empty:
+                        tree_df['AvgHours'] = tree_df['Hours'] / tree_df['StaffCount']
+                        # Dùng text hiển thị tên viết gọn nếu quá dài
+                        tree_df['ShortName'] = tree_df['order_name'].apply(lambda x: x if len(str(x)) <= 25 else str(x)[:25] + '...')
+                        
+                        fig_tree = px.treemap(
+                            tree_df,
+                            path=[px.Constant(t("Tất cả Dự án", "全プロジェクト")), 'ShortName'],
+                            values='Hours',
+                            color='AvgHours',
+                            color_continuous_scale='YlOrRd',
+                            custom_data=['StaffCount', 'AvgHours', 'Percentage', 'TopEmployeeHover', 'order_name']
+                        )
+                        
+                        fig_tree.update_traces(
+                            hovertemplate='<b>%{customdata[4]}</b><br>' + 
+                                          t('Tổng giờ OT: ', '総残業: ') + '<b>%{value:,.1f} h</b> (%{customdata[2]}%)<br>' +
+                                          t('Số nhân sự: ', 'スタッフ数: ') + '%{customdata[0]}<br>' +
+                                          t('Trung bình/người: ', '1人あたり: ') + '<b>%{customdata[1]:,.1f} h</b><br>' +
+                                          '🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[3]}</b><extra></extra>',
+                            textinfo="label+value",
+                            texttemplate="<b>%{label}</b><br>%{value:,.1f}h",
+                            textfont=dict(size=14, color="#1e293b"),
+                            marker=dict(line=dict(color='white', width=2))
+                        )
+                        
+                        fig_tree.update_layout(
+                            font=dict(family="'Times New Roman', serif"),
+                            margin=dict(t=20, l=10, r=10, b=10),
+                            height=400,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)',
+                            coloraxis_colorbar=dict(
+                                title=t("OT TB/Người", "平均残業/人"),
+                                thicknessmode="pixels", thickness=15,
+                                lenmode="pixels", len=200,
+                                yanchor="middle", y=0.5,
+                                ticks="outside",
+                                tickfont=dict(size=11, color='#1e293b'),
+                                titlefont=dict(size=12, color='#1e293b', weight='bold')
+                            )
+                        )
+                        st.plotly_chart(fig_tree, use_container_width=True, config={'displayModeBar': False})
+                    else:
+                        st.info(t("Không có dữ liệu hợp lệ.", "有効なデータがありません。"))
                 else:
                     # Horizontal bar chart sorted clearly by hours
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
