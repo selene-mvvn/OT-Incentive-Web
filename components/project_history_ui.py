@@ -1053,10 +1053,12 @@ def render_project_history():
                 month_str = f"T{m_val:02d}/"
                 df_t2_comp = df_t2_comp[df_t2_comp['clean_period'].astype(str).str.startswith(month_str)]
 
-            # Render 3-Way AI Executive Commentary summary block right before columns
-            render_project_comparison_commentary(df_t2_main, sel_project, df_t2_comp, sel_project_compare, sel_period_t2_label, all_proj_opt)
-
-            render_radar_chart(df_t2_main, sel_project, df_t2_comp, sel_project_compare, all_proj_opt)
+            # Render 3-Way AI Executive Commentary and Radar Chart Side-by-Side
+            c_rep, c_rad = st.columns([5.5, 4.5], gap="large")
+            with c_rep:
+                render_project_comparison_commentary(df_t2_main, sel_project, df_t2_comp, sel_project_compare, sel_period_t2_label, all_proj_opt)
+            with c_rad:
+                render_radar_chart(df_t2_main, sel_project, df_t2_comp, sel_project_compare, all_proj_opt)
             
             st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
 
