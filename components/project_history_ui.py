@@ -391,7 +391,12 @@ def render_project_history():
                 elif chart_mode == t(":material/hub: Mạng lưới", ":material/hub: ネットワーク"):
                     try:
                         import networkx as nx
-                        agg_df = df_tab1.groupby(['employee_name', 'order_name'])['ot_hours'].sum().reset_index()
+                        
+                        df_net = df_tab1.copy()
+                        df_net['employee_name'] = df_net['employee_name'].astype(str).str.strip()
+                        df_net['order_name'] = df_net['order_name'].astype(str).str.strip()
+                        
+                        agg_df = df_net.groupby(['employee_name', 'order_name'])['ot_hours'].sum().reset_index()
                         agg_df = agg_df[agg_df['ot_hours'] > 0]
                         if not agg_df.empty:
                             G = nx.Graph()
@@ -411,7 +416,10 @@ def render_project_history():
                                 G.add_node(emp, type='employee', total=emp_totals[emp])
                                 G.add_edge(emp, proj, weight=weight)
                                 
-                            pos = nx.spring_layout(G, k=1.5, iterations=80, seed=42, weight=None)
+                            try:
+                                pos = nx.kamada_kawai_layout(G)
+                            except:
+                                pos = nx.spring_layout(G, k=0.8, iterations=150, seed=42, weight=None)
                             
                             edge_x, edge_y = [], []
                             for edge in G.edges():
@@ -438,14 +446,11 @@ def render_project_history():
                                 
                                 if node_type == 'project':
                                     short_node = str(node).strip()
-                                    if len(short_node) > 15:
-                                        if short_node.startswith('[') and ']' in short_node:
-                                            short_node = short_node.split(']')[0] + ']'
-                                        else:
-                                            short_node = short_node[:12] + '...'
+                                    if len(short_node) > 20:
+                                        short_node = short_node[:20] + '...'
                                             
                                     node_color.append('#0284c7')
-                                    node_size.append(max(20, min(55, 20 + (total / max_p * 35))))
+                                    node_size.append(max(15, min(45, 15 + (total / max_p * 30))))
                                     node_symbol.append('diamond')
                                     node_hover.append(f"<b>DỰ ÁN: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
                                     node_label.append(f"<b>{short_node}</b>")
