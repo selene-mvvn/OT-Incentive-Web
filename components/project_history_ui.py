@@ -607,11 +607,31 @@ def render_project_history():
                 rate_reason_str = ""
                 if abs(diff_rate) > 5000:
                     if rate_A > rate_B:
-                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>đắt hơn {diff_rate:,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) do có tới <b>{pct_high_A:.1f}%</b> tổng số giờ là OT vào khung ngày nghỉ/Lễ (hệ số cao &ge; 270%), trong khi tỷ lệ này bên <b>{display_B}</b> chỉ là <b>{pct_high_B:.1f}%</b>.", 
-                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) が <b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{diff_rate:,.0f} VND/時間高い</b>のは、休日/祝日 (高倍率 &ge; 270%) の残業割合が <b>{pct_high_A:.1f}%</b> (対して <b>{display_B}</b> は <b>{pct_high_B:.1f}%</b>) を占めているためです。")
+                        if pct_high_A == 0:
+                            desc_A = t("hoàn toàn không phân bổ nhân viên làm OT vào cuối tuần hay ngày lễ (hệ số lương cao)", "休日や祝日（高倍率）の残業が全く割り当てられていません")
+                        else:
+                            desc_A = t(f"có tới <b>{pct_high_A:.1f}%</b> tổng số giờ là OT vào khung ngày nghỉ/Lễ (hệ số cao &ge; 270%)", f"休日/祝日 (高倍率 &ge; 270%) の残業割合が <b>{pct_high_A:.1f}%</b> を占めています")
+
+                        if pct_high_B == 0:
+                            desc_B = t("cũng hoàn toàn không có giờ OT hệ số cao" if pct_high_A == 0 else "lại hoàn toàn không phân bổ nhân viên làm OT vào cuối tuần hay ngày lễ", "また、高倍率の残業が全くありません" if pct_high_A == 0 else "一方で、休日や祝日（高倍率）の残業が全く割り当てられていません")
+                        else:
+                            desc_B = t(f"tỷ lệ này của <b>{display_B}</b> chỉ là <b>{pct_high_B:.1f}%</b>", f"<b>{display_B}</b> の割合は <b>{pct_high_B:.1f}%</b> です")
+
+                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>đắt hơn {diff_rate:,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) do {desc_A}, trong khi {desc_B}.", 
+                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) が <b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{diff_rate:,.0f} VND/時間高い</b>のは、{desc_A}ためです（{desc_B}）。")
                     else:
-                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường (hệ số thấp). Cụ thể, chỉ có <b>{pct_high_A:.1f}%</b> tổng số giờ của dự án là OT vào các khung giờ hệ số cao (cuối tuần/lễ), so với tỷ lệ <b>{pct_high_B:.1f}%</b> của <b>{display_B}</b>.", 
-                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) は、通常時間帯を優先したため、<b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{abs(diff_rate):,.0f} VND/時間お得</b>です。高倍率割合は <b>{display_A}</b> が <b>{pct_high_A:.1f}%</b> (対して <b>{display_B}</b> は <b>{pct_high_B:.1f}%</b>) です。")
+                        if pct_high_A == 0:
+                            part_A = t("hoàn toàn không phân bổ nhân viên làm OT vào cuối tuần hay ngày lễ (hệ số lương cao)", "休日や祝日（高倍率）の残業が全く割り当てられていません")
+                        else:
+                            part_A = t(f"chỉ có <b>{pct_high_A:.1f}%</b> tổng số giờ là OT vào các khung giờ hệ số cao (cuối tuần/lễ)", f"高倍率時間帯（休日/祝日）の残業は <b>{pct_high_A:.1f}%</b> のみです")
+                            
+                        if pct_high_B == 0:
+                            part_B = t("dự án kia cũng hoàn toàn không có", "対象プロジェクトも全く割り当てられていません")
+                        else:
+                            part_B = t(f"tỷ lệ này của <b>{display_B}</b> lên tới <b>{pct_high_B:.1f}%</b>", f"<b>{display_B}</b> の割合は <b>{pct_high_B:.1f}%</b> に達しています")
+
+                        rate_reason_str = t(f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>Nguyên nhân chênh lệch đơn giá:</i>&nbsp;Đơn giá bình quân của <b>{display_A}</b> ({rate_A:,.0f} VNĐ/h) đang <b>tiết kiệm hơn {abs(diff_rate):,.0f} VNĐ/h</b> so với <b>{display_B}</b> ({rate_B:,.0f} VNĐ/h) nhờ ưu tiên phân bổ vào khung giờ ngày thường (hệ số thấp). Cụ thể, dự án này {part_A}, trong khi {part_B}.", 
+                                          f"<br><span class='material-symbols-rounded' style='font-size: 18px; color: #0284c7; vertical-align: -4px; margin-right: 4px;'>arrow_forward</span><i>単価差異の原因:</i>&nbsp;<b>{display_A}</b> の平均単価 ({rate_A:,.0f} VND/時間) は通常時間帯を優先したため、<b>{display_B}</b> ({rate_B:,.0f} VND/時間) より <b>{abs(diff_rate):,.0f} VND/時間お得</b>です。具体的に、このプロジェクトは{part_A}（{part_B}）。")
 
                 is_all_time = (period_label == all_period_opt or period_label == t("Toàn bộ thời gian", "全期間") or period_label == t("🌟 Tất cả các tháng", "🌟 すべての月") or str(period_label).strip().lower().startswith("toàn bộ thời gian") or str(period_label).strip().startswith("全期間"))
                 if is_all_time:
