@@ -1485,7 +1485,7 @@ def show_sticky_note_editor_modal():
     /* Active Tab (REMOVED) */
     
     /* Checklist Container to look like ruled paper */
-    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] {
+    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) {
         background-color: #ffffff !important; 
         background-image: 
             linear-gradient(90deg, transparent 40px, #ffb6c1 40px, #ffb6c1 42px, transparent 42px),
@@ -1499,12 +1499,12 @@ def show_sticky_note_editor_modal():
         min-height: 130px;
         box-shadow: 2px 2px 10px rgba(0,0,0,0.04) inset !important;
     }
-    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stCheckbox {
+    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stCheckbox {
         min-height: 28px !important;
         margin-top: 0 !important;
         margin-bottom: 0 !important;
     }
-    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stCheckbox p {
+    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stCheckbox p {
         font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif !important;
         font-size: 16px !important;
         color: #1e293b !important;
@@ -1513,7 +1513,7 @@ def show_sticky_note_editor_modal():
         padding-bottom: 0 !important;
     }
     /* Make text input blend into notebook */
-    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stTextInput input {
+    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stTextInput input {
         background: transparent !important;
         border: none !important;
         font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif !important;
@@ -1523,7 +1523,7 @@ def show_sticky_note_editor_modal():
         line-height: 28px !important;
         box-shadow: none !important;
     }
-    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stTextInput input:focus {
+    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stTextInput input:focus {
         color: #1e293b !important;
     }
     </style>""", unsafe_allow_html=True)
@@ -1604,7 +1604,7 @@ def show_sticky_note_editor_modal():
                 else:
                     new_lines.append(line)
             
-            new_item = st.text_input("Thêm việc mới...", key="txt_new_checklist_item", label_visibility="collapsed")
+            new_item = st.text_input("Thêm việc mới...", key="txt_new_checklist_item", placeholder=t("Gõ công việc mới vào đây rồi nhấn Enter...", "新しいタスクを入力してEnter..."), label_visibility="collapsed")
             if new_item:
                 new_lines.append(f"[ ] {new_item.strip()}")
                 changed = True
@@ -2419,6 +2419,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
