@@ -530,13 +530,15 @@ def render_project_history():
                             paper_bgcolor='rgba(0,0,0,0)',
                             plot_bgcolor='rgba(0,0,0,0)',
                             coloraxis_colorbar=dict(
-                                title=t("OT TB/Người", "平均残業/人"),
+                                title=dict(
+                                    text=t("OT TB/Người", "平均残業/人"),
+                                    font=dict(size=12, color='#1e293b')
+                                ),
                                 thicknessmode="pixels", thickness=15,
                                 lenmode="pixels", len=200,
                                 yanchor="middle", y=0.5,
                                 ticks="outside",
-                                tickfont=dict(size=11, color='#1e293b'),
-                                titlefont=dict(size=12, color='#1e293b', weight='bold')
+                                tickfont=dict(size=11, color='#1e293b')
                             )
                         )
                         st.plotly_chart(fig_tree, use_container_width=True, config={'displayModeBar': False})
