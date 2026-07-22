@@ -1363,7 +1363,7 @@ def show_sticky_note_editor_modal():
     /* Make the modal body look like beige paper */
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
-        padding-top: 0px !important;
+        padding-top: 15px !important;
         background-color: #fdf8e7 !important; /* Light beige paper */
         border-radius: 0 0 10px 10px !important;
         box-shadow: inset 0 0 20px rgba(0,0,0,0.02) !important;
@@ -1376,7 +1376,39 @@ def show_sticky_note_editor_modal():
         margin: 0px !important;
         padding: 0px !important;
     }
+    
+    /* Dialog Title - Leather Cover */
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] {
+        background: linear-gradient(to bottom, #8b4513, #6b3410) !important; /* Leather brown */
+        color: #fff8dc !important;
+        padding: 16px 20px !important;
+        border-radius: 10px 10px 0 0 !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        box-shadow: 0 4px 6px rgba(0,0,0, 0.4) !important;
+        border-bottom: 3px dashed #deb887 !important; /* Stitching effect */
+    }
 
+    /* Style Close X button cleanly */
+    [role="dialog"] header[data-testid="stDialogHeader"] button,
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button {
+        padding: 4px !important;
+        width: 32px !important;
+        height: 32px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        border-radius: 50% !important;
+        color: #ffffff !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
+        margin-left: 10px !important;
+        cursor: pointer !important;
+    }
+    [role="dialog"] header[data-testid="stDialogHeader"] button svg,
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg {
+        fill: #ffffff !important;
+    }
     
     /* Notebook Text Area with Ruled Lines */
     [data-testid="stTextArea"] textarea {
@@ -1439,8 +1471,8 @@ def show_sticky_note_editor_modal():
         transition: all 0.2s ease !important;
     }
 
-    /* Primary Button (Save) - Rubber Stamp Style (Only in the bottom action bar) */
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"] {
+    /* Primary Button (Save) - Rubber Stamp Style */
+    button[data-testid="baseButton-primary"] {
         background: transparent !important;
         border: 3px solid #d32f2f !important;
         border-radius: 8px !important;
@@ -1448,8 +1480,8 @@ def show_sticky_note_editor_modal():
         box-shadow: none !important;
         opacity: 0.9 !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"] p,
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"] .material-symbols-rounded {
+    button[data-testid="baseButton-primary"] p,
+    button[data-testid="baseButton-primary"] .material-symbols-rounded {
         color: #d32f2f !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: 900 !important;
@@ -1457,161 +1489,43 @@ def show_sticky_note_editor_modal():
         text-transform: uppercase !important;
         letter-spacing: 1px !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"]:hover {
+    button[data-testid="baseButton-primary"]:hover {
         background: rgba(211, 47, 47, 0.05) !important;
         transform: rotate(-3deg) scale(1.03) !important;
         opacity: 1 !important;
     }
 
-    /* Secondary Button (Delete) - Dashed Note Style (Only in the bottom action bar) */
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"] {
+    /* Secondary Button (Delete) - Dashed Note Style */
+    button[data-testid="baseButton-secondary"] {
         background: transparent !important;
         border: 2px dashed #64748b !important;
         border-radius: 8px !important;
         box-shadow: none !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"] p,
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"] .material-symbols-rounded {
+    button[data-testid="baseButton-secondary"] p,
+    button[data-testid="baseButton-secondary"] .material-symbols-rounded {
         color: #64748b !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: 700 !important;
         font-size: 15px !important;
-        text-transform: none !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"]:hover {
+    button[data-testid="baseButton-secondary"]:hover {
         background: rgba(100, 116, 139, 0.1) !important;
-    }
-    
-    /* Active Tab (REMOVED) */
-    
-    /* Checklist Container to look like ruled paper */
-    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) {
-        background-color: #ffffff !important; 
-        background-image: 
-            linear-gradient(90deg, transparent 40px, #ffb6c1 40px, #ffb6c1 42px, transparent 42px),
-            linear-gradient(#e5e5e5 1px, transparent 1px) !important;
-        background-size: 100% 100%, 100% 28px !important;
-        background-attachment: local !important;
-        padding: 5px 10px 10px 50px !important;
-        border: 1px solid #d4d4d8 !important;
-        border-radius: 4px 10px 10px 4px !important;
-        border-left: 14px dotted #cbd5e1 !important;
-        min-height: 130px;
-        box-shadow: 2px 2px 10px rgba(0,0,0,0.04) inset !important;
-    }
-    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stCheckbox {
-        min-height: 28px !important;
-        margin-top: 0 !important;
-        margin-bottom: 0 !important;
-    }
-    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stCheckbox p {
-        font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif !important;
-        font-size: 16px !important;
-        color: #1e293b !important;
-        line-height: 28px !important;
-        padding-top: 0 !important;
-        padding-bottom: 0 !important;
-    }
-    /* Make text input blend into notebook */
-    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stTextInput input {
-        background: transparent !important;
-        border: none !important;
-        font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif !important;
-        font-size: 16px !important;
-        color: #94a3b8 !important;
-        padding: 0 !important;
-        line-height: 28px !important;
-        box-shadow: none !important;
-    }
-    [data-testid="stDialogContent"] div[data-testid="stVerticalBlock"]:has(input[aria-label="Thêm việc mới..."]) .stTextInput input:focus {
-        color: #1e293b !important;
     }
     </style>""", unsafe_allow_html=True)
 
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
-    st.markdown(f"""
-        <style>
-        div.element-container:has(.sticky-note-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] {{
-            display: grid !important;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 16px;
-            margin-bottom: 5px;
-        }}
-        /* Pull the radio group UP slightly to remove the awkward gap */
-        div.element-container:has(.sticky-note-radio) {{
-            margin-bottom: -10px !important;
-        }}
-        </style>
-        <div style="font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -35px; margin-bottom: 5px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;">
-            📌 {desc_text}
-        </div>
-        <div class="sticky-note-radio"></div>
-    """, unsafe_allow_html=True)
-    
-    current_mode = st.session_state.get('sticky_note_mode', 'edit')
-    
-    opt_edit = t(":material/edit_document: Soạn thảo", ":material/edit_document: 編集")
-    opt_check = t(":material/fact_check: Checklist", ":material/fact_check: チェックリスト")
-    
-    mode_selection = st.radio(
-        t("Chế độ", "モード"),
-        options=[opt_edit, opt_check],
-        index=0 if current_mode == 'edit' else 1,
-        label_visibility="collapsed",
-        key="radio_sticky_note_mode",
-        horizontal=True
+    st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -5px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
+
+    note_val = st.text_area(
+        t("Nội dung ghi chú", "メモ内容"),
+        value=st.session_state.get('sidebar_sticky_note', ''),
+        key="txt_popup_sticky_note",
+        placeholder=t("Nhập việc cần nhớ (VD: Kiểm tra OT dự án V050010)...", "メモを入力..."),
+        height=130,
+        label_visibility="collapsed"
     )
-    
-    new_mode = 'edit' if mode_selection == opt_edit else 'check'
-    if new_mode != current_mode:
-        st.session_state['sticky_note_mode'] = new_mode
-
-    note_val = st.session_state.get('sidebar_sticky_note', '')
-
-    if new_mode == 'edit':
-        note_val = st.text_area(
-            t("Nội dung ghi chú", "メモ内容"),
-            value=note_val,
-            key="txt_popup_sticky_note",
-            placeholder=t("Nhập việc cần nhớ (VD: Kiểm tra OT dự án V050010)...", "メモを入力..."),
-            height=130,
-            label_visibility="collapsed"
-        )
-        st.session_state['sidebar_sticky_note'] = note_val
-    else:
-        st.markdown('<div class="checklist-marker"></div>', unsafe_allow_html=True)
-        with st.container():
-            lines = note_val.split('\n')
-            new_lines = []
-            changed = False
-            for i, line in enumerate(lines):
-                if line.strip():
-                    is_checked = line.strip().startswith('[x]') or line.strip().startswith('[X]')
-                    clean_line = line.replace('[x]', '').replace('[X]', '').replace('[ ]', '').strip()
-                    
-                    if is_checked:
-                        checked = st.checkbox(f"~~{clean_line}~~", value=True, key=f"chk_note_{i}")
-                    else:
-                        checked = st.checkbox(clean_line, value=False, key=f"chk_note_{i}")
-                        
-                    if checked:
-                        new_lines.append(f"[x] {clean_line}")
-                    else:
-                        new_lines.append(f"[ ] {clean_line}")
-                        
-                    if checked != is_checked:
-                        changed = True
-                else:
-                    new_lines.append(line)
-            
-            new_item = st.text_input("Thêm việc mới...", key="txt_new_checklist_item", placeholder=t("Gõ công việc mới vào đây rồi nhấn Enter...", "新しいタスクを入力してEnter..."), label_visibility="collapsed")
-            if new_item:
-                new_lines.append(f"[ ] {new_item.strip()}")
-                changed = True
-                
-        if changed:
-            st.session_state['sidebar_sticky_note'] = '\n'.join(new_lines)
-            save_sticky_note('\n'.join(new_lines))
+    st.session_state['sidebar_sticky_note'] = note_val
 
     col_save, col_delete = st.columns(2, gap="small")
     with col_save:
@@ -2419,15 +2333,6 @@ else:
 
 
 # Force reload 1
-
-
-
-
-
-
-
-
-
 
 
 
