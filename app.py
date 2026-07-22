@@ -1363,7 +1363,7 @@ def show_sticky_note_editor_modal():
     /* Make the modal body look like beige paper */
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
-        padding-top: 15px !important;
+        padding-top: 5px !important;
         background-color: #fdf8e7 !important; /* Light beige paper */
         border-radius: 0 0 10px 10px !important;
         box-shadow: inset 0 0 20px rgba(0,0,0,0.02) !important;
@@ -1471,8 +1471,8 @@ def show_sticky_note_editor_modal():
         transition: all 0.2s ease !important;
     }
 
-    /* Primary Button (Save) - Rubber Stamp Style */
-    button[data-testid="baseButton-primary"] {
+    /* Primary Button (Save) - Rubber Stamp Style (Only in the bottom action bar) */
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"] {
         background: transparent !important;
         border: 3px solid #d32f2f !important;
         border-radius: 8px !important;
@@ -1480,8 +1480,8 @@ def show_sticky_note_editor_modal():
         box-shadow: none !important;
         opacity: 0.9 !important;
     }
-    button[data-testid="baseButton-primary"] p,
-    button[data-testid="baseButton-primary"] .material-symbols-rounded {
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"] p,
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"] .material-symbols-rounded {
         color: #d32f2f !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: 900 !important;
@@ -1489,60 +1489,76 @@ def show_sticky_note_editor_modal():
         text-transform: uppercase !important;
         letter-spacing: 1px !important;
     }
-    button[data-testid="baseButton-primary"]:hover {
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-primary"]:hover {
         background: rgba(211, 47, 47, 0.05) !important;
         transform: rotate(-3deg) scale(1.03) !important;
         opacity: 1 !important;
     }
 
-    /* Secondary Button (Delete) - Dashed Note Style */
-    button[data-testid="baseButton-secondary"] {
+    /* Secondary Button (Delete) - Dashed Note Style (Only in the bottom action bar) */
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"] {
         background: transparent !important;
         border: 2px dashed #64748b !important;
         border-radius: 8px !important;
         box-shadow: none !important;
     }
-    button[data-testid="baseButton-secondary"] p,
-    button[data-testid="baseButton-secondary"] .material-symbols-rounded {
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"] p,
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"] .material-symbols-rounded {
         color: #64748b !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: 700 !important;
         font-size: 15px !important;
+        text-transform: none !important;
     }
-    button[data-testid="baseButton-secondary"]:hover {
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:last-of-type button[data-testid="baseButton-secondary"]:hover {
         background: rgba(100, 116, 139, 0.1) !important;
     }
     
-    /* Mode Tabs */
-    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] {
+    /* Mode Tabs (The First Horizontal Block) */
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type {
         margin-top: 0 !important;
         margin-bottom: 5px !important;
-        gap: 5px !important;
+        gap: 0px !important;
+        border-bottom: 1px solid #d4d4d8 !important;
     }
-    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button {
-        height: 32px !important;
-        border-radius: 6px 6px 0 0 !important;
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type > div {
+        flex: 1 1 50% !important;
+        width: 50% !important;
+        padding: 0 !important;
+    }
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button {
+        height: 38px !important;
+        min-height: 38px !important;
+        border-radius: 8px 8px 0 0 !important;
         transform: none !important;
-        border: 1px solid #d4d4d8 !important;
+        border: 1px solid #e2e8f0 !important;
         border-bottom: none !important;
-        background: #f1f5f9 !important;
+        background: #f8fafc !important;
         box-shadow: none !important;
         opacity: 1 !important;
+        padding: 0 10px !important;
+        margin-bottom: -1px !important;
+        width: 100% !important;
     }
-    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button p {
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button p,
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button .material-symbols-rounded {
         font-family: Arial, sans-serif !important;
-        font-size: 13px !important;
-        color: #64748b !important;
+        font-size: 14px !important;
+        color: #94a3b8 !important;
         letter-spacing: normal !important;
         font-weight: bold !important;
+        text-transform: none !important;
     }
     /* Active Tab */
-    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button[data-testid="baseButton-primary"] {
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button[data-testid="baseButton-primary"] {
         background: #ffffff !important;
-        border-color: #cbd5e1 !important;
+        border: 1px solid #d4d4d8 !important;
         border-bottom: 2px solid #ffffff !important;
+        position: relative !important;
+        z-index: 10 !important;
     }
-    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button[data-testid="baseButton-primary"] p {
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button[data-testid="baseButton-primary"] p,
+    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button[data-testid="baseButton-primary"] .material-symbols-rounded {
         color: #d32f2f !important;
     }
 
@@ -1595,14 +1611,13 @@ def show_sticky_note_editor_modal():
 
     current_mode = st.session_state.get('sticky_note_mode', 'edit')
     
-    st.markdown('<div class="mode-tabs-marker"></div>', unsafe_allow_html=True)
-    col_edit, col_check, _ = st.columns([1, 1, 1.2])
+    col_edit, col_check = st.columns(2)
     with col_edit:
-        if st.button("📝 Soạn thảo", type="primary" if current_mode == 'edit' else "secondary", use_container_width=True, key="btn_mode_edit"):
+        if st.button("Soạn thảo", icon=":material/edit_document:", type="primary" if current_mode == 'edit' else "secondary", use_container_width=True, key="btn_mode_edit"):
             st.session_state['sticky_note_mode'] = 'edit'
             st.rerun()
     with col_check:
-        if st.button("✅ Checklist", type="primary" if current_mode == 'check' else "secondary", use_container_width=True, key="btn_mode_check"):
+        if st.button("Checklist", icon=":material/fact_check:", type="primary" if current_mode == 'check' else "secondary", use_container_width=True, key="btn_mode_check"):
             st.session_state['sticky_note_mode'] = 'check'
             st.rerun()
 
@@ -2460,6 +2475,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
