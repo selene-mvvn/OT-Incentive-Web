@@ -427,7 +427,7 @@ def render_project_history():
                                 mode='lines'
                             )
 
-                            node_x, node_y, node_text, node_color, node_size, node_symbol = [], [], [], [], [], []
+                            node_x, node_y, node_hover, node_label, node_color, node_size, node_symbol = [], [], [], [], [], [], []
                             for node in G.nodes():
                                 x, y = pos[node]
                                 node_x.append(x)
@@ -436,22 +436,36 @@ def render_project_history():
                                 node_type = G.nodes[node]['type']
                                 total = G.nodes[node]['total']
                                 
+                                short_node = str(node).strip()
+                                if len(short_node) > 15:
+                                    if short_node.startswith('[') and ']' in short_node:
+                                        short_node = short_node.split(']')[0] + ']'
+                                    else:
+                                        short_node = short_node[:12] + '...'
+                                        
                                 if node_type == 'project':
                                     node_color.append('#0284c7')
                                     node_size.append(max(20, min(55, 20 + (total / max_p * 35))))
                                     node_symbol.append('diamond')
-                                    node_text.append(f"<b>DỰ ÁN: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                    node_hover.append(f"<b>DỰ ÁN: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                    node_label.append(f"<b>{short_node}</b>")
                                 else:
                                     node_color.append('#f59e0b')
                                     node_size.append(max(10, min(25, 10 + (total / max_e * 15))))
                                     node_symbol.append('circle')
-                                    node_text.append(f"<b>NV: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                    node_hover.append(f"<b>NV: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                    name_parts = short_node.split()
+                                    short_name = name_parts[-1] if name_parts else short_node
+                                    node_label.append(f"<b>{short_name}</b>")
                                     
                             node_trace = go.Scatter(
                                 x=node_x, y=node_y,
-                                mode='markers',
+                                mode='markers+text',
                                 hoverinfo='text',
-                                text=node_text,
+                                hovertext=node_hover,
+                                text=node_label,
+                                textposition='bottom center',
+                                textfont=dict(size=11, color='#334155'),
                                 marker=dict(
                                     showscale=False,
                                     color=node_color,
