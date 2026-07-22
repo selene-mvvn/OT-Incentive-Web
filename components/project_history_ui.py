@@ -688,6 +688,96 @@ def render_project_history():
             </div>
             """, unsafe_allow_html=True)
 
+        def render_radar_chart(df_A, name_A, df_B, name_B, all_proj_opt):
+            import plotly.graph_objects as go
+            
+            display_A = name_A if name_A != all_proj_opt else t('Tất cả dự án (A)', 'すべてのプロジェクト (A)')
+            display_B = name_B if name_B != all_proj_opt else t('Tất cả dự án (B)', 'すべてのプロジェクト (B)')
+            
+            def safe_div(a, b): return a / b if b > 0 else 0.0
+
+            h_A = df_A['ot_hours'].sum() if not df_A.empty else 0
+            h_B = df_B['ot_hours'].sum() if not df_B.empty else 0
+            c_A = df_A['est_cost'].sum() if not df_A.empty else 0
+            c_B = df_B['est_cost'].sum() if not df_B.empty else 0
+            s_A = df_A['employee_name'].nunique() if not df_A.empty else 0
+            s_B = df_B['employee_name'].nunique() if not df_B.empty else 0
+            r_A = safe_div(c_A, h_A)
+            r_B = safe_div(c_B, h_B)
+            d_A = df_A['ot_date'].nunique() if not df_A.empty else 0
+            d_B = df_B['ot_date'].nunique() if not df_B.empty else 0
+            
+            def norm(v_A, v_B):
+                m = max(v_A, v_B)
+                if m == 0: return 0.0, 0.0
+                return (v_A/m)*100, (v_B/m)*100
+
+            nh_A, nh_B = norm(h_A, h_B)
+            nc_A, nc_B = norm(c_A, c_B)
+            ns_A, ns_B = norm(s_A, s_B)
+            nr_A, nr_B = norm(r_A, r_B)
+            nd_A, nd_B = norm(d_A, d_B)
+            
+            categories = [
+                t('Tổng Giờ', '総時間'),
+                t('Tổng Chi Phí', '総費用'),
+                t('Số Nhân Sự', '人員数'),
+                t('Đơn Giá/h', '時間単価'),
+                t('Số Ngày OT', '残業日数')
+            ]
+            categories += [categories[0]]
+            
+            r_vals_A = [nh_A, nc_A, ns_A, nr_A, nd_A]
+            r_vals_A += [r_vals_A[0]]
+            t_vals_A = [f"{h_A:,.1f} h", f"{c_A:,.0f} đ", f"{s_A} ng", f"{r_A:,.0f} đ/h", f"{d_A} ngày"]
+            t_vals_A += [t_vals_A[0]]
+            
+            r_vals_B = [nh_B, nc_B, ns_B, nr_B, nd_B]
+            r_vals_B += [r_vals_B[0]]
+            t_vals_B = [f"{h_B:,.1f} h", f"{c_B:,.0f} đ", f"{s_B} ng", f"{r_B:,.0f} đ/h", f"{d_B} ngày"]
+            t_vals_B += [t_vals_B[0]]
+            
+            fig = go.Figure()
+
+            fig.add_trace(go.Scatterpolar(
+                r=r_vals_A,
+                theta=categories,
+                fill='toself',
+                name=display_A,
+                hoverinfo="text",
+                text=t_vals_A,
+                line=dict(color='#0284c7'),
+                fillcolor='rgba(2, 132, 199, 0.3)'
+            ))
+            
+            fig.add_trace(go.Scatterpolar(
+                r=r_vals_B,
+                theta=categories,
+                fill='toself',
+                name=display_B,
+                hoverinfo="text",
+                text=t_vals_B,
+                line=dict(color='#f59e0b'),
+                fillcolor='rgba(245, 158, 11, 0.3)'
+            ))
+
+            fig.update_layout(
+                polar=dict(
+                    radialaxis=dict(visible=True, range=[0, 100], showticklabels=False),
+                    angularaxis=dict(tickfont=dict(size=12, color='#334155'))
+                ),
+                showlegend=True,
+                legend=dict(orientation="h", yanchor="bottom", y=-0.2, xanchor="center", x=0.5),
+                margin=dict(l=40, r=40, t=30, b=30),
+                height=320,
+                paper_bgcolor='rgba(0,0,0,0)',
+                plot_bgcolor='rgba(0,0,0,0)',
+                font=dict(family="'Times New Roman', serif")
+            )
+            
+            st.markdown(f"<div style='text-align: center; font-size: 16px; font-weight: 700; color: #334155; margin-bottom: -15px;'><span class='material-symbols-rounded' style='vertical-align: -5px; font-size: 22px; color: #0284c7;'>radar</span> {t('Biểu đồ Tương quan Đa chiều (Radar)', '多次元相関チャート (レーダー)')}</div>", unsafe_allow_html=True)
+            st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False}, key=f"radar_{display_A}_{display_B}")
+
         def render_project_details(df_t2, proj_name, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False):
             if df_t2.empty or df_t2['ot_hours'].sum() <= 0:
                 from components.ui_utils import render_empty_state
@@ -702,6 +792,29 @@ def render_project_history():
             display_period_label = format_period_range_label(df_t2, sel_period_t2_label) if sel_period_t2_label == all_period_opt else sel_period_t2_label
 
             min_h = "min-height: 54px; display: flex; align-items: flex-start;" if is_compare else ""
+            
+            # CSS for Micro-animations (Idea 5)
+            st.markdown("""
+            <style>
+            .kpi-t2-card-1, .kpi-t2-card-2, .kpi-t2-card-3, .kpi-t2-card-4 {
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+                opacity: 0;
+            }
+            .kpi-t2-card-1:hover, .kpi-t2-card-2:hover, .kpi-t2-card-3:hover, .kpi-t2-card-4:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+            }
+            @keyframes fadeInUpCards {
+                from { opacity: 0; transform: translateY(15px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .kpi-t2-card-1 { animation: fadeInUpCards 0.4s ease-out forwards; }
+            .kpi-t2-card-2 { animation: fadeInUpCards 0.5s ease-out forwards; }
+            .kpi-t2-card-3 { animation: fadeInUpCards 0.6s ease-out forwards; }
+            .kpi-t2-card-4 { animation: fadeInUpCards 0.7s ease-out forwards; }
+            </style>
+            """, unsafe_allow_html=True)
+            
             st.markdown(f"""
             <h3 style='font-size: 18px; margin-bottom: 20px; {min_h}'>
                 <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({display_period_label})</div>
@@ -942,6 +1055,10 @@ def render_project_history():
 
             # Render 3-Way AI Executive Commentary summary block right before columns
             render_project_comparison_commentary(df_t2_main, sel_project, df_t2_comp, sel_project_compare, sel_period_t2_label, all_proj_opt)
+
+            render_radar_chart(df_t2_main, sel_project, df_t2_comp, sel_project_compare, all_proj_opt)
+            
+            st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
 
             c_left_view, c_right_view = st.columns(2, gap="large")
             
