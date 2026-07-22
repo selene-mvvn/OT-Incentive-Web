@@ -1363,7 +1363,7 @@ def show_sticky_note_editor_modal():
     /* Make the modal body look like beige paper */
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
-        padding-top: 5px !important;
+        padding-top: 0px !important;
         background-color: #fdf8e7 !important; /* Light beige paper */
         border-radius: 0 0 10px 10px !important;
         box-shadow: inset 0 0 20px rgba(0,0,0,0.02) !important;
@@ -1376,42 +1376,7 @@ def show_sticky_note_editor_modal():
         margin: 0px !important;
         padding: 0px !important;
     }
-    
-    /* Dialog Title - Leather Cover (Force override for this specific modal) */
-    [role="dialog"]:has(.sticky-note-radio) [data-testid="stDialogTitle"],
-    [data-testid="stDialog"]:has(.sticky-note-radio) [data-testid="stDialogTitle"],
-    [role="dialog"]:has(.sticky-note-radio) h2:first-of-type,
-    [data-testid="stDialog"]:has(.sticky-note-radio) h2:first-of-type {
-        background: linear-gradient(to bottom, #8b4513, #6b3410) !important; /* Leather brown */
-        color: #fff8dc !important;
-        padding: 16px 20px !important;
-        border-radius: 10px 10px 0 0 !important;
-        font-weight: 700 !important;
-        font-size: 18px !important;
-        margin-top: 0px !important;
-        margin-bottom: 0px !important;
-        box-shadow: 0 4px 6px rgba(0,0,0, 0.4) !important;
-        border-bottom: 3px dashed #deb887 !important; /* Stitching effect */
-        display: block !important;
-    }
 
-    /* Style Close X button cleanly */
-    [role="dialog"] header[data-testid="stDialogHeader"] button,
-    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button {
-        padding: 4px !important;
-        width: 32px !important;
-        height: 32px !important;
-        background: rgba(255, 255, 255, 0.15) !important;
-        border-radius: 50% !important;
-        color: #ffffff !important;
-        border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        margin-left: 10px !important;
-        cursor: pointer !important;
-    }
-    [role="dialog"] header[data-testid="stDialogHeader"] button svg,
-    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg {
-        fill: #ffffff !important;
-    }
     
     /* Notebook Text Area with Ruled Lines */
     [data-testid="stTextArea"] textarea {
@@ -1564,7 +1529,7 @@ def show_sticky_note_editor_modal():
     </style>""", unsafe_allow_html=True)
 
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
-    st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -20px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -40px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
 
     current_mode = st.session_state.get('sticky_note_mode', 'edit')
     
@@ -2449,6 +2414,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
