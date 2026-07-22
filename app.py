@@ -1514,54 +1514,8 @@ def show_sticky_note_editor_modal():
         background: rgba(100, 116, 139, 0.1) !important;
     }
     
-    /* Mode Tabs (The First Horizontal Block) */
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type {
-        margin-top: 0 !important;
-        margin-bottom: 5px !important;
-        gap: 0px !important;
-        border-bottom: 1px solid #d4d4d8 !important;
-    }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type > div {
-        flex: 1 1 50% !important;
-        width: 50% !important;
-        padding: 0 !important;
-    }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button {
-        height: 38px !important;
-        min-height: 38px !important;
-        border-radius: 8px 8px 0 0 !important;
-        transform: none !important;
-        border: 1px solid #e2e8f0 !important;
-        border-bottom: none !important;
-        background: #f8fafc !important;
-        box-shadow: none !important;
-        opacity: 1 !important;
-        padding: 0 10px !important;
-        margin-bottom: -1px !important;
-        width: 100% !important;
-    }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button p,
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button .material-symbols-rounded {
-        font-family: Arial, sans-serif !important;
-        font-size: 14px !important;
-        color: #94a3b8 !important;
-        letter-spacing: normal !important;
-        font-weight: bold !important;
-        text-transform: none !important;
-    }
-    /* Active Tab */
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button[data-testid="baseButton-primary"] {
-        background: #ffffff !important;
-        border: 1px solid #d4d4d8 !important;
-        border-bottom: 2px solid #ffffff !important;
-        position: relative !important;
-        z-index: 10 !important;
-    }
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button[data-testid="baseButton-primary"] p,
-    [role="dialog"] div[data-testid="stDialogContent"] div[data-testid="stHorizontalBlock"]:first-of-type button[data-testid="baseButton-primary"] .material-symbols-rounded {
-        color: #d32f2f !important;
-    }
-
+    /* Active Tab (REMOVED) */
+    
     /* Checklist Container to look like ruled paper */
     div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] {
         background-color: #ffffff !important; 
@@ -1611,15 +1565,32 @@ def show_sticky_note_editor_modal():
 
     current_mode = st.session_state.get('sticky_note_mode', 'edit')
     
-    col_edit, col_check = st.columns(2)
-    with col_edit:
-        if st.button("Soạn thảo", icon=":material/edit_document:", type="primary" if current_mode == 'edit' else "secondary", use_container_width=True, key="btn_mode_edit"):
-            st.session_state['sticky_note_mode'] = 'edit'
-            st.rerun()
-    with col_check:
-        if st.button("Checklist", icon=":material/fact_check:", type="primary" if current_mode == 'check' else "secondary", use_container_width=True, key="btn_mode_check"):
-            st.session_state['sticky_note_mode'] = 'check'
-            st.rerun()
+    st.markdown('<div class="sticky-note-radio"></div>', unsafe_allow_html=True)
+    st.markdown("""<style>
+        div.element-container:has(.sticky-note-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] {
+            display: grid !important;
+            grid-template-columns: 1fr 1fr;
+            column-gap: 16px;
+            margin-bottom: 8px;
+        }
+    </style>""", unsafe_allow_html=True)
+    
+    opt_edit = t(":material/edit_document: Soạn thảo", ":material/edit_document: 編集")
+    opt_check = t(":material/fact_check: Checklist", ":material/fact_check: チェックリスト")
+    
+    mode_selection = st.radio(
+        t("Chế độ", "モード"),
+        options=[opt_edit, opt_check],
+        index=0 if current_mode == 'edit' else 1,
+        label_visibility="collapsed",
+        key="radio_sticky_note_mode",
+        horizontal=True
+    )
+    
+    new_mode = 'edit' if mode_selection == opt_edit else 'check'
+    if new_mode != current_mode:
+        st.session_state['sticky_note_mode'] = new_mode
+        st.rerun()
 
     note_val = st.session_state.get('sidebar_sticky_note', '')
 
@@ -2475,6 +2446,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
