@@ -1378,12 +1378,15 @@ def show_sticky_note_editor_modal():
         white-space: nowrap !important;
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
-    /* Eliminate white space below dialog title */
+    /* Make the modal body look like beige paper */
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
-        padding-top: 0px !important;
-        margin-top: -10px !important;
+        padding-top: 15px !important;
+        background-color: #fdf8e7 !important; /* Light beige paper */
+        border-radius: 0 0 10px 10px !important;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.02) !important;
     }
+    
     [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
     [data-testid="stDialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child {
         display: none !important;
@@ -1391,116 +1394,146 @@ def show_sticky_note_editor_modal():
         margin: 0px !important;
         padding: 0px !important;
     }
-    /* Style Close X button cleanly in the blue header banner */
+    
+    /* Dialog Title - Leather Cover */
+    [role="dialog"] [data-testid="stDialogTitle"],
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] {
+        background: linear-gradient(to bottom, #8b4513, #6b3410) !important; /* Leather brown */
+        color: #fff8dc !important;
+        padding: 16px 20px !important;
+        border-radius: 10px 10px 0 0 !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        box-shadow: 0 4px 6px rgba(0,0,0, 0.4) !important;
+        border-bottom: 3px dashed #deb887 !important; /* Stitching effect */
+    }
+
+    /* Style Close X button cleanly */
     [role="dialog"] header[data-testid="stDialogHeader"] button,
-    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button,
-    [role="dialog"] div[data-testid="stDialogHeader"] button,
-    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button {
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button {
         padding: 4px !important;
-        width: 30px !important;
-        height: 30px !important;
-        min-width: 30px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        background: rgba(255, 255, 255, 0.25) !important;
+        width: 32px !important;
+        height: 32px !important;
+        background: rgba(255, 255, 255, 0.15) !important;
         border-radius: 50% !important;
         color: #ffffff !important;
-        border: none !important;
+        border: 1px solid rgba(255, 255, 255, 0.3) !important;
         margin-left: 10px !important;
         cursor: pointer !important;
     }
     [role="dialog"] header[data-testid="stDialogHeader"] button svg,
-    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg,
-    [role="dialog"] div[data-testid="stDialogHeader"] button svg,
-    [data-testid="stDialog"] div[data-testid="stDialogHeader"] button svg {
-        width: 16px !important;
-        height: 16px !important;
+    [data-testid="stDialog"] header[data-testid="stDialogHeader"] button svg {
         fill: #ffffff !important;
-        stroke: #ffffff !important;
-        color: #ffffff !important;
     }
-    /* Ensure 2 columns for buttons sit side-by-side on 1 row with equal 50% width */
+    
+    /* Notebook Text Area with Ruled Lines */
+    [data-testid="stTextArea"] textarea {
+        background-color: #fdf6e3 !important; /* Light cream paper */
+        background-image: 
+            linear-gradient(90deg, transparent 40px, #ffb6c1 40px, #ffb6c1 42px, transparent 42px),
+            linear-gradient(#e5e5e5 1px, transparent 1px) !important;
+        background-size: 100% 100%, 100% 28px !important;
+        background-attachment: local !important; /* Lines scroll with text */
+        line-height: 28px !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif !important;
+        font-size: 16px !important;
+        color: #1e293b !important;
+        padding-top: 5px !important;
+        padding-left: 50px !important; /* Space for red margin */
+        border: 1px solid #d4d4d8 !important;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.04) inset !important;
+        border-radius: 4px 10px 10px 4px !important;
+        resize: vertical !important;
+    }
+    [data-testid="stTextArea"] textarea:focus {
+        outline: none !important;
+        border-color: #a1a1aa !important;
+        box-shadow: 2px 2px 12px rgba(0,0,0,0.08) inset !important;
+    }
+    
+    /* Fake Binder Ring effect using left border of wrapper */
+    [data-testid="stTextArea"] > div:first-child {
+        border-left: 14px dotted #cbd5e1 !important;
+        border-radius: 6px;
+        background-color: #fff !important; /* Base for the rings to sit on */
+    }
+
+    /* Horizontal block for buttons */
     [role="dialog"] [data-testid="stHorizontalBlock"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] {
         display: flex !important;
         flex-direction: row !important;
-        flex-wrap: nowrap !important;
         justify-content: space-between !important;
-        align-items: stretch !important;
-        width: 100% !important;
-        max-width: 100% !important;
-        gap: 12px !important;
-        margin: 8px 0 3px 0 !important;
-        padding: 0 !important;
+        gap: 15px !important;
+        margin-top: 15px !important;
+        padding-bottom: 5px !important;
     }
+    
     [role="dialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"],
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
-        width: calc(50% - 6px) !important;
-        min-width: calc(50% - 6px) !important;
-        max-width: calc(50% - 6px) !important;
-        flex: 0 0 calc(50% - 6px) !important;
-        margin: 0 !important;
-        padding: 0 !important;
+        flex: 1 !important;
+        width: 50% !important;
     }
-    [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div,
-    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"] > div {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    /* Keep dialog content buttons strictly equal height and 1 line without wrapping */
+
+    /* Base Button Styles */
     [role="dialog"] div[data-testid="stDialogContent"] button,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button,
-    [role="dialog"] [data-testid="stVerticalBlock"] button,
-    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button {
-        padding: 10px 4px !important;
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] button {
         width: 100% !important;
-        height: 44px !important;
-        min-height: 44px !important;
-        max-height: 44px !important;
+        height: 50px !important;
         display: inline-flex !important;
-        flex-direction: row !important;
         justify-content: center !important;
         align-items: center !important;
-        gap: 7px !important;
-        box-sizing: border-box !important;
-        white-space: nowrap !important;
+        gap: 8px !important;
+        transition: all 0.2s ease !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] button p,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button p,
-    [role="dialog"] [data-testid="stVerticalBlock"] button p,
-    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button p {
-        white-space: nowrap !important;
-        font-size: 13.5px !important;
+
+    /* Primary Button (Save) - Rubber Stamp Style */
+    button[data-testid="baseButton-primary"] {
+        background: transparent !important;
+        border: 3px solid #d32f2f !important;
+        border-radius: 8px !important;
+        transform: rotate(-2deg) !important;
+        box-shadow: none !important;
+        opacity: 0.9 !important;
+    }
+    button[data-testid="baseButton-primary"] p,
+    button[data-testid="baseButton-primary"] .material-symbols-rounded {
+        color: #d32f2f !important;
+        font-family: 'Courier New', Courier, monospace !important;
+        font-weight: 900 !important;
+        font-size: 17px !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1px !important;
+    }
+    button[data-testid="baseButton-primary"]:hover {
+        background: rgba(211, 47, 47, 0.05) !important;
+        transform: rotate(-3deg) scale(1.03) !important;
+        opacity: 1 !important;
+    }
+
+    /* Secondary Button (Delete) - Dashed Note Style */
+    button[data-testid="baseButton-secondary"] {
+        background: transparent !important;
+        border: 2px dashed #64748b !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+    }
+    button[data-testid="baseButton-secondary"] p,
+    button[data-testid="baseButton-secondary"] .material-symbols-rounded {
+        color: #64748b !important;
+        font-family: 'Courier New', Courier, monospace !important;
         font-weight: 700 !important;
-        line-height: 1 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        display: inline-flex !important;
-        align-items: center !important;
+        font-size: 15px !important;
     }
-    [role="dialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button [data-testid="stIconMaterial"],
-    [role="dialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
-    [data-testid="stDialog"] [data-testid="stVerticalBlock"] button [data-testid="stIconMaterial"],
-    [role="dialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded,
-    [data-testid="stDialog"] div[data-testid="stDialogContent"] button .material-symbols-rounded {
-        font-size: 19px !important;
-        width: 19px !important;
-        height: 19px !important;
-        line-height: 19px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        margin: 0 !important;
-        padding: 0 !important;
+    button[data-testid="baseButton-secondary"]:hover {
+        background: rgba(100, 116, 139, 0.1) !important;
     }
     </style>""", unsafe_allow_html=True)
 
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
-    st.markdown(f"<div style='font-size: 13.5px; color: #475569; margin-top: -8px; margin-bottom: 6px;'>{desc_text}</div>", unsafe_allow_html=True)
+    st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -5px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
 
     note_val = st.text_area(
         t("Nội dung ghi chú", "メモ内容"),
@@ -2318,6 +2351,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
