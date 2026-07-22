@@ -791,7 +791,7 @@ def render_project_history():
 
             display_period_label = format_period_range_label(df_t2, sel_period_t2_label) if sel_period_t2_label == all_period_opt else sel_period_t2_label
 
-            min_h = "min-height: 54px; display: flex; align-items: flex-start;" if is_compare else ""
+            min_h = "height: 80px; display: flex; align-items: flex-start; overflow: hidden;" if is_compare else ""
             
             # CSS for Micro-animations (Idea 5)
             st.markdown("""
