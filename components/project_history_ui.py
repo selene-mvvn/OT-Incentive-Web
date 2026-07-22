@@ -519,7 +519,7 @@ def render_project_history():
                                           '🌟 ' + t('Top nhân sự: ', 'トップスタッフ: ') + '<b>%{customdata[3]}</b><extra></extra>',
                             textinfo="label+value",
                             texttemplate="<b>%{label}</b><br>%{value:,.1f}h",
-                            textfont=dict(size=14, color="#1e293b"),
+                            textfont=dict(size=14),
                             marker=dict(line=dict(color='white', width=2))
                         )
                         
