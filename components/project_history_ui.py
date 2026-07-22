@@ -323,6 +323,16 @@ def render_project_history():
                 with col_pie_hdr1:
                     st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'><span style='flex-shrink: 0;'>🎯</span> <span>{t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} ({period_label})</span></div>", unsafe_allow_html=True)
                 with col_pie_hdr2:
+                    st.markdown("""
+                        <style>
+                        .tab1-chart-radio + div[data-testid="stRadio"] div[role="radiogroup"] {
+                            display: grid !important;
+                            grid-template-columns: 1fr 1fr;
+                            row-gap: 8px;
+                        }
+                        </style>
+                        <div class="tab1-chart-radio"></div>
+                    """, unsafe_allow_html=True)
                     chart_mode = st.radio(
                         "Chart mode",
                         options=[
