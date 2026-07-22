@@ -806,35 +806,16 @@ def show_user_guide():
     slide = st.session_state['guide_slide']
 
     st.markdown("""<style>
-    /* Clean up the dialog for presentation mode */
-    [role="dialog"] [data-testid="stDialogTitle"],
-    [data-testid="stDialog"] [data-testid="stDialogTitle"] {
-        display: none !important; /* Hide default title to create full-bleed card */
-    }
-    
+    /* Reset dialog content padding for clean look */
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
-        padding: 0 !important;
+        padding: 0 0 15px 0 !important;
         background-color: #ffffff !important;
-        border-radius: 12px !important;
-        overflow: hidden !important;
+        border-radius: 0 0 12px 12px !important;
     }
 
-    .guide-header {
-        background: linear-gradient(135deg, #00B0F0, #0088cc);
-        padding: 20px;
-        text-align: center;
-        color: white;
-    }
-    .guide-header h2 {
-        margin: 0;
-        font-size: 24px;
-        font-weight: 800;
-        letter-spacing: 1px;
-    }
-    
     .guide-body {
-        padding: 30px 20px;
+        padding: 20px 30px;
         text-align: center;
         min-height: 280px;
         display: flex;
@@ -843,16 +824,17 @@ def show_user_guide():
         align-items: center;
     }
     .guide-icon {
-        font-size: 80px;
-        margin-bottom: 20px;
+        font-size: 70px;
+        margin-bottom: 10px;
         text-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .guide-title {
         color: #00B0F0;
         font-size: 22px;
         font-weight: 900;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
         text-transform: uppercase;
+        letter-spacing: 1px;
     }
     .guide-text {
         font-size: 15px;
@@ -860,26 +842,23 @@ def show_user_guide():
         line-height: 1.6;
         text-align: left;
         display: inline-block;
-        max-width: 400px;
+        max-width: 420px;
+        width: 100%;
     }
     .guide-text ul {
         margin: 0;
         padding-left: 20px;
     }
     .guide-text li {
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
     
     /* Navigation buttons */
     div.guide-nav {
-        padding: 15px 20px;
-        background: #f8fafc;
-        border-top: 1px solid #e2e8f0;
+        padding: 10px 20px 0 20px;
+        margin-top: 10px;
     }
     </style>""", unsafe_allow_html=True)
-
-    # Header
-    st.markdown(f"<div class='guide-header'><h2>✨ {t('HƯỚNG DẪN SỬ DỤNG', '使い方ガイド')} ✨</h2></div>", unsafe_allow_html=True)
 
     # Body Content
     if slide == 1:
@@ -939,7 +918,7 @@ def show_user_guide():
 
     # Navigation
     st.markdown("<div class='guide-nav'>", unsafe_allow_html=True)
-    c_prev, c_dots, c_next = st.columns([1, 1.5, 1], vertical_alignment="center")
+    c_prev, c_dots, c_next = st.columns([1.2, 1.2, 1.2], vertical_alignment="center")
     
     with c_prev:
         if slide > 1:
@@ -949,7 +928,7 @@ def show_user_guide():
                 
     with c_dots:
         # Create cute dots
-        dots_html = "<div style='text-align:center; display:flex; justify-content:center; gap:8px; margin-top:10px;'>"
+        dots_html = "<div style='text-align:center; display:flex; justify-content:center; gap:8px; margin-top:2px;'>"
         for i in range(1, 5):
             if i == slide:
                 dots_html += "<div style='width:24px; height:8px; background:#00B0F0; border-radius:4px;'></div>"
@@ -2440,6 +2419,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
