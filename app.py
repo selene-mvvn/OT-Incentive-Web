@@ -924,7 +924,6 @@ def show_user_guide():
         if slide > 1:
             if st.button(t("⬅️ Trước", "⬅️ 前へ"), use_container_width=True, key="btn_guide_prev"):
                 st.session_state['guide_slide'] -= 1
-                st.rerun()
                 
     with c_dots:
         # Create cute dots
@@ -941,11 +940,10 @@ def show_user_guide():
         if slide < 4:
             if st.button(t("Tiếp ➡️", "次へ ➡️"), use_container_width=True, type="primary", key="btn_guide_next"):
                 st.session_state['guide_slide'] += 1
-                st.rerun()
         else:
             if st.button(t("Bắt đầu 🚀", "始める 🚀"), use_container_width=True, type="primary", key="btn_guide_start"):
                 st.session_state['guide_slide'] = 1 # reset for next time
-                st.rerun()
+                st.rerun() # This will close the dialog and rerun the main app, which is what we want for 'Bắt đầu' (Start)
                 
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -2419,6 +2417,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
