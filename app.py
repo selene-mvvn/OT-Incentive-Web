@@ -1512,20 +1512,147 @@ def show_sticky_note_editor_modal():
     button[data-testid="baseButton-secondary"]:hover {
         background: rgba(100, 116, 139, 0.1) !important;
     }
+    
+    /* Mode Tabs */
+    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] {
+        margin-top: 0 !important;
+        margin-bottom: 5px !important;
+        gap: 5px !important;
+    }
+    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button {
+        height: 32px !important;
+        border-radius: 6px 6px 0 0 !important;
+        transform: none !important;
+        border: 1px solid #d4d4d8 !important;
+        border-bottom: none !important;
+        background: #f1f5f9 !important;
+        box-shadow: none !important;
+        opacity: 1 !important;
+    }
+    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button p {
+        font-family: Arial, sans-serif !important;
+        font-size: 13px !important;
+        color: #64748b !important;
+        letter-spacing: normal !important;
+        font-weight: bold !important;
+    }
+    /* Active Tab */
+    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button[data-testid="baseButton-primary"] {
+        background: #ffffff !important;
+        border-color: #cbd5e1 !important;
+        border-bottom: 2px solid #ffffff !important;
+    }
+    div.element-container:has(.mode-tabs-marker) + div[data-testid="stHorizontalBlock"] button[data-testid="baseButton-primary"] p {
+        color: #d32f2f !important;
+    }
+
+    /* Checklist Container to look like ruled paper */
+    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] {
+        background-color: #ffffff !important; 
+        background-image: 
+            linear-gradient(90deg, transparent 40px, #ffb6c1 40px, #ffb6c1 42px, transparent 42px),
+            linear-gradient(#e5e5e5 1px, transparent 1px) !important;
+        background-size: 100% 100%, 100% 28px !important;
+        background-attachment: local !important;
+        padding: 5px 10px 10px 50px !important;
+        border: 1px solid #d4d4d8 !important;
+        border-radius: 4px 10px 10px 4px !important;
+        border-left: 14px dotted #cbd5e1 !important;
+        min-height: 130px;
+        box-shadow: 2px 2px 10px rgba(0,0,0,0.04) inset !important;
+    }
+    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stCheckbox {
+        min-height: 28px !important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
+    }
+    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stCheckbox p {
+        font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif !important;
+        font-size: 16px !important;
+        color: #1e293b !important;
+        line-height: 28px !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+    /* Make text input blend into notebook */
+    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stTextInput input {
+        background: transparent !important;
+        border: none !important;
+        font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif !important;
+        font-size: 16px !important;
+        color: #94a3b8 !important;
+        padding: 0 !important;
+        line-height: 28px !important;
+        box-shadow: none !important;
+    }
+    div.element-container:has(.checklist-marker) + div.element-container > div[data-testid="stVerticalBlock"] .stTextInput input:focus {
+        color: #1e293b !important;
+    }
     </style>""", unsafe_allow_html=True)
 
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
     st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -5px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
 
-    note_val = st.text_area(
-        t("Nội dung ghi chú", "メモ内容"),
-        value=st.session_state.get('sidebar_sticky_note', ''),
-        key="txt_popup_sticky_note",
-        placeholder=t("Nhập việc cần nhớ (VD: Kiểm tra OT dự án V050010)...", "メモを入力..."),
-        height=130,
-        label_visibility="collapsed"
-    )
-    st.session_state['sidebar_sticky_note'] = note_val
+    current_mode = st.session_state.get('sticky_note_mode', 'edit')
+    
+    st.markdown('<div class="mode-tabs-marker"></div>', unsafe_allow_html=True)
+    col_edit, col_check, _ = st.columns([1, 1, 1.2])
+    with col_edit:
+        if st.button("📝 Soạn thảo", type="primary" if current_mode == 'edit' else "secondary", use_container_width=True, key="btn_mode_edit"):
+            st.session_state['sticky_note_mode'] = 'edit'
+            st.rerun()
+    with col_check:
+        if st.button("✅ Checklist", type="primary" if current_mode == 'check' else "secondary", use_container_width=True, key="btn_mode_check"):
+            st.session_state['sticky_note_mode'] = 'check'
+            st.rerun()
+
+    note_val = st.session_state.get('sidebar_sticky_note', '')
+
+    if current_mode == 'edit':
+        note_val = st.text_area(
+            t("Nội dung ghi chú", "メモ内容"),
+            value=note_val,
+            key="txt_popup_sticky_note",
+            placeholder=t("Nhập việc cần nhớ (VD: Kiểm tra OT dự án V050010)...", "メモを入力..."),
+            height=130,
+            label_visibility="collapsed"
+        )
+        st.session_state['sidebar_sticky_note'] = note_val
+    else:
+        st.markdown('<div class="checklist-marker"></div>', unsafe_allow_html=True)
+        with st.container():
+            lines = note_val.split('\n')
+            new_lines = []
+            changed = False
+            for i, line in enumerate(lines):
+                if line.strip():
+                    is_checked = line.strip().startswith('[x]') or line.strip().startswith('[X]')
+                    clean_line = line.replace('[x]', '').replace('[X]', '').replace('[ ]', '').strip()
+                    
+                    if is_checked:
+                        checked = st.checkbox(f"~~{clean_line}~~", value=True, key=f"chk_note_{i}")
+                    else:
+                        checked = st.checkbox(clean_line, value=False, key=f"chk_note_{i}")
+                        
+                    if checked:
+                        new_lines.append(f"[x] {clean_line}")
+                    else:
+                        new_lines.append(f"[ ] {clean_line}")
+                        
+                    if checked != is_checked:
+                        changed = True
+                else:
+                    new_lines.append(line)
+            
+            new_item = st.text_input("Thêm việc mới...", key="txt_new_checklist_item", label_visibility="collapsed")
+            if new_item:
+                new_lines.append(f"[ ] {new_item.strip()}")
+                changed = True
+                
+        if changed:
+            st.session_state['sidebar_sticky_note'] = '\n'.join(new_lines)
+            save_sticky_note('\n'.join(new_lines))
+            st.rerun()
 
     col_save, col_delete = st.columns(2, gap="small")
     with col_save:
@@ -2333,6 +2460,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
