@@ -661,11 +661,11 @@ def render_project_history():
                     verdict_save = (rate_A - rate_B) / rate_A * 100.0
                 
                 verdict_text = t(
-                    f"<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>Chẩn đoán đơn giá bình quân tối ưu hơn:</b>&nbsp;<span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VNĐ/h, tiết kiệm hơn {verdict_save:.1f}%)",
-                    f"<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>より平均単価がお得:</b>&nbsp;<span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VND/時間、{verdict_save:.1f}% コスト優位)"
+                    f"<b>Chẩn đoán đơn giá bình quân tối ưu hơn:</b>&nbsp;<span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VNĐ/h, tiết kiệm hơn {verdict_save:.1f}%)",
+                    f"<b>より平均単価がお得:</b>&nbsp;<span style='color: #0284c7; font-weight: 800; font-size: 15.5px;'>{verdict_winner}</span> ({verdict_rate:,.0f} VND/時間、{verdict_save:.1f}% コスト優位)"
                 )
             else:
-                verdict_text = t("<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>Chẩn đoán:</b>&nbsp;Đơn giá bình quân của hai dự án đang ở mức cân bằng tương đương nhau.", "<span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; vertical-align: -5px; margin-right: 6px;'>emoji_events</span><b>評価:</b>&nbsp;両プロジェクトの平均単価は同等レベルにバランスされています。")
+                verdict_text = t("<b>Chẩn đoán:</b>&nbsp;Đơn giá bình quân của hai dự án đang ở mức cân bằng tương đương nhau.", "<b>評価:</b>&nbsp;両プロジェクトの平均単価は同等レベルにバランスされています。")
 
             st.markdown(f"""
             <div style="background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
@@ -681,8 +681,9 @@ def render_project_history():
                 <div style="font-size: 14.5px; color: #334155; line-height: 1.75; display: flex; flex-direction: column; gap: 14px;">
                     <div><span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>payments</span>{cost_text}</div>
                     <div>{resource_text}</div>
-                    <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px; display: flex; align-items: center;">
-                        {verdict_text}
+                    <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px; display: flex; align-items: flex-start; gap: 8px;">
+                        <span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; margin-top: -1px;'>emoji_events</span>
+                        <div style="flex: 1; line-height: 1.6;">{verdict_text}</div>
                     </div>
                 </div>
             </div>
