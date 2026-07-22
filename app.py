@@ -1537,12 +1537,12 @@ def show_sticky_note_editor_modal():
             column-gap: 16px;
             margin-bottom: 5px;
         }}
-        /* Pull the radio group UP to remove the awkward gap */
+        /* Pull the radio group UP slightly to remove the awkward gap */
         div.element-container:has(.sticky-note-radio) {{
-            margin-bottom: -40px !important;
+            margin-bottom: -10px !important;
         }}
         </style>
-        <div style="font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -40px; margin-bottom: 10px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;">
+        <div style="font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -35px; margin-bottom: 5px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;">
             📌 {desc_text}
         </div>
         <div class="sticky-note-radio"></div>
@@ -2421,6 +2421,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
