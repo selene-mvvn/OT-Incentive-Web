@@ -325,10 +325,11 @@ def render_project_history():
                 with col_pie_hdr2:
                     st.markdown("""
                         <style>
-                        .tab1-chart-radio + div[data-testid="stRadio"] div[role="radiogroup"] {
+                        div.element-container:has(.tab1-chart-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] {
                             display: grid !important;
                             grid-template-columns: 1fr 1fr;
                             row-gap: 8px;
+                            column-gap: 2px;
                         }
                         </style>
                         <div class="tab1-chart-radio"></div>
