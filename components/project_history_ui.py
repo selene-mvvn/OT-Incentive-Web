@@ -788,9 +788,9 @@ def render_project_history():
                     angularaxis=dict(tickfont=dict(size=12, color='#334155'))
                 ),
                 showlegend=True,
-                legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="center", x=0.5),
-                margin=dict(l=40, r=40, t=50, b=45),
-                height=350,
+                legend=dict(orientation="h", yanchor="top", y=-0.15, xanchor="center", x=0.5),
+                margin=dict(l=40, r=40, t=50, b=90),
+                height=420,
                 paper_bgcolor='rgba(0,0,0,0)',
                 plot_bgcolor='rgba(0,0,0,0)',
                 font=dict(family="'Times New Roman', serif")
