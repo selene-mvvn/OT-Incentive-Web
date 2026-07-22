@@ -234,7 +234,7 @@ def render_project_history():
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
-                        {total_hrs:,.1f} <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span>
+                        <span class="count-up-target-float" data-target="{total_hrs}">{total_hrs:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span>
                     </div>
                 </div>
                 <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
@@ -247,7 +247,7 @@ def render_project_history():
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
-                        {num_projects} <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span>
+                        <span class="count-up-target" data-target="{num_projects}">{num_projects}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span>
                     </div>
                 </div>
                 <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
@@ -260,7 +260,7 @@ def render_project_history():
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
-                        {total_cost:,.0f} <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span>
+                        <span class="count-up-target" data-target="{total_cost}">{total_cost:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span>
                     </div>
                 </div>
                 <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
@@ -273,7 +273,7 @@ def render_project_history():
                         </div>
                     </div>
                     <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
-                        {num_staff} <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('người', '名')}</span>
+                        <span class="count-up-target" data-target="{num_staff}">{num_staff}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('người', '名')}</span>
                     </div>
                 </div>
             </div>
@@ -1093,3 +1093,63 @@ def render_project_history():
         else:
             render_project_details(df_t2_main, sel_project, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False)
 
+    # Inject Javascript to animate the counting for metrics
+    import streamlit.components.v1 as components
+    js_count_up = """
+    <script>
+        setTimeout(() => {
+            try {
+                const parentDoc = window.parent.document;
+                
+                // For integers
+                const targets = parentDoc.querySelectorAll('.count-up-target:not(.animated)');
+                targets.forEach(el => {
+                    el.classList.add('animated');
+                    const targetStr = el.getAttribute('data-target');
+                    if (!targetStr) return;
+                    const target = parseFloat(targetStr.replace(/,/g, '')) || 0;
+                    const duration = 1500;
+                    const frameRate = 30;
+                    const totalFrames = Math.round(duration / frameRate);
+                    let frame = 0;
+                    const counter = setInterval(() => {
+                        frame++;
+                        const progress = frame / totalFrames;
+                        const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                        const current = Math.round(target * easeOut);
+                        el.innerText = current.toLocaleString('en-US');
+                        if (frame >= totalFrames) {
+                            clearInterval(counter);
+                            el.innerText = target.toLocaleString('en-US');
+                        }
+                    }, frameRate);
+                });
+
+                // For floats (1 decimal)
+                const floatTargets = parentDoc.querySelectorAll('.count-up-target-float:not(.animated)');
+                floatTargets.forEach(el => {
+                    el.classList.add('animated');
+                    const targetStr = el.getAttribute('data-target');
+                    if (!targetStr) return;
+                    const target = parseFloat(targetStr.replace(/,/g, '')) || 0;
+                    const duration = 1500;
+                    const frameRate = 30;
+                    const totalFrames = Math.round(duration / frameRate);
+                    let frame = 0;
+                    const counter = setInterval(() => {
+                        frame++;
+                        const progress = frame / totalFrames;
+                        const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+                        const current = target * easeOut;
+                        el.innerText = current.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+                        if (frame >= totalFrames) {
+                            clearInterval(counter);
+                            el.innerText = target.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1});
+                        }
+                    }, frameRate);
+                });
+            } catch (e) {}
+        }, 100);
+    </script>
+    """
+    components.html(js_count_up, height=0)
