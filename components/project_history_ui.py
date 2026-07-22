@@ -329,7 +329,7 @@ def render_project_history():
                             display: grid !important;
                             grid-template-columns: 1fr 1fr;
                             row-gap: 8px;
-                            column-gap: 2px;
+                            column-gap: 16px;
                         }
                         </style>
                         <div class="tab1-chart-radio"></div>
