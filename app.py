@@ -1525,6 +1525,18 @@ def show_sticky_note_editor_modal():
     desc_text = t('Ghi chú của bạn được tự động ghi nhớ ngay trong phiên làm việc:', 'メモは自動保存されます:')
     st.markdown(f"<div style=\"font-family: 'Comic Sans MS', cursive, sans-serif; font-size: 14px; color: #5c4033; margin-top: -5px; margin-bottom: 12px; border-bottom: 1px dashed #d2b48c; padding-bottom: 8px;\">📌 {desc_text}</div>", unsafe_allow_html=True)
 
+    def add_checklist_item(tab_key):
+        val = st.session_state.get(f"new_item_{tab_key}", "")
+        if val.strip():
+            raw = st.session_state.get('sidebar_sticky_note', '{}')
+            try:
+                d = json.loads(raw)
+            except Exception:
+                d = {"Urgent": "", "Project": "", "Personal": ""}
+            current = d.get(tab_key, "")
+            d[tab_key] = current + ("\n" if current else "") + f"[ ] {val.strip()}"
+            st.session_state['sidebar_sticky_note'] = json.dumps(d, ensure_ascii=False)
+            st.session_state[f"new_item_{tab_key}"] = "" # Clear input
     # Parse existing note data safely
     raw_note = st.session_state.get('sidebar_sticky_note', '')
     if raw_note.strip().startswith('{') and raw_note.strip().endswith('}'):
@@ -2402,6 +2414,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
