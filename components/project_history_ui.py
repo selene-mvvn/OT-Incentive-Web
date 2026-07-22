@@ -681,8 +681,8 @@ def render_project_history():
                 <div style="font-size: 14.5px; color: #334155; line-height: 1.75; display: flex; flex-direction: column; gap: 14px;">
                     <div><span class='material-symbols-rounded' style='font-size: 20px; color: #0284c7; vertical-align: -5px; margin-right: 5px;'>payments</span>{cost_text}</div>
                     <div>{resource_text}</div>
-                    <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px; display: flex; align-items: flex-start; gap: 8px;">
-                        <span class='material-symbols-rounded' style='font-size: 22px; color: #0284c7; margin-top: -1px;'>emoji_events</span>
+                    <div style="background: #e0f2fe; padding: 12px 18px; border-radius: 10px; border-left: 4.5px solid #0284c7; margin-top: 4px; display: flex; align-items: center; gap: 8px;">
+                        <span class='material-symbols-rounded' style='font-size: 24px; color: #0284c7;'>emoji_events</span>
                         <div style="flex: 1; line-height: 1.6;">{verdict_text}</div>
                     </div>
                 </div>
