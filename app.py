@@ -800,68 +800,175 @@ from logic.i18n import t
 
 @st.dialog(t("✨ HƯỚNG DẪN SỬ DỤNG", "✨ 使い方ガイド"))
 def show_user_guide():
-        st.markdown("""<style>
-    /* Style big dialog title with blue frame and white text specifically for this dialog */
+    if 'guide_slide' not in st.session_state:
+        st.session_state['guide_slide'] = 1
+        
+    slide = st.session_state['guide_slide']
+
+    st.markdown("""<style>
+    /* Clean up the dialog for presentation mode */
     [role="dialog"] [data-testid="stDialogTitle"],
-    [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    [role="dialog"] h2:first-of-type,
-    [data-testid="stDialog"] h2:first-of-type {
-        background-color: #00B0F0 !important;
-        color: #ffffff !important;
-        padding: 14px 22px !important;
-        border-radius: 8px !important;
-        font-weight: 700 !important;
-        font-size: 22px !important;
-        margin-top: 0px !important;
-        margin-bottom: 5px !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        display: block !important;
-        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] {
+        display: none !important; /* Hide default title to create full-bleed card */
     }
-    [role="dialog"] [data-testid="stDialogTitle"] *,
-    [data-testid="stDialog"] [data-testid="stDialogTitle"] *,
-    [role="dialog"] h2:first-of-type *,
-    [data-testid="stDialog"] h2:first-of-type * {
-        color: #ffffff !important;
+    
+    [role="dialog"] div[data-testid="stDialogContent"],
+    [data-testid="stDialog"] div[data-testid="stDialogContent"] {
+        padding: 0 !important;
+        background-color: #ffffff !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
     }
-    </style>""" + t("""
-### 1. OVERTIME
-- **Dữ liệu dự án**: Nhập thủ công thời gian tăng ca cho từng dự án. Dữ liệu nhân sự và lương được tự động đồng bộ từ Cài đặt chung.
-- **Nhập hàng loạt (Excel)**: Upload trực tiếp file dữ liệu, hệ thống tự động nhận diện và tính toán thời gian tăng ca hàng loạt cực kỳ nhanh chóng.
-- **Lịch sử dự án**: Phân tích tỷ trọng giờ tăng ca và tra cứu chi tiết lịch sử từng dự án theo thời gian.
 
-### 2. INCENTIVE
-- Tự động trích xuất và gợi ý dữ liệu từ các dự án đã thực hiện.
-- Đánh giá hiệu suất làm việc dựa trên số giờ làm việc thực tế so với kế hoạch, từ đó quy đổi chính xác ra mức tiền thưởng (Incentive).
-- **Dự tính Incentive**: Kéo thanh trượt để giả lập và xem trước mức tiền thưởng thay đổi thế nào khi Giờ công thực tế thay đổi.
+    .guide-header {
+        background: linear-gradient(135deg, #00B0F0, #0088cc);
+        padding: 20px;
+        text-align: center;
+        color: white;
+    }
+    .guide-header h2 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+    
+    .guide-body {
+        padding: 30px 20px;
+        text-align: center;
+        min-height: 280px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .guide-icon {
+        font-size: 80px;
+        margin-bottom: 20px;
+        text-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .guide-title {
+        color: #00B0F0;
+        font-size: 22px;
+        font-weight: 900;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+    }
+    .guide-text {
+        font-size: 15px;
+        color: #475569;
+        line-height: 1.6;
+        text-align: left;
+        display: inline-block;
+        max-width: 400px;
+    }
+    .guide-text ul {
+        margin: 0;
+        padding-left: 20px;
+    }
+    .guide-text li {
+        margin-bottom: 10px;
+    }
+    
+    /* Navigation buttons */
+    div.guide-nav {
+        padding: 15px 20px;
+        background: #f8fafc;
+        border-top: 1px solid #e2e8f0;
+    }
+    </style>""", unsafe_allow_html=True)
 
-### 3. LỊCH SỬ THAO TÁC
-- Các file Excel dữ liệu đã xuất ra sẽ được tự động lưu trữ an toàn.
-- Dễ dàng xem lại, tải xuống file cũ hoặc xóa bỏ dữ liệu thừa.
+    # Header
+    st.markdown(f"<div class='guide-header'><h2>✨ {t('HƯỚNG DẪN SỬ DỤNG', '使い方ガイド')} ✨</h2></div>", unsafe_allow_html=True)
 
-### 4. CÀI ĐẶT CHUNG
-- Thiết lập thông tin nhân sự, mức lương cơ bản (Gross) và các cấu hình hệ thống.
-- **Lưu ý**: Vui lòng thiết lập dữ liệu tại đây trước để hệ thống có cơ sở tính toán chính xác nhất.
-    """, """
-### 1. 残業代計算(OVERTIME)
-- **プロジェクト**: 各プロジェクトの残業時間を手動で入力します。スタッフデータや給与情報は一般設定から自動的に同期されます。
-- **一括入力(Excel)**: Excelデータをアップロードするだけで、システムが自動的に認識し、スマートかつ迅速に一括計算します。
-- **プロジェクト分析・履歴**: 残業時間の割合を分析し、各プロジェクトの履歴詳細を期間ごとに検索できます。
+    # Body Content
+    if slide == 1:
+        st.markdown(f"""
+        <div class='guide-body'>
+            <div class='guide-icon'>⏱️</div>
+            <div class='guide-title'>1. OVERTIME</div>
+            <div class='guide-text'>
+                <ul>
+                    <li><b>{t('Dữ liệu dự án', 'プロジェクト')}</b>: {t('Nhập thủ công thời gian tăng ca cho từng dự án.', '各プロジェクトの残業時間を手動で入力します。')}</li>
+                    <li><b>{t('Nhập hàng loạt', '一括入力')}</b>: {t('Upload file Excel, hệ thống tự động tính toán hàng loạt.', 'Excelをアップロードし、自動的に一括計算します。')}</li>
+                    <li><b>{t('Lịch sử dự án', '履歴分析')}</b>: {t('Phân tích và tra cứu chi tiết lịch sử từng dự án.', '各プロジェクトの履歴詳細を分析・検索します。')}</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    elif slide == 2:
+        st.markdown(f"""
+        <div class='guide-body'>
+            <div class='guide-icon'>💰</div>
+            <div class='guide-title'>2. INCENTIVE</div>
+            <div class='guide-text'>
+                <ul>
+                    <li><b>{t('Tự động gợi ý', '自動提案')}</b>: {t('Trích xuất dữ liệu từ các dự án đã thực hiện.', '実行済みのプロジェクトからデータを抽出します。')}</li>
+                    <li><b>{t('Đánh giá hiệu suất', '評価')}</b>: {t('So sánh thực tế và kế hoạch để quy đổi ra tiền thưởng.', '計画と実績を比較し、インセンティブを算出します。')}</li>
+                    <li><b>{t('Dự tính Incentive', 'シミュレーション')}</b>: {t('Kéo thanh trượt để giả lập mức tiền thưởng.', 'スライダーでインセンティブの変動をシミュレーション。')}</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    elif slide == 3:
+        st.markdown(f"""
+        <div class='guide-body'>
+            <div class='guide-icon'>📁</div>
+            <div class='guide-title'>3. LỊCH SỬ THAO TÁC</div>
+            <div class='guide-text'>
+                <ul>
+                    <li><b>{t('Lưu trữ an toàn', '安全な保存')}</b>: {t('Các file Excel xuất ra được tự động lưu trữ.', '出力されたExcelファイルは自動保存されます。')}</li>
+                    <li><b>{t('Quản lý dễ dàng', '簡単管理')}</b>: {t('Dễ dàng xem lại, tải xuống hoặc xóa bỏ dữ liệu cũ.', '過去のファイルの確認、再ダウンロード、削除が可能です。')}</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    elif slide == 4:
+        st.markdown(f"""
+        <div class='guide-body'>
+            <div class='guide-icon'>⚙️</div>
+            <div class='guide-title'>4. CÀI ĐẶT CHUNG</div>
+            <div class='guide-text'>
+                <ul>
+                    <li><b>{t('Thiết lập nhân sự', 'スタッフ設定')}</b>: {t('Thông tin, mức lương cơ bản (Gross) và cấu hình hệ thống.', 'スタッフ情報、基本給、システム構成を設定します。')}</li>
+                    <li><b style='color:#e74c3c;'>{t('Lưu ý quan trọng', '注意')}</b>: {t('Vui lòng thiết lập tại đây trước để hệ thống tính toán chính xác.', '正確な計算のために、まずここで初期設定を行ってください。')}</li>
+                </ul>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
-### 2. インセンティブ(INCENTIVE)
-- 実行済みのプロジェクトからデータを自動的に抽出・提案します。
-- 計画工数と実績工数の差に基づいてパフォーマンスを評価し、獲得インセンティブを正確に算出します。
-- **予想インセンティブ**: スライダーを動かして、実工数の変化に伴う獲得インセンティブの変動をシミュレーションできます。
-
-### 3. 操作履歴
-- 出力されたすべてのExcelファイルは自動的かつ安全に保存されます。
-- いつでも過去のファイルの確認、再ダウンロード、不要なファイルの削除が可能です。
-
-### 4. 一般設定
-- スタッフ情報、基本給（Gross）、およびシステムの基本構成を設定します。
-- **注意**: 他のセクションで正確な計算を行うために、まずここで初期データを設定してください。
-    """), unsafe_allow_html=True)
+    # Navigation
+    st.markdown("<div class='guide-nav'>", unsafe_allow_html=True)
+    c_prev, c_dots, c_next = st.columns([1, 1.5, 1], vertical_alignment="center")
+    
+    with c_prev:
+        if slide > 1:
+            if st.button(t("⬅️ Trước", "⬅️ 前へ"), use_container_width=True, key="btn_guide_prev"):
+                st.session_state['guide_slide'] -= 1
+                st.rerun()
+                
+    with c_dots:
+        # Create cute dots
+        dots_html = "<div style='text-align:center; display:flex; justify-content:center; gap:8px; margin-top:10px;'>"
+        for i in range(1, 5):
+            if i == slide:
+                dots_html += "<div style='width:24px; height:8px; background:#00B0F0; border-radius:4px;'></div>"
+            else:
+                dots_html += "<div style='width:8px; height:8px; background:#cbd5e1; border-radius:50%;'></div>"
+        dots_html += "</div>"
+        st.markdown(dots_html, unsafe_allow_html=True)
+        
+    with c_next:
+        if slide < 4:
+            if st.button(t("Tiếp ➡️", "次へ ➡️"), use_container_width=True, type="primary", key="btn_guide_next"):
+                st.session_state['guide_slide'] += 1
+                st.rerun()
+        else:
+            if st.button(t("Bắt đầu 🚀", "始める 🚀"), use_container_width=True, type="primary", key="btn_guide_start"):
+                st.session_state['guide_slide'] = 1 # reset for next time
+                st.rerun()
+                
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Creative Language Switcher (Always visible) ---
 st.markdown("""
@@ -2333,6 +2440,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
