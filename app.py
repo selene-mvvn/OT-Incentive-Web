@@ -1379,12 +1379,17 @@ def show_sticky_note_editor_modal():
         box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
     }
     /* Make the modal body look like beige paper */
+    div[data-testid="stModal"] [role="dialog"],
+    div[data-testid="stModal"] [data-testid="stDialog"] {
+        background-color: #fdf8e7 !important; /* Light beige paper */
+        border-radius: 10px !important;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.02) !important;
+    }
+    
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
         padding-top: 15px !important;
-        background-color: #fdf8e7 !important; /* Light beige paper */
-        border-radius: 0 0 10px 10px !important;
-        box-shadow: inset 0 0 20px rgba(0,0,0,0.02) !important;
+        background-color: transparent !important; 
     }
     
     [role="dialog"] div[data-testid="stDialogContent"] > div[data-testid="stVerticalBlock"] > div:first-child,
@@ -1397,7 +1402,9 @@ def show_sticky_note_editor_modal():
     
     /* Dialog Title - Leather Cover */
     [role="dialog"] [data-testid="stDialogTitle"],
-    [data-testid="stDialog"] [data-testid="stDialogTitle"] {
+    [data-testid="stDialog"] [data-testid="stDialogTitle"],
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
         background: linear-gradient(to bottom, #8b4513, #6b3410) !important; /* Leather brown */
         color: #fff8dc !important;
         padding: 16px 20px !important;
@@ -1490,7 +1497,8 @@ def show_sticky_note_editor_modal():
     }
 
     /* Primary Button (Save) - Rubber Stamp Style */
-    button[data-testid="baseButton-primary"] {
+    [role="dialog"] button[data-testid="baseButton-primary"],
+    [role="dialog"] button[kind="primary"] {
         background: transparent !important;
         border: 3px solid #d32f2f !important;
         border-radius: 8px !important;
@@ -1498,8 +1506,10 @@ def show_sticky_note_editor_modal():
         box-shadow: none !important;
         opacity: 0.9 !important;
     }
-    button[data-testid="baseButton-primary"] p,
-    button[data-testid="baseButton-primary"] .material-symbols-rounded {
+    [role="dialog"] button[data-testid="baseButton-primary"] p,
+    [role="dialog"] button[data-testid="baseButton-primary"] .material-symbols-rounded,
+    [role="dialog"] button[kind="primary"] p,
+    [role="dialog"] button[kind="primary"] .material-symbols-rounded {
         color: #d32f2f !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: 900 !important;
@@ -1507,27 +1517,32 @@ def show_sticky_note_editor_modal():
         text-transform: uppercase !important;
         letter-spacing: 1px !important;
     }
-    button[data-testid="baseButton-primary"]:hover {
+    [role="dialog"] button[data-testid="baseButton-primary"]:hover,
+    [role="dialog"] button[kind="primary"]:hover {
         background: rgba(211, 47, 47, 0.05) !important;
         transform: rotate(-3deg) scale(1.03) !important;
         opacity: 1 !important;
     }
 
     /* Secondary Button (Delete) - Dashed Note Style */
-    button[data-testid="baseButton-secondary"] {
+    [role="dialog"] button[data-testid="baseButton-secondary"],
+    [role="dialog"] button[kind="secondary"] {
         background: transparent !important;
         border: 2px dashed #64748b !important;
         border-radius: 8px !important;
         box-shadow: none !important;
     }
-    button[data-testid="baseButton-secondary"] p,
-    button[data-testid="baseButton-secondary"] .material-symbols-rounded {
+    [role="dialog"] button[data-testid="baseButton-secondary"] p,
+    [role="dialog"] button[data-testid="baseButton-secondary"] .material-symbols-rounded,
+    [role="dialog"] button[kind="secondary"] p,
+    [role="dialog"] button[kind="secondary"] .material-symbols-rounded {
         color: #64748b !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: 700 !important;
         font-size: 15px !important;
     }
-    button[data-testid="baseButton-secondary"]:hover {
+    [role="dialog"] button[data-testid="baseButton-secondary"]:hover,
+    [role="dialog"] button[kind="secondary"]:hover {
         background: rgba(100, 116, 139, 0.1) !important;
     }
     </style>""", unsafe_allow_html=True)
@@ -2351,6 +2366,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
