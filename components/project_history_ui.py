@@ -411,7 +411,7 @@ def render_project_history():
                                 G.add_node(emp, type='employee', total=emp_totals[emp])
                                 G.add_edge(emp, proj, weight=weight)
                                 
-                            pos = nx.spring_layout(G, k=0.5, iterations=50, seed=42)
+                            pos = nx.spring_layout(G, k=1.5, iterations=80, seed=42, weight=None)
                             
                             edge_x, edge_y = [], []
                             for edge in G.edges():
@@ -436,14 +436,14 @@ def render_project_history():
                                 node_type = G.nodes[node]['type']
                                 total = G.nodes[node]['total']
                                 
-                                short_node = str(node).strip()
-                                if len(short_node) > 15:
-                                    if short_node.startswith('[') and ']' in short_node:
-                                        short_node = short_node.split(']')[0] + ']'
-                                    else:
-                                        short_node = short_node[:12] + '...'
-                                        
                                 if node_type == 'project':
+                                    short_node = str(node).strip()
+                                    if len(short_node) > 15:
+                                        if short_node.startswith('[') and ']' in short_node:
+                                            short_node = short_node.split(']')[0] + ']'
+                                        else:
+                                            short_node = short_node[:12] + '...'
+                                            
                                     node_color.append('#0284c7')
                                     node_size.append(max(20, min(55, 20 + (total / max_p * 35))))
                                     node_symbol.append('diamond')
@@ -454,8 +454,8 @@ def render_project_history():
                                     node_size.append(max(10, min(25, 10 + (total / max_e * 15))))
                                     node_symbol.append('circle')
                                     node_hover.append(f"<b>NV: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
-                                    name_parts = short_node.split()
-                                    short_name = name_parts[-1] if name_parts else short_node
+                                    name_parts = str(node).strip().split()
+                                    short_name = name_parts[-1] if name_parts else str(node).strip()
                                     node_label.append(f"<b>{short_name}</b>")
                                     
                             node_trace = go.Scatter(
