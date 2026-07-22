@@ -325,7 +325,11 @@ def render_project_history():
                 with col_pie_hdr2:
                     chart_mode = st.radio(
                         "Chart mode",
-                        options=[t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"), t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ")],
+                        options=[
+                            t(":material/pie_chart: Tròn (Donut)", ":material/pie_chart: ドーナツ"),
+                            t(":material/bar_chart: Cột (Bar)", ":material/bar_chart: 棒グラフ"),
+                            t(":material/hub: Mạng lưới", ":material/hub: ネットワーク")
+                        ],
                         label_visibility="collapsed",
                         horizontal=True,
                         key="tab1_chart_mode"
@@ -384,6 +388,93 @@ def render_project_history():
                         plot_bgcolor='rgba(0,0,0,0)'
                     )
                     st.plotly_chart(fig_pie, use_container_width=True, config={'displayModeBar': False})
+                elif chart_mode == t(":material/hub: Mạng lưới", ":material/hub: ネットワーク"):
+                    try:
+                        import networkx as nx
+                        agg_df = df_tab1.groupby(['employee_name', 'order_name'])['ot_hours'].sum().reset_index()
+                        agg_df = agg_df[agg_df['ot_hours'] > 0]
+                        if not agg_df.empty:
+                            G = nx.Graph()
+                            proj_totals = agg_df.groupby('order_name')['ot_hours'].sum().to_dict()
+                            emp_totals = agg_df.groupby('employee_name')['ot_hours'].sum().to_dict()
+                            
+                            max_p = max(proj_totals.values()) if proj_totals else 1
+                            max_e = max(emp_totals.values()) if emp_totals else 1
+
+                            for _, row in agg_df.iterrows():
+                                emp = str(row['employee_name']).strip()
+                                proj = str(row['order_name']).strip()
+                                weight = row['ot_hours']
+                                if not emp or not proj: continue
+                                
+                                G.add_node(proj, type='project', total=proj_totals[proj])
+                                G.add_node(emp, type='employee', total=emp_totals[emp])
+                                G.add_edge(emp, proj, weight=weight)
+                                
+                            pos = nx.spring_layout(G, k=0.5, iterations=50, seed=42)
+                            
+                            edge_x, edge_y = [], []
+                            for edge in G.edges():
+                                x0, y0 = pos[edge[0]]
+                                x1, y1 = pos[edge[1]]
+                                edge_x.extend([x0, x1, None])
+                                edge_y.extend([y0, y1, None])
+                                
+                            edge_trace = go.Scatter(
+                                x=edge_x, y=edge_y,
+                                line=dict(width=0.8, color='rgba(148, 163, 184, 0.4)'),
+                                hoverinfo='none',
+                                mode='lines'
+                            )
+
+                            node_x, node_y, node_text, node_color, node_size, node_symbol = [], [], [], [], [], []
+                            for node in G.nodes():
+                                x, y = pos[node]
+                                node_x.append(x)
+                                node_y.append(y)
+                                
+                                node_type = G.nodes[node]['type']
+                                total = G.nodes[node]['total']
+                                
+                                if node_type == 'project':
+                                    node_color.append('#0284c7')
+                                    node_size.append(max(20, min(55, 20 + (total / max_p * 35))))
+                                    node_symbol.append('diamond')
+                                    node_text.append(f"<b>DỰ ÁN: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                else:
+                                    node_color.append('#f59e0b')
+                                    node_size.append(max(10, min(25, 10 + (total / max_e * 15))))
+                                    node_symbol.append('circle')
+                                    node_text.append(f"<b>NV: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                    
+                            node_trace = go.Scatter(
+                                x=node_x, y=node_y,
+                                mode='markers',
+                                hoverinfo='text',
+                                text=node_text,
+                                marker=dict(
+                                    showscale=False,
+                                    color=node_color,
+                                    size=node_size,
+                                    symbol=node_symbol,
+                                    line=dict(width=1.5, color='white')
+                                )
+                            )
+                            
+                            fig_net = go.Figure(data=[edge_trace, node_trace], layout=go.Layout(
+                                title='', showlegend=False, hovermode='closest',
+                                margin=dict(b=10, l=10, r=10, t=10),
+                                xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                                yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                                height=400,
+                                paper_bgcolor='rgba(0,0,0,0)',
+                                plot_bgcolor='rgba(0,0,0,0)'
+                            ))
+                            st.plotly_chart(fig_net, use_container_width=True, config={'displayModeBar': False})
+                        else:
+                            st.info(t("Không có dữ liệu hợp lệ.", "有効なデータがありません。"))
+                    except Exception as e:
+                        st.error(t(f"Không thể tải mạng lưới: {str(e)}", f"ネットワークを読み込めません: {str(e)}"))
                 else:
                     # Horizontal bar chart sorted clearly by hours
                     bar_df = proj_summary.sort_values(by='Hours', ascending=True)
