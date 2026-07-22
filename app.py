@@ -1565,11 +1565,10 @@ def show_sticky_note_editor_modal():
     new_mode = 'edit' if mode_selection == opt_edit else 'check'
     if new_mode != current_mode:
         st.session_state['sticky_note_mode'] = new_mode
-        st.rerun()
 
     note_val = st.session_state.get('sidebar_sticky_note', '')
 
-    if current_mode == 'edit':
+    if new_mode == 'edit':
         note_val = st.text_area(
             t("Nội dung ghi chú", "メモ内容"),
             value=note_val,
@@ -1613,7 +1612,6 @@ def show_sticky_note_editor_modal():
         if changed:
             st.session_state['sidebar_sticky_note'] = '\n'.join(new_lines)
             save_sticky_note('\n'.join(new_lines))
-            st.rerun()
 
     col_save, col_delete = st.columns(2, gap="small")
     with col_save:
@@ -2421,6 +2419,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
