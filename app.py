@@ -1381,15 +1381,23 @@ def show_sticky_note_editor_modal():
     [role="dialog"] [data-testid="stDialogTitle"],
     [data-testid="stDialog"] [data-testid="stDialogTitle"] {
         background: linear-gradient(to bottom, #8b4513, #6b3410) !important; /* Leather brown */
-        color: #fff8dc !important;
         padding: 16px 20px !important;
         border-radius: 10px 10px 0 0 !important;
-        font-weight: 700 !important;
-        font-size: 18px !important;
-        margin-top: 0px !important;
-        margin-bottom: 0px !important;
         box-shadow: 0 4px 6px rgba(0,0,0, 0.4) !important;
         border-bottom: 3px dashed #deb887 !important; /* Stitching effect */
+    }
+    
+    /* Override global blue h2 */
+    [role="dialog"] [data-testid="stDialogTitle"] h2,
+    [data-testid="stDialog"] [data-testid="stDialogTitle"] h2,
+    [role="dialog"] h2:first-of-type,
+    [data-testid="stDialog"] h2:first-of-type {
+        background: transparent !important;
+        color: #fff8dc !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        box-shadow: none !important;
+        padding: 0 !important;
     }
 
     /* Style Close X button cleanly */
@@ -1472,7 +1480,7 @@ def show_sticky_note_editor_modal():
     }
 
     /* Primary Button (Save) - Rubber Stamp Style */
-    button[data-testid="baseButton-primary"] {
+    [data-testid="stDialogContent"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:first-child button {
         background: transparent !important;
         border: 3px solid #d32f2f !important;
         border-radius: 8px !important;
@@ -1480,8 +1488,8 @@ def show_sticky_note_editor_modal():
         box-shadow: none !important;
         opacity: 0.9 !important;
     }
-    button[data-testid="baseButton-primary"] p,
-    button[data-testid="baseButton-primary"] .material-symbols-rounded {
+    [data-testid="stDialogContent"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:first-child button p,
+    [data-testid="stDialogContent"] [data-testid="stHorizontalBlock"] > [data-testid="stColumn"]:first-child button .material-symbols-rounded {
         color: #d32f2f !important;
         font-family: 'Courier New', Courier, monospace !important;
         font-weight: 900 !important;
@@ -1581,6 +1589,7 @@ def show_sticky_note_editor_modal():
                         new_lines.append(f"[ ] {clean_line}")
                 
                 new_notes_dict[k] = '\n'.join(new_lines)
+                st.text_input("Thêm việc mới", key=f"new_item_{k}", on_change=add_checklist_item, args=(k,), label_visibility="collapsed", placeholder="+ Gõ việc mới rồi nhấn Enter...")
                 st.markdown("</div>", unsafe_allow_html=True)
 
     # Save to session immediately for interactivity
@@ -1594,7 +1603,7 @@ def show_sticky_note_editor_modal():
             st.session_state['pending_toast'] = t("Đã lưu ghi chú thành công!", "メモを保存しました！")
             st.rerun()
     with col_delete:
-        if st.button(t("Xóa sạch sổ tay", "全て削除"), icon=":material/delete:", key="btn_delete_sticky_note", use_container_width=True):
+        if st.button(t("Xóa sổ tay", "削除"), icon=":material/delete:", key="btn_delete_sticky_note", use_container_width=True):
             empty_json = json.dumps({"Urgent": "", "Project": "", "Personal": ""})
             save_sticky_note(empty_json)
             st.session_state['sidebar_sticky_note'] = empty_json
@@ -2393,6 +2402,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
