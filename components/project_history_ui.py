@@ -767,15 +767,15 @@ def render_project_history():
                     angularaxis=dict(tickfont=dict(size=12, color='#334155'))
                 ),
                 showlegend=True,
-                legend=dict(orientation="h", yanchor="bottom", y=-0.35, xanchor="center", x=0.5),
-                margin=dict(l=40, r=40, t=30, b=60),
-                height=360,
+                legend=dict(orientation="h", yanchor="bottom", y=-0.25, xanchor="center", x=0.5),
+                margin=dict(l=40, r=40, t=30, b=45),
+                height=340,
                 paper_bgcolor='rgba(0,0,0,0)',
                 plot_bgcolor='rgba(0,0,0,0)',
                 font=dict(family="'Times New Roman', serif")
             )
             
-            st.markdown(f"<div style='text-align: center; font-size: 16px; font-weight: 700; color: #334155; margin-bottom: -15px;'><span class='material-symbols-rounded' style='vertical-align: -5px; font-size: 22px; color: #0284c7;'>radar</span> {t('Phân Tích Tương Quan Đa Chiều (Radar Analysis)', '多次元相関分析 (レーダー分析)')}</div>", unsafe_allow_html=True)
+            st.markdown(f"<div style='text-align: center; font-size: 16px; font-weight: 700; color: #334155; margin-bottom: -15px;'><span class='material-symbols-rounded' style='vertical-align: -5px; font-size: 22px; color: #0284c7;'>radar</span> {t('Biểu đồ Phân Tích Tương Quan Đa Chiều (Radar)', '多次元相関分析チャート (レーダー)')}</div>", unsafe_allow_html=True)
             st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False}, key=f"radar_{display_A}_{display_B}")
 
         def render_project_details(df_t2, proj_name, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False):
