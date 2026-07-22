@@ -1359,25 +1359,7 @@ def show_sticky_note_editor_modal():
         padding-right: 18px !important;
         box-sizing: border-box !important;
     }
-    [role="dialog"] [data-testid="stDialogTitle"],
-    [data-testid="stDialog"] [data-testid="stDialogTitle"],
-    [role="dialog"] h2:first-of-type,
-    [data-testid="stDialog"] h2:first-of-type {
-        background-color: #00B0F0 !important;
-        color: #ffffff !important;
-        padding: 12px 16px !important;
-        border-radius: 8px !important;
-        font-weight: 700 !important;
-        font-size: 17px !important;
-        margin-top: 0px !important;
-        margin-bottom: 8px !important;
-        flex: 1 1 auto !important;
-        width: 100% !important;
-        box-sizing: border-box !important;
-        display: block !important;
-        white-space: nowrap !important;
-        box-shadow: 0 4px 6px rgba(0, 176, 240, 0.25) !important;
-    }
+    /* Removed old conflicting title CSS */
     /* Make the modal body look like beige paper */
     [role="dialog"] div[data-testid="stDialogContent"],
     [data-testid="stDialog"] div[data-testid="stDialogContent"] {
@@ -1430,7 +1412,7 @@ def show_sticky_note_editor_modal():
     
     /* Notebook Text Area with Ruled Lines */
     [data-testid="stTextArea"] textarea {
-        background-color: #fdf6e3 !important; /* Light cream paper */
+        background-color: #ffffff !important; /* White paper for cleaner look */
         background-image: 
             linear-gradient(90deg, transparent 40px, #ffb6c1 40px, #ffb6c1 42px, transparent 42px),
             linear-gradient(#e5e5e5 1px, transparent 1px) !important;
@@ -2351,6 +2333,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
