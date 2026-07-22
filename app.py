@@ -841,9 +841,9 @@ def show_user_guide():
         color: #475569;
         line-height: 1.6;
         text-align: left;
-        display: inline-block;
+        margin: 0 auto;
+        display: table; /* Shrink-wraps exactly to content width and centers */
         max-width: 420px;
-        width: 100%;
     }
     .guide-text ul {
         margin: 0;
@@ -2417,6 +2417,7 @@ else:
 
 
 # Force reload 1
+
 
 
 
