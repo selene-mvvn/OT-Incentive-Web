@@ -130,16 +130,13 @@ def render_incentive():
                 /* Apply to the closest stVerticalBlock that wraps this container */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) {
                     background-color: #f8fafc !important; /* Very light slate */
-                    background-image: 
-                        linear-gradient(#e2e8f0 1px, transparent 1px),
-                        linear-gradient(90deg, #e2e8f0 1px, transparent 1px) !important;
+                    background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px) !important;
                     background-size: 20px 20px !important;
                     border: 2px dashed #94a3b8 !important;
                     box-shadow: inset 0 0 15px rgba(0,0,0,0.03) !important;
                     border-radius: 4px !important;
                     padding: 20px 25px !important;
                 }
-                
                 /* Title styling like a schematic header */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) h3 {
                     color: #334155 !important;
@@ -150,14 +147,12 @@ def render_incentive():
                     display: inline-block !important;
                     font-family: "Courier New", monospace !important;
                 }
-                
                 /* Label styling */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stWidgetLabel"] p {
                     font-family: "Courier New", monospace !important;
                     font-weight: bold !important;
                     color: #475569 !important;
                 }
-                
                 /* Inputs styling - technical look */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) input {
                     font-family: "Courier New", monospace !important;
@@ -167,7 +162,6 @@ def render_incentive():
                     font-weight: 600 !important;
                     border-radius: 0px !important;
                 }
-                
                 /* Slider track looking like a ruler */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stSliderTickBar"] {
                     background: repeating-linear-gradient(90deg, #94a3b8, #94a3b8 1px, transparent 1px, transparent 10px) !important;
