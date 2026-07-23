@@ -183,13 +183,14 @@ def render_project_history():
             sel_year_t1 = st.selectbox(
                 t(":material/calendar_today: Lọc theo Năm:", ":material/calendar_today: 年を選択:"),
                 options=year_options,
+                format_func=lambda x: f"{x}年" if st.session_state.get('lang', 'VN') == 'JP' and str(x).isdigit() else str(x),
                 key="tab1_sel_year"
             )
         with col_f1_m:
             sel_month_t1 = st.selectbox(
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                 options=month_options,
-                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else str(x),
                 key="tab1_sel_month",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.  \n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。  \n👉 *季節性の分析に便利です*。")
             )
@@ -1205,13 +1206,14 @@ def render_project_history():
             sel_year_t2 = st.selectbox(
                 t(":material/calendar_today: Lọc theo Năm:", ":material/calendar_today: 年を選択:"),
                 options=year_options,
+                format_func=lambda x: f"{x}年" if st.session_state.get('lang', 'VN') == 'JP' and str(x).isdigit() else str(x),
                 key="tab2_sel_year"
             )
         with col_t2_m:
             sel_month_t2 = st.selectbox(
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                 options=month_options,
-                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else str(x),
                 key="tab2_sel_month",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.", "ヒント: 全年の該当月のデータを合算して表示します。")
             )
