@@ -237,7 +237,7 @@ def render_incentive():
                 preview_dict = calculate_incentive(target_hours, whatif_hours, unit_price, company_charge)
                 preview_val = preview_dict.get("final_incentive", 0)
                 color = "#00B0F0" if preview_val > 0 else "#95a5a6"
-                st.markdown(f"<div style='text-align: right;'><b style='font-size: 22px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 13px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
+                st.markdown(f"<div style='text-align: right; margin-top: -12px;'><b style='font-size: 22px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 13px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
     
         from components.ui_utils import render_empty_state
         with st.container():
