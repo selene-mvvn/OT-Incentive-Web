@@ -1,1 +1,15 @@
-325:                     st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'><span style='flex-shrink: 0;'>🎯</span> <span>{t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} ({period_label})</span></div>", unsafe_allow_html=True)
+622:                     column_config={
+623:                         col_proj: st.column_config.TextColumn(
+626:                         col_hrs: st.column_config.TextColumn(
+630:                         col_cost: st.column_config.TextColumn(
+634:                         col_staff: st.column_config.TextColumn(
+638:                         col_pct: st.column_config.TextColumn(
+1173:                 t('Tháng/Kỳ', '月'): st.column_config.TextColumn(t('Tháng/Kỳ', '月'), width=55),
+1174:                 t('Tên Dự Án', 'プロジェクト名'): st.column_config.TextColumn(t('Tên Dự Án', 'プロジェクト名'), width=260),
+1175:                 t('Tên NV', 'スタッフ名'): st.column_config.TextColumn(t('Tên NV', 'スタッフ名'), width=125),
+1176:                 t('Ngày OT', '残業日'): st.column_config.TextColumn(t('Ngày OT', '残業日'), width=75),
+1177:                 t('Số Giờ', '時間'): st.column_config.TextColumn(t('Số Giờ', '時間'), width=55),
+1178:                 t('Chi Phí VNĐ', '予想支出額'): st.column_config.TextColumn(t('Chi Phí VNĐ', '予想支出額'), width=85),
+1179:                 t('PM', 'PM'): st.column_config.TextColumn(t('PM', 'PM'), width=180),
+1180:                 t('Lý Do', '残業理由'): st.column_config.TextColumn(t('Lý Do', '残業理由'))
+1188:                 column_config=col_cfg

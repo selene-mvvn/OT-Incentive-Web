@@ -1348,6 +1348,7 @@ def render_project_history():
                         
                 disp_df = df_tab3[cols_to_show].copy()
                 disp_df['ot_date'] = disp_df['ot_date'].astype(str)
+                disp_df['est_cost'] = disp_df['est_cost'].apply(lambda x: f"{float(x):,.0f}" if pd.notna(x) and str(x).strip() != "" else "0")
                 
                 if st.session_state.get('lang', 'VN') == 'JP':
                     col_rename = {
