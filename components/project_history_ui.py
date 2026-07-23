@@ -1305,6 +1305,10 @@ def render_project_history():
             render_empty_state(t("Chưa có dữ liệu nhân sự.", "スタッフデータがありません。"))
         else:
             df_tab3 = df[df['employee_name'] == sel_emp_t3].copy()
+            
+            if 'date_obj' not in df_tab3.columns and 'ot_date' in df_tab3.columns:
+                df_tab3['date_obj'] = pd.to_datetime(df_tab3['ot_date'], format='%d/%m/%Y', errors='coerce')
+                
             if sel_year_t3 not in ["Tất cả", "すべて"]:
                 df_tab3 = df_tab3[df_tab3['date_obj'].dt.year == sel_year_t3]
             if sel_month_t3 not in ["Tất cả", "すべて"]:
