@@ -157,15 +157,46 @@ def render_incentive():
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) input {
                     font-family: "Courier New", monospace !important;
                     background-color: #ffffff !important;
-                    border: 1px dashed #94a3b8 !important;
+                    border: 1px solid #94a3b8 !important;
                     color: #0f172a !important;
                     font-weight: 600 !important;
-                    border-radius: 0px !important;
+                    border-radius: 4px !important;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
                 }
-                /* Slider track looking like a ruler */
+                
+                /* Enhance +/- buttons of number input */
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepUp"],
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepDown"] {
+                    background-color: #e2e8f0 !important;
+                    color: #0f172a !important;
+                }
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepUp"]:hover,
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepDown"]:hover {
+                    background-color: #cbd5e1 !important;
+                }
+                
+                /* Slider track looking like a bolder ruler */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stSliderTickBar"] {
-                    background: repeating-linear-gradient(90deg, #94a3b8, #94a3b8 1px, transparent 1px, transparent 10px) !important;
-                    height: 8px !important;
+                    background: repeating-linear-gradient(90deg, #334155, #334155 2px, transparent 2px, transparent 10px) !important;
+                    height: 12px !important;
+                    border-bottom: 2px solid #334155 !important;
+                }
+                
+                /* Style the calculate button like a blueprint switch */
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) button[kind="primary"] {
+                    background-color: #0f172a !important;
+                    color: #ffffff !important;
+                    font-family: "Courier New", monospace !important;
+                    font-weight: bold !important;
+                    text-transform: uppercase !important;
+                    border-radius: 4px !important;
+                    border: 2px solid #0f172a !important;
+                    box-shadow: 4px 4px 0px #00B0F0 !important;
+                    transition: all 0.2s !important;
+                }
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) button[kind="primary"]:hover {
+                    transform: translate(2px, 2px) !important;
+                    box-shadow: 2px 2px 0px #00B0F0 !important;
                 }
                 </style>
             """, unsafe_allow_html=True)
