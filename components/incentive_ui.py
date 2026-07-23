@@ -143,7 +143,7 @@ def render_incentive():
             [data-testid="stVerticalBlock"]:has(> .element-container .slider-highlight-marker) {{
                 background-color: #ffffff !important;
                 border-radius: 12px !important;
-                padding: 20px 24px !important;
+                padding: 8px 24px !important;
                 margin-top: 5px !important;
                 margin-bottom: 25px !important;
                 border: 1px solid #e2e8f0 !important;
@@ -232,8 +232,6 @@ def render_incentive():
                 preview_val = preview_dict.get("final_incentive", 0)
                 color = "#00B0F0" if preview_val > 0 else "#95a5a6"
                 st.markdown(f"<div style='text-align: right;'><b style='font-size: 22px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 13px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
-            
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
     
         from components.ui_utils import render_empty_state
         with st.container():
