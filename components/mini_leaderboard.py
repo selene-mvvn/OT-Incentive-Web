@@ -98,14 +98,7 @@ def show_mini_edit_dialog(data_type, df):
                 color: inherit !important;
                 font-weight: bold !important;
             }}
-            /* Toolbar styling */
-            .edit-toolbar {{
-                background-color: #f8f9fa;
-                border-radius: 12px;
-                padding: 15px 20px 5px 20px;
-                margin-bottom: 20px;
-                border: 1px solid #e9ecef;
-            }}
+
             .edit-info {{
                 background-color: #e0f2fe;
                 color: #0369a1;
@@ -131,7 +124,6 @@ def show_mini_edit_dialog(data_type, df):
     else:
         years = []
     
-    st.markdown("<div class='edit-toolbar'>", unsafe_allow_html=True)
     c_y, c_m, c_s = st.columns([1.5, 1.5, 2.5], vertical_alignment="bottom")
     with c_y:
         year_options = [t("Tất cả", "すべて")] + years
@@ -160,7 +152,6 @@ def show_mini_edit_dialog(data_type, df):
     if search_term:
         mask = edit_df.apply(lambda row: row.astype(str).str.contains(search_term, case=False, na=False).any(), axis=1)
         edit_df = edit_df[mask].copy()
-    st.markdown("</div>", unsafe_allow_html=True)
 
     if data_type == "ot":
         col_order = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df.columns if str(c).endswith("%")]
