@@ -125,9 +125,16 @@ def show_mini_edit_dialog(data_type, df):
         years = []
     
     c_y, c_m, c_s = st.columns([1.5, 1.5, 2.5], vertical_alignment="bottom")
+    
+    def fmt_year(y):
+        return f"{y}年" if st.session_state.get('language', 'vi') == 'jp' and str(y).isdigit() else y
+        
+    def fmt_month(m):
+        return f"{m}月" if st.session_state.get('language', 'vi') == 'jp' and str(m).isdigit() else (f"Tháng {m}" if str(m).isdigit() else m)
+
     with c_y:
         year_options = [t("Tất cả", "すべて")] + years
-        sel_year = st.selectbox(t(":material/calendar_month: Chọn năm", ":material/calendar_month: 年を選択"), options=year_options, key=f"dialog_year_{data_type}")
+        sel_year = st.selectbox(t(":material/calendar_month: Chọn năm", ":material/calendar_month: 年を選択"), options=year_options, format_func=fmt_year, key=f"dialog_year_{data_type}")
     
     if sel_year not in ["Tất cả", "すべて"]:
         edit_df = df[df['date_obj_edit'].dt.year == sel_year].copy()
@@ -141,7 +148,7 @@ def show_mini_edit_dialog(data_type, df):
         
     with c_m:
         month_options = [t("Tất cả", "すべて")] + months
-        sel_month = st.selectbox(t(":material/calendar_today: Chọn tháng", ":material/calendar_today: 月を選択"), options=month_options, key=f"dialog_month_{data_type}")
+        sel_month = st.selectbox(t(":material/calendar_today: Chọn tháng", ":material/calendar_today: 月を選択"), options=month_options, format_func=fmt_month, key=f"dialog_month_{data_type}")
         
     if sel_month not in ["Tất cả", "すべて"]:
         edit_df = edit_df[edit_df['date_obj_edit'].dt.month == sel_month].copy()
