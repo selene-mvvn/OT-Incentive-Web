@@ -124,15 +124,11 @@ def render_incentive():
         combined_employees = list(dict.fromkeys(master_employees))
     
         with st.container():
-            st.markdown("<div class='blueprint-container-marker'></div>", unsafe_allow_html=True)
-            st.markdown(f"""
+            st.markdown("""
+                <div class='blueprint-container-marker' style='display: none;'></div>
                 <style>
-                /* Blueprint Styling for Container */
-                div.element-container:has(.blueprint-container-marker) {{
-                    display: none;
-                }}
                 /* Apply to the closest stVerticalBlock that wraps this container */
-                div[data-testid="stVerticalBlock"]:has(.blueprint-container-marker) {{
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) {
                     background-color: #f8fafc !important; /* Very light slate */
                     background-image: 
                         linear-gradient(#e2e8f0 1px, transparent 1px),
@@ -142,10 +138,10 @@ def render_incentive():
                     box-shadow: inset 0 0 15px rgba(0,0,0,0.03) !important;
                     border-radius: 4px !important;
                     padding: 20px 25px !important;
-                }}
+                }
                 
                 /* Title styling like a schematic header */
-                div[data-testid="stVerticalBlock"]:has(.blueprint-container-marker) h3 {{
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) h3 {
                     color: #334155 !important;
                     text-transform: uppercase !important;
                     letter-spacing: 1px !important;
@@ -153,33 +149,33 @@ def render_incentive():
                     padding-bottom: 5px !important;
                     display: inline-block !important;
                     font-family: "Courier New", monospace !important;
-                }}
+                }
                 
                 /* Label styling */
-                div[data-testid="stVerticalBlock"]:has(.blueprint-container-marker) [data-testid="stWidgetLabel"] p {{
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stWidgetLabel"] p {
                     font-family: "Courier New", monospace !important;
                     font-weight: bold !important;
                     color: #475569 !important;
-                }}
+                }
                 
                 /* Inputs styling - technical look */
-                div[data-testid="stVerticalBlock"]:has(.blueprint-container-marker) input {{
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) input {
                     font-family: "Courier New", monospace !important;
                     background-color: #ffffff !important;
                     border: 1px dashed #94a3b8 !important;
                     color: #0f172a !important;
                     font-weight: 600 !important;
                     border-radius: 0px !important;
-                }}
+                }
                 
                 /* Slider track looking like a ruler */
-                div[data-testid="stVerticalBlock"]:has(.blueprint-container-marker) [data-testid="stSliderTickBar"] {{
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stSliderTickBar"] {
                     background: repeating-linear-gradient(90deg, #94a3b8, #94a3b8 1px, transparent 1px, transparent 10px) !important;
                     height: 8px !important;
-                }}
+                }
                 </style>
-                <h3 style='font-size: 17px; font-weight: 700; margin-top: -10px; margin-bottom: 20px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>
             """, unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 17px; font-weight: 700; margin-top: -10px; margin-bottom: 20px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
             col_info1, col_info2, col_info3 = st.columns(3)
         
             with col_info1:
