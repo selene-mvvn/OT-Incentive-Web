@@ -1357,79 +1357,36 @@ def render_project_history():
                 </div>
                 """, unsafe_allow_html=True)
                         
-                st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
+                title = t('CHI TIẾT LỊCH SỬ OT', '残業履歴詳細')
+                st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{title}</h3>", unsafe_allow_html=True)
                 
-                col_pie_t3, col_tbl_t3 = st.columns([4.5, 5.5], gap="large")
+                cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
+                for c in cols_to_show:
+                    if c not in df_tab3.columns:
+                        df_tab3[c] = ""
+                        
+                disp_df = df_tab3[cols_to_show].copy()
+                disp_df['ot_date'] = disp_df['ot_date'].astype(str)
+                disp_df['est_cost'] = disp_df['est_cost'].apply(lambda x: f"{float(x):,.0f}" if pd.notna(x) and str(x).strip() != "" else "0")
                 
-                with col_pie_t3:
-                    chart_title = t('PHÂN BỔ OT THEO DỰ ÁN', 'プロジェクト別残業シェア')
-                    st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{chart_title}</h3>", unsafe_allow_html=True)
-                    
-                    df_pie_t3 = df_tab3.groupby('order_name')['ot_hours'].sum().reset_index()
-                    df_pie_t3 = df_pie_t3[df_pie_t3['ot_hours'] > 0]
-                    if not df_pie_t3.empty:
-                        fig_pie_t3 = px.pie(
-                            df_pie_t3, 
-                            values='ot_hours', 
-                            names='order_name', 
-                            hole=0.45,
-                            color_discrete_sequence=px.colors.qualitative.Pastel
-                        )
-                        fig_pie_t3.update_traces(
-                            textposition='inside', 
-                            textinfo='percent',
-                            hovertemplate="<b>%{label}</b><br>"+t("Số giờ", "時間")+": %{value}h<br>"+t("Tỷ lệ", "割合")+": %{percent}<extra></extra>"
-                        )
-                        fig_pie_t3.update_layout(
-                            margin=dict(t=20, b=20, l=20, r=20),
-                            showlegend=True,
-                            legend=dict(
-                                orientation="h",
-                                yanchor="top",
-                                y=-0.1,
-                                xanchor="center",
-                                x=0.5
-                            ),
-                            height=400,
-                            paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0)'
-                        )
-                        st.plotly_chart(fig_pie_t3, use_container_width=True, config={'displayModeBar': False})
-                    else:
-                        from components.ui_utils import render_empty_state
-                        render_empty_state(t("Không có dữ liệu giờ OT để vẽ biểu đồ.", "グラフを表示するデータがありません。"), icon="pie_chart", height=200)
-
-                with col_tbl_t3:
-                    title = t('CHI TIẾT LỊCH SỬ OT', '残業履歴詳細')
-                    st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{title}</h3>", unsafe_allow_html=True)
-                    
-                    cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
-                    for c in cols_to_show:
-                        if c not in df_tab3.columns:
-                            df_tab3[c] = ""
-                            
-                    disp_df = df_tab3[cols_to_show].copy()
-                    disp_df['ot_date'] = disp_df['ot_date'].astype(str)
-                    disp_df['est_cost'] = disp_df['est_cost'].apply(lambda x: f"{float(x):,.0f}" if pd.notna(x) and str(x).strip() != "" else "0")
-                    
-                    if st.session_state.get('lang', 'VN') == 'JP':
-                        col_rename = {
-                            'ot_date': '日付',
-                            'order_name': 'プロジェクト',
-                            'ot_hours': '残業時間 (h)',
-                            'est_cost': '残業代 (VND)',
-                            'ot_reason': '理由'
-                        }
-                    else:
-                        col_rename = {
-                            'ot_date': 'Ngày',
-                            'order_name': 'Tên dự án',
-                            'ot_hours': 'Số giờ',
-                            'est_cost': 'Số tiền (VND)',
-                            'ot_reason': 'Lý do'
-                        }
-                    disp_df = disp_df.rename(columns=col_rename)
-                    st.dataframe(disp_df, use_container_width=True, hide_index=True)
+                if st.session_state.get('lang', 'VN') == 'JP':
+                    col_rename = {
+                        'ot_date': '日付',
+                        'order_name': 'プロジェクト',
+                        'ot_hours': '残業時間 (h)',
+                        'est_cost': '残業代 (VND)',
+                        'ot_reason': '理由'
+                    }
+                else:
+                    col_rename = {
+                        'ot_date': 'Ngày',
+                        'order_name': 'Tên dự án',
+                        'ot_hours': 'Số giờ',
+                        'est_cost': 'Số tiền (VND)',
+                        'ot_reason': 'Lý do'
+                    }
+                disp_df = disp_df.rename(columns=col_rename)
+                st.dataframe(disp_df, use_container_width=True, hide_index=True)
 
     # Inject Javascript to animate the counting for metrics
     import streamlit.components.v1 as components
