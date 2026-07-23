@@ -1318,23 +1318,39 @@ def render_project_history():
                 
                 total_ot_pay = df_tab3['est_cost'].sum() if 'est_cost' in df_tab3.columns else 0.0
                 
-                kpi1, kpi2 = st.columns(2)
-                with kpi1:
-                    st.markdown(f"""
-                        <div style='background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #00a8e8;'>
-                            <p style='color: #666; margin: 0; font-size: 14px;'>{t("Tổng Tiền OT Tích Lũy", "累計残業代")}</p>
-                            <h3 class="count-up-target" data-target="{total_ot_pay:,.0f}" style='color: #2c3e50; margin: 5px 0 0 0; font-size: 24px;'>{total_ot_pay:,.0f}</h3>
-                            <p style='color: #888; margin: 0; font-size: 12px;'>VND</p>
+                title1 = t('TỔNG TIỀN OT TÍCH LŨY', '累計残業代')
+                title2 = t('TỔNG GIỜ OT', '累計残業時間')
+                
+                st.markdown(f"""
+                <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 20px; margin-top: 8px;'>
+                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                        <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
+                                {title1}
+                            </div>
+                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'>
+                                <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">payments</span>
+                            </div>
                         </div>
-                    """, unsafe_allow_html=True)
-                with kpi2:
-                    st.markdown(f"""
-                        <div style='background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #e63946;'>
-                            <p style='color: #666; margin: 0; font-size: 14px;'>{t("Tổng Giờ OT", "総残業時間")}</p>
-                            <h3 class="count-up-target-float" data-target="{total_ot_hours:,.1f}" style='color: #2c3e50; margin: 5px 0 0 0; font-size: 24px;'>{total_ot_hours:,.1f}</h3>
-                            <p style='color: #888; margin: 0; font-size: 12px;'>h</p>
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
+                            <span class="count-up-target" data-target="{total_ot_pay}">{total_ot_pay:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span>
                         </div>
-                    """, unsafe_allow_html=True)
+                    </div>
+                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #ef4444; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                        <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
+                                {title2}
+                            </div>
+                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); flex-shrink: 0;'>
+                                <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">schedule</span>
+                            </div>
+                        </div>
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
+                            <span class="count-up-target-float" data-target="{total_ot_hours}">{total_ot_hours:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span>
+                        </div>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
                         
                 st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
                 
