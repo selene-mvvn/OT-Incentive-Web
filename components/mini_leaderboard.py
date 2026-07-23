@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 from logic.history_records import get_records, save_all_records
 from logic.i18n import t
 
-@st.dialog(t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集"), width="large")
+@st.dialog(t("SỬA DỮ LIỆU NHANH", "簡易データ編集"), width="large")
 def show_mini_edit_dialog(data_type, df):
     st.markdown(f"""
         <style>
@@ -39,10 +39,10 @@ def show_mini_edit_dialog(data_type, df):
             [data-testid="stDialog"] h2:first-of-type * {{
                 color: #ffffff !important;
             }}
-            div[role="dialog"] .stButton button,
-            div[role="dialog"] div[data-testid="stButton"] button,
-            div[data-testid="stModal"] .stButton button,
-            div[data-testid="stDialog"] .stButton button {{
+            div[role="dialog"] .stButton button[kind="secondary"],
+            div[role="dialog"] div[data-testid="stButton"] button[kind="secondary"],
+            div[data-testid="stModal"] .stButton button[kind="secondary"],
+            div[data-testid="stDialog"] .stButton button[kind="secondary"] {{
                 border-radius: 30px !important;
                 font-weight: bold !important;
                 text-transform: uppercase !important;
@@ -53,15 +53,38 @@ def show_mini_edit_dialog(data_type, df):
                 color: #00B0F0 !important;
                 transition: all 0.3s ease !important;
             }}
-            div[role="dialog"] .stButton button:hover,
-            div[role="dialog"] div[data-testid="stButton"] button:hover,
-            div[data-testid="stModal"] .stButton button:hover,
-            div[data-testid="stDialog"] .stButton button:hover {{
+            div[role="dialog"] .stButton button[kind="secondary"]:hover,
+            div[role="dialog"] div[data-testid="stButton"] button[kind="secondary"]:hover,
+            div[data-testid="stModal"] .stButton button[kind="secondary"]:hover,
+            div[data-testid="stDialog"] .stButton button[kind="secondary"]:hover {{
                 background-color: #00B0F0 !important;
                 color: #ffffff !important;
                 border-color: #00B0F0 !important;
                 box-shadow: 0 5px 15px rgba(0, 176, 240, 0.3) !important;
                 transform: translateY(-2px) !important;
+            }}
+            div[role="dialog"] .stButton button[kind="primary"],
+            div[role="dialog"] div[data-testid="stButton"] button[kind="primary"],
+            div[data-testid="stModal"] .stButton button[kind="primary"],
+            div[data-testid="stDialog"] .stButton button[kind="primary"] {{
+                border-radius: 30px !important;
+                font-weight: bold !important;
+                text-transform: uppercase !important;
+                padding: 10px 30px !important;
+                font-size: 13px !important;
+                background: linear-gradient(135deg, #00B0F0 0%, #007bff 100%) !important;
+                color: #ffffff !important;
+                border: none !important;
+                transition: all 0.3s ease !important;
+                box-shadow: 0 4px 6px rgba(0, 176, 240, 0.3) !important;
+            }}
+            div[role="dialog"] .stButton button[kind="primary"]:hover,
+            div[role="dialog"] div[data-testid="stButton"] button[kind="primary"]:hover,
+            div[data-testid="stModal"] .stButton button[kind="primary"]:hover,
+            div[data-testid="stDialog"] .stButton button[kind="primary"]:hover {{
+                box-shadow: 0 6px 12px rgba(0, 176, 240, 0.4) !important;
+                transform: translateY(-2px) !important;
+                background: linear-gradient(135deg, #007bff 0%, #00B0F0 100%) !important;
             }}
             div[role="dialog"] .stButton button p,
             div[role="dialog"] div[data-testid="stButton"] button p,
@@ -75,9 +98,29 @@ def show_mini_edit_dialog(data_type, df):
                 color: inherit !important;
                 font-weight: bold !important;
             }}
+            /* Toolbar styling */
+            .edit-toolbar {{
+                background-color: #f8f9fa;
+                border-radius: 12px;
+                padding: 15px 20px 5px 20px;
+                margin-bottom: 20px;
+                border: 1px solid #e9ecef;
+            }}
+            .edit-info {{
+                background-color: #e0f2fe;
+                color: #0369a1;
+                padding: 12px 16px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                font-weight: 500;
+            }}
         </style>
-        <div style="margin-top: 4px; margin-bottom: 8px; color: #64748b; font-size: 13.5px;">
-            {t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu.", "表上で直接編集し、保存ボタンを押してください。")}
+        <div class="edit-info">
+            <span class="material-symbols-rounded" style="margin-right: 8px; font-size: 20px;">info</span>
+            {t("Chỉnh sửa trực tiếp trên bảng và nhấn Lưu thay đổi.", "表上で直接編集し、変更を保存ボタンを押してください。")}
         </div>
     """, unsafe_allow_html=True)
     
@@ -88,10 +131,11 @@ def show_mini_edit_dialog(data_type, df):
     else:
         years = []
     
-    c_y, c_m = st.columns(2)
+    st.markdown("<div class='edit-toolbar'>", unsafe_allow_html=True)
+    c_y, c_m, c_s = st.columns([1.5, 1.5, 2.5], vertical_alignment="bottom")
     with c_y:
         year_options = [t("Tất cả", "すべて")] + years
-        sel_year = st.selectbox(t("Chọn năm:", "年を選択:"), options=year_options, key=f"dialog_year_{data_type}")
+        sel_year = st.selectbox(t(":material/calendar_month: Chọn năm", ":material/calendar_month: 年を選択"), options=year_options, key=f"dialog_year_{data_type}")
     
     if sel_year not in ["Tất cả", "すべて"]:
         edit_df = df[df['date_obj_edit'].dt.year == sel_year].copy()
@@ -105,15 +149,18 @@ def show_mini_edit_dialog(data_type, df):
         
     with c_m:
         month_options = [t("Tất cả", "すべて")] + months
-        sel_month = st.selectbox(t("Chọn tháng:", "月を選択:"), options=month_options, key=f"dialog_month_{data_type}")
+        sel_month = st.selectbox(t(":material/calendar_today: Chọn tháng", ":material/calendar_today: 月を選択"), options=month_options, key=f"dialog_month_{data_type}")
         
     if sel_month not in ["Tất cả", "すべて"]:
         edit_df = edit_df[edit_df['date_obj_edit'].dt.month == sel_month].copy()
-
-    search_term = st.text_input(t(":material/search: Tìm kiếm nhanh (Tên, Mã dự án...):", ":material/search: クイック検索:"), key=f"dialog_search_{data_type}")
+        
+    with c_s:
+        search_term = st.text_input(t(":material/search: Tìm kiếm nhanh", ":material/search: クイック検索"), key=f"dialog_search_{data_type}")
+        
     if search_term:
         mask = edit_df.apply(lambda row: row.astype(str).str.contains(search_term, case=False, na=False).any(), axis=1)
         edit_df = edit_df[mask].copy()
+    st.markdown("</div>", unsafe_allow_html=True)
 
     if data_type == "ot":
         col_order = ["payment_period", "ot_date", "employee_name", "manager_name", "project_type", "order_name", "order_id", "client_order_id", "ot_reason", "ot_hours", "hourly_rate"] + [c for c in df.columns if str(c).endswith("%")]
@@ -260,7 +307,7 @@ def show_mini_edit_dialog(data_type, df):
                     st.rerun()
     else:
         edited_df = st.data_editor(edit_df, use_container_width=True, num_rows="dynamic", column_order=col_order, column_config=col_cfg, key=f"dialog_edit_{data_type}")
-        if st.button(t("💾 Lưu Thay Đổi", "💾 変更を保存"), use_container_width=True):
+        if st.button(t("Lưu Thay Đổi", "変更を保存"), use_container_width=True, type="primary", icon=":material/save:"):
             st.session_state[staged_key] = edited_df
             st.session_state[preview_key] = True
             st.rerun(scope="fragment")
