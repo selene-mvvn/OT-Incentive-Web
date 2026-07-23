@@ -170,9 +170,10 @@ def render_project_history():
     year_options = [t("Tất cả", "すべて")] + sorted(list(years), reverse=True)
     month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
 
-    tab1, tab2 = st.tabs([
+    tab1, tab2, tab3 = st.tabs([
         t("1. PHÂN BỔ DỰ ÁN & NGUỒN LỰC", "1. プロジェクトとリソースの配分"),
-        t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析")
+        t("2. TRA CỨU CHI TIẾT TỪNG DỰ ÁN", "2. プロジェクト別詳細分析"),
+        t("3. TRA CỨU LỊCH SỬ NHÂN SỰ", "3. スタッフ別履歴")
     ])
 
     # ==================== TAB 1: PHÂN BỔ DỰ ÁN ====================
@@ -1266,6 +1267,114 @@ def render_project_history():
                 render_project_details(df_t2_comp, sel_project_compare, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=True)
         else:
             render_project_details(df_t2_main, sel_project, sel_period_t2_label, all_proj_opt, all_period_opt, is_compare=False)
+
+    # ==================== TAB 3: TRA CỨU LỊCH SỬ NHÂN SỰ ====================
+    with tab3:
+        st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+        
+        if 'employee_name' in df.columns:
+            unique_emps = sorted(df['employee_name'].dropna().astype(str).unique().tolist())
+        else:
+            unique_emps = []
+            
+        col_t3_emp, col_t3_y, col_t3_m = st.columns([4, 3, 3])
+        with col_t3_emp:
+            sel_emp_t3 = st.selectbox(
+                t(":material/person: Lọc theo Nhân sự:", ":material/person: スタッフを選択:"),
+                options=unique_emps,
+                key="tab3_sel_emp"
+            )
+        with col_t3_y:
+            sel_year_t3 = st.selectbox(
+                t(":material/calendar_today: Lọc theo Năm:", ":material/calendar_today: 年を選択:"),
+                options=year_options,
+                format_func=lambda x: f"{x}年" if st.session_state.get('lang', 'VN') == 'JP' and str(x).isdigit() else str(x),
+                key="tab3_sel_year"
+            )
+        with col_t3_m:
+            sel_month_t3 = st.selectbox(
+                t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
+                options=month_options,
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else str(x),
+                key="tab3_sel_month",
+                help=t("Mẹo: Lọc dữ liệu theo tháng.", "ヒント: 月でデータを絞り込みます。")
+            )
+            
+        if not unique_emps:
+            from components.ui_utils import render_empty_state
+            render_empty_state(t("Chưa có dữ liệu nhân sự.", "スタッフデータがありません。"))
+        else:
+            df_tab3 = df[df['employee_name'] == sel_emp_t3].copy()
+            if sel_year_t3 not in ["Tất cả", "すべて"]:
+                df_tab3 = df_tab3[df_tab3['date_obj'].dt.year == sel_year_t3]
+            if sel_month_t3 not in ["Tất cả", "すべて"]:
+                df_tab3 = df_tab3[df_tab3['date_obj'].dt.month == sel_month_t3]
+                
+            if df_tab3.empty:
+                from components.ui_utils import render_empty_state
+                render_empty_state(t("Không có dữ liệu cho nhân sự này trong khoảng thời gian đã chọn.", "選択した期間にはこのスタッフのデータがありません。"))
+            else:
+                total_ot_hours = df_tab3['ot_hours'].sum() if 'ot_hours' in df_tab3.columns else 0
+                
+                def calc_ot_pay(row):
+                    rate = float(row.get('hourly_rate', 0) or 0)
+                    pay = 0.0
+                    for pct in ['150%', '200%', '270%', '300%', '400%']:
+                        if pct in row and pd.notna(row[pct]):
+                            try:
+                                h = float(row[pct])
+                                factor = float(pct.strip('%')) / 100.0
+                                pay += rate * h * factor
+                            except:
+                                pass
+                    return pay
+                    
+                df_tab3['ot_pay'] = df_tab3.apply(calc_ot_pay, axis=1)
+                total_ot_pay = df_tab3['ot_pay'].sum()
+                
+                from components.ui_utils import create_metric_card
+                kpi1, kpi2 = st.columns(2)
+                with kpi1:
+                    st.markdown(create_metric_card(
+                        t("Tổng Tiền OT Tích Lũy", "累計残業代"), 
+                        f"{total_ot_pay:,.0f} VND", 
+                        "payments", "#00a8e8"), unsafe_allow_html=True)
+                with kpi2:
+                    st.markdown(create_metric_card(
+                        t("Tổng Giờ OT", "総残業時間"), 
+                        f"{total_ot_hours:,.1f} h", 
+                        "timer", "#e63946"), unsafe_allow_html=True)
+                        
+                st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
+                
+                st.markdown(f"**{t('Chi tiết lịch sử OT', '残業履歴詳細')}**")
+                
+                cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'ot_pay', 'ot_reason']
+                for c in cols_to_show:
+                    if c not in df_tab3.columns:
+                        df_tab3[c] = ""
+                        
+                disp_df = df_tab3[cols_to_show].copy()
+                disp_df['ot_date'] = disp_df['ot_date'].astype(str)
+                
+                if st.session_state.get('lang', 'VN') == 'JP':
+                    col_rename = {
+                        'ot_date': '日付',
+                        'order_name': 'プロジェクト',
+                        'ot_hours': '残業時間 (h)',
+                        'ot_pay': '残業代 (VND)',
+                        'ot_reason': '理由'
+                    }
+                else:
+                    col_rename = {
+                        'ot_date': 'Ngày',
+                        'order_name': 'Tên dự án',
+                        'ot_hours': 'Số giờ',
+                        'ot_pay': 'Số tiền (VND)',
+                        'ot_reason': 'Lý do'
+                    }
+                disp_df = disp_df.rename(columns=col_rename)
+                st.dataframe(disp_df, use_container_width=True, hide_index=True)
 
     # Inject Javascript to animate the counting for metrics
     import streamlit.components.v1 as components
