@@ -163,7 +163,6 @@ def render_incentive():
                     border-radius: 4px !important;
                     box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
                 }
-                
                 /* Enhance +/- buttons of number input */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepUp"],
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepDown"] {
@@ -174,14 +173,12 @@ def render_incentive():
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepDown"]:hover {
                     background-color: #cbd5e1 !important;
                 }
-                
                 /* Slider track looking like a bolder ruler */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stSliderTickBar"] {
                     background: repeating-linear-gradient(90deg, #334155, #334155 2px, transparent 2px, transparent 10px) !important;
                     height: 12px !important;
                     border-bottom: 2px solid #334155 !important;
                 }
-                
                 /* Style the calculate button like a blueprint switch */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) button[kind="primary"] {
                     background-color: #0f172a !important;
