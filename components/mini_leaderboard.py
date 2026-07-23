@@ -373,6 +373,7 @@ def render_mini_leaderboard(data_type="ot"):
             sel_year = st.selectbox(
                 t("Chọn năm", "年を選択"), 
                 options=year_options, 
+                format_func=lambda x: f"{x}年" if st.session_state.get('language', 'vi') == 'jp' and str(x).isdigit() else x,
                 key=f"mini_year_{data_type}"
             )
         with col_m:
