@@ -2399,7 +2399,7 @@ def render_project_data():
                         export_name += ".xlsx"
                 with c_save:
                     st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-                    if st.button(t("💾 LƯU DỮ LIỆU", "💾 データ保存"), use_container_width=True, type="primary", key="save_ot_data"):
+                    if st.button(t("LƯU DỮ LIỆU", "データ保存"), use_container_width=True, type="primary", key="save_ot_data"):
                         from logic.history_records import add_records
                         add_records("ot", st.session_state['ot_records'])
                         st.session_state['pending_toast'] = t("Đã lưu dữ liệu vào hệ thống!", "データをシステムに保存しました！")
