@@ -180,9 +180,9 @@ def render_ot_excel():
             
                 st.markdown(f"<h4 style='font-size: 18px; font-weight: 600; color: #444; margin-top: 26px; margin-bottom: 12px;'>{t('BƯỚC 1: CHẾ ĐỘ GHÉP CỘT DỮ LIỆU', 'ステップ 1: 列マッピングモード')}</h4>", unsafe_allow_html=True)
             
-                col_lbl, col_rad = st.columns([1.5, 5])
+                col_lbl, col_rad = st.columns([0.9, 5])
                 with col_lbl:
-                    st.markdown(f"<div style='margin-top: 10px; font-size: 14px; color: #444;'>{t('Tùy chọn ghép cột:', 'マッピングオプション:')}</div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='margin-top: 10px; font-size: 14px; color: #444; white-space: nowrap;'>{t('Tùy chọn ghép cột:', 'マッピングオプション:')}</div>", unsafe_allow_html=True)
                 with col_rad:
                     mapping_mode = st.radio(
                         t("Tùy chọn ghép cột:", "マッピングオプション:"),
