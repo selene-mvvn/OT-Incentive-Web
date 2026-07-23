@@ -1793,7 +1793,7 @@ def render_project_data():
                     st.session_state['manual_custom_reset_key'] = 0
                 if 'manual_custom_rows' not in st.session_state or not isinstance(st.session_state['manual_custom_rows'], list):
                     st.session_state['manual_custom_rows'] = [{'id': 1, 'mult': 0.0, 'hrs': 0.0}]
-                st.info(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は0 hoặc bằng 0."))
+                st.info(t("Bạn tự gõ số giờ tương ứng vào từng rổ hệ số. Nếu không có phát sinh, vui lòng để trống hoặc bằng 0.", "各係数の時間を手動で入力してください。発生しない場合は空欄または0にしてください。"))
                 st.markdown(
                     f"""
                     <style>
