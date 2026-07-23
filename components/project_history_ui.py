@@ -1315,75 +1315,114 @@ def render_project_history():
                 render_empty_state(t("Không có dữ liệu cho nhân sự này trong khoảng thời gian đã chọn.", "選択した期間にはこのスタッフのデータがありません。"))
             else:
                 total_ot_hours = df_tab3['ot_hours'].sum() if 'ot_hours' in df_tab3.columns else 0
-                
                 total_ot_pay = df_tab3['est_cost'].sum() if 'est_cost' in df_tab3.columns else 0.0
+                num_projects_t3 = df_tab3['order_name'].nunique() if 'order_name' in df_tab3.columns else 0
+                num_records_t3 = len(df_tab3)
                 
                 title1 = t('TỔNG TIỀN OT TÍCH LŨY', '累計残業代')
                 title2 = t('TỔNG GIỜ OT', '累計残業時間')
+                title3 = t('SỐ DỰ ÁN THAM GIA', '対象プロジェクト数')
+                title4 = t('SỐ LƯỢT OT', '残業回数')
                 
                 st.markdown(f"""
                 <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 20px; margin-top: 8px;'>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
-                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
-                                {title1}
-                            </div>
-                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'>
-                                <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">payments</span>
-                            </div>
+                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title1}</div>
+                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">payments</span></div>
                         </div>
-                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
-                            <span class="count-up-target" data-target="{total_ot_pay}">{total_ot_pay:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span>
-                        </div>
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{total_ot_pay}">{total_ot_pay:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span></div>
                     </div>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #ef4444; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
-                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
-                                {title2}
-                            </div>
-                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); flex-shrink: 0;'>
-                                <span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">schedule</span>
-                            </div>
+                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title2}</div>
+                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">schedule</span></div>
                         </div>
-                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'>
-                            <span class="count-up-target-float" data-target="{total_ot_hours}">{total_ot_hours:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span>
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target-float" data-target="{total_ot_hours}">{total_ot_hours:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span></div>
+                    </div>
+                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                        <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title3}</div>
+                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">folder</span></div>
                         </div>
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_projects_t3}">{num_projects_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span></div>
+                    </div>
+                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                        <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
+                            <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title4}</div>
+                            <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">receipt_long</span></div>
+                        </div>
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_records_t3}">{num_records_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('lượt', '回')}</span></div>
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
                         
                 st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
                 
-                title = t('CHI TIẾT LỊCH SỬ OT', '残業履歴詳細')
-                st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{title}</h3>", unsafe_allow_html=True)
+                col_pie_t3, col_tbl_t3 = st.columns([4.5, 5.5], gap="large")
                 
-                cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
-                for c in cols_to_show:
-                    if c not in df_tab3.columns:
-                        df_tab3[c] = ""
-                        
-                disp_df = df_tab3[cols_to_show].copy()
-                disp_df['ot_date'] = disp_df['ot_date'].astype(str)
-                disp_df['est_cost'] = disp_df['est_cost'].apply(lambda x: f"{float(x):,.0f}" if pd.notna(x) and str(x).strip() != "" else "0")
-                
-                if st.session_state.get('lang', 'VN') == 'JP':
-                    col_rename = {
-                        'ot_date': '日付',
-                        'order_name': 'プロジェクト',
-                        'ot_hours': '残業時間 (h)',
-                        'est_cost': '残業代 (VND)',
-                        'ot_reason': '理由'
-                    }
-                else:
-                    col_rename = {
-                        'ot_date': 'Ngày',
-                        'order_name': 'Tên dự án',
-                        'ot_hours': 'Số giờ',
-                        'est_cost': 'Số tiền (VND)',
-                        'ot_reason': 'Lý do'
-                    }
-                disp_df = disp_df.rename(columns=col_rename)
-                st.dataframe(disp_df, use_container_width=True, hide_index=True)
+                with col_pie_t3:
+                    chart_title = t('PHÂN BỔ OT THEO DỰ ÁN', 'プロジェクト別残業シェア')
+                    st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{chart_title}</h3>", unsafe_allow_html=True)
+                    
+                    df_pie_t3 = df_tab3.groupby('order_name')['ot_hours'].sum().reset_index()
+                    df_pie_t3 = df_pie_t3[df_pie_t3['ot_hours'] > 0]
+                    if not df_pie_t3.empty:
+                        fig_pie_t3 = px.pie(
+                            df_pie_t3, 
+                            values='ot_hours', 
+                            names='order_name', 
+                            hole=0.45,
+                            color_discrete_sequence=px.colors.qualitative.Pastel
+                        )
+                        fig_pie_t3.update_traces(
+                            textposition='inside', 
+                            textinfo='percent+label',
+                            hovertemplate="<b>%{label}</b><br>"+t("Số giờ", "時間")+": %{value}h<br>"+t("Tỷ lệ", "割合")+": %{percent}<extra></extra>"
+                        )
+                        fig_pie_t3.update_layout(
+                            margin=dict(t=20, b=20, l=20, r=20),
+                            showlegend=False,
+                            height=350,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)'
+                        )
+                        st.plotly_chart(fig_pie_t3, use_container_width=True, config={'displayModeBar': False})
+                    else:
+                        from components.ui_utils import render_empty_state
+                        render_empty_state(t("Không có dữ liệu giờ OT để vẽ biểu đồ.", "グラフを表示するデータがありません。"), icon="pie_chart", height=200)
+
+                with col_tbl_t3:
+                    title = t('CHI TIẾT LỊCH SỬ OT', '残業履歴詳細')
+                    st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{title}</h3>", unsafe_allow_html=True)
+                    
+                    cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
+                    for c in cols_to_show:
+                        if c not in df_tab3.columns:
+                            df_tab3[c] = ""
+                            
+                    disp_df = df_tab3[cols_to_show].copy()
+                    disp_df['ot_date'] = disp_df['ot_date'].astype(str)
+                    disp_df['est_cost'] = disp_df['est_cost'].apply(lambda x: f"{float(x):,.0f}" if pd.notna(x) and str(x).strip() != "" else "0")
+                    
+                    if st.session_state.get('lang', 'VN') == 'JP':
+                        col_rename = {
+                            'ot_date': '日付',
+                            'order_name': 'プロジェクト',
+                            'ot_hours': '残業時間 (h)',
+                            'est_cost': '残業代 (VND)',
+                            'ot_reason': '理由'
+                        }
+                    else:
+                        col_rename = {
+                            'ot_date': 'Ngày',
+                            'order_name': 'Tên dự án',
+                            'ot_hours': 'Số giờ',
+                            'est_cost': 'Số tiền (VND)',
+                            'ot_reason': 'Lý do'
+                        }
+                    disp_df = disp_df.rename(columns=col_rename)
+                    st.dataframe(disp_df, use_container_width=True, hide_index=True)
 
     # Inject Javascript to animate the counting for metrics
     import streamlit.components.v1 as components
