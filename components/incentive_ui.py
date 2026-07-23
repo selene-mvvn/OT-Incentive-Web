@@ -141,16 +141,17 @@ def render_incentive():
             }}
             /* Highlighted Slider Box */
             [data-testid="stVerticalBlock"]:has(> .element-container .slider-highlight-marker) {{
-                background-color: #f0fdf4 !important; /* Soft green */
-                border-radius: 10px !important;
-                padding: 15px 20px !important;
+                background-color: #ffffff !important;
+                border-radius: 12px !important;
+                padding: 20px 24px !important;
                 margin-top: 5px !important;
                 margin-bottom: 25px !important;
-                border: 1px solid #bbf7d0 !important;
+                border: 1px solid #e2e8f0 !important;
+                border-left: 6px solid #00B0F0 !important;
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
             }}
             /* Giant Gradient Button */
-            div.stButton > button:has(div:contains('Tính Incentive')),
-            div.stButton > button:has(div:contains('インセンティブ計算')) {{
+            [data-testid="stVerticalBlock"]:has(> .element-container .calc-btn-marker) button {{
                 background: linear-gradient(135deg, #00B0F0 0%, #007bff 100%) !important;
                 color: white !important;
                 font-weight: 700 !important;
@@ -160,9 +161,9 @@ def render_incentive():
                 border-radius: 8px !important;
                 box-shadow: 0 4px 15px rgba(0, 176, 240, 0.4) !important;
                 transition: all 0.3s ease !important;
+                width: 100% !important;
             }}
-            div.stButton > button:has(div:contains('Tính Incentive')):hover,
-            div.stButton > button:has(div:contains('インセンティブ計算')):hover {{
+            [data-testid="stVerticalBlock"]:has(> .element-container .calc-btn-marker) button:hover {{
                 transform: translateY(-2px) !important;
                 box-shadow: 0 6px 20px rgba(0, 176, 240, 0.6) !important;
             }}
@@ -235,7 +236,11 @@ def render_incentive():
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
     
         from components.ui_utils import render_empty_state
-        if st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True):
+        with st.container():
+            st.markdown("<div class='calc-btn-marker' style='display: none;'></div>", unsafe_allow_html=True)
+            btn_clicked = st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True)
+            
+        if btn_clicked:
             result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
             st.session_state['last_incentive_calc'] = result
             st.session_state['last_incentive_inputs'] = {
