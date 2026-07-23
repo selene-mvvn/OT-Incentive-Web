@@ -4,7 +4,7 @@ import plotly.graph_objects as go
 from logic.history_records import get_records, save_all_records
 from logic.i18n import t
 
-@st.dialog(t("SỬA DỮ LIỆU NHANH", "簡易データ編集"), width="large")
+@st.dialog(t("✏️ SỬA DỮ LIỆU NHANH", "✏️ 簡易データ編集"), width="large")
 def show_mini_edit_dialog(data_type, df):
     st.markdown(f"""
         <style>
