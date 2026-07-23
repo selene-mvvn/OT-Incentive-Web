@@ -1377,13 +1377,20 @@ def render_project_history():
                         )
                         fig_pie_t3.update_traces(
                             textposition='inside', 
-                            textinfo='percent+label',
+                            textinfo='percent',
                             hovertemplate="<b>%{label}</b><br>"+t("Số giờ", "時間")+": %{value}h<br>"+t("Tỷ lệ", "割合")+": %{percent}<extra></extra>"
                         )
                         fig_pie_t3.update_layout(
                             margin=dict(t=20, b=20, l=20, r=20),
-                            showlegend=False,
-                            height=350,
+                            showlegend=True,
+                            legend=dict(
+                                orientation="h",
+                                yanchor="top",
+                                y=-0.1,
+                                xanchor="center",
+                                x=0.5
+                            ),
+                            height=400,
                             paper_bgcolor='rgba(0,0,0,0)',
                             plot_bgcolor='rgba(0,0,0,0)'
                         )
