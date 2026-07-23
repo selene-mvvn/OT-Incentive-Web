@@ -1357,36 +1357,86 @@ def render_project_history():
                 </div>
                 """, unsafe_allow_html=True)
                         
-                title = t('CHI TIẾT LỊCH SỬ OT', '残業履歴詳細')
-                st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{title}</h3>", unsafe_allow_html=True)
+                st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
                 
-                cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
-                for c in cols_to_show:
-                    if c not in df_tab3.columns:
-                        df_tab3[c] = ""
+                col_chart, col_tbl = st.columns([4.5, 5.5], gap="large")
+                
+                with col_chart:
+                    chart_title = t('XU HƯỚNG GIỜ OT THEO THỜI GIAN', '残業時間の推移')
+                    st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{chart_title}</h3>", unsafe_allow_html=True)
+                    
+                    df_trend = df_tab3.copy()
+                    if sel_month_t3 in ["Tất cả", "すべて"]:
+                        df_trend['month_label'] = df_trend['date_obj'].dt.strftime('%m/%Y')
+                        df_trend['sort_key'] = df_trend['date_obj'].dt.strftime('%Y%m')
+                        df_grouped = df_trend.groupby(['month_label', 'sort_key'])['ot_hours'].sum().reset_index()
+                        df_grouped = df_grouped.sort_values('sort_key')
+                        x_col = 'month_label'
+                        x_title = t("Tháng", "月")
+                    else:
+                        df_trend['date_label'] = df_trend['date_obj'].dt.strftime('%d/%m')
+                        df_trend['sort_key'] = df_trend['date_obj'].dt.strftime('%Y%m%d')
+                        df_grouped = df_trend.groupby(['date_label', 'sort_key'])['ot_hours'].sum().reset_index()
+                        df_grouped = df_grouped.sort_values('sort_key')
+                        x_col = 'date_label'
+                        x_title = t("Ngày", "日")
                         
-                disp_df = df_tab3[cols_to_show].copy()
-                disp_df['ot_date'] = disp_df['ot_date'].astype(str)
-                disp_df['est_cost'] = disp_df['est_cost'].apply(lambda x: f"{float(x):,.0f}" if pd.notna(x) and str(x).strip() != "" else "0")
-                
-                if st.session_state.get('lang', 'VN') == 'JP':
-                    col_rename = {
-                        'ot_date': '日付',
-                        'order_name': 'プロジェクト',
-                        'ot_hours': '残業時間 (h)',
-                        'est_cost': '残業代 (VND)',
-                        'ot_reason': '理由'
-                    }
-                else:
-                    col_rename = {
-                        'ot_date': 'Ngày',
-                        'order_name': 'Tên dự án',
-                        'ot_hours': 'Số giờ',
-                        'est_cost': 'Số tiền (VND)',
-                        'ot_reason': 'Lý do'
-                    }
-                disp_df = disp_df.rename(columns=col_rename)
-                st.dataframe(disp_df, use_container_width=True, hide_index=True)
+                    if not df_grouped.empty:
+                        fig_trend = px.bar(
+                            df_grouped,
+                            x=x_col,
+                            y='ot_hours',
+                            color_discrete_sequence=['#00a8e8']
+                        )
+                        fig_trend.update_traces(
+                            hovertemplate="<b>%{x}</b><br>"+t("Số giờ", "時間")+": %{y}h<extra></extra>",
+                            marker_line_color='rgba(0,0,0,0)',
+                            marker_line_width=0
+                        )
+                        fig_trend.update_layout(
+                            margin=dict(t=20, b=20, l=10, r=10),
+                            xaxis_title=x_title,
+                            yaxis_title=t("Số giờ", "時間"),
+                            height=400,
+                            paper_bgcolor='rgba(0,0,0,0)',
+                            plot_bgcolor='rgba(0,0,0,0)'
+                        )
+                        st.plotly_chart(fig_trend, use_container_width=True, config={'displayModeBar': False})
+                    else:
+                        from components.ui_utils import render_empty_state
+                        render_empty_state(t("Không có dữ liệu giờ OT để vẽ biểu đồ.", "グラフを表示するデータがありません。"), icon="bar_chart", height=200)
+
+                with col_tbl:
+                    title = t('CHI TIẾT LỊCH SỬ OT', '残業履歴詳細')
+                    st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{title}</h3>", unsafe_allow_html=True)
+                    
+                    cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
+                    for c in cols_to_show:
+                        if c not in df_tab3.columns:
+                            df_tab3[c] = ""
+                            
+                    disp_df = df_tab3[cols_to_show].copy()
+                    disp_df['ot_date'] = disp_df['ot_date'].astype(str)
+                    disp_df['est_cost'] = disp_df['est_cost'].apply(lambda x: f"{float(x):,.0f}" if pd.notna(x) and str(x).strip() != "" else "0")
+                    
+                    if st.session_state.get('lang', 'VN') == 'JP':
+                        col_rename = {
+                            'ot_date': '日付',
+                            'order_name': 'プロジェクト',
+                            'ot_hours': '残業時間 (h)',
+                            'est_cost': '残業代 (VND)',
+                            'ot_reason': '理由'
+                        }
+                    else:
+                        col_rename = {
+                            'ot_date': 'Ngày',
+                            'order_name': 'Tên dự án',
+                            'ot_hours': 'Số giờ',
+                            'est_cost': 'Số tiền (VND)',
+                            'ot_reason': 'Lý do'
+                        }
+                    disp_df = disp_df.rename(columns=col_rename)
+                    st.dataframe(disp_df, use_container_width=True, hide_index=True)
 
     # Inject Javascript to animate the counting for metrics
     import streamlit.components.v1 as components
