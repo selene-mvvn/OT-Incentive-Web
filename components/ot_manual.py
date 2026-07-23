@@ -2422,6 +2422,7 @@ def render_project_data():
                     
                     st.download_button(
                         label=t("TẢI FILE EXCEL", "Excelダウンロード"),
+                        icon=":material/download:",
                         data=excel_data,
                         file_name=export_name,
                         mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",

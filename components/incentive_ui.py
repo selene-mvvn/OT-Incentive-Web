@@ -402,6 +402,7 @@ def render_incentive():
                         
                         st.download_button(
                             label=t("TẢI FILE EXCEL", "Excelダウンロード"),
+                            icon=":material/download:",
                             data=excel_buffer,
                             file_name=export_name,
                             mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
