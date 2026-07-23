@@ -1710,7 +1710,7 @@ else:
         options = [
             t(":material/timer: **OVERTIME**", ":material/timer: **残業代計算**"),
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
-            t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
+            t(":material/upload_file: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/upload_file: **一括入力**"),
             t(":material/analytics: **LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
@@ -1725,7 +1725,7 @@ else:
         options = [
             header_text,
             t(":material/folder: **DỮ LIỆU DỰ ÁN**", ":material/folder: **プロジェクト**"),
-            t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"),
+            t(":material/upload_file: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/upload_file: **一括入力**"),
             t(":material/analytics: **LỊCH SỬ DỰ ÁN**", ":material/analytics: **プロジェクト分析・履歴**"),
             t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"),
             t(":material/history: **LỊCH SỬ THAO TÁC**", ":material/history: **操作履歴**"),
@@ -1818,7 +1818,7 @@ else:
             vn_opts = [
                 ":material/timer: **OVERTIME**",
                 ":material/folder: **DỮ LIỆU DỰ ÁN**",
-                ":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**",
+                ":material/upload_file: **NHẬP HÀNG LOẠT (EXCEL)**",
                 ":material/analytics: **LỊCH SỬ DỰ ÁN**",
                 ":material/payments: **INCENTIVE**",
                 ":material/history: **LỊCH SỬ THAO TÁC**",
@@ -1827,7 +1827,7 @@ else:
             jp_opts = [
                 ":material/timer: **残業代計算**",
                 ":material/folder: **プロジェクト**",
-                ":material/edit_document: **一括入力**",
+                ":material/upload_file: **一括入力**",
                 ":material/analytics: **プロジェクト分析・履歴**",
                 ":material/payments: **インセンティブ**",
                 ":material/history: **操作履歴**",
@@ -2321,7 +2321,7 @@ else:
         import components.project_history_ui
         importlib.reload(components.project_history_ui)
         components.project_history_ui.render_project_history()
-    elif menu_selection == t(":material/edit_document: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/edit_document: **一括入力**"):
+    elif menu_selection == t(":material/upload_file: **NHẬP HÀNG LOẠT (EXCEL)**", ":material/upload_file: **一括入力**"):
         render_ot_excel()
     elif menu_selection == t(":material/payments: **INCENTIVE**", ":material/payments: **インセンティブ**"):
         render_incentive()
@@ -2399,5 +2399,6 @@ else:
 
 
 # Force reload
+
 
 
