@@ -124,82 +124,19 @@ def render_incentive():
         combined_employees = list(dict.fromkeys(master_employees))
     
         with st.container():
-            st.markdown("""
-                <div class='blueprint-container-marker' style='display: none;'></div>
+            from components.ui_utils import make_container_white
+            make_container_white()
+            st.markdown(f"""
                 <style>
-                /* Apply to the closest stVerticalBlock that wraps this container */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) {
-                    background-color: #f8fafc !important; /* Very light slate */
-                    background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px) !important;
-                    background-size: 20px 20px !important;
-                    border: 2px dashed #94a3b8 !important;
-                    box-shadow: inset 0 0 15px rgba(0,0,0,0.03) !important;
-                    border-radius: 4px !important;
-                    padding: 20px 25px !important;
-                }
-                /* Title styling like a schematic header */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) h3 {
-                    color: #334155 !important;
-                    text-transform: uppercase !important;
-                    letter-spacing: 1px !important;
-                    border-bottom: 2px dashed #00B0F0 !important;
-                    padding-bottom: 5px !important;
-                    display: inline-block !important;
-                    font-family: "Courier New", monospace !important;
-                }
-                /* Label styling */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stWidgetLabel"] p {
-                    font-family: "Courier New", monospace !important;
-                    font-weight: bold !important;
-                    color: #475569 !important;
-                }
-                /* Inputs styling - technical look */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) input {
-                    font-family: "Courier New", monospace !important;
-                    background-color: #ffffff !important;
-                    border: 1px solid #94a3b8 !important;
-                    color: #0f172a !important;
-                    font-weight: 600 !important;
-                    border-radius: 4px !important;
-                    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
-                }
-                /* Enhance +/- buttons of number input */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepUp"],
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepDown"] {
-                    background-color: #e2e8f0 !important;
-                    color: #0f172a !important;
-                }
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepUp"]:hover,
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepDown"]:hover {
-                    background-color: #cbd5e1 !important;
-                }
-                /* Style the slider wrapper to stand out from the grid */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stSlider"] {
-                    background-color: #ffffff !important;
-                    padding: 10px 15px !important;
-                    border: 1px solid #94a3b8 !important;
-                    border-radius: 4px !important;
-                    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
-                }
-                /* Style the calculate button like a blueprint switch */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) button[kind="primary"] {
-                    background-color: #0f172a !important;
-                    color: #ffffff !important;
-                    font-family: "Courier New", monospace !important;
-                    font-weight: bold !important;
-                    text-transform: uppercase !important;
-                    border-radius: 4px !important;
-                    border: 2px solid #0f172a !important;
-                    box-shadow: 4px 4px 0px #00B0F0 !important;
-                    transition: all 0.2s !important;
-                }
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) button[kind="primary"]:hover {
-                    transform: translate(2px, 2px) !important;
-                    box-shadow: 2px 2px 0px #00B0F0 !important;
-                }
+                /* Force all Material icons inside widget labels to be UI blue */
+                [data-testid="stWidgetLabel"] p span.material-symbols-rounded,
+                [data-testid="stWidgetLabel"] p span.st-icon,
+                [data-testid="stWidgetLabel"] p span[translate="no"] {{
+                    color: #00B0F0 !important;
+                }}
                 </style>
+                <h3 style='font-size: 18px; font-weight: 600; margin-top: -10px; margin-bottom: 25px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>
             """, unsafe_allow_html=True)
-            st.markdown(f"<h3 style='font-size: 17px; font-weight: 700; margin-top: -10px; margin-bottom: 20px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
             col_info1, col_info2, col_info3 = st.columns(3)
         
             with col_info1:
@@ -230,7 +167,7 @@ def render_incentive():
                 else:
                     employee_name = sel_emp
         
-            st.markdown(f"<h3 style='font-size: 17px; font-weight: 700; margin-top: 25px; margin-bottom: 20px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 25px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
             col1, col2 = st.columns(2)
             with col1:
                 target_hours = st.number_input(t(":material/track_changes: Giờ công kế hoạch", ":material/track_changes: 目標工数"), min_value=0.0, step=1.0, format="%f")
@@ -260,22 +197,23 @@ def render_incentive():
                 st.markdown(f"<div style='text-align: right;'><b style='font-size: 22px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 13px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
             
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            if st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True):
-                result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
-                st.session_state['last_incentive_calc'] = result
-                st.session_state['last_incentive_inputs'] = {
-                    "date": record_date.strftime("%d/%m/%Y"),
-                    "project_name": clean_project_name,
-                    "employee_name": employee_name,
-                    "target_hours": target_hours,
-                    "actual_hours": actual_hours,
-                    "unit_price": unit_price,
-                    "company_charge": company_charge
-                }
-                st.session_state['just_calculated_incentive'] = True
-                st.rerun()
-        
+    
         from components.ui_utils import render_empty_state
+        if st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True):
+            result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
+            st.session_state['last_incentive_calc'] = result
+            st.session_state['last_incentive_inputs'] = {
+                "date": record_date.strftime("%d/%m/%Y"),
+                "project_name": clean_project_name,
+                "employee_name": employee_name,
+                "target_hours": target_hours,
+                "actual_hours": actual_hours,
+                "unit_price": unit_price,
+                "company_charge": company_charge
+            }
+            st.session_state['just_calculated_incentive'] = True
+            st.rerun()
+        
         if 'last_incentive_calc' in st.session_state:
             inputs = {
                 "date": record_date.strftime("%d/%m/%Y"),
