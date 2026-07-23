@@ -224,23 +224,23 @@ def show_mini_edit_dialog(data_type, df):
             elif 'project_name' in row_df.columns:
                 row_parts.append(str(row_df.loc[idx, 'project_name']))
             if 'ot_hours' in row_df.columns:
-                row_parts.append(f"Giờ OT: {row_df.loc[idx, 'ot_hours']}")
+                row_parts.append(f"{t('Giờ OT', '残業時間')}: {row_df.loc[idx, 'ot_hours']}")
             elif 'actual_hours' in row_df.columns:
-                row_parts.append(f"Giờ TT: {row_df.loc[idx, 'actual_hours']}")
-            return " | ".join(row_parts) if row_parts else f"Dòng {idx}"
+                row_parts.append(f"{t('Giờ TT', '実働時間')}: {row_df.loc[idx, 'actual_hours']}")
+            return " | ".join(row_parts) if row_parts else t(f"Dòng {idx}", f"{idx}行目")
 
         details = []
         if added > 0:
             st.success(t(f"Thêm mới {added} dòng", f"{added}行を追加"))
             diff_count += added
             for idx in added_idx:
-                details.append(f"- :material/add_circle: **Thêm mới**: <span style='color: #10b981;'>{format_row_name(staged_df, idx)}</span>")
+                details.append(f"- :material/add_circle: **{t('Thêm mới', '追加')}**: <span style='color: #10b981;'>{format_row_name(staged_df, idx)}</span>")
                 
         if deleted > 0:
             st.error(t(f"Xóa {deleted} dòng", f"{deleted}行を削除"))
             diff_count += deleted
             for idx in deleted_idx:
-                details.append(f"- :material/cancel: **Đã xóa**: <span style='text-decoration: line-through; color: #ef4444;'>{format_row_name(edit_df, idx)}</span>")
+                details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='text-decoration: line-through; color: #ef4444;'>{format_row_name(edit_df, idx)}</span>")
             
         common_idx = edit_df.index.intersection(staged_df.index)
         if len(common_idx) > 0:

@@ -655,7 +655,7 @@ def render_base_data():
                 if ma_nv and ten_nv: return f"{ma_nv} - {ten_nv}"
                 if ten_nv: return ten_nv
                 if ma_nv: return ma_nv
-                return f"Dòng {idx}"
+                return t(f"Dòng {idx}", f"{idx}行目")
 
             details = []
             if added > 0:
