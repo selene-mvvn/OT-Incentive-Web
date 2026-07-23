@@ -1338,7 +1338,8 @@ def render_project_history():
                         
                 st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
                 
-                st.markdown(f"**{t('Chi tiết lịch sử OT', '残業履歴詳細')}**")
+                title = t('Chi tiết lịch sử OT', '残業履歴詳細')
+                st.markdown(f"<div style='display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 600; color: #1e293b; padding-bottom: 8px; border-bottom: 2px solid #00a8e8; margin-bottom: 12px;'><span style='font-size: 18px;'>🕒</span> <span>{title}</span></div>", unsafe_allow_html=True)
                 
                 cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
                 for c in cols_to_show:
