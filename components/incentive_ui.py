@@ -124,18 +124,61 @@ def render_incentive():
         combined_employees = list(dict.fromkeys(master_employees))
     
         with st.container():
-            from components.ui_utils import make_container_white
-            make_container_white()
+            st.markdown("<div class='blueprint-container-marker'></div>", unsafe_allow_html=True)
             st.markdown(f"""
                 <style>
-                /* Force all Material icons inside widget labels to be UI blue */
-                [data-testid="stWidgetLabel"] p span.material-symbols-rounded,
-                [data-testid="stWidgetLabel"] p span.st-icon,
-                [data-testid="stWidgetLabel"] p span[translate="no"] {{
-                    color: #00B0F0 !important;
+                /* Blueprint Styling for Container */
+                div.element-container:has(.blueprint-container-marker) {{
+                    display: none;
+                }}
+                /* Apply to the closest stVerticalBlock that wraps this container */
+                div[data-testid="stVerticalBlock"]:has(> div > div > div > div.blueprint-container-marker) {{
+                    background-color: #f8fafc !important; /* Very light slate */
+                    background-image: 
+                        linear-gradient(#e2e8f0 1px, transparent 1px),
+                        linear-gradient(90deg, #e2e8f0 1px, transparent 1px) !important;
+                    background-size: 20px 20px !important;
+                    border: 2px dashed #94a3b8 !important;
+                    box-shadow: inset 0 0 15px rgba(0,0,0,0.03) !important;
+                    border-radius: 4px !important;
+                    padding: 20px 25px !important;
+                }}
+                
+                /* Title styling like a schematic header */
+                div[data-testid="stVerticalBlock"]:has(> div > div > div > div.blueprint-container-marker) h3 {{
+                    color: #334155 !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 1px !important;
+                    border-bottom: 2px dashed #00B0F0 !important;
+                    padding-bottom: 5px !important;
+                    display: inline-block !important;
+                    font-family: "Courier New", monospace !important;
+                }}
+                
+                /* Label styling */
+                div[data-testid="stVerticalBlock"]:has(> div > div > div > div.blueprint-container-marker) [data-testid="stWidgetLabel"] p {{
+                    font-family: "Courier New", monospace !important;
+                    font-weight: bold !important;
+                    color: #475569 !important;
+                }}
+                
+                /* Inputs styling - technical look */
+                div[data-testid="stVerticalBlock"]:has(> div > div > div > div.blueprint-container-marker) input {{
+                    font-family: "Courier New", monospace !important;
+                    background-color: #ffffff !important;
+                    border: 1px solid #cbd5e1 !important;
+                    color: #0f172a !important;
+                    font-weight: 600 !important;
+                    border-radius: 2px !important;
+                }}
+                
+                /* Slider track looking like a ruler */
+                div[data-testid="stVerticalBlock"]:has(> div > div > div > div.blueprint-container-marker) [data-testid="stSliderTickBar"] {{
+                    background: repeating-linear-gradient(90deg, #94a3b8, #94a3b8 1px, transparent 1px, transparent 10px) !important;
+                    height: 8px !important;
                 }}
                 </style>
-                <h3 style='font-size: 18px; font-weight: 600; margin-top: -10px; margin-bottom: 25px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>
+                <h3 style='font-size: 17px; font-weight: 700; margin-top: -10px; margin-bottom: 20px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>
             """, unsafe_allow_html=True)
             col_info1, col_info2, col_info3 = st.columns(3)
         
@@ -167,7 +210,7 @@ def render_incentive():
                 else:
                     employee_name = sel_emp
         
-            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 25px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 17px; font-weight: 700; margin-top: 25px; margin-bottom: 20px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
             col1, col2 = st.columns(2)
             with col1:
                 target_hours = st.number_input(t(":material/track_changes: Giờ công kế hoạch", ":material/track_changes: 目標工数"), min_value=0.0, step=1.0, format="%f")
