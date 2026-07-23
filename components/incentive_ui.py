@@ -143,12 +143,18 @@ def render_incentive():
             [data-testid="stVerticalBlock"]:has(> .element-container .slider-highlight-marker) {{
                 background-color: #ffffff !important;
                 border-radius: 12px !important;
-                padding: 8px 24px !important;
+                padding: 10px 24px 10px 24px !important;
                 margin-top: 5px !important;
                 margin-bottom: 25px !important;
                 border: 1px solid #e2e8f0 !important;
                 border-left: 6px solid #00B0F0 !important;
                 box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
+            }}
+            /* Remove marker gap */
+            .element-container:has(.slider-highlight-marker),
+            .element-container:has(.saas-card-marker),
+            .element-container:has(.calc-btn-marker) {{
+                margin-bottom: -1.2rem !important;
             }}
             /* Giant Gradient Button */
             [data-testid="stVerticalBlock"]:has(> .element-container .calc-btn-marker) button {{
