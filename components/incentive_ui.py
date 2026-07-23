@@ -173,11 +173,13 @@ def render_incentive():
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stNumberInputStepDown"]:hover {
                     background-color: #cbd5e1 !important;
                 }
-                /* Slider track looking like a bolder ruler */
-                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stSliderTickBar"] {
-                    background: repeating-linear-gradient(90deg, #334155, #334155 2px, transparent 2px, transparent 10px) !important;
-                    height: 12px !important;
-                    border-bottom: 2px solid #334155 !important;
+                /* Style the slider wrapper to stand out from the grid */
+                [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) [data-testid="stSlider"] {
+                    background-color: #ffffff !important;
+                    padding: 10px 15px !important;
+                    border: 1px solid #94a3b8 !important;
+                    border-radius: 4px !important;
+                    box-shadow: 0 1px 2px rgba(0,0,0,0.05) !important;
                 }
                 /* Style the calculate button like a blueprint switch */
                 [data-testid="stVerticalBlock"]:has(> .element-container .blueprint-container-marker) button[kind="primary"] {
@@ -258,23 +260,22 @@ def render_incentive():
                 st.markdown(f"<div style='text-align: right;'><b style='font-size: 22px; color: {color};'>{preview_val:,.0f}</b> <span style='font-size: 13px; color: {color};'>JPY</span></div>", unsafe_allow_html=True)
             
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-    
-        from components.ui_utils import render_empty_state
-        if st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True):
-            result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
-            st.session_state['last_incentive_calc'] = result
-            st.session_state['last_incentive_inputs'] = {
-                "date": record_date.strftime("%d/%m/%Y"),
-                "project_name": clean_project_name,
-                "employee_name": employee_name,
-                "target_hours": target_hours,
-                "actual_hours": actual_hours,
-                "unit_price": unit_price,
-                "company_charge": company_charge
-            }
-            st.session_state['just_calculated_incentive'] = True
-            st.rerun()
+            if st.button(t("Tính Incentive", "インセンティブ計算"), type="primary", use_container_width=True):
+                result = calculate_incentive(target_hours, actual_hours, unit_price, company_charge)
+                st.session_state['last_incentive_calc'] = result
+                st.session_state['last_incentive_inputs'] = {
+                    "date": record_date.strftime("%d/%m/%Y"),
+                    "project_name": clean_project_name,
+                    "employee_name": employee_name,
+                    "target_hours": target_hours,
+                    "actual_hours": actual_hours,
+                    "unit_price": unit_price,
+                    "company_charge": company_charge
+                }
+                st.session_state['just_calculated_incentive'] = True
+                st.rerun()
         
+        from components.ui_utils import render_empty_state
         if 'last_incentive_calc' in st.session_state:
             inputs = {
                 "date": record_date.strftime("%d/%m/%Y"),
