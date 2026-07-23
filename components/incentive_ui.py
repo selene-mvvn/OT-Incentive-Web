@@ -123,20 +123,55 @@ def render_incentive():
     
         combined_employees = list(dict.fromkeys(master_employees))
     
+        st.markdown(f"""
+            <style>
+            /* Force all Material icons inside widget labels to be UI blue */
+            [data-testid="stWidgetLabel"] p span.material-symbols-rounded,
+            [data-testid="stWidgetLabel"] p span.st-icon,
+            [data-testid="stWidgetLabel"] p span[translate="no"] {{
+                color: #00B0F0 !important;
+            }}
+            /* SaaS Card Style (White on Gray) */
+            [data-testid="stVerticalBlock"]:has(> .element-container .saas-card-marker) {{
+                background-color: #ffffff !important;
+                border-radius: 12px !important;
+                box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03) !important;
+                padding: 24px !important;
+                border: 1px solid #e2e8f0 !important;
+            }}
+            /* Highlighted Slider Box */
+            [data-testid="stVerticalBlock"]:has(> .element-container .slider-highlight-marker) {{
+                background-color: #f0fdf4 !important; /* Soft green */
+                border-radius: 10px !important;
+                padding: 15px 20px !important;
+                margin-top: 5px !important;
+                margin-bottom: 25px !important;
+                border: 1px solid #bbf7d0 !important;
+            }}
+            /* Giant Gradient Button */
+            div.stButton > button:has(div:contains('Tính Incentive')),
+            div.stButton > button:has(div:contains('インセンティブ計算')) {{
+                background: linear-gradient(135deg, #00B0F0 0%, #007bff 100%) !important;
+                color: white !important;
+                font-weight: 700 !important;
+                font-size: 18px !important;
+                padding: 12px 24px !important;
+                border: none !important;
+                border-radius: 8px !important;
+                box-shadow: 0 4px 15px rgba(0, 176, 240, 0.4) !important;
+                transition: all 0.3s ease !important;
+            }}
+            div.stButton > button:has(div:contains('Tính Incentive')):hover,
+            div.stButton > button:has(div:contains('インセンティブ計算')):hover {{
+                transform: translateY(-2px) !important;
+                box-shadow: 0 6px 20px rgba(0, 176, 240, 0.6) !important;
+            }}
+            </style>
+        """, unsafe_allow_html=True)
+        
         with st.container():
-            from components.ui_utils import make_container_white
-            make_container_white()
-            st.markdown(f"""
-                <style>
-                /* Force all Material icons inside widget labels to be UI blue */
-                [data-testid="stWidgetLabel"] p span.material-symbols-rounded,
-                [data-testid="stWidgetLabel"] p span.st-icon,
-                [data-testid="stWidgetLabel"] p span[translate="no"] {{
-                    color: #00B0F0 !important;
-                }}
-                </style>
-                <h3 style='font-size: 18px; font-weight: 600; margin-top: -10px; margin-bottom: 25px;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>
-            """, unsafe_allow_html=True)
+            st.markdown("<div class='saas-card-marker' style='display: none;'></div>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: -10px; margin-bottom: 25px; color: #0f172a;'>{t('1. Thông tin Dự án', '1. プロジェクト情報')}</h3>", unsafe_allow_html=True)
             col_info1, col_info2, col_info3 = st.columns(3)
         
             with col_info1:
@@ -167,7 +202,9 @@ def render_incentive():
                 else:
                     employee_name = sel_emp
         
-            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: 20px; margin-bottom: 25px;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
+        with st.container():
+            st.markdown("<div class='saas-card-marker' style='display: none;'></div>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='font-size: 18px; font-weight: 600; margin-top: -10px; margin-bottom: 25px; color: #0f172a;'>{t('2. Thông số Tính toán', '2. 計算パラメータ')}</h3>", unsafe_allow_html=True)
             col1, col2 = st.columns(2)
             with col1:
                 target_hours = st.number_input(t(":material/track_changes: Giờ công kế hoạch", ":material/track_changes: 目標工数"), min_value=0.0, step=1.0, format="%f")
@@ -177,9 +214,8 @@ def render_incentive():
                 unit_price = st.number_input(t(":material/payments: Đơn giá", ":material/payments: 単価"), min_value=0.0, step=1000.0, format="%f")
                 company_charge = st.number_input(t(":material/domain: Company Charge", ":material/domain: 会社運用チャージ"), min_value=0.0, step=100.0, format="%f")
 
-            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            st.divider()
-            
+        with st.container():
+            st.markdown("<div class='slider-highlight-marker' style='display: none;'></div>", unsafe_allow_html=True)
             # Ước tính nhanh (What-if)
             c_title, c_sl, c_res = st.columns([1.5, 3.5, 1.5], vertical_alignment="center")
             with c_title:
