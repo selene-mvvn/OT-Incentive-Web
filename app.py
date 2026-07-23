@@ -1527,7 +1527,7 @@ def show_sticky_note_editor_modal():
     )
     st.session_state['sidebar_sticky_note'] = note_val
 
-    col_save, _, col_delete = st.columns([1, 0.1, 1], gap="small")
+    col_save, col_delete = st.columns(2, gap="small")
     with col_save:
         if st.button(t("Lưu & Đóng", "保存して閉じる"), icon=":material/save:", key="btn_save_close_note", use_container_width=True, type="primary"):
             save_sticky_note(note_val)
