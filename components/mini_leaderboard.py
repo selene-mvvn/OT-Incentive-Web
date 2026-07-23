@@ -127,10 +127,10 @@ def show_mini_edit_dialog(data_type, df):
     c_y, c_m, c_s = st.columns([1.5, 1.5, 2.5], vertical_alignment="bottom")
     
     def fmt_year(y):
-        return f"{y}年" if st.session_state.get('language', 'vi') == 'jp' and str(y).isdigit() else y
+        return f"{y}年" if st.session_state.get('language', 'vi') == 'jp' and str(y).isdigit() else str(y)
         
     def fmt_month(m):
-        return f"{m}月" if st.session_state.get('language', 'vi') == 'jp' and str(m).isdigit() else (f"Tháng {m}" if str(m).isdigit() else m)
+        return f"{m}月" if st.session_state.get('language', 'vi') == 'jp' and str(m).isdigit() else (f"Tháng {m}" if str(m).isdigit() else str(m))
 
     with c_y:
         year_options = [t("Tất cả", "すべて")] + years
@@ -373,7 +373,7 @@ def render_mini_leaderboard(data_type="ot"):
             sel_year = st.selectbox(
                 t("Chọn năm", "年を選択"), 
                 options=year_options, 
-                format_func=lambda x: f"{x}年" if st.session_state.get('language', 'vi') == 'jp' and str(x).isdigit() else x,
+                format_func=lambda x: f"{x}年" if st.session_state.get('language', 'vi') == 'jp' and str(x).isdigit() else str(x),
                 key=f"mini_year_{data_type}"
             )
         with col_m:
@@ -381,7 +381,7 @@ def render_mini_leaderboard(data_type="ot"):
             sel_month = st.selectbox(
                 t("Chọn tháng", "月を選択"),
                 options=month_options,
-                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else x,
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else str(x),
                 key=f"mini_month_{data_type}",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.  \n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。  \n👉 *季節性の分析に便利です*。")
             )
