@@ -1332,18 +1332,23 @@ def render_project_history():
                 df_tab3['ot_pay'] = df_tab3.apply(calc_ot_pay, axis=1)
                 total_ot_pay = df_tab3['ot_pay'].sum()
                 
-                from components.ui_utils import create_metric_card
                 kpi1, kpi2 = st.columns(2)
                 with kpi1:
-                    st.markdown(create_metric_card(
-                        t("Tổng Tiền OT Tích Lũy", "累計残業代"), 
-                        f"{total_ot_pay:,.0f} VND", 
-                        "payments", "#00a8e8"), unsafe_allow_html=True)
+                    st.markdown(f"""
+                        <div style='background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #00a8e8;'>
+                            <p style='color: #666; margin: 0; font-size: 14px;'>{t("Tổng Tiền OT Tích Lũy", "累計残業代")}</p>
+                            <h3 class="count-up-target" data-target="{total_ot_pay:,.0f}" style='color: #2c3e50; margin: 5px 0 0 0; font-size: 24px;'>{total_ot_pay:,.0f}</h3>
+                            <p style='color: #888; margin: 0; font-size: 12px;'>VND</p>
+                        </div>
+                    """, unsafe_allow_html=True)
                 with kpi2:
-                    st.markdown(create_metric_card(
-                        t("Tổng Giờ OT", "総残業時間"), 
-                        f"{total_ot_hours:,.1f} h", 
-                        "timer", "#e63946"), unsafe_allow_html=True)
+                    st.markdown(f"""
+                        <div style='background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-left: 4px solid #e63946;'>
+                            <p style='color: #666; margin: 0; font-size: 14px;'>{t("Tổng Giờ OT", "総残業時間")}</p>
+                            <h3 class="count-up-target-float" data-target="{total_ot_hours:,.1f}" style='color: #2c3e50; margin: 5px 0 0 0; font-size: 24px;'>{total_ot_hours:,.1f}</h3>
+                            <p style='color: #888; margin: 0; font-size: 12px;'>h</p>
+                        </div>
+                    """, unsafe_allow_html=True)
                         
                 st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
                 
