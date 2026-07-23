@@ -143,9 +143,9 @@ def render_incentive():
             [data-testid="stVerticalBlock"]:has(> .element-container .slider-highlight-marker) {{
                 background-color: #ffffff !important;
                 border-radius: 12px !important;
-                padding: 10px 24px 10px 24px !important;
+                padding: 0px 24px 25px 24px !important; /* Top 0, Bottom 25 to visually center */
                 margin-top: 5px !important;
-                margin-bottom: 25px !important;
+                margin-bottom: 10px !important; /* Reduced to pull button up */
                 border: 1px solid #e2e8f0 !important;
                 border-left: 6px solid #00B0F0 !important;
                 box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05) !important;
