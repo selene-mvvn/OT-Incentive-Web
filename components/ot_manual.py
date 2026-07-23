@@ -1603,7 +1603,9 @@ def render_project_data():
             st.markdown(f"<h3 style='font-size: 20px; font-weight: 600;'>{t('CHI TIẾT TĂNG CA', '残業詳細')}</h3>", unsafe_allow_html=True)
         
             if employee_name_proj and employee_name_proj != opt_emp:
-                st.info(f"{t('Đang tính cho nhân sự', '対象者')}: **{employee_name_proj}** | {t('Lương Gross', '総支給額')}: **{emp_gross:,.0f} VND** | {t('Ngày chuẩn', '所定労働日数')}: **{base.get('standard_days', 22.0)}**")
+                std_days = float(base.get('standard_days', 22.0))
+                emp_hourly = emp_gross / (std_days * 8.0) if std_days > 0 else 0
+                st.info(f"{t('Đang tính cho nhân sự', '対象者')}: **{employee_name_proj}** | {t('Lương Gross', '総支給額')}: **{emp_gross:,.0f} VND** | {t('Lương/h', '時給')}: **{emp_hourly:,.0f} VND** | {t('Ngày chuẩn', '所定労働日数')}: **{std_days}**")
             else:
                 st.info(t("Vui lòng chọn nhân sự ở trên để tiếp tục.", "上記でスタッフを選択してください。"))
             
