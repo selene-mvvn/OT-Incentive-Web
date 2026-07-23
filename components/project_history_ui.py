@@ -1316,21 +1316,7 @@ def render_project_history():
             else:
                 total_ot_hours = df_tab3['ot_hours'].sum() if 'ot_hours' in df_tab3.columns else 0
                 
-                def calc_ot_pay(row):
-                    rate = float(row.get('hourly_rate', 0) or 0)
-                    pay = 0.0
-                    for pct in ['150%', '200%', '270%', '300%', '400%']:
-                        if pct in row and pd.notna(row[pct]):
-                            try:
-                                h = float(row[pct])
-                                factor = float(pct.strip('%')) / 100.0
-                                pay += rate * h * factor
-                            except:
-                                pass
-                    return pay
-                    
-                df_tab3['ot_pay'] = df_tab3.apply(calc_ot_pay, axis=1)
-                total_ot_pay = df_tab3['ot_pay'].sum()
+                total_ot_pay = df_tab3['est_cost'].sum() if 'est_cost' in df_tab3.columns else 0.0
                 
                 kpi1, kpi2 = st.columns(2)
                 with kpi1:
@@ -1354,7 +1340,7 @@ def render_project_history():
                 
                 st.markdown(f"**{t('Chi tiết lịch sử OT', '残業履歴詳細')}**")
                 
-                cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'ot_pay', 'ot_reason']
+                cols_to_show = ['ot_date', 'order_name', 'ot_hours', 'est_cost', 'ot_reason']
                 for c in cols_to_show:
                     if c not in df_tab3.columns:
                         df_tab3[c] = ""
@@ -1367,7 +1353,7 @@ def render_project_history():
                         'ot_date': '日付',
                         'order_name': 'プロジェクト',
                         'ot_hours': '残業時間 (h)',
-                        'ot_pay': '残業代 (VND)',
+                        'est_cost': '残業代 (VND)',
                         'ot_reason': '理由'
                     }
                 else:
@@ -1375,7 +1361,7 @@ def render_project_history():
                         'ot_date': 'Ngày',
                         'order_name': 'Tên dự án',
                         'ot_hours': 'Số giờ',
-                        'ot_pay': 'Số tiền (VND)',
+                        'est_cost': 'Số tiền (VND)',
                         'ot_reason': 'Lý do'
                     }
                 disp_df = disp_df.rename(columns=col_rename)
