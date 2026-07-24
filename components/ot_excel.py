@@ -301,21 +301,21 @@ def render_ot_excel():
                         with m_col1:
                             sel_ngay = st.selectbox(t(":material/calendar_month: Cột Ngày", ":material/calendar_month: 日付列"), col_opts, index=get_idx(col_map_auto["ngay"]))
                             if sel_ngay == "--- Bỏ qua ---":
-                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
-                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col2:
                             sel_ten = st.selectbox(t(":material/person: Cột Tên", ":material/person: 名前列"), col_opts, index=get_idx(col_map_auto["ten"]))
                             if sel_ten == "--- Bỏ qua ---":
-                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
-                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col3:
                             sel_ot = st.selectbox(t(":material/schedule: Cột Số Giờ OT", ":material/schedule: OT時間列"), col_opts, index=get_idx(col_map_auto["ot"]))
                             if sel_ot == "--- Bỏ qua ---":
-                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
-                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
+                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                     
                     # Khối Cột Tùy Chọn
                     with st.expander(t("⚙️ Cột mở rộng / Tùy chọn (Không bắt buộc)", "⚙️ 拡張列 / オプション (任意)")):
