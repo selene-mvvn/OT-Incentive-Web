@@ -270,29 +270,26 @@ def render_ot_excel():
                         return col_opts.index(val) if val in col_opts else 0
                     # Khối Cột Bắt Buộc
                     with st.container():
-                        st.markdown("""
+                        st.markdown(f"""
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <style>
-                            /* Ẩn hoàn toàn thẻ chứa marker để không tạo khoảng trắng thừa ở trên cùng */
-                            div[data-testid="stVerticalBlock"] > div.element-container:has(.req-mapping-inner-marker) {
-                                display: none !important;
-                                height: 0 !important;
-                                margin: 0 !important;
-                                padding: 0 !important;
-                            }
-                            
-                            /* Sử dụng child combinator để chỉ đích danh stVerticalBlock ngay bên ngoài marker */
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {
+                            /* Loại bỏ padding thừa của container và ép nó sát lên trên */
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {{
                                 background-color: #ffffff !important;
                                 border: 2px solid #00B0F0 !important;
                                 border-radius: 10px !important;
                                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-                                padding: 5px 15px 20px 15px !important;
+                                padding: 2px 15px 20px 15px !important;
                                 margin-bottom: 15px !important;
-                            }
+                            }}
+                            
+                            /* Giảm khoảng cách gap của chính flexbox chứa các phần tử bên trong container */
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) > div[data-testid="stVerticalBlock"] {{
+                                gap: 0.5rem !important;
+                            }}
                         </style>
+                        <div style='font-size: 14.5px; font-weight: 700; color: #334155; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
                         """, unsafe_allow_html=True)
-                        st.markdown(f"<div style='font-size: 14.5px; font-weight: 700; color: #334155; margin-bottom: 12px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>", unsafe_allow_html=True)
                         m_col1, m_col2, m_col3 = st.columns(3)
                         with m_col1:
                             sel_ngay = st.selectbox(t(":material/calendar_month: Cột Ngày (*)", ":material/calendar_month: 日付列 (*)"), col_opts, index=get_idx(col_map_auto["ngay"]))
