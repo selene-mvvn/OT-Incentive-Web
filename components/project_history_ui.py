@@ -321,7 +321,7 @@ def render_project_history():
             proj_summary = proj_summary.sort_values(by='Hours', ascending=False).reset_index(drop=True)
 
             with col_pie:
-                col_pie_hdr1, col_pie_hdr2 = st.columns([6, 4])
+                col_pie_hdr1, col_pie_hdr2 = st.columns([5.5, 4.5])
                 with col_pie_hdr1:
                     st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'><span style='flex-shrink: 0;'>🎯</span> <span>{t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} <span style='display: inline-block;'>({period_label})</span></span></div>", unsafe_allow_html=True)
                 with col_pie_hdr2:
@@ -332,7 +332,7 @@ def render_project_history():
                             grid-template-columns: auto auto;
                             row-gap: 8px;
                             column-gap: 16px;
-                            padding-left: 20px;
+                            padding-left: 0px;
                         }
                         div.element-container:has(.tab1-chart-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] label {
                             white-space: nowrap;
