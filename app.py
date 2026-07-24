@@ -421,7 +421,6 @@ st.markdown("""
         bottom: 10px !important;
         top: auto !important;
         transform: none !important;
-        right: 40px !important; /* Tránh bị đè lên nút +/- */
     }
 
     div[data-baseweb="input"]:focus-within,
@@ -2407,6 +2406,7 @@ else:
 
 
 # Force reload
+
 
 
 
