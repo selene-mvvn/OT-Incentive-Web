@@ -269,22 +269,18 @@ def render_ot_excel():
                     def get_idx(val):
                         return col_opts.index(val) if val in col_opts else 0
                     # Khối Cột Bắt Buộc
-                    with st.container(border=True):
+                    with st.container():
                         st.markdown("""
-                        <div class='req-mapping-inner-marker'></div>
+                        <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <style>
-                            /* Khung ngoài cùng */
-                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) > div[data-testid="stBorder"],
-                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) > div.stBorder {
+                            /* Sử dụng child combinator để chỉ đích danh stVerticalBlock ngay bên ngoài marker */
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {
                                 background-color: #ffffff !important;
                                 border: 2px solid #00B0F0 !important;
                                 border-radius: 10px !important;
                                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-                            }
-                            
-                            /* Xóa màu nền của các block bên trong để trong suốt, lộ nền trắng ra */
-                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) div[data-testid="stVerticalBlock"] {
-                                background-color: transparent !important;
+                                padding: 15px !important;
+                                margin-bottom: 15px !important;
                             }
                         </style>
                         """, unsafe_allow_html=True)
