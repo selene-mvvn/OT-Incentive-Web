@@ -416,6 +416,15 @@ st.markdown("""
         transition: all 0.3s ease !important;
     }
 
+    /* Center 'Press Enter to apply' instruction vertically */
+    [data-testid="InputInstructions"] {
+        top: 50% !important;
+        transform: translateY(-50%) !important;
+        bottom: auto !important;
+        margin-top: 0 !important;
+        line-height: 1 !important;
+    }
+
     div[data-baseweb="input"]:focus-within,
     div[data-baseweb="base-input"]:focus-within,
     div[data-baseweb="select"] > div:focus-within,
@@ -2399,6 +2408,7 @@ else:
 
 
 # Force reload
+
 
 
 
