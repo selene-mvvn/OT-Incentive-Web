@@ -329,10 +329,13 @@ def render_project_history():
                         <style>
                         div.element-container:has(.tab1-chart-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] {
                             display: grid !important;
-                            grid-template-columns: 1fr 1fr;
+                            grid-template-columns: auto auto;
                             row-gap: 8px;
                             column-gap: 16px;
-                            padding-left: 40px;
+                            padding-left: 20px;
+                        }
+                        div.element-container:has(.tab1-chart-radio) + div.element-container div[data-testid="stRadio"] div[role="radiogroup"] label {
+                            white-space: nowrap;
                         }
                         </style>
                         <div class="tab1-chart-radio"></div>
