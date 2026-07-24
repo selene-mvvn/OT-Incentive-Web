@@ -272,27 +272,19 @@ def render_ot_excel():
                     with st.container(border=True):
                         st.markdown("""
                         <div class='req-mapping-inner-marker'></div>
-                        <img src="empty" style="display:none;" onerror="
-                            setTimeout(function() {
-                                var markers = document.querySelectorAll('.req-mapping-inner-marker');
-                                markers.forEach(function(marker) {
-                                    var container = marker.closest('[data-testid=\\'stVerticalBlockBorderWrapper\\']') || marker.closest('div[data-testid=\\'stVerticalBlock\\']');
-                                    if(container) {
-                                        container.style.backgroundColor = '#ffffff';
-                                        container.style.border = '2px solid #00B0F0';
-                                        container.style.borderRadius = '10px';
-                                        container.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
-                                    }
-                                });
-                            }, 50);
-                        ">
                         <style>
-                            /* Fallback CSS if browser supports :has */
-                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) {
+                            /* Khung ngoài cùng */
+                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) > div[data-testid="stBorder"],
+                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) > div.stBorder {
                                 background-color: #ffffff !important;
                                 border: 2px solid #00B0F0 !important;
                                 border-radius: 10px !important;
                                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+                            }
+                            
+                            /* Xóa màu nền của các block bên trong để trong suốt, lộ nền trắng ra */
+                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) div[data-testid="stVerticalBlock"] {
+                                background-color: transparent !important;
                             }
                         </style>
                         """, unsafe_allow_html=True)
