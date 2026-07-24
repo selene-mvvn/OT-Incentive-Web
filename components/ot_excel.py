@@ -270,38 +270,27 @@ def render_ot_excel():
                         return col_opts.index(val) if val in col_opts else 0
                     
                     # Khối Cột Bắt Buộc
-                    st.markdown("<div class='req-mapping-container-marker'></div>", unsafe_allow_html=True)
-                    with st.container():
+                    with st.container(border=True):
                         st.markdown(f"<div style='font-size: 14.5px; font-weight: 700; color: #334155; margin-bottom: 12px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>", unsafe_allow_html=True)
                         m_col1, m_col2, m_col3 = st.columns(3)
                         with m_col1:
                             sel_ngay = st.selectbox(t(":material/calendar_month: Cột Ngày (*)", ":material/calendar_month: 日付列 (*)"), col_opts, index=get_idx(col_map_auto["ngay"]))
+                            if sel_ngay == "--- Bỏ qua ---":
+                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>⚠️ {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
+                            else:
+                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>✅ {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col2:
                             sel_ten = st.selectbox(t(":material/person: Cột Tên (*)", ":material/person: 名前列 (*)"), col_opts, index=get_idx(col_map_auto["ten"]))
+                            if sel_ten == "--- Bỏ qua ---":
+                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>⚠️ {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
+                            else:
+                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>✅ {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col3:
                             sel_ot = st.selectbox(t(":material/schedule: Cột Số Giờ OT (*)", ":material/schedule: OT時間列 (*)"), col_opts, index=get_idx(col_map_auto["ot"]))
-                    
-                    # Validation Colors for Required Columns
-                    v_ngay = "#10b981" if sel_ngay != "--- Bỏ qua ---" else "#f97316"
-                    v_ten = "#10b981" if sel_ten != "--- Bỏ qua ---" else "#f97316"
-                    v_ot = "#10b981" if sel_ot != "--- Bỏ qua ---" else "#f97316"
-                    
-                    st.markdown(f"""
-                    <style>
-                        /* Style the container block */
-                        div.element-container:has(.req-mapping-container-marker) + div[data-testid="stVerticalBlock"] {{
-                            padding: 14px 16px; 
-                            border-radius: 8px; 
-                            background-color: #f8fafc; 
-                            border: 1.5px solid #e2e8f0; 
-                            margin-bottom: 15px;
-                        }}
-                        /* Style the selectboxes inside the columns */
-                        div.element-container:has(.req-mapping-container-marker) + div[data-testid="stVerticalBlock"] div[data-testid="column"]:nth-child(1) div[data-testid="stSelectbox"] > div > div {{ border: 1.5px solid {v_ngay} !important; }}
-                        div.element-container:has(.req-mapping-container-marker) + div[data-testid="stVerticalBlock"] div[data-testid="column"]:nth-child(2) div[data-testid="stSelectbox"] > div > div {{ border: 1.5px solid {v_ten} !important; }}
-                        div.element-container:has(.req-mapping-container-marker) + div[data-testid="stVerticalBlock"] div[data-testid="column"]:nth-child(3) div[data-testid="stSelectbox"] > div > div {{ border: 1.5px solid {v_ot} !important; }}
-                    </style>
-                    """, unsafe_allow_html=True)
+                            if sel_ot == "--- Bỏ qua ---":
+                                st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>⚠️ {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
+                            else:
+                                st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>✅ {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                     
                     # Khối Cột Tùy Chọn
                     with st.expander(t("⚙️ Cột mở rộng / Tùy chọn (Không bắt buộc)", "⚙️ 拡張列 / オプション (任意)")):
