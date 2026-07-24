@@ -418,11 +418,10 @@ st.markdown("""
 
     /* Center 'Press Enter to apply' instruction vertically */
     [data-testid="InputInstructions"] {
-        top: 50% !important;
-        transform: translateY(-50%) !important;
-        bottom: auto !important;
-        margin-top: 0 !important;
-        line-height: 1 !important;
+        bottom: 10px !important;
+        top: auto !important;
+        transform: none !important;
+        right: 55px !important; /* Tránh bị đè lên nút +/- */
     }
 
     div[data-baseweb="input"]:focus-within,
@@ -2408,6 +2407,7 @@ else:
 
 
 # Force reload
+
 
 
 
