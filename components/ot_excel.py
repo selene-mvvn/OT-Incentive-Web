@@ -273,13 +273,21 @@ def render_ot_excel():
                         st.markdown("""
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <style>
+                            /* Ẩn hoàn toàn thẻ chứa marker để không tạo khoảng trắng thừa ở trên cùng */
+                            div[data-testid="stVerticalBlock"] > div.element-container:has(.req-mapping-inner-marker) {
+                                display: none !important;
+                                height: 0 !important;
+                                margin: 0 !important;
+                                padding: 0 !important;
+                            }
+                            
                             /* Sử dụng child combinator để chỉ đích danh stVerticalBlock ngay bên ngoài marker */
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {
                                 background-color: #ffffff !important;
                                 border: 2px solid #00B0F0 !important;
                                 border-radius: 10px !important;
                                 box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-                                padding: 15px !important;
+                                padding: 5px 15px 20px 15px !important;
                                 margin-bottom: 15px !important;
                             }
                         </style>
