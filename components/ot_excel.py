@@ -272,6 +272,16 @@ def render_ot_excel():
                     with st.container():
                         st.markdown(f"""
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
+                        <img src="empty" style="display:none;" onerror="
+                            setTimeout(function() {{
+                                var labels = document.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p, [data-testid=\\'stWidgetLabel\\'] span');
+                                labels.forEach(function(label) {{
+                                    if(label.innerHTML.includes('(*)')) {{
+                                        label.innerHTML = label.innerHTML.replace('(*)', '(<span style=\\'color: red;\\'>*</span>)');
+                                    }}
+                                }});
+                            }}, 100);
+                        ">
                         <style>
                             /* Loại bỏ padding thừa của container và ép nó sát lên trên */
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {{
@@ -292,19 +302,19 @@ def render_ot_excel():
                         """, unsafe_allow_html=True)
                         m_col1, m_col2, m_col3 = st.columns(3)
                         with m_col1:
-                            sel_ngay = st.selectbox(t(":material/calendar_month: Cột Ngày (:red[*])", ":material/calendar_month: 日付列 (:red[*])"), col_opts, index=get_idx(col_map_auto["ngay"]))
+                            sel_ngay = st.selectbox(t(":material/calendar_month: Cột Ngày (*)", ":material/calendar_month: 日付列 (*)"), col_opts, index=get_idx(col_map_auto["ngay"]))
                             if sel_ngay == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>⚠️ {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>✅ {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col2:
-                            sel_ten = st.selectbox(t(":material/person: Cột Tên (:red[*])", ":material/person: 名前列 (:red[*])"), col_opts, index=get_idx(col_map_auto["ten"]))
+                            sel_ten = st.selectbox(t(":material/person: Cột Tên (*)", ":material/person: 名前列 (*)"), col_opts, index=get_idx(col_map_auto["ten"]))
                             if sel_ten == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>⚠️ {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>✅ {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col3:
-                            sel_ot = st.selectbox(t(":material/schedule: Cột Số Giờ OT (:red[*])", ":material/schedule: OT時間列 (:red[*])"), col_opts, index=get_idx(col_map_auto["ot"]))
+                            sel_ot = st.selectbox(t(":material/schedule: Cột Số Giờ OT (*)", ":material/schedule: OT時間列 (*)"), col_opts, index=get_idx(col_map_auto["ot"]))
                             if sel_ot == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px;'>⚠️ {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
