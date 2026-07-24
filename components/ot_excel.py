@@ -268,22 +268,26 @@ def render_ot_excel():
                     col_opts = ["--- Bỏ qua ---"] + list(df.columns)
                     def get_idx(val):
                         return col_opts.index(val) if val in col_opts else 0
-                    
-                    # Khối Cột Bắt Buộc
                     # Khối Cột Bắt Buộc
                     with st.container(border=True):
-                        st.markdown("""
-                        <div class='req-mapping-inner-marker'></div>
-                        <style>
-                            /* Tìm khung container nào chứa marker này và đổi màu nền, viền của nó */
-                            div[data-testid="stVerticalBlockBorderWrapper"]:has(.req-mapping-inner-marker) {
-                                background-color: #ffffff !important;
-                                border: 2px solid #00B0F0 !important;
-                                border-radius: 10px !important;
-                                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
-                            }
-                        </style>
-                        """, unsafe_allow_html=True)
+                        st.markdown("<div class='req-mapping-inner-marker'></div>", unsafe_allow_html=True)
+                        st.components.v1.html("""
+                            <script>
+                                setTimeout(function() {
+                                    const markers = window.parent.document.querySelectorAll('.req-mapping-inner-marker');
+                                    markers.forEach(marker => {
+                                        const container = marker.closest('[data-testid="stVerticalBlockBorderWrapper"]');
+                                        if (container) {
+                                            container.style.backgroundColor = '#ffffff';
+                                            container.style.border = '2px solid #00B0F0';
+                                            container.style.borderRadius = '10px';
+                                            container.style.padding = '15px';
+                                            container.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                                        }
+                                    });
+                                }, 100);
+                            </script>
+                        """, height=0)
                         st.markdown(f"<div style='font-size: 14.5px; font-weight: 700; color: #334155; margin-bottom: 12px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>", unsafe_allow_html=True)
                         m_col1, m_col2, m_col3 = st.columns(3)
                         with m_col1:
