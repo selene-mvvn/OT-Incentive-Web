@@ -323,7 +323,7 @@ def render_project_history():
             with col_pie:
                 col_pie_hdr1, col_pie_hdr2 = st.columns([6, 4])
                 with col_pie_hdr1:
-                    st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'><span style='flex-shrink: 0;'>🎯</span> <span>{t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} ({period_label})</span></div>", unsafe_allow_html=True)
+                    st.markdown(f"<div style='display: flex; align-items: flex-start; gap: 6px; font-size: 16px; font-weight: 600; color: #334155; margin-bottom: 4px;'><span style='flex-shrink: 0;'>🎯</span> <span>{t('Biểu đồ Tỷ trọng Giờ OT theo Dự án', 'プロジェクト別残業時間シェア')} <span style='display: inline-block;'>({period_label})</span></span></div>", unsafe_allow_html=True)
                 with col_pie_hdr2:
                     st.markdown("""
                         <style>
@@ -1015,7 +1015,7 @@ def render_project_history():
             
             st.markdown(f"""
             <h3 style='font-size: 18px; margin-bottom: 20px; {min_h}'>
-                <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} ({display_period_label})</div>
+                <div>{proj_name if proj_name != all_proj_opt else t('Tất cả dự án', 'すべてのプロジェクト')} <span style='display: inline-block;'>({display_period_label})</span></div>
             </h3>
             """, unsafe_allow_html=True)
 
