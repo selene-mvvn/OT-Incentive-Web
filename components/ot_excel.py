@@ -274,7 +274,6 @@ def render_ot_excel():
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <img src onerror="
                             setTimeout(() => {{
-                                // 1. Khung tuỳ chọn mở rộng
                                 let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
                                 if (expander) {{
                                     let labels = expander.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
@@ -294,8 +293,6 @@ def render_ot_excel():
                                         label.style.setProperty('color', '#ffffff', 'important');
                                     }});
                                 }}
-                                
-                                // 2. Khung bắt buộc
                                 let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\\'stVerticalBlock\\']');
                                 if (reqContainer) {{
                                     let reqLabels = reqContainer.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
