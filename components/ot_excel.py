@@ -316,12 +316,18 @@ def render_ot_excel():
                                 color: #ffffff !important;
                             }}
                             /* Đổi màu chữ label của các ô chọn bên trong thành màu trắng cho dễ nhìn */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] * {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] p,
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] .material-symbols-rounded,
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] span,
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] i {{
                                 color: #ffffff !important;
                                 fill: #ffffff !important;
-                            }}
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] p {{
                                 font-weight: 500 !important;
+                            }}
+                            
+                            /* Ẩn hoàn toàn thẻ chứa marker để không tạo ra khoảng trống thừa phía trên */
+                            [data-testid="stExpander"]:has(.opt-expander-marker) div[data-testid="stVerticalBlock"] > div.element-container:has(.opt-expander-marker) {{
+                                display: none !important;
                             }}
                         </style>
                         <div style='font-size: 14.5px; font-weight: 700; color: #64748b; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
@@ -349,21 +355,6 @@ def render_ot_excel():
                     # Khối Cột Tùy Chọn
                     with st.expander(t("⚙️ Cột mở rộng / Tùy chọn (Không bắt buộc)", "⚙️ 拡張列 / オプション (任意)")):
                         st.markdown("<div class='opt-expander-marker' style='display: none;'></div>", unsafe_allow_html=True)
-                        # JS injection to force material icons to white
-                        st.markdown("""
-                        <img src onerror="
-                            setTimeout(() => {
-                                let expander = parent.document.querySelector('.opt-expander-marker').closest('details');
-                                if (expander) {
-                                    let icons = expander.querySelectorAll('.material-symbols-rounded');
-                                    icons.forEach(icon => {
-                                        icon.style.setProperty('color', '#ffffff', 'important');
-                                        icon.style.setProperty('fill', '#ffffff', 'important');
-                                    });
-                                }
-                            }, 100);
-                        " style="display:none;">
-                        """, unsafe_allow_html=True)
                         opt_col1, opt_col2, opt_col3 = st.columns(3)
                         with opt_col1:
                             sel_lydo = st.selectbox(t(":material/edit_note: Cột Lý do OT", ":material/edit_note: 理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
