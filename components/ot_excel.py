@@ -295,12 +295,25 @@ def render_ot_excel():
                                 font-weight: bold;
                             }}
                             
-                            /* Làm trắng nền khối expander Tùy chọn để không bị chìm vào nền xám */
+                            /* Đổi màu khung expander Tùy chọn thành màu xanh chủ đạo */
                             [data-testid="stExpander"] {{
-                                background-color: #ffffff !important;
-                                border: 1px solid #e2e8f0 !important;
-                                border-radius: 10px !important;
-                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+                                background-color: #00b0f0 !important;
+                                border: 1px solid rgba(255,255,255,0.3) !important;
+                                border-radius: 12px !important;
+                                box-shadow: 0 6px 18px rgba(0, 176, 240, 0.25) !important;
+                            }}
+                            [data-testid="stExpander"] summary, [data-testid="stExpander"] summary p {{
+                                color: #ffffff !important;
+                                font-weight: 600 !important;
+                            }}
+                            [data-testid="stExpander"] summary svg {{
+                                fill: #ffffff !important;
+                                color: #ffffff !important;
+                            }}
+                            /* Đổi màu chữ label của các ô chọn bên trong thành màu trắng cho dễ nhìn */
+                            [data-testid="stExpander"] [data-testid="stWidgetLabel"] p {{
+                                color: #ffffff !important;
+                                font-weight: 500 !important;
                             }}
                         </style>
                         <div style='font-size: 14.5px; font-weight: 700; color: #64748b; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
