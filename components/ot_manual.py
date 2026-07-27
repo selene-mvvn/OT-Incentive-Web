@@ -702,11 +702,11 @@ def render_base_data():
                     }
                     [data-testid="stExpander"]:has(.preview-changes-marker) {
                         background-color: #ffffff !important;
-                        border: 2px solid #ff6b81 !important;
+                        border: 2px solid #fca5a5 !important;
                         border-radius: 8px !important;
                     }
                     [data-testid="stExpander"]:has(.preview-changes-marker) summary {
-                        background-color: #ff6b81 !important;
+                        background-color: #fca5a5 !important;
                         border-radius: 5px 5px 0 0 !important;
                     }
                     [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
