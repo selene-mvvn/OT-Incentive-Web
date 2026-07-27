@@ -685,7 +685,8 @@ def render_base_data():
                         if changes_str:
                             details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
             
-            if diff_count > 0:
+            # --- 2-step save confirmation logic ---
+            if diff_count > 0 and st.session_state.get('show_save_confirmation', False):
                 st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
                 with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
                     st.markdown("""
@@ -727,6 +728,53 @@ def render_base_data():
                     </style>
                     """, unsafe_allow_html=True)
                     st.markdown("\n".join(details), unsafe_allow_html=True)
+                
+                conf_c1, conf_c2, _ = st.columns([2, 2, 6])
+                with conf_c1:
+                    if st.button(t("✅ XÁC NHẬN LƯU", "✅ 保存を確認"), key="confirm_save_emps", type="primary", use_container_width=True):
+                        if uploaded_template is not None:
+                            if not os.path.exists("data"):
+                                os.makedirs("data")
+                            with open(template_path, "wb") as f:
+                                f.write(uploaded_template.getbuffer())
+                            with open(os.path.join("data", "custom_ot_template_name.txt"), "w", encoding="utf-8") as f:
+                                f.write(uploaded_template.name)
+
+                        st.session_state['ot_base_data']['standard_days'] = std_days_mo
+                        st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
+                        st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
+                        
+                        st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
+                        save_base_data(st.session_state['ot_base_data'])
+
+                        if st.session_state.get('mask_salary_mode', True):
+                            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                                if c in edited_emp.columns and c in emp_df.columns:
+                                    edited_emp[c] = emp_df[c]
+                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                        else:
+                            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                                if c in edited_emp.columns:
+                                    edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
+                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+
+                            edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
+                            gross = edited_emp['Lương cơ bản'].copy()
+                            for c in allowance_cols:
+                                if c in edited_emp.columns:
+                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                                    gross += edited_emp[c]
+                            edited_emp['Lương Gross'] = gross
+
+                        save_employees_df(edited_emp)
+                        st.session_state['show_save_confirmation'] = False
+                        st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
+                        st.rerun()
+                with conf_c2:
+                    if st.button(t("Hủy bỏ", "キャンセル"), key="cancel_confirm", use_container_width=True):
+                        st.session_state['show_save_confirmation'] = False
+                        st.rerun()
+
                 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             # --------------------
 
@@ -799,53 +847,27 @@ def render_base_data():
 
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             
-            btn_col1, btn_col2, _ = st.columns([3, 2.5, 4.5])
-            with btn_col1:
-                save_clicked = st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary", use_container_width=True)
-            with btn_col2:
-                if diff_count > 0:
-                    if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes", icon=":material/undo:", use_container_width=True):
-                        st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
-                        st.rerun()
-            
-            if save_clicked:
-                if uploaded_template is not None:
-                    if not os.path.exists("data"):
-                        os.makedirs("data")
-                    with open(template_path, "wb") as f:
-                        f.write(uploaded_template.getbuffer())
-                    with open(os.path.join("data", "custom_ot_template_name.txt"), "w", encoding="utf-8") as f:
-                        f.write(uploaded_template.name)
-
-                st.session_state['ot_base_data']['standard_days'] = std_days_mo
-                st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
-                st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
-                
-                st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
-                save_base_data(st.session_state['ot_base_data'])
-
-                if st.session_state.get('mask_salary_mode', True):
-                    for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-                        if c in edited_emp.columns and c in emp_df.columns:
-                            edited_emp[c] = emp_df[c]
-                            edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-                else:
-                    for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-                        if c in edited_emp.columns:
-                            edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
-                            edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-
-                    edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
-                    gross = edited_emp['Lương cơ bản'].copy()
-                    for c in allowance_cols:
-                        if c in edited_emp.columns:
-                            edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-                            gross += edited_emp[c]
-                    edited_emp['Lương Gross'] = gross
-
-                save_employees_df(edited_emp)
-                st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
-                st.rerun()
+            if not st.session_state.get('show_save_confirmation', False):
+                btn_col1, btn_col2, _ = st.columns([3, 2.5, 4.5])
+                with btn_col1:
+                    if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary", use_container_width=True):
+                        if diff_count > 0:
+                            st.session_state['show_save_confirmation'] = True
+                            st.rerun()
+                        else:
+                            # If no differences, save base data normally
+                            st.session_state['ot_base_data']['standard_days'] = std_days_mo
+                            st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
+                            st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
+                            st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
+                            save_base_data(st.session_state['ot_base_data'])
+                            st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
+                            st.rerun()
+                with btn_col2:
+                    if diff_count > 0:
+                        if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes", icon=":material/undo:", use_container_width=True):
+                            st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
+                            st.rerun()
 
 
         with col_right:
