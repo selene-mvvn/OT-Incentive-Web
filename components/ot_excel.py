@@ -314,9 +314,7 @@ def render_ot_excel():
                                 color: #ffffff !important;
                                 font-weight: 600 !important;
                             }}
-                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg,
-                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg path,
-                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg g {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary * {{
                                 fill: #ffffff !important;
                                 color: #ffffff !important;
                                 stroke: #ffffff !important;
@@ -369,6 +367,18 @@ def render_ot_excel():
                                 // 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Xanh)
                                 let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
                                 if (expander) {
+                                    // Bơm màu trắng cho mũi tên mở rộng (bằng JS để chắc chắn ghi đè được Streamlit)
+                                    let summarySvg = expander.querySelector('summary svg');
+                                    if (summarySvg) {
+                                        summarySvg.style.setProperty('fill', '#ffffff', 'important');
+                                        summarySvg.style.setProperty('color', '#ffffff', 'important');
+                                        let path = summarySvg.querySelector('path');
+                                        if (path) {
+                                            path.style.setProperty('fill', '#ffffff', 'important');
+                                            path.style.setProperty('stroke', '#ffffff', 'important');
+                                        }
+                                    }
+                                    
                                     let cols = expander.querySelectorAll('[data-testid="column"]');
                                     if (cols.length >= 3) {
                                         let inject = (colIdx, selIdx, iconName) => {
