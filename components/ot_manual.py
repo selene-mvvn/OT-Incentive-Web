@@ -696,11 +696,27 @@ def render_base_data():
                     }
                     [data-testid="stExpander"]:has(.preview-changes-marker) {
                         background-color: #ffffff !important;
-                        border: 1px solid #d1d5db !important;
+                        border: 2px solid #fb923c !important;
                         border-radius: 8px !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary {
+                        background-color: #fb923c !important;
+                        border-radius: 5px 5px 0 0 !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary span {
+                        color: #ffffff !important;
+                        font-weight: bold !important;
+                        font-size: 15.5px !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary svg {
+                        fill: #ffffff !important;
+                        color: #ffffff !important;
                     }
                     [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpanderDetails"] {
                         background-color: #ffffff !important;
+                        padding-top: 0.5rem !important;
+                        padding-bottom: 1rem !important;
                     }
                     </style>
                     """, unsafe_allow_html=True)
