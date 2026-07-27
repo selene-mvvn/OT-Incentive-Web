@@ -319,29 +319,25 @@ def render_ot_excel():
                                 color: #ffffff !important;
                                 stroke: #ffffff !important;
                             }}
-                            
-                            /* Ẩn hoàn toàn thẻ chứa marker để không tạo ra khoảng trống thừa phía trên */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) div[data-testid="stVerticalBlock"] > div.element-container:has(.opt-expander-marker) {{
-                                display: none !important;
-                            }}
                         </style>
+                        <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <div style='font-size: 14.5px; font-weight: 700; color: #64748b; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
                         """, unsafe_allow_html=True)
                         m_col1, m_col2, m_col3 = st.columns(3)
                         with m_col1:
-                            sel_ngay = st.selectbox(t("Cột Ngày", "日付列"), col_opts, index=get_idx(col_map_auto["ngay"]))
+                            sel_ngay = st.selectbox(t(":material/calendar_today: Cột Ngày", ":material/calendar_today: 日付列"), col_opts, index=get_idx(col_map_auto["ngay"]))
                             if sel_ngay == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col2:
-                            sel_ten = st.selectbox(t("Cột Tên", "名前列"), col_opts, index=get_idx(col_map_auto["ten"]))
+                            sel_ten = st.selectbox(t(":material/person: Cột Tên", ":material/person: 名前列"), col_opts, index=get_idx(col_map_auto["ten"]))
                             if sel_ten == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col3:
-                            sel_ot = st.selectbox(t("Cột Số Giờ OT", "OT時間列"), col_opts, index=get_idx(col_map_auto["ot"]))
+                            sel_ot = st.selectbox(t(":material/schedule: Cột Số Giờ OT", ":material/schedule: OT時間列"), col_opts, index=get_idx(col_map_auto["ot"]))
                             if sel_ot == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
@@ -352,11 +348,11 @@ def render_ot_excel():
                         st.markdown("<div class='opt-expander-marker' style='display: none;'></div>", unsafe_allow_html=True)
                         opt_col1, opt_col2, opt_col3 = st.columns(3)
                         with opt_col1:
-                            sel_lydo = st.selectbox(t("Cột Lý do OT", "理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
-                            sel_ma_dh_kh = st.selectbox(t("Cột Mã ĐH khách", "顧客注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh_kh"]))
+                            sel_lydo = st.selectbox(t(":material/edit_note: Cột Lý do OT", ":material/edit_note: 理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
+                            sel_ma_dh_kh = st.selectbox(t(":material/sell: Cột Mã ĐH khách", ":material/sell: 顧客注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh_kh"]))
                         with opt_col2:
-                            sel_loai_da = st.selectbox(t("Cột Loại dự án", "プロジェクトタイプ列"), col_opts, index=get_idx(col_map_auto["loai_da"]))
-                            sel_quan_ly = st.selectbox(t("Cột Người quản lý", "管理者列"), col_opts, index=get_idx(col_map_auto["quan_ly"]))
+                            sel_loai_da = st.selectbox(t(":material/category: Cột Loại dự án", ":material/category: プロジェクトタイプ列"), col_opts, index=get_idx(col_map_auto["loai_da"]))
+                            sel_quan_ly = st.selectbox(t(":material/manage_accounts: Cột Người quản lý", ":material/manage_accounts: 管理者列"), col_opts, index=get_idx(col_map_auto["quan_ly"]))
                         with opt_col3:
                             sel_ma_dh = st.selectbox(t(":material/tag: Cột Mã đơn hàng", ":material/tag: 注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh"]))
                             
@@ -364,7 +360,7 @@ def render_ot_excel():
                     components.html("""
                         <script>
                             setInterval(() => {
-                                // 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Xanh)
+                                // KHUNG TÙY CHỌN MỞ RỘNG
                                 let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
                                 if (expander) {
                                     // Bơm màu trắng cho mũi tên mở rộng (bằng JS để chắc chắn ghi đè được Streamlit)
@@ -377,40 +373,6 @@ def render_ot_excel():
                                             path.style.setProperty('fill', '#ffffff', 'important');
                                             path.style.setProperty('stroke', '#ffffff', 'important');
                                         }
-                                    }
-                                    
-                                    let cols = expander.querySelectorAll('[data-testid="column"]');
-                                    if (cols.length >= 3) {
-                                        let inject = (colIdx, selIdx, iconName) => {
-                                            let sels = cols[colIdx].querySelectorAll('[data-testid="stSelectbox"]');
-                                            if (sels.length > selIdx) {
-                                                let p = sels[selIdx].querySelector('label p');
-                                                if (p && !p.querySelector('.inj-icon')) {
-                                                    p.innerHTML = `<span class='material-symbols-rounded inj-icon' style='vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; font-weight: normal; font-size: 1.15em;'>${iconName}</span>` + p.innerHTML;
-                                                }
-                                            }
-                                        };
-                                        inject(0, 0, 'edit_note'); inject(0, 1, 'sell');
-                                        inject(1, 0, 'category'); inject(1, 1, 'manage_accounts');
-                                        inject(2, 0, 'tag');
-                                    }
-                                }
-                                
-                                // 2. KHUNG BẮT BUỘC (Icon Xanh)
-                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid="stVerticalBlock"]');
-                                if (reqContainer) {
-                                    let reqCols = reqContainer.querySelectorAll('[data-testid="stHorizontalBlock"] [data-testid="column"]');
-                                    if (reqCols.length >= 3) {
-                                        let injectReq = (colIdx, iconName) => {
-                                            let sels = reqCols[colIdx].querySelectorAll('[data-testid="stSelectbox"]');
-                                            if (sels.length > 0) {
-                                                let p = sels[0].querySelector('label p');
-                                                if (p && !p.querySelector('.inj-icon')) {
-                                                    p.innerHTML = `<span class='material-symbols-rounded inj-icon' style='vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; font-weight: normal; font-size: 1.15em;'>${iconName}</span>` + p.innerHTML;
-                                                }
-                                            }
-                                        };
-                                        injectReq(0, 'calendar_month'); injectReq(1, 'person'); injectReq(2, 'schedule');
                                     }
                                 }
                             }, 500);
