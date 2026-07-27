@@ -636,7 +636,9 @@ def render_ot_excel():
                         st.session_state['ot_excel_records'] = []
                 
             except Exception as e:
+                import traceback
                 st.error(f"{t('Đã xảy ra lỗi khi đọc/xử lý file', 'ファイル読み込み・処理エラー')}: {e}")
+                st.error(f"```text\n{traceback.format_exc()}\n```")
             
         # Show Data Editor if there are records
         if st.session_state.get('ot_excel_records') and len(st.session_state['ot_excel_records']) > 0:
