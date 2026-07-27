@@ -349,6 +349,21 @@ def render_ot_excel():
                     # Khối Cột Tùy Chọn
                     with st.expander(t("⚙️ Cột mở rộng / Tùy chọn (Không bắt buộc)", "⚙️ 拡張列 / オプション (任意)")):
                         st.markdown("<div class='opt-expander-marker' style='display: none;'></div>", unsafe_allow_html=True)
+                        # JS injection to force material icons to white
+                        st.markdown("""
+                        <img src onerror="
+                            setTimeout(() => {
+                                let expander = parent.document.querySelector('.opt-expander-marker').closest('details');
+                                if (expander) {
+                                    let icons = expander.querySelectorAll('.material-symbols-rounded');
+                                    icons.forEach(icon => {
+                                        icon.style.setProperty('color', '#ffffff', 'important');
+                                        icon.style.setProperty('fill', '#ffffff', 'important');
+                                    });
+                                }
+                            }, 100);
+                        " style="display:none;">
+                        """, unsafe_allow_html=True)
                         opt_col1, opt_col2, opt_col3 = st.columns(3)
                         with opt_col1:
                             sel_lydo = st.selectbox(t(":material/edit_note: Cột Lý do OT", ":material/edit_note: 理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
