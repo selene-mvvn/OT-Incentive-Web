@@ -685,103 +685,6 @@ def render_base_data():
                         if changes_str:
                             details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
             
-            # --- 2-step save confirmation logic ---
-            if diff_count > 0 and st.session_state.get('show_save_confirmation', False):
-                st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
-                with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
-                    st.markdown("""
-                    <div class='preview-changes-marker' style='display: none;'></div>
-                    <style>
-                    [data-testid="stExpander"]:has(.preview-changes-marker) .element-container:has(.preview-changes-marker),
-                    [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stVerticalBlock"] > div:has(.preview-changes-marker) {
-                        position: absolute !important;
-                        height: 0 !important;
-                        margin: 0 !important;
-                        padding: 0 !important;
-                        overflow: hidden !important;
-                        opacity: 0 !important;
-                    }
-                    [data-testid="stExpander"]:has(.preview-changes-marker) {
-                        background-color: #ffffff !important;
-                        border: 2px solid #fca5a5 !important;
-                        border-radius: 8px !important;
-                    }
-                    [data-testid="stExpander"]:has(.preview-changes-marker) summary {
-                        background-color: #fca5a5 !important;
-                        border-radius: 5px 5px 0 0 !important;
-                    }
-                    [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
-                    [data-testid="stExpander"]:has(.preview-changes-marker) summary span {
-                        color: #000000 !important;
-                        font-weight: bold !important;
-                        font-size: 15.5px !important;
-                    }
-                    [data-testid="stExpander"]:has(.preview-changes-marker) summary svg {
-                        fill: #000000 !important;
-                        color: #000000 !important;
-                    }
-                    [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpanderDetails"] {
-                        background-color: #ffffff !important;
-                        padding-top: 0.5rem !important;
-                        padding-bottom: 1rem !important;
-                    }
-                    </style>
-                    """, unsafe_allow_html=True)
-                    st.markdown("\n".join(details), unsafe_allow_html=True)
-                conf_c1, conf_c2, conf_c3 = st.columns([3, 2, 2])
-                with conf_c1:
-                    if st.button(t("✅ XÁC NHẬN LƯU", "✅ 保存を確認"), key="confirm_save_emps", type="primary", use_container_width=True):
-                        if uploaded_template is not None:
-                            if not os.path.exists("data"):
-                                os.makedirs("data")
-                            with open(template_path, "wb") as f:
-                                f.write(uploaded_template.getbuffer())
-                            with open(os.path.join("data", "custom_ot_template_name.txt"), "w", encoding="utf-8") as f:
-                                f.write(uploaded_template.name)
-
-                        st.session_state['ot_base_data']['standard_days'] = std_days_mo
-                        st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
-                        st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
-                        
-                        st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
-                        save_base_data(st.session_state['ot_base_data'])
-
-                        if st.session_state.get('mask_salary_mode', True):
-                            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-                                if c in edited_emp.columns and c in emp_df.columns:
-                                    edited_emp[c] = emp_df[c]
-                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-                        else:
-                            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
-                                if c in edited_emp.columns:
-                                    edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
-                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-
-                            edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
-                            gross = edited_emp['Lương cơ bản'].copy()
-                            for c in allowance_cols:
-                                if c in edited_emp.columns:
-                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
-                                    gross += edited_emp[c]
-                            edited_emp['Lương Gross'] = gross
-
-                        save_employees_df(edited_emp)
-                        st.session_state['show_save_confirmation'] = False
-                        st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
-                        st.rerun()
-                with conf_c2:
-                    if st.button(t("Tiếp tục sửa", "編集を続ける"), key="cancel_confirm", use_container_width=True):
-                        st.session_state['show_save_confirmation'] = False
-                        st.rerun()
-                with conf_c3:
-                    if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes_conf", icon=":material/undo:", use_container_width=True):
-                        st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
-                        st.session_state['show_save_confirmation'] = False
-                        st.rerun()
-
-                st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-            # --------------------
-
             st.markdown("<hr style='margin-top: 15px; margin-bottom: 15px;'>", unsafe_allow_html=True)
             st.markdown(f"""
             <style>
@@ -850,6 +753,103 @@ def render_base_data():
                         st.rerun()
 
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+            # --- 2-step save confirmation logic ---
+            if diff_count > 0 and st.session_state.get('show_save_confirmation', False):
+                st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
+                with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
+                    st.markdown("""
+                    <div class='preview-changes-marker' style='display: none;'></div>
+                    <style>
+                    [data-testid="stExpander"]:has(.preview-changes-marker) .element-container:has(.preview-changes-marker),
+                    [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stVerticalBlock"] > div:has(.preview-changes-marker) {
+                        position: absolute !important;
+                        height: 0 !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                        overflow: hidden !important;
+                        opacity: 0 !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) {
+                        background-color: #ffffff !important;
+                        border: 2px solid #fca5a5 !important;
+                        border-radius: 8px !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary {
+                        background-color: #fca5a5 !important;
+                        border-radius: 5px 5px 0 0 !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary span {
+                        color: #000000 !important;
+                        font-weight: bold !important;
+                        font-size: 15.5px !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) summary svg {
+                        fill: #000000 !important;
+                        color: #000000 !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpDetails"] {
+                        background-color: #ffffff !important;
+                        padding-top: 0.5rem !important;
+                        padding-bottom: 1rem !important;
+                    }
+                    </style>
+                    """, unsafe_allow_html=True)
+                    st.markdown("\n".join(details), unsafe_allow_html=True)
+                conf_c1, conf_c2, conf_c3 = st.columns([3, 2, 2])
+                with conf_c1:
+                    if st.button(t("✅ XÁC NHẬN LƯU", "✅ 保存を確認"), key="confirm_save_emps", type="primary", use_container_width=True):
+                        if uploaded_template is not None:
+                            if not os.path.exists("data"):
+                                os.makedirs("data")
+                            with open(template_path, "wb") as f:
+                                f.write(uploaded_template.getbuffer())
+                            with open(os.path.join("data", "custom_ot_template_name.txt"), "w", encoding="utf-8") as f:
+                                f.write(uploaded_template.name)
+
+                        st.session_state['ot_base_data']['standard_days'] = std_days_mo
+                        st.session_state['ot_base_data']['from_date'] = from_date.strftime("%Y-%m-%d")
+                        st.session_state['ot_base_data']['to_date'] = to_date.strftime("%Y-%m-%d")
+                        
+                        st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
+                        save_base_data(st.session_state['ot_base_data'])
+
+                        if st.session_state.get('mask_salary_mode', True):
+                            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                                if c in edited_emp.columns and c in emp_df.columns:
+                                    edited_emp[c] = emp_df[c]
+                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                        else:
+                            for c in ["Lương cơ bản", "Lương Gross"] + allowance_cols:
+                                if c in edited_emp.columns:
+                                    edited_emp[c] = edited_emp[c].astype(str).str.replace(',', '', regex=False)
+                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+
+                            edited_emp['Lương cơ bản'] = pd.to_numeric(edited_emp['Lương cơ bản'], errors='coerce').fillna(0)
+                            gross = edited_emp['Lương cơ bản'].copy()
+                            for c in allowance_cols:
+                                if c in edited_emp.columns:
+                                    edited_emp[c] = pd.to_numeric(edited_emp[c], errors='coerce').fillna(0)
+                                    gross += edited_emp[c]
+                            edited_emp['Lương Gross'] = gross
+
+                        save_employees_df(edited_emp)
+                        st.session_state['show_save_confirmation'] = False
+                        st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
+                        st.rerun()
+                with conf_c2:
+                    if st.button(t("Tiếp tục sửa", "編集を続ける"), key="cancel_confirm", use_container_width=True):
+                        st.session_state['show_save_confirmation'] = False
+                        st.rerun()
+                with conf_c3:
+                    if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes_conf", icon=":material/undo:", use_container_width=True):
+                        st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
+                        st.session_state['show_save_confirmation'] = False
+                        st.rerun()
+
+                st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+            # --------------------
             
             if not st.session_state.get('show_save_confirmation', False):
                 btn_col1, _, _ = st.columns([3, 2.5, 4.5])
