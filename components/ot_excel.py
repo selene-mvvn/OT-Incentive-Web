@@ -276,45 +276,45 @@ def render_ot_excel():
                             /* --- BƠM ICON BẰNG JAVASCRIPT LIÊN TỤC ĐỂ ĐỐI PHÓ VỚI STREAMLIT RERENDER --- */
                         </style>
                         <img src onerror="
-                            setInterval(() => {
+                            setInterval(() => {{
                                 // 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Trắng)
-                                let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
-                                if (expander) {
-                                    let cols = expander.querySelectorAll('[data-testid=\'column\']');
-                                    if (cols.length >= 3) {
-                                        let inject = (colIdx, selIdx, iconName) => {
-                                            let sels = cols[colIdx].querySelectorAll('[data-testid=\'stSelectbox\']');
-                                            if (sels.length > selIdx) {
-                                                let p = sels[selIdx].querySelector('label p');
-                                                if (p && !p.querySelector('.inj-icon')) {
-                                                    p.innerHTML = '<span class=\'material-symbols-rounded inj-icon\' style=\'vertical-align: middle; margin-right: 6px; color: #ffffff !important; font-weight: normal; font-size: 1.15em;\'>' + iconName + '</span>' + p.innerHTML;
-                                                }
-                                            }
-                                        };
-                                        inject(0, 0, 'edit_note'); inject(0, 1, 'sell');
-                                        inject(1, 0, 'category'); inject(1, 1, 'manage_accounts');
-                                        inject(2, 0, 'tag');
-                                    }
-                                }
+                                let expander = window.parent.document.querySelector(`.opt-expander-marker`)?.closest(`details`);
+                                if (expander) {{
+                                    let cols = expander.querySelectorAll(`[data-testid='column']`);
+                                    if (cols.length >= 3) {{
+                                        let inject = (colIdx, selIdx, iconName) => {{
+                                            let sels = cols[colIdx].querySelectorAll(`[data-testid='stSelectbox']`);
+                                            if (sels.length > selIdx) {{
+                                                let p = sels[selIdx].querySelector(`label p`);
+                                                if (p && !p.querySelector(`.inj-icon`)) {{
+                                                    p.innerHTML = `<span class='material-symbols-rounded inj-icon' style='vertical-align: middle; margin-right: 6px; color: #ffffff !important; font-weight: normal; font-size: 1.15em;'>` + iconName + `</span>` + p.innerHTML;
+                                                }}
+                                            }}
+                                        }};
+                                        inject(0, 0, `edit_note`); inject(0, 1, `sell`);
+                                        inject(1, 0, `category`); inject(1, 1, `manage_accounts`);
+                                        inject(2, 0, `tag`);
+                                    }}
+                                }}
                                 
                                 // 2. KHUNG BẮT BUỘC (Icon Xanh)
-                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\'stVerticalBlock\']');
-                                if (reqContainer) {
-                                    let reqCols = reqContainer.querySelectorAll('[data-testid=\'stHorizontalBlock\'] [data-testid=\'column\']');
-                                    if (reqCols.length >= 3) {
-                                        let injectReq = (colIdx, iconName) => {
-                                            let sels = reqCols[colIdx].querySelectorAll('[data-testid=\'stSelectbox\']');
-                                            if (sels.length > 0) {
-                                                let p = sels[0].querySelector('label p');
-                                                if (p && !p.querySelector('.inj-icon')) {
-                                                    p.innerHTML = '<span class=\'material-symbols-rounded inj-icon\' style=\'vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; font-weight: normal; font-size: 1.15em;\'>' + iconName + '</span>' + p.innerHTML;
-                                                }
-                                            }
-                                        };
-                                        injectReq(0, 'calendar_month'); injectReq(1, 'person'); injectReq(2, 'schedule');
-                                    }
-                                }
-                            }, 500);
+                                let reqContainer = window.parent.document.querySelector(`.req-mapping-inner-marker`)?.closest(`[data-testid='stVerticalBlock']`);
+                                if (reqContainer) {{
+                                    let reqCols = reqContainer.querySelectorAll(`[data-testid='stHorizontalBlock'] [data-testid='column']`);
+                                    if (reqCols.length >= 3) {{
+                                        let injectReq = (colIdx, iconName) => {{
+                                            let sels = reqCols[colIdx].querySelectorAll(`[data-testid='stSelectbox']`);
+                                            if (sels.length > 0) {{
+                                                let p = sels[0].querySelector(`label p`);
+                                                if (p && !p.querySelector(`.inj-icon`)) {{
+                                                    p.innerHTML = `<span class='material-symbols-rounded inj-icon' style='vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; font-weight: normal; font-size: 1.15em;'>` + iconName + `</span>` + p.innerHTML;
+                                                }}
+                                            }}
+                                        }};
+                                        injectReq(0, `calendar_month`); injectReq(1, `person`); injectReq(2, `schedule`);
+                                    }}
+                                }}
+                            }}, 500);
                         " style="display:none;">
                         <style>
                             
