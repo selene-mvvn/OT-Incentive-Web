@@ -282,8 +282,14 @@ def show_mini_edit_dialog(data_type, df):
                 st.markdown("""
                 <div class='preview-changes-marker' style='display: none;'></div>
                 <style>
-                div.element-container:has(.preview-changes-marker) {
-                    display: none !important;
+                [data-testid="stExpander"]:has(.preview-changes-marker) .element-container:has(.preview-changes-marker),
+                [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stVerticalBlock"] > div:has(.preview-changes-marker) {
+                    position: absolute !important;
+                    height: 0 !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    overflow: hidden !important;
+                    opacity: 0 !important;
                 }
                 [data-testid="stExpander"]:has(.preview-changes-marker) {
                     background-color: #ffffff !important;
