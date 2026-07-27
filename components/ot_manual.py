@@ -637,7 +637,7 @@ def render_base_data():
                             new_df = pd.DataFrame([new_row])
                             emp_df = pd.concat([emp_df, new_df], ignore_index=True)
                             save_employees_df(emp_df)
-                            st.toast(t(f"Đã thêm {qa_ten_nv} thành công!", f"{qa_ten_nv} を追加しました！"), icon="✅")
+                            st.toast(t(f"Đã thêm {qa_ten_nv} thành công!", f"{qa_ten_nv} を追加しました！"), icon=":material/check_circle:")
                             st.session_state['qa_form_key'] += 1
                             import time; time.sleep(0.5)
                             st.rerun()
@@ -1122,7 +1122,7 @@ def render_base_data():
                 
                 # Save immediately
                 save_base_data(st.session_state['ot_base_data'])
-                st.toast(t("Đã tự động điền thành công!", "自動入力が完了しました！"), icon="✅")
+                st.toast(t("Đã tự động điền thành công!", "自動入力が完了しました！"), icon=":material/check_circle:")
                 
                 st.rerun()
 
