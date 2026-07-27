@@ -314,9 +314,12 @@ def render_ot_excel():
                                 color: #ffffff !important;
                                 font-weight: 600 !important;
                             }}
-                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg,
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg path,
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg g {{
                                 fill: #ffffff !important;
                                 color: #ffffff !important;
+                                stroke: #ffffff !important;
                             }}
                             
                             /* Ẩn hoàn toàn thẻ chứa marker để không tạo ra khoảng trống thừa phía trên */
