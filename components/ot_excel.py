@@ -296,22 +296,27 @@ def render_ot_excel():
                             }}
                             
                             /* Đổi màu khung expander Tùy chọn thành màu xanh chủ đạo */
-                            [data-testid="stExpander"] {{
-                                background-color: #00b0f0 !important;
+                            [data-testid="stExpander"]:has(.opt-expander-marker) {{
                                 border: 1px solid rgba(255,255,255,0.3) !important;
                                 border-radius: 12px !important;
                                 box-shadow: 0 6px 18px rgba(0, 176, 240, 0.25) !important;
+                                overflow: hidden !important;
                             }}
-                            [data-testid="stExpander"] summary, [data-testid="stExpander"] summary p {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary, 
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary:hover,
+                            [data-testid="stExpander"]:has(.opt-expander-marker) div[data-testid="stExpanderDetails"] {{
+                                background-color: #00b0f0 !important;
+                            }}
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary p {{
                                 color: #ffffff !important;
                                 font-weight: 600 !important;
                             }}
-                            [data-testid="stExpander"] summary svg {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary svg {{
                                 fill: #ffffff !important;
                                 color: #ffffff !important;
                             }}
                             /* Đổi màu chữ label của các ô chọn bên trong thành màu trắng cho dễ nhìn */
-                            [data-testid="stExpander"] [data-testid="stWidgetLabel"] p {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] p {{
                                 color: #ffffff !important;
                                 font-weight: 500 !important;
                             }}
@@ -340,6 +345,7 @@ def render_ot_excel():
                     
                     # Khối Cột Tùy Chọn
                     with st.expander(t("⚙️ Cột mở rộng / Tùy chọn (Không bắt buộc)", "⚙️ 拡張列 / オプション (任意)")):
+                        st.markdown("<div class='opt-expander-marker' style='display: none;'></div>", unsafe_allow_html=True)
                         opt_col1, opt_col2, opt_col3 = st.columns(3)
                         with opt_col1:
                             sel_lydo = st.selectbox(t(":material/edit_note: Cột Lý do OT", ":material/edit_note: 理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
