@@ -275,7 +275,7 @@ def render_ot_excel():
                         <style>
                             /* --- CHÈN ICON BẰNG CSS PURE ĐỂ VƯỢT QUA DOMPURIFY CỦA STREAMLIT --- */
                             /* Style chung cho icon */
-                            .material-icon-pseudo::before {
+                            .material-icon-pseudo::before {{
                                 font-family: 'Material Symbols Rounded';
                                 font-weight: normal;
                                 font-style: normal;
@@ -290,19 +290,19 @@ def render_ot_excel():
                                 -webkit-font-smoothing: antialiased;
                                 vertical-align: middle;
                                 margin-right: 6px;
-                            }
+                            }}
                             
                             /* 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Trắng) */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'edit_note'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(2) label p::before { content: 'sell'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'category'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(2) label p::before { content: 'manage_accounts'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'tag'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'edit_note'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }}
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(2) label p::before {{ content: 'sell'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }}
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'category'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }}
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(2) label p::before {{ content: 'manage_accounts'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }}
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'tag'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }}
                             
                             /* 2. KHUNG BẮT BUỘC (Icon Xanh) */
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'calendar_month'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'person'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'schedule'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'calendar_month'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }}
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'person'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }}
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'schedule'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }}
                         </style>
                             /* Loại bỏ padding thừa của container và ép nó sát lên trên */
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {{
