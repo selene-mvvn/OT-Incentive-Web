@@ -303,7 +303,7 @@ def render_ot_excel():
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'calendar_month'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }}
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'person'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }}
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"]:nth-of-type(1) label p::before {{ content: 'schedule'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }}
-                        </style>
+                            
                             /* Loại bỏ padding thừa của container và ép nó sát lên trên */
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {{
                                 background-color: #ffffff !important;
