@@ -302,13 +302,13 @@ def show_mini_edit_dialog(data_type, df):
                 }
                 [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
                 [data-testid="stExpander"]:has(.preview-changes-marker) summary span {
-                    color: #ffffff !important;
+                    color: #000000 !important;
                     font-weight: bold !important;
                     font-size: 15.5px !important;
                 }
                 [data-testid="stExpander"]:has(.preview-changes-marker) summary svg {
-                    fill: #ffffff !important;
-                    color: #ffffff !important;
+                    fill: #000000 !important;
+                    color: #000000 !important;
                 }
                 [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpanderDetails"] {
                     background-color: #ffffff !important;
