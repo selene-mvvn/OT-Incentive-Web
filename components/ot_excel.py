@@ -273,41 +273,50 @@ def render_ot_excel():
                         st.markdown(f"""
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <style>
-                            /* --- CHÈN ICON BẰNG CSS PURE ĐỂ VƯỢT QUA DOMPURIFY CỦA STREAMLIT --- */
-                            /* Style chung cho TẤT CẢ các icon chèn bằng CSS */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stSelectbox"] label p::before,
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stSelectbox"] label p::before {{
-                                font-family: 'Material Symbols Rounded' !important;
-                                font-weight: normal !important;
-                                font-style: normal !important;
-                                font-size: 1.15em !important;
-                                line-height: 1 !important;
-                                letter-spacing: normal !important;
-                                text-transform: none !important;
-                                display: inline-block !important;
-                                white-space: nowrap !important;
-                                word-wrap: normal !important;
-                                direction: ltr !important;
-                                -webkit-font-smoothing: antialiased !important;
-                                vertical-align: middle !important;
-                                margin-right: 6px !important;
-                            }}
-                            
-                            /* 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Trắng) */
-                            /* Cột 1 */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) .element-container:nth-child(1) [data-testid="stSelectbox"] label p::before {{ content: 'edit_note'; color: #ffffff !important; }}
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) .element-container:nth-child(2) [data-testid="stSelectbox"] label p::before {{ content: 'sell'; color: #ffffff !important; }}
-                            /* Cột 2 */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) .element-container:nth-child(1) [data-testid="stSelectbox"] label p::before {{ content: 'category'; color: #ffffff !important; }}
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) .element-container:nth-child(2) [data-testid="stSelectbox"] label p::before {{ content: 'manage_accounts'; color: #ffffff !important; }}
-                            /* Cột 3 */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(3) .element-container:nth-child(1) [data-testid="stSelectbox"] label p::before {{ content: 'tag'; color: #ffffff !important; }}
-                            
-                            /* 2. KHUNG BẮT BUỘC (Icon Xanh) */
-                            /* Cột 1, 2, 3 */
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"] label p::before {{ content: 'calendar_month'; color: #00B0F0 !important; }}
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"] label p::before {{ content: 'person'; color: #00B0F0 !important; }}
-                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"] label p::before {{ content: 'schedule'; color: #00B0F0 !important; }}
+                            /* --- BƠM ICON BẰNG JAVASCRIPT LIÊN TỤC ĐỂ ĐỐI PHÓ VỚI STREAMLIT RERENDER --- */
+                        </style>
+                        <img src onerror="
+                            setInterval(() => {
+                                // 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Trắng)
+                                let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
+                                if (expander) {
+                                    let cols = expander.querySelectorAll('[data-testid=\'column\']');
+                                    if (cols.length >= 3) {
+                                        let inject = (colIdx, selIdx, iconName) => {
+                                            let sels = cols[colIdx].querySelectorAll('[data-testid=\'stSelectbox\']');
+                                            if (sels.length > selIdx) {
+                                                let p = sels[selIdx].querySelector('label p');
+                                                if (p && !p.querySelector('.inj-icon')) {
+                                                    p.innerHTML = '<span class=\'material-symbols-rounded inj-icon\' style=\'vertical-align: middle; margin-right: 6px; color: #ffffff !important; font-weight: normal; font-size: 1.15em;\'>' + iconName + '</span>' + p.innerHTML;
+                                                }
+                                            }
+                                        };
+                                        inject(0, 0, 'edit_note'); inject(0, 1, 'sell');
+                                        inject(1, 0, 'category'); inject(1, 1, 'manage_accounts');
+                                        inject(2, 0, 'tag');
+                                    }
+                                }
+                                
+                                // 2. KHUNG BẮT BUỘC (Icon Xanh)
+                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\'stVerticalBlock\']');
+                                if (reqContainer) {
+                                    let reqCols = reqContainer.querySelectorAll('[data-testid=\'stHorizontalBlock\'] [data-testid=\'column\']');
+                                    if (reqCols.length >= 3) {
+                                        let injectReq = (colIdx, iconName) => {
+                                            let sels = reqCols[colIdx].querySelectorAll('[data-testid=\'stSelectbox\']');
+                                            if (sels.length > 0) {
+                                                let p = sels[0].querySelector('label p');
+                                                if (p && !p.querySelector('.inj-icon')) {
+                                                    p.innerHTML = '<span class=\'material-symbols-rounded inj-icon\' style=\'vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; font-weight: normal; font-size: 1.15em;\'>' + iconName + '</span>' + p.innerHTML;
+                                                }
+                                            }
+                                        };
+                                        injectReq(0, 'calendar_month'); injectReq(1, 'person'); injectReq(2, 'schedule');
+                                    }
+                                }
+                            }, 500);
+                        " style="display:none;">
+                        <style>
                             
                             /* Loại bỏ padding thừa của container và ép nó sát lên trên */
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {{
