@@ -273,46 +273,46 @@ def render_ot_excel():
                         st.markdown(f"""
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <img src onerror="
-                            setTimeout(() => {
+                            setTimeout(() => {{
                                 // 1. Khung tuỳ chọn mở rộng
                                 let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
-                                if (expander) {
-                                    let labels = expander.querySelectorAll('[data-testid=\'stWidgetLabel\'] p');
-                                    let iconMap = {
+                                if (expander) {{
+                                    let labels = expander.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
+                                    let iconMap = {{
                                         'Cột Lý do OT': 'edit_note',
                                         'Cột Loại dự án': 'category',
                                         'Cột Mã đơn hàng': 'tag',
                                         'Cột Mã ĐH khách': 'sell',
                                         'Cột Người quản lý': 'manage_accounts'
-                                    };
-                                    labels.forEach(label => {
-                                        for (let key in iconMap) {
-                                            if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {
+                                    }};
+                                    labels.forEach(label => {{
+                                        for (let key in iconMap) {{
+                                            if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {{
                                                 label.innerHTML = '<span class=\\'material-symbols-rounded\\' style=\\'color: #ffffff !important; font-size: 1.15em; vertical-align: middle; margin-right: 6px;\\'>' + iconMap[key] + '</span>' + label.innerHTML;
-                                            }
-                                        }
+                                            }}
+                                        }}
                                         label.style.setProperty('color', '#ffffff', 'important');
-                                    });
-                                }
+                                    }});
+                                }}
                                 
                                 // 2. Khung bắt buộc
-                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\'stVerticalBlock\']');
-                                if (reqContainer) {
-                                    let reqLabels = reqContainer.querySelectorAll('[data-testid=\'stWidgetLabel\'] p');
-                                    let reqIconMap = {
+                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\\'stVerticalBlock\\']');
+                                if (reqContainer) {{
+                                    let reqLabels = reqContainer.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
+                                    let reqIconMap = {{
                                         'Cột Ngày': 'calendar_month',
                                         'Cột Tên': 'person',
                                         'Cột Số Giờ OT': 'schedule'
-                                    };
-                                    reqLabels.forEach(label => {
-                                        for (let key in reqIconMap) {
-                                            if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {
+                                    }};
+                                    reqLabels.forEach(label => {{
+                                        for (let key in reqIconMap) {{
+                                            if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {{
                                                 label.innerHTML = '<span class=\\'material-symbols-rounded\\' style=\\'color: #00B0F0 !important; font-size: 1.15em; vertical-align: middle; margin-right: 6px;\\'>' + reqIconMap[key] + '</span>' + label.innerHTML;
-                                            }
-                                        }
-                                    });
-                                }
-                            }, 300);
+                                            }}
+                                        }}
+                                    }});
+                                }}
+                            }}, 300);
                         " style="display:none;">
                         <style>
                             /* Loại bỏ padding thừa của container và ép nó sát lên trên */
