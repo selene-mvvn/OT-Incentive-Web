@@ -273,17 +273,14 @@ def render_ot_excel():
                         st.markdown(f"""
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <img src onerror="
-                            setTimeout(() => {{
+                            let attempts = 0;
+                            let intervalId = setInterval(() => {{
                                 let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
-                                if (expander) {{
+                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\\'stVerticalBlock\\']');
+                                attempts++;
+                                if (expander && reqContainer) {{
                                     let labels = expander.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
-                                    let iconMap = {{
-                                        'Cột Lý do OT': 'edit_note',
-                                        'Cột Loại dự án': 'category',
-                                        'Cột Mã đơn hàng': 'tag',
-                                        'Cột Mã ĐH khách': 'sell',
-                                        'Cột Người quản lý': 'manage_accounts'
-                                    }};
+                                    let iconMap = {{'Cột Lý do OT': 'edit_note', 'Cột Loại dự án': 'category', 'Cột Mã đơn hàng': 'tag', 'Cột Mã ĐH khách': 'sell', 'Cột Người quản lý': 'manage_accounts'}};
                                     labels.forEach(label => {{
                                         for (let key in iconMap) {{
                                             if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {{
@@ -292,15 +289,8 @@ def render_ot_excel():
                                         }}
                                         label.style.setProperty('color', '#ffffff', 'important');
                                     }});
-                                }}
-                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\\'stVerticalBlock\\']');
-                                if (reqContainer) {{
                                     let reqLabels = reqContainer.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
-                                    let reqIconMap = {{
-                                        'Cột Ngày': 'calendar_month',
-                                        'Cột Tên': 'person',
-                                        'Cột Số Giờ OT': 'schedule'
-                                    }};
+                                    let reqIconMap = {{'Cột Ngày': 'calendar_month', 'Cột Tên': 'person', 'Cột Số Giờ OT': 'schedule'}};
                                     reqLabels.forEach(label => {{
                                         for (let key in reqIconMap) {{
                                             if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {{
@@ -308,8 +298,11 @@ def render_ot_excel():
                                             }}
                                         }}
                                     }});
+                                    clearInterval(intervalId);
+                                }} else if (attempts > 20) {{
+                                    clearInterval(intervalId);
                                 }}
-                            }}, 300);
+                            }}, 200);
                         " style="display:none;">
                         <style>
                             /* Loại bỏ padding thừa của container và ép nó sát lên trên */
