@@ -691,6 +691,9 @@ def render_base_data():
                     st.markdown("""
                     <div class='preview-changes-marker' style='display: none;'></div>
                     <style>
+                    div.element-container:has(.preview-changes-marker) {
+                        display: none !important;
+                    }
                     [data-testid="stExpander"]:has(.preview-changes-marker) {
                         background-color: #ffffff !important;
                         border: 1px solid #d1d5db !important;
