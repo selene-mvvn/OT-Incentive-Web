@@ -799,7 +799,7 @@ def render_base_data():
                     st.markdown("\n".join(details), unsafe_allow_html=True)
                 conf_c1, conf_c2, conf_c3 = st.columns([3, 2, 2])
                 with conf_c1:
-                    if st.button(t("✅ XÁC NHẬN LƯU", "✅ 保存を確認"), key="confirm_save_emps", type="primary", use_container_width=True):
+                    if st.button(t("💾 XÁC NHẬN LƯU", "💾 保存を確認"), key="confirm_save_emps", type="primary", use_container_width=True):
                         if uploaded_template is not None:
                             if not os.path.exists("data"):
                                 os.makedirs("data")
