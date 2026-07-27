@@ -319,6 +319,11 @@ def render_ot_excel():
                                 color: #ffffff !important;
                                 stroke: #ffffff !important;
                             }}
+                            
+                            /* Ẩn hoàn toàn thẻ chứa marker để không tạo ra khoảng trống thừa phía trên */
+                            [data-testid="stExpander"]:has(.opt-expander-marker) div[data-testid="stVerticalBlock"] > div.element-container:has(.opt-expander-marker) {{
+                                display: none !important;
+                            }}
                         </style>
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
                         <div style='font-size: 14.5px; font-weight: 700; color: #64748b; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
