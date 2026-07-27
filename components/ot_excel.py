@@ -294,6 +294,14 @@ def render_ot_excel():
                                 color: #ef4444 !important; /* Màu đỏ */
                                 font-weight: bold;
                             }}
+                            
+                            /* Làm trắng nền khối expander Tùy chọn để không bị chìm vào nền xám */
+                            [data-testid="stExpander"] {{
+                                background-color: #ffffff !important;
+                                border: 1px solid #e2e8f0 !important;
+                                border-radius: 10px !important;
+                                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+                            }}
                         </style>
                         <div style='font-size: 14.5px; font-weight: 700; color: #64748b; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
                         """, unsafe_allow_html=True)
