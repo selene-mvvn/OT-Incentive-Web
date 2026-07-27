@@ -186,7 +186,9 @@ def text_input_with_history(label, key, category, default_value="", custom_optio
             <div class='marker-history-btn' style='display: none;'></div>
             <style>
                 div.element-container:has(.marker-history-btn) + div.element-container {
-                    margin-top: -25px !important;
+                    margin-top: -15px !important;
+                    transform: translateY(-15px) !important;
+                    z-index: 10;
                 }
                 div.element-container:has(.marker-history-btn) + div.element-container button {
                     text-transform: none !important;
