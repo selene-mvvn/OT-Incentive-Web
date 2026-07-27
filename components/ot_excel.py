@@ -320,6 +320,10 @@ def render_ot_excel():
                                 color: #ffffff !important;
                                 font-weight: 500 !important;
                             }}
+                            /* Đổi màu các icon material bên trong expander thành màu trắng */
+                            [data-testid="stExpander"]:has(.opt-expander-marker) div[data-testid="stExpanderDetails"] .material-symbols-rounded {{
+                                color: #ffffff !important;
+                            }}
                         </style>
                         <div style='font-size: 14.5px; font-weight: 700; color: #64748b; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
                         """, unsafe_allow_html=True)
