@@ -298,16 +298,16 @@ def render_ot_excel():
                                 font-weight: bold;
                             }}
                             
-                            /* Đổi màu khung expander Tùy chọn thành màu xanh chủ đạo */
+                            /* Đổi màu khung expander Tùy chọn thành giống khung Thêm/Xóa Phụ Cấp */
                             [data-testid="stExpander"]:has(.opt-expander-marker) {{
-                                border: 1px solid rgba(255,255,255,0.3) !important;
-                                border-radius: 12px !important;
-                                box-shadow: 0 6px 18px rgba(0, 176, 240, 0.25) !important;
+                                border: 2px solid #00b0f0 !important;
+                                border-radius: 10px !important;
+                                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
                                 overflow: hidden !important;
+                                background-color: #ffffff !important;
                             }}
                             [data-testid="stExpander"]:has(.opt-expander-marker) summary, 
-                            [data-testid="stExpander"]:has(.opt-expander-marker) summary:hover,
-                            [data-testid="stExpander"]:has(.opt-expander-marker) div[data-testid="stExpanderDetails"] {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) summary:hover {{
                                 background-color: #00b0f0 !important;
                             }}
                             [data-testid="stExpander"]:has(.opt-expander-marker) summary p {{
@@ -317,15 +317,6 @@ def render_ot_excel():
                             [data-testid="stExpander"]:has(.opt-expander-marker) summary svg {{
                                 fill: #ffffff !important;
                                 color: #ffffff !important;
-                            }}
-                            /* Đổi màu chữ label của các ô chọn bên trong thành màu trắng cho dễ nhìn */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] p,
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] .material-symbols-rounded,
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] span,
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] i {{
-                                color: #ffffff !important;
-                                fill: #ffffff !important;
-                                font-weight: 500 !important;
                             }}
                             
                             /* Ẩn hoàn toàn thẻ chứa marker để không tạo ra khoảng trống thừa phía trên */
@@ -372,7 +363,7 @@ def render_ot_excel():
                     components.html("""
                         <script>
                             setInterval(() => {
-                                // 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Trắng)
+                                // 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Xanh)
                                 let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
                                 if (expander) {
                                     let cols = expander.querySelectorAll('[data-testid="column"]');
@@ -382,7 +373,7 @@ def render_ot_excel():
                                             if (sels.length > selIdx) {
                                                 let p = sels[selIdx].querySelector('label p');
                                                 if (p && !p.querySelector('.inj-icon')) {
-                                                    p.innerHTML = `<span class='material-symbols-rounded inj-icon' style='vertical-align: middle; margin-right: 6px; color: #ffffff !important; font-weight: normal; font-size: 1.15em;'>${iconName}</span>` + p.innerHTML;
+                                                    p.innerHTML = `<span class='material-symbols-rounded inj-icon' style='vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; font-weight: normal; font-size: 1.15em;'>${iconName}</span>` + p.innerHTML;
                                                 }
                                             }
                                         };
