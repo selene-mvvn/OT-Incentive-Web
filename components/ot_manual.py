@@ -728,8 +728,7 @@ def render_base_data():
                     </style>
                     """, unsafe_allow_html=True)
                     st.markdown("\n".join(details), unsafe_allow_html=True)
-                
-                conf_c1, conf_c2, _ = st.columns([2, 2, 6])
+                conf_c1, conf_c2, conf_c3 = st.columns([3, 2, 2])
                 with conf_c1:
                     if st.button(t("✅ XÁC NHẬN LƯU", "✅ 保存を確認"), key="confirm_save_emps", type="primary", use_container_width=True):
                         if uploaded_template is not None:
@@ -771,7 +770,12 @@ def render_base_data():
                         st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
                         st.rerun()
                 with conf_c2:
-                    if st.button(t("Hủy bỏ", "キャンセル"), key="cancel_confirm", use_container_width=True):
+                    if st.button(t("Tiếp tục sửa", "編集を続ける"), key="cancel_confirm", use_container_width=True):
+                        st.session_state['show_save_confirmation'] = False
+                        st.rerun()
+                with conf_c3:
+                    if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes_conf", icon=":material/undo:", use_container_width=True):
+                        st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
                         st.session_state['show_save_confirmation'] = False
                         st.rerun()
 
@@ -848,7 +852,7 @@ def render_base_data():
             st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             
             if not st.session_state.get('show_save_confirmation', False):
-                btn_col1, btn_col2, _ = st.columns([3, 2.5, 4.5])
+                btn_col1, _, _ = st.columns([3, 2.5, 4.5])
                 with btn_col1:
                     if st.button(t("💾 LƯU THÔNG TIN", "💾 保存"), key="save_emps", type="primary", use_container_width=True):
                         if diff_count > 0:
@@ -862,11 +866,6 @@ def render_base_data():
                             st.session_state['ot_base_data']['standard_hours_per_day'] = std_hrs
                             save_base_data(st.session_state['ot_base_data'])
                             st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
-                            st.rerun()
-                with btn_col2:
-                    if diff_count > 0:
-                        if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes", icon=":material/undo:", use_container_width=True):
-                            st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
                             st.rerun()
 
 
