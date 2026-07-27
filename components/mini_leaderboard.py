@@ -293,11 +293,11 @@ def show_mini_edit_dialog(data_type, df):
                 }
                 [data-testid="stExpander"]:has(.preview-changes-marker) {
                     background-color: #ffffff !important;
-                    border: 2px solid #f87171 !important;
+                    border: 2px solid #fb923c !important;
                     border-radius: 8px !important;
                 }
                 [data-testid="stExpander"]:has(.preview-changes-marker) summary {
-                    background-color: #f87171 !important;
+                    background-color: #fb923c !important;
                     border-radius: 5px 5px 0 0 !important;
                 }
                 [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
