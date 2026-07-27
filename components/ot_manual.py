@@ -688,6 +688,19 @@ def render_base_data():
             if diff_count > 0:
                 st.markdown(f"##### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
                 with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
+                    st.markdown("""
+                    <div class='preview-changes-marker' style='display: none;'></div>
+                    <style>
+                    [data-testid="stExpander"]:has(.preview-changes-marker) {
+                        background-color: #ffffff !important;
+                        border: 1px solid #d1d5db !important;
+                        border-radius: 8px !important;
+                    }
+                    [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpanderDetails"] {
+                        background-color: #ffffff !important;
+                    }
+                    </style>
+                    """, unsafe_allow_html=True)
                     st.markdown("\n".join(details), unsafe_allow_html=True)
                 st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             # --------------------

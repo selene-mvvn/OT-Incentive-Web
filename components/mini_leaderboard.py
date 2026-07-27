@@ -279,7 +279,21 @@ def show_mini_edit_dialog(data_type, df):
                         
         if details:
             with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
+                st.markdown("""
+                <div class='preview-changes-marker' style='display: none;'></div>
+                <style>
+                [data-testid="stExpander"]:has(.preview-changes-marker) {
+                    background-color: #ffffff !important;
+                    border: 1px solid #d1d5db !important;
+                    border-radius: 8px !important;
+                }
+                [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpanderDetails"] {
+                    background-color: #ffffff !important;
+                }
+                </style>
+                """, unsafe_allow_html=True)
                 st.markdown("\n".join(details), unsafe_allow_html=True)
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
                 
         if diff_count == 0:
             st.write(t("Không có thay đổi nào.", "変更はありません。"))
