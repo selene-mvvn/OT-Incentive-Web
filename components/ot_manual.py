@@ -797,7 +797,7 @@ def render_base_data():
                     </style>
                     """, unsafe_allow_html=True)
                     st.markdown("\n".join(details), unsafe_allow_html=True)
-                conf_c1, conf_c2, conf_c3 = st.columns([3, 2, 2])
+                conf_c1, conf_c2 = st.columns([1, 1])
                 with conf_c1:
                     if st.button(t("💾 XÁC NHẬN LƯU", "💾 保存を確認"), key="confirm_save_emps", type="primary", use_container_width=True):
                         if uploaded_template is not None:
@@ -839,10 +839,6 @@ def render_base_data():
                         st.session_state['pending_toast'] = t("Đã lưu Thông tin chung thành công!", "設定を保存しました！")
                         st.rerun()
                 with conf_c2:
-                    if st.button(t("Tiếp tục sửa", "編集を続ける"), key="cancel_confirm", use_container_width=True):
-                        st.session_state['show_save_confirmation'] = False
-                        st.rerun()
-                with conf_c3:
                     if st.button(t("Hủy thay đổi", "変更を取消"), key="cancel_emp_changes_conf", icon=":material/undo:", use_container_width=True):
                         st.session_state['emp_editor_reset_key'] = st.session_state.get('emp_editor_reset_key', 0) + 1
                         st.session_state['show_save_confirmation'] = False
