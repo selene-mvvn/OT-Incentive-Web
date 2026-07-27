@@ -316,13 +316,12 @@ def render_ot_excel():
                                 color: #ffffff !important;
                             }}
                             /* Đổi màu chữ label của các ô chọn bên trong thành màu trắng cho dễ nhìn */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] p {{
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] * {{
                                 color: #ffffff !important;
-                                font-weight: 500 !important;
+                                fill: #ffffff !important;
                             }}
-                            /* Đổi màu các icon material bên trong expander thành màu trắng */
-                            [data-testid="stExpander"]:has(.opt-expander-marker) div[data-testid="stExpanderDetails"] .material-symbols-rounded {{
-                                color: #ffffff !important;
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="stWidgetLabel"] p {{
+                                font-weight: 500 !important;
                             }}
                         </style>
                         <div style='font-size: 14.5px; font-weight: 700; color: #64748b; margin-bottom: 8px; margin-top: 4px;'>{t('Các cột BẮT BUỘC', '必須列')}</div>
