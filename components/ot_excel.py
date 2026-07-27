@@ -272,39 +272,38 @@ def render_ot_excel():
                     with st.container():
                         st.markdown(f"""
                         <div class='req-mapping-inner-marker' style='display: none;'></div>
-                        <img src onerror="
-                            let attempts = 0;
-                            let intervalId = setInterval(() => {{
-                                let expander = window.parent.document.querySelector('.opt-expander-marker')?.closest('details');
-                                let reqContainer = window.parent.document.querySelector('.req-mapping-inner-marker')?.closest('[data-testid=\\'stVerticalBlock\\']');
-                                attempts++;
-                                if (expander && reqContainer) {{
-                                    let labels = expander.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
-                                    let iconMap = {{'Cột Lý do OT': 'edit_note', 'Cột Loại dự án': 'category', 'Cột Mã đơn hàng': 'tag', 'Cột Mã ĐH khách': 'sell', 'Cột Người quản lý': 'manage_accounts'}};
-                                    labels.forEach(label => {{
-                                        for (let key in iconMap) {{
-                                            if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {{
-                                                label.innerHTML = '<span class=\\'material-symbols-rounded\\' style=\\'color: #ffffff !important; font-size: 1.15em; vertical-align: middle; margin-right: 6px;\\'>' + iconMap[key] + '</span>' + label.innerHTML;
-                                            }}
-                                        }}
-                                        label.style.setProperty('color', '#ffffff', 'important');
-                                    }});
-                                    let reqLabels = reqContainer.querySelectorAll('[data-testid=\\'stWidgetLabel\\'] p');
-                                    let reqIconMap = {{'Cột Ngày': 'calendar_month', 'Cột Tên': 'person', 'Cột Số Giờ OT': 'schedule'}};
-                                    reqLabels.forEach(label => {{
-                                        for (let key in reqIconMap) {{
-                                            if (label.innerText.includes(key) && !label.innerHTML.includes('material-symbols-rounded')) {{
-                                                label.innerHTML = '<span class=\\'material-symbols-rounded\\' style=\\'color: #00B0F0 !important; font-size: 1.15em; vertical-align: middle; margin-right: 6px;\\'>' + reqIconMap[key] + '</span>' + label.innerHTML;
-                                            }}
-                                        }}
-                                    }});
-                                    clearInterval(intervalId);
-                                }} else if (attempts > 20) {{
-                                    clearInterval(intervalId);
-                                }}
-                            }}, 200);
-                        " style="display:none;">
                         <style>
+                            /* --- CHÈN ICON BẰNG CSS PURE ĐỂ VƯỢT QUA DOMPURIFY CỦA STREAMLIT --- */
+                            /* Style chung cho icon */
+                            .material-icon-pseudo::before {
+                                font-family: 'Material Symbols Rounded';
+                                font-weight: normal;
+                                font-style: normal;
+                                font-size: 1.15em;
+                                line-height: 1;
+                                letter-spacing: normal;
+                                text-transform: none;
+                                display: inline-block;
+                                white-space: nowrap;
+                                word-wrap: normal;
+                                direction: ltr;
+                                -webkit-font-smoothing: antialiased;
+                                vertical-align: middle;
+                                margin-right: 6px;
+                            }
+                            
+                            /* 1. KHUNG TÙY CHỌN MỞ RỘNG (Icon Trắng) */
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'edit_note'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(2) label p::before { content: 'sell'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'category'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(2) label p::before { content: 'manage_accounts'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
+                            [data-testid="stExpander"]:has(.opt-expander-marker) [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'tag'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #ffffff !important; }
+                            
+                            /* 2. KHUNG BẮT BUỘC (Icon Xanh) */
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(1) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'calendar_month'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(2) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'person'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }
+                            [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) [data-testid="stHorizontalBlock"] [data-testid="column"]:nth-child(3) [data-testid="stSelectbox"]:nth-of-type(1) label p::before { content: 'schedule'; font-family: 'Material Symbols Rounded'; font-size: 1.15em; vertical-align: middle; margin-right: 6px; color: #00B0F0 !important; }
+                        </style>
                             /* Loại bỏ padding thừa của container và ép nó sát lên trên */
                             [data-testid="stVerticalBlock"]:has(> .element-container .req-mapping-inner-marker) {{
                                 background-color: #ffffff !important;
@@ -366,19 +365,19 @@ def render_ot_excel():
                         """, unsafe_allow_html=True)
                         m_col1, m_col2, m_col3 = st.columns(3)
                         with m_col1:
-                            sel_ngay = st.selectbox(t(":material/calendar_month: Cột Ngày", ":material/calendar_month: 日付列"), col_opts, index=get_idx(col_map_auto["ngay"]))
+                            sel_ngay = st.selectbox(t("Cột Ngày", "日付列"), col_opts, index=get_idx(col_map_auto["ngay"]))
                             if sel_ngay == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col2:
-                            sel_ten = st.selectbox(t(":material/person: Cột Tên", ":material/person: 名前列"), col_opts, index=get_idx(col_map_auto["ten"]))
+                            sel_ten = st.selectbox(t("Cột Tên", "名前列"), col_opts, index=get_idx(col_map_auto["ten"]))
                             if sel_ten == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col3:
-                            sel_ot = st.selectbox(t(":material/schedule: Cột Số Giờ OT", ":material/schedule: OT時間列"), col_opts, index=get_idx(col_map_auto["ot"]))
+                            sel_ot = st.selectbox(t("Cột Số Giờ OT", "OT時間列"), col_opts, index=get_idx(col_map_auto["ot"]))
                             if sel_ot == "--- Bỏ qua ---":
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
@@ -389,11 +388,11 @@ def render_ot_excel():
                         st.markdown("<div class='opt-expander-marker' style='display: none;'></div>", unsafe_allow_html=True)
                         opt_col1, opt_col2, opt_col3 = st.columns(3)
                         with opt_col1:
-                            sel_lydo = st.selectbox(t(":material/edit_note: Cột Lý do OT", ":material/edit_note: 理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
-                            sel_ma_dh_kh = st.selectbox(t(":material/sell: Cột Mã ĐH khách", ":material/sell: 顧客注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh_kh"]))
+                            sel_lydo = st.selectbox(t("Cột Lý do OT", "理由列"), col_opts, index=get_idx(col_map_auto["lydo"]))
+                            sel_ma_dh_kh = st.selectbox(t("Cột Mã ĐH khách", "顧客注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh_kh"]))
                         with opt_col2:
-                            sel_loai_da = st.selectbox(t(":material/category: Cột Loại dự án", ":material/category: プロジェクトタイプ列"), col_opts, index=get_idx(col_map_auto["loai_da"]))
-                            sel_quan_ly = st.selectbox(t(":material/manage_accounts: Cột Người quản lý", ":material/manage_accounts: 管理者列"), col_opts, index=get_idx(col_map_auto["quan_ly"]))
+                            sel_loai_da = st.selectbox(t("Cột Loại dự án", "プロジェクトタイプ列"), col_opts, index=get_idx(col_map_auto["loai_da"]))
+                            sel_quan_ly = st.selectbox(t("Cột Người quản lý", "管理者列"), col_opts, index=get_idx(col_map_auto["quan_ly"]))
                         with opt_col3:
                             sel_ma_dh = st.selectbox(t(":material/tag: Cột Mã đơn hàng", ":material/tag: 注文番号列"), col_opts, index=get_idx(col_map_auto["ma_dh"]))
                             
