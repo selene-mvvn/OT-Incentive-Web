@@ -479,7 +479,7 @@ def render_action_history():
                     if is_missing: 
                         dot_color = "#e74c3c"
                         icon_html = "<span class='material-symbols-rounded' style='color:#e74c3c; vertical-align: middle; margin-right: 8px; font-size: 22px;'>error</span>"
-                    filename_html = f"<span style='font-size:14.5px; font-weight:normal; color:#3498db; margin-left:12px; display:inline-flex; align-items:center; gap:2px;'><span class='material-symbols-rounded' style='font-size:16px;'>attach_file</span> {log.get('original_filename')}</span>" if log.get('original_filename') else ""
+                    filename_html = f"<span style='font-size:14.5px; font-weight:normal; color:#3498db; margin-left:12px; margin-top:3px; display:inline-flex; align-items:center; gap:2px;'><span class='material-symbols-rounded' style='font-size:16px;'>attach_file</span> {log.get('original_filename')}</span>" if log.get('original_filename') else ""
                     st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:17.5px; font-weight:800; display:flex; align-items:center;'>{icon_html} {action_type}{filename_html}</h3>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:600; margin-top:10px;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:6px; margin-bottom:5px; color:#34495e; font-size:14.5px;'>{desc}</p>", unsafe_allow_html=True)
