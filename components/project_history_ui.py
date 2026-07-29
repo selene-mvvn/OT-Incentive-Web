@@ -1465,9 +1465,11 @@ def render_project_history():
                         
                         # We use global go and make_subplots
                         
+                        bar_w = 0.25 if len(df_grouped) == 1 else (0.35 if len(df_grouped) == 2 else (0.45 if len(df_grouped) == 3 else None))
+                        
                         fig_trend = make_subplots(specs=[[{"secondary_y": True}]])
                         fig_trend.add_trace(
-                            go.Bar(x=df_grouped[x_col], y=df_grouped['ot_hours'], name=t("Số giờ", "時間"), marker_color='#00a8e8', hovertemplate="<b>%{x}</b><br>"+t("Số giờ", "時間")+": %{y}h<extra></extra>"),
+                            go.Bar(x=df_grouped[x_col], y=df_grouped['ot_hours'], name=t("Số giờ", "時間"), marker_color='#00a8e8', width=bar_w, hovertemplate="<b>%{x}</b><br>"+t("Số giờ", "時間")+": %{y}h<extra></extra>"),
                             secondary_y=False,
                         )
                         fig_trend.add_trace(
@@ -1482,8 +1484,8 @@ def render_project_history():
                             plot_bgcolor='rgba(0,0,0,0)',
                             legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
                         )
-                        fig_trend.update_yaxes(title_text=t("Số giờ", "時間"), secondary_y=False, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
-                        fig_trend.update_yaxes(title_text=t("Số tiền (VND)", "金額 (VND)"), secondary_y=True, showgrid=False)
+                        fig_trend.update_yaxes(title_text=t("Số giờ", "時間"), secondary_y=False, showgrid=True, gridcolor='rgba(0,0,0,0.05)', rangemode='tozero')
+                        fig_trend.update_yaxes(title_text=t("Số tiền (VND)", "金額 (VND)"), secondary_y=True, showgrid=False, rangemode='tozero')
                         
                         st.plotly_chart(fig_trend, use_container_width=True, config={'displayModeBar': False})
                         
