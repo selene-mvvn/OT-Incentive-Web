@@ -25,7 +25,8 @@ def render_action_history():
                 background: linear-gradient(to right, #f2fcff 0%, #ffffff 25%) !important;
             }
             h3.history-card-title::after {
-                width: 50px !important;
+                width: 80px !important;
+                bottom: -6px !important;
             }
                         [data-testid="stMain"] .stButton button, [data-testid="stMain"] [data-testid="stButton"] button,
             [data-testid="stMain"] .stDownloadButton button, [data-testid="stMain"] [data-testid="stDownloadButton"] button {
@@ -442,12 +443,12 @@ def render_action_history():
                     
                 display_date = d_str_vn if st.session_state.get('lang', 'VN') == 'VN' else d_str_jp
                 st.markdown(f"""
-                    <div style="display: flex; flex-direction: column; margin-top: {'35px' if i > 0 else '5px'}; margin-bottom: 12px; position: relative;">
-                        <div style="display: inline-flex; align-items: center; gap: 6px; background-color: #f1f5f9; color: #475569; padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; width: fit-content; z-index: 2;">
+                    <div style="display: flex; align-items: center; margin-top: {'35px' if i > 0 else '5px'}; margin-bottom: 12px;">
+                        <div style="background-color: #f1f5f9; color: #475569; padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
                             <span class="material-symbols-rounded" style="font-size: 18px; color: #00a8e8;">calendar_today</span>
                             {display_date}
                         </div>
-                        <div style="position: absolute; bottom: -8px; left: 10px; width: 60%; height: 2px; background: linear-gradient(to right, #00a8e8 0%, #00a8e8 20%, #cbd5e1 60%, transparent 100%);"></div>
+                        <div style="flex-grow: 1; height: 2px; background: linear-gradient(to right, #cbd5e1 0%, transparent 100%); margin-left: 15px;"></div>
                     </div>
                 """, unsafe_allow_html=True)
             
@@ -480,7 +481,7 @@ def render_action_history():
                         icon_html = "<span class='material-symbols-rounded' style='color:#e74c3c; vertical-align: middle; margin-right: 8px; font-size: 22px;'>error</span>"
                     filename_html = f"<span style='font-size:14.5px; font-weight:normal; color:#3498db; margin-left:12px; display:inline-flex; align-items:center; gap:2px;'><span class='material-symbols-rounded' style='font-size:16px;'>attach_file</span> {log.get('original_filename')}</span>" if log.get('original_filename') else ""
                     st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:17.5px; font-weight:800; display:flex; align-items:center;'>{icon_html} {action_type}{filename_html}</h3>", unsafe_allow_html=True)
-                    st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:600; margin-top:4px;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:600; margin-top:10px;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
                     st.markdown(f"<p style='margin-top:6px; margin-bottom:5px; color:#34495e; font-size:14.5px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_preview:
                     if not is_missing:
