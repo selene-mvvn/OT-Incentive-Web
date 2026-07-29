@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import copy
+from plotly.subplots import make_subplots
 from logic.i18n import t
 from logic.history_records import get_records, deduplicate_records
 
@@ -1439,8 +1440,7 @@ def render_project_history():
                     if not df_grouped.empty:
                         df_grouped = df_trend.groupby([x_col, 'sort_key']).agg({'ot_hours': 'sum', 'est_cost': 'sum'}).reset_index().sort_values('sort_key')
                         
-                        import plotly.graph_objects as go
-                        from plotly.subplots import make_subplots
+                        # We use global go and make_subplots
                         
                         fig_trend = make_subplots(specs=[[{"secondary_y": True}]])
                         fig_trend.add_trace(
