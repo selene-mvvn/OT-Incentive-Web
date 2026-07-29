@@ -1383,32 +1383,28 @@ def render_project_history():
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title2}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">schedule</span></div>
                         </div>
-                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target-float" data-target="{total_ot_hours}">{total_ot_hours:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span></div>
-                        {trend_hours_html}
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target-float" data-target="{total_ot_hours}">{total_ot_hours:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span></div>{trend_hours_html}
                     </div>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title3}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">folder</span></div>
                         </div>
-                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_projects_t3}">{num_projects_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span></div>
-                        {trend_proj_html}
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_projects_t3}">{num_projects_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span></div>{trend_proj_html}
                     </div>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title1}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #34d399 0%, #10b981 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">payments</span></div>
                         </div>
-                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{total_ot_pay}">{total_ot_pay:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span></div>
-                        {trend_pay_html}
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{total_ot_pay}">{total_ot_pay:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span></div>{trend_pay_html}
                     </div>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title4}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">receipt_long</span></div>
                         </div>
-                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_records_t3}">{num_records_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('lượt', '回')}</span></div>
-                        {trend_records_html}
+                        <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_records_t3}">{num_records_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('lượt', '回')}</span></div>{trend_records_html}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
