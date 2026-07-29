@@ -1295,22 +1295,38 @@ def render_project_history():
                 format_func=lambda x: f"{x}年" if st.session_state.get('lang', 'VN') == 'JP' and str(x).isdigit() else str(x),
                 key="tab3_sel_year"
             )
-        with col_t3_m:
-            sel_month_t3 = st.selectbox(
-                t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
-                options=month_options,
-                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else str(x),
-                key="tab3_sel_month",
-                help=t("Mẹo: Lọc dữ liệu theo tháng.", "ヒント: 月でデータを絞り込みます。")
-            )
             
         if not unique_emps:
+            with col_t3_m:
+                sel_month_t3 = st.selectbox(
+                    t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
+                    options=[t("Tất cả", "すべて")],
+                    key="tab3_sel_month"
+                )
             from components.ui_utils import render_empty_state
             render_empty_state(t("Chưa có dữ liệu nhân sự.", "スタッフデータがありません。"))
         else:
             df_tab3_all = df[df['employee_name'] == sel_emp_t3].copy()
             if 'date_obj' not in df_tab3_all.columns and 'ot_date' in df_tab3_all.columns:
                 df_tab3_all['date_obj'] = pd.to_datetime(df_tab3_all['ot_date'], format='%d/%m/%Y', errors='coerce')
+                
+            # Filter valid months
+            if sel_year_t3 not in ["Tất cả", "すべて"]:
+                df_temp = df_tab3_all[df_tab3_all['date_obj'].dt.year == sel_year_t3]
+            else:
+                df_temp = df_tab3_all
+                
+            avail_months = sorted(df_temp['date_obj'].dt.month.dropna().unique().astype(int).tolist())
+            month_options_t3 = [t("Tất cả", "すべて")] + avail_months
+            
+            with col_t3_m:
+                sel_month_t3 = st.selectbox(
+                    t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
+                    options=month_options_t3,
+                    format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else str(x),
+                    key="tab3_sel_month",
+                    help=t("Mẹo: Lọc dữ liệu theo tháng.", "ヒント: 月でデータを絞り込みます。")
+                )
                 
             prev_df_tab3 = pd.DataFrame()
             has_trend = False
