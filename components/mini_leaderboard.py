@@ -420,7 +420,7 @@ def render_mini_leaderboard(data_type="ot"):
             sel_month = st.selectbox(
                 t("Chọn tháng", "月を選択"),
                 options=month_options,
-                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if isinstance(x, int) else str(x),
+                format_func=lambda x: t(f"Tháng {x}", f"{x}月") if str(x).isdigit() else str(x),
                 key=f"mini_month_{data_type}",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.  \n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。  \n👉 *季節性の分析に便利です*。")
             )
