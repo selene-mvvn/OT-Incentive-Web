@@ -58,6 +58,11 @@ def render_gamified_cards(agg_df, metric_col, title_col, unit, theme="ot"):
 def render_dashboard():
     st.markdown(f"<h2 style='font-size: 28px; font-weight: 600;'>{t('XẾP HẠNG CHUNG', '総合ランキング')}</h2>", unsafe_allow_html=True)
     
+    current_lang = st.session_state.get('lang', 'VN')
+    def fmt_year(x, l=current_lang):
+        if not str(x).isdigit(): return str(x)
+        return f"{x}年" if l == 'JP' else str(x)
+    
     # === OT RANKING ===
     st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>1. {t('XẾP HẠNG THỜI GIAN OT', '残業時間ランキング')}</h3>", unsafe_allow_html=True)
     ot_history = get_records("ot")
@@ -82,7 +87,7 @@ def render_dashboard():
             
         c_year, c_emp = st.columns(2)
         with c_year:
-            sel_year_ot = st.selectbox(t("Chọn năm (OT)", "年を選択 (OT)"), [t("Tất cả", "すべて")] + years_ot, format_func=lambda x: f"{x}年" if st.session_state.get('lang', 'VN') == 'JP' and str(x).isdigit() else str(x), key="sel_year_ot_dash")
+            sel_year_ot = st.selectbox(t("Chọn năm (OT)", "年を選択 (OT)"), [t("Tất cả", "すべて")] + years_ot, format_func=fmt_year, key="sel_year_ot_dash")
             
         if sel_year_ot not in ["Tất cả", "すべて"]:
             df_ot_filtered = df_ot[df_ot['date_obj'].dt.year == sel_year_ot]
@@ -212,7 +217,8 @@ def render_dashboard():
 
 
     # === INCENTIVE RANKING ===
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+    
     st.markdown(f"<h3 style='font-size: 20px; font-weight: 600; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px; margin-top: 20px;'>2. {t('XẾP HẠNG INCENTIVE', 'インセンティブランキング')}</h3>", unsafe_allow_html=True)
     inc_history = get_records("incentive")
     if not inc_history:
