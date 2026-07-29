@@ -1352,7 +1352,7 @@ def render_project_history():
                     if not has_trend: return ""
                     
                     # Pill styling
-                    base_style = "display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; margin-top: 8px;"
+                    base_style = "display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; margin-top: 12px;"
                     
                     if prev_val == 0:
                         if curr_val > 0: return f"<div style='{base_style} background-color: #ecfdf5; color: #059669;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px;'>trending_up</span> 100% {trend_label}</div>"
