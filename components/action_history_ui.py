@@ -300,9 +300,8 @@ def render_action_history():
                     
                     // Also observe in case Streamlit rerenders parts without destroying the iframe
                     const observer = new MutationObserver(() => {
-                        parentDoc.querySelectorAll('.selection-badge').forEach(badge => {
-                            const el = badge.parentElement;
-                            if (el && !el.querySelector('.bulk-marker')) {
+                        parentDoc.querySelectorAll('.custom-toolbar-wrapper').forEach(el => {
+                            if (!el.querySelector('.bulk-marker')) {
                                 el.classList.remove('custom-toolbar-wrapper');
                                 el.style.removeProperty('background-color');
                                 el.style.removeProperty('left');
@@ -310,7 +309,8 @@ def render_action_history():
                                     child.classList.remove('toolbar-btn-container');
                                     child.classList.remove('toolbar-hidden-container');
                                 });
-                                badge.remove();
+                                const badge = el.querySelector('.selection-badge');
+                                if (badge) badge.remove();
                             }
                         });
                     });
@@ -608,33 +608,7 @@ def render_action_history():
                 if st.button(t("BỎ CHỌN", "選択解除"), key="bulk_uncheck", on_click=_do_bulk_uncheck):
                     pass
 
-        else:
-            # CLEANUP SCRIPT: Sử dụng CSS Class an toàn.
-            # Thay vì thao tác trực tiếp lên inline styles (điều gây ra xung đột với Streamlit),
-            # ta chỉ việc xóa bỏ class `.custom-toolbar-wrapper`, mọi CSS !important sẽ tự biến mất!
-            import streamlit.components.v1 as components
-            components.html("""
-            <script>
-            setTimeout(() => {
-                // React có thể đã xóa mất class 'custom-toolbar-wrapper' khi tái chế thẻ DOM.
-                // Do đó, ta tìm thẻ DOM bị lỗi thông qua 'selection-badge' (phần tử JS ta chèn tay vào mà React không biết để xóa).
-                const badges = window.parent.document.querySelectorAll('.selection-badge');
-                badges.forEach(badge => {
-                    const tb = badge.parentNode;
-                    if (tb) {
-                        tb.classList.remove('custom-toolbar-wrapper');
-                        tb.style.removeProperty('left');
-                        tb.style.removeProperty('background-color');
-                        
-                        Array.from(tb.children).forEach(child => {
-                            child.classList.remove('toolbar-btn-container', 'toolbar-hidden-container');
-                        });
-                    }
-                    badge.remove();
-                });
-            }, 50);
-            </script>
-            """ + f"<!-- {__import__('time').time()} -->", height=0, width=0)
+        # Cleaned up obsolete else branch
 
         from components.ui_utils import make_history_cards_white
         make_history_cards_white()
