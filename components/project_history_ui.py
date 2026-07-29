@@ -1441,7 +1441,7 @@ def render_project_history():
                 col_chart, col_tbl = st.columns([4.5, 5.5], gap="large")
                 
                 with col_chart:
-                    chart_title = t('XU HƯỚNG GIỜ OT THEO THỜI GIAN', '残業時間の推移')
+                    chart_title = t('BIỂU ĐỒ XU HƯỚNG GIỜ OT THEO THỜI GIAN', '残業時間の推移チャート')
                     st.markdown(f"<h3 style='font-size: 18px; font-weight: 600;'>{chart_title}</h3>", unsafe_allow_html=True)
                     
                     df_trend = df_tab3.copy()
