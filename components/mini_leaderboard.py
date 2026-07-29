@@ -432,7 +432,7 @@ def render_mini_leaderboard(data_type="ot"):
             mini_avail_months = sorted(df['date_obj'].dt.month.dropna().astype(int).unique().tolist())
         month_options = [t("Tất cả", "すべて")] + mini_avail_months
             
-        with c_m:
+        with col_m:
             sel_month = st.selectbox(
                 t("Chọn tháng", "月を選択"),
                 options=month_options,
