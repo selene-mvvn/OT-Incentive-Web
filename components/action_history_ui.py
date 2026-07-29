@@ -442,12 +442,12 @@ def render_action_history():
                     
                 display_date = d_str_vn if st.session_state.get('lang', 'VN') == 'VN' else d_str_jp
                 st.markdown(f"""
-                    <div style="display: flex; align-items: center; margin-top: {'35px' if i > 0 else '5px'}; margin-bottom: 12px;">
-                        <div style="background-color: #f1f5f9; color: #475569; padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                    <div style="display: flex; flex-direction: column; margin-top: {'35px' if i > 0 else '5px'}; margin-bottom: 12px; position: relative;">
+                        <div style="display: inline-flex; align-items: center; gap: 6px; background-color: #f1f5f9; color: #475569; padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; width: fit-content; z-index: 2;">
                             <span class="material-symbols-rounded" style="font-size: 18px; color: #00a8e8;">calendar_today</span>
                             {display_date}
                         </div>
-                        <div style="flex-grow: 1; height: 2px; background: linear-gradient(to right, #cbd5e1 0%, transparent 100%); margin-left: 15px;"></div>
+                        <div style="position: absolute; bottom: -8px; left: 10px; width: 60%; height: 2px; background: linear-gradient(to right, #00a8e8 0%, #00a8e8 20%, #cbd5e1 60%, transparent 100%);"></div>
                     </div>
                 """, unsafe_allow_html=True)
             
