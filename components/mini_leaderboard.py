@@ -425,8 +425,14 @@ def render_mini_leaderboard(data_type="ot"):
                 format_func=fmt_year,
                 key=f"mini_year_{data_type}_{lang}"
             )
+            
+        if sel_year not in ["Tất cả", "すべて"]:
+            mini_avail_months = sorted(df[df['date_obj'].dt.year == sel_year]['date_obj'].dt.month.dropna().astype(int).unique().tolist())
+        else:
+            mini_avail_months = sorted(df['date_obj'].dt.month.dropna().astype(int).unique().tolist())
+        month_options = [t("Tất cả", "すべて")] + mini_avail_months
+            
         with c_m:
-            month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
             sel_month = st.selectbox(
                 t("Chọn tháng", "月を選択"),
                 options=month_options,

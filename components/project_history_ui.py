@@ -116,6 +116,8 @@ def render_project_history():
     df['employee_name'] = df['employee_name'].astype(str).str.strip().replace({'': t('Chưa rõ', '未定')})
     df['clean_period'] = df.apply(get_clean_period, axis=1)
     df['est_cost'] = df.apply(get_record_cost, axis=1)
+    if 'date_obj' not in df.columns and 'ot_date' in df.columns:
+        df['date_obj'] = pd.to_datetime(df['ot_date'], format='%d/%m/%Y', errors='coerce')
 
     # Sort periods chronologically (e.g. T07/2026 -> 2026-07)
     def sort_key_period(p):
@@ -143,14 +145,8 @@ def render_project_history():
                 parts = pp[1:].split('/')
                 if len(parts) == 2 and parts[0].isdigit() and parts[1].isdigit():
                     ym_set.add((int(parts[1]), int(parts[0])))
-            d_str = str(row.get('ot_date', '')).strip()
-            if d_str and d_str not in ['nan', 'None', '']:
-                try:
-                    dt = pd.to_datetime(d_str, dayfirst=True)
-                    if pd.notna(dt):
-                        ym_set.add((int(dt.year), int(dt.month)))
-                except:
-                    pass
+            if pd.notna(row.get('date_obj')):
+                ym_set.add((int(row['date_obj'].year), int(row['date_obj'].month)))
         ym_list = sorted(list(ym_set))
         if not ym_list:
             return base_label
@@ -169,7 +165,6 @@ def render_project_history():
             if len(parts) == 2 and parts[1].isdigit():
                 years.add(int(parts[1]))
     year_options = [t("Tất cả", "すべて")] + sorted(list(years), reverse=True)
-    month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
 
     tab1, tab2, tab3 = st.tabs([
         t("1. PHÂN BỔ DỰ ÁN & NGUỒN LỰC", "1. プロジェクトとリソースの配分"),
@@ -199,10 +194,17 @@ def render_project_history():
                 format_func=fmt_year,
                 key=f"tab1_sel_year_{current_lang}"
             )
+            
+        if sel_year_t1 not in ["Tất cả", "すべて"]:
+            avail_months_t1 = sorted(df[df['date_obj'].dt.year == sel_year_t1]['date_obj'].dt.month.dropna().unique().astype(int).tolist())
+        else:
+            avail_months_t1 = sorted(df['date_obj'].dt.month.dropna().unique().astype(int).tolist())
+        month_options_t1 = [t("Tất cả", "すべて")] + avail_months_t1
+        
         with col_f1_m:
             sel_month_t1 = st.selectbox(
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
-                options=month_options,
+                options=month_options_t1,
                 format_func=fmt_month,
                 key=f"tab1_sel_month_{current_lang}",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.  \n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。  \n👉 *季節性の分析に便利です*。")
@@ -1225,10 +1227,18 @@ def render_project_history():
                 format_func=fmt_year,
                 key=f"tab2_sel_year_{current_lang}"
             )
+            
+        df_t2_temp = df[df['order_name'] == sel_project] if sel_project != all_proj_opt else df.copy()
+        if sel_year_t2 not in ["Tất cả", "すべて"]:
+            avail_months_t2 = sorted(df_t2_temp[df_t2_temp['date_obj'].dt.year == sel_year_t2]['date_obj'].dt.month.dropna().unique().astype(int).tolist())
+        else:
+            avail_months_t2 = sorted(df_t2_temp['date_obj'].dt.month.dropna().unique().astype(int).tolist())
+        month_options_t2 = [t("Tất cả", "すべて")] + avail_months_t2
+        
         with col_t2_m:
             sel_month_t2 = st.selectbox(
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
-                options=month_options,
+                options=month_options_t2,
                 format_func=fmt_month,
                 key=f"tab2_sel_month_{current_lang}",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.", "ヒント: 全年の該当月のデータを合算して表示します。")
