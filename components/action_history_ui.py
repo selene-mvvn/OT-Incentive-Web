@@ -97,7 +97,7 @@ def render_action_history():
         make_container_white()
         make_history_cards_white()
         # 1. Search and Filter
-        col_search, col_filter, col_clean, col_clear = st.columns([3.2, 1.8, 2.2, 2.2])
+        col_search, col_filter, col_sort, col_clean, col_clear = st.columns([2.5, 1.7, 1.7, 1.5, 1.5])
         with col_search:
             search_query = st.text_input("🔍 " + t("Tìm kiếm (tên file, mô tả)...", "検索（ファイル名、説明）..."))
         with col_filter:
@@ -109,15 +109,23 @@ def render_action_history():
                 if at_display:
                     action_types_set.add(at_display)
             action_types = ["All"] + list(action_types_set)
-            type_filter = st.selectbox("📂 " + t("Lọc theo thao tác", "操作で絞り込み"), action_types)
+            type_filter = st.selectbox("📂 " + t("Lọc thao tác", "操作で絞り込み"), action_types)
+        with col_sort:
+            sort_options = [
+                t("🔽 Mới nhất", "🔽 最新順"),
+                t("🔼 Cũ nhất", "🔼 古い順"),
+                t("🔤 Tên file (A-Z)", "🔤 ファイル名 (A-Z)"),
+                t("🔠 Tên file (Z-A)", "🔠 ファイル名 (Z-A)")
+            ]
+            sort_choice = st.selectbox("🔃 " + t("Sắp xếp", "並べ替え"), sort_options)
         with col_clean:
             st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-            if st.button(t(":material/cleaning_services: Dọn file lỗi", ":material/cleaning_services: エラーをクリア"), use_container_width=True):
+            if st.button(t(":material/cleaning_services: Dọn lỗi", ":material/cleaning_services: エラークリア"), use_container_width=True):
                 cleanup_missing_files()
                 st.rerun()
         with col_clear:
             st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-            if st.button(t(":material/delete: Xóa toàn bộ", ":material/delete: 全履歴クリア"), type="primary", use_container_width=True):
+            if st.button(t(":material/delete: Xóa hết", ":material/delete: 全履歴クリア"), type="primary", use_container_width=True):
                 clear_all_logs()
                 st.rerun()
 
@@ -136,6 +144,16 @@ def render_action_history():
                 if at_display == type_filter:
                     temp_logs.append(log)
             filtered_logs = temp_logs
+
+        # Apply Sort
+        if sort_choice == sort_options[0]: # Mới nhất
+            filtered_logs = sorted(filtered_logs, key=lambda x: x.get("timestamp", ""), reverse=True)
+        elif sort_choice == sort_options[1]: # Cũ nhất
+            filtered_logs = sorted(filtered_logs, key=lambda x: x.get("timestamp", ""))
+        elif sort_choice == sort_options[2]: # A-Z
+            filtered_logs = sorted(filtered_logs, key=lambda x: x.get("original_filename", "").lower() if x.get("original_filename") else "z")
+        elif sort_choice == sort_options[3]: # Z-A
+            filtered_logs = sorted(filtered_logs, key=lambda x: x.get("original_filename", "").lower() if x.get("original_filename") else "a", reverse=True)
 
         if not filtered_logs:
             st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
@@ -397,6 +415,7 @@ def render_action_history():
             """ + f"<!-- {len(selected_ids)}_{__import__('time').time()} -->", height=0, width=0)
 
         # 4. Render Logs
+        current_date_group = None
         for i, log in enumerate(paginated_logs):
             log_id = log.get("id")
             file_b64 = log.get("file_b64")
@@ -408,24 +427,61 @@ def render_action_history():
 
             desc = log.get("description_vn") if st.session_state.get('lang', 'VN') == 'VN' else log.get("description_jp")
             
-            # Determine color based on action type
+            # TIMELINE HEADER
+            log_date = log.get("timestamp", "")[:10]
+            if log_date != current_date_group:
+                current_date_group = log_date
+                try:
+                    from datetime import datetime
+                    d_obj = datetime.strptime(log_date, "%Y-%m-%d")
+                    d_str_vn = d_obj.strftime("%d/%m/%Y")
+                    d_str_jp = d_obj.strftime("%Y年%m月%d日")
+                except:
+                    d_str_vn = log_date
+                    d_str_jp = log_date
+                    
+                display_date = d_str_vn if st.session_state.get('lang', 'VN') == 'VN' else d_str_jp
+                st.markdown(f"""
+                    <div style="display: flex; align-items: center; margin-top: {'35px' if i > 0 else '5px'}; margin-bottom: 12px;">
+                        <div style="background-color: #f1f5f9; color: #475569; padding: 6px 16px; border-radius: 20px; font-weight: bold; font-size: 14px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); border: 1px solid #e2e8f0;">
+                            <span class="material-symbols-rounded" style="font-size: 18px; color: #00a8e8;">calendar_today</span>
+                            {display_date}
+                        </div>
+                        <div style="flex-grow: 1; height: 2px; background: linear-gradient(to right, #cbd5e1 0%, transparent 100%); margin-left: 15px;"></div>
+                    </div>
+                """, unsafe_allow_html=True)
+            
+            # Determine color and icon based on action type
             dot_color = "#00B0F0"
             at_vn_lower = action_type_vn.lower()
-            if "excel" in at_vn_lower: dot_color = "#27ae60"
-            elif "ot" in at_vn_lower: dot_color = "#2980b9"
-            elif "incentive" in at_vn_lower: dot_color = "#8e44ad"
-            elif "sửa" in at_vn_lower: dot_color = "#f39c12"
+            icon_html = ""
+            if "excel" in at_vn_lower: 
+                dot_color = "#27ae60"
+                icon_html = "<span class='material-symbols-rounded' style='color:#27ae60; vertical-align: middle; margin-right: 8px; font-size: 22px;'>table</span>"
+            elif "ot" in at_vn_lower: 
+                dot_color = "#2980b9"
+                icon_html = "<span class='material-symbols-rounded' style='color:#2980b9; vertical-align: middle; margin-right: 8px; font-size: 22px;'>schedule</span>"
+            elif "incentive" in at_vn_lower: 
+                dot_color = "#8e44ad"
+                icon_html = "<span class='material-symbols-rounded' style='color:#8e44ad; vertical-align: middle; margin-right: 8px; font-size: 22px;'>payments</span>"
+            elif "sửa" in at_vn_lower or "thủ công" in at_vn_lower: 
+                dot_color = "#f39c12"
+                icon_html = "<span class='material-symbols-rounded' style='color:#f39c12; vertical-align: middle; margin-right: 8px; font-size: 22px;'>edit_square</span>"
+            else:
+                icon_html = "<span class='material-symbols-rounded' style='color:#7f8c8d; vertical-align: middle; margin-right: 8px; font-size: 22px;'>description</span>"
 
             with st.container(border=True):
                 c_chk, c_head, c_preview, c_dl, c_del = st.columns([0.5, 5.5, 1.5, 1.5, 1.5], vertical_alignment="center")
                 with c_chk:
                     st.checkbox(" ", key=f"log_chk_{log_id}")
                 with c_head:
-                    if is_missing: dot_color = "#e74c3c"
-                    filename_html = f"<span style='font-size:15px; font-weight:normal; color:#3498db; margin-left:12px;'>📄 {log.get('original_filename')}</span>" if log.get('original_filename') else ""
-                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:18px; font-weight:bold;'>{action_type}{filename_html}</h3>", unsafe_allow_html=True)
-                    st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:bold;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
-                    st.markdown(f"<p style='margin-top:8px; margin-bottom:5px; color:#34495e; font-size:15px;'>{desc}</p>", unsafe_allow_html=True)
+                    if is_missing: 
+                        dot_color = "#e74c3c"
+                        icon_html = "<span class='material-symbols-rounded' style='color:#e74c3c; vertical-align: middle; margin-right: 8px; font-size: 22px;'>error</span>"
+                    filename_html = f"<span style='font-size:14.5px; font-weight:normal; color:#3498db; margin-left:12px; display:inline-flex; align-items:center; gap:2px;'><span class='material-symbols-rounded' style='font-size:16px;'>attach_file</span> {log.get('original_filename')}</span>" if log.get('original_filename') else ""
+                    st.markdown(f"<h3 class='history-card-title' style='margin:0; padding:0; color:#2c3e50; font-size:17.5px; font-weight:800; display:flex; align-items:center;'>{icon_html} {action_type}{filename_html}</h3>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='margin:0; padding:0; color:#7f8c8d; font-size:13px; font-weight:600; margin-top:4px;'>{log.get('timestamp')}</p>", unsafe_allow_html=True)
+                    st.markdown(f"<p style='margin-top:6px; margin-bottom:5px; color:#34495e; font-size:14.5px;'>{desc}</p>", unsafe_allow_html=True)
                 with c_preview:
                     if not is_missing:
                         preview_key = f"preview_{log_id}"
