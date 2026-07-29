@@ -1355,16 +1355,16 @@ def render_project_history():
                     base_style = "display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; margin-top: 12px;"
                     
                     if prev_val == 0:
-                        if curr_val > 0: return f"<div style='{base_style} background-color: #ecfdf5; color: #059669;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px;'>trending_up</span> 100% {trend_label}</div>"
+                        if curr_val > 0: return f"<div style='{base_style} background-color: #ecfdf5; color: #059669;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px; color: inherit;'>trending_up</span> 100% {trend_label}</div>"
                         return ""
                     diff = curr_val - prev_val
                     pct = (diff / prev_val) * 100
                     if pct > 0:
-                        return f"<div style='{base_style} background-color: #ecfdf5; color: #059669;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px;'>trending_up</span> {pct:.1f}% {trend_label}</div>"
+                        return f"<div style='{base_style} background-color: #ecfdf5; color: #059669;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px; color: inherit;'>trending_up</span> {pct:.1f}% {trend_label}</div>"
                     elif pct < 0:
-                        return f"<div style='{base_style} background-color: #fef2f2; color: #dc2626;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px;'>trending_down</span> {abs(pct):.1f}% {trend_label}</div>"
+                        return f"<div style='{base_style} background-color: #fef2f2; color: #dc2626;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px; color: inherit;'>trending_down</span> {abs(pct):.1f}% {trend_label}</div>"
                     else:
-                        return f"<div style='{base_style} background-color: #f1f5f9; color: #475569;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px;'>trending_flat</span> 0% {trend_label}</div>"
+                        return f"<div style='{base_style} background-color: #f1f5f9; color: #475569;'><span class='material-symbols-rounded' style='font-size:14px; margin-right:3px; color: inherit;'>trending_flat</span> 0% {trend_label}</div>"
 
                 total_ot_hours = df_tab3['ot_hours'].sum() if 'ot_hours' in df_tab3.columns else 0
                 prev_total_ot_hours = prev_df_tab3['ot_hours'].sum() if not prev_df_tab3.empty and 'ot_hours' in prev_df_tab3.columns else 0
