@@ -136,7 +136,7 @@ def show_mini_edit_dialog(data_type, df):
 
     with c_y:
         year_options = [t("Tất cả", "すべて")] + years
-        sel_year = st.selectbox(t(":material/calendar_month: Chọn năm", ":material/calendar_month: 年を選択"), options=year_options, format_func=fmt_year, key=f"dialog_year_{data_type}")
+        sel_year = st.selectbox(t(":material/calendar_month: Chọn năm", ":material/calendar_month: 年を選択"), options=year_options, format_func=fmt_year, key=f"dialog_year_{data_type}_{lang}")
     
     if sel_year not in ["Tất cả", "すべて"]:
         edit_df = df[df['date_obj_edit'].dt.year == sel_year].copy()
@@ -150,7 +150,7 @@ def show_mini_edit_dialog(data_type, df):
         
     with c_m:
         month_options = [t("Tất cả", "すべて")] + months
-        sel_month = st.selectbox(t(":material/calendar_today: Chọn tháng", ":material/calendar_today: 月を選択"), options=month_options, format_func=fmt_month, key=f"dialog_month_{data_type}")
+        sel_month = st.selectbox(t(":material/calendar_today: Chọn tháng", ":material/calendar_today: 月を選択"), options=month_options, format_func=fmt_month, key=f"dialog_month_{data_type}_{lang}")
         
     if sel_month not in ["Tất cả", "すべて"]:
         edit_df = edit_df[edit_df['date_obj_edit'].dt.month == sel_month].copy()
@@ -386,6 +386,14 @@ def render_mini_leaderboard(data_type="ot"):
         </style>
     """, unsafe_allow_html=True)
     
+    lang = st.session_state.get('lang', 'VN')
+
+    def fmt_year(y, l=lang):
+        return f"{y}年" if l == 'JP' and str(y).isdigit() else str(y)
+        
+    def fmt_month(m, l=lang):
+        return f"{m}月" if l == 'JP' and str(m).isdigit() else (f"Tháng {m}" if str(m).isdigit() else str(m))
+
     with st.container():
         from components.ui_utils import make_container_white
         make_container_white()
@@ -412,18 +420,18 @@ def render_mini_leaderboard(data_type="ot"):
         col_y, col_m = st.columns(2)
         with col_y:
             sel_year = st.selectbox(
-                t("Chọn năm", "年を選択"), 
-                options=year_options, 
+                t("Chọn năm", "年を選択"),
+                options=year_options,
                 format_func=fmt_year,
-                key=f"mini_year_{data_type}"
+                key=f"mini_year_{data_type}_{lang}"
             )
-        with col_m:
+        with c_m:
             month_options = [t("Tất cả", "すべて")] + list(range(1, 13))
             sel_month = st.selectbox(
                 t("Chọn tháng", "月を選択"),
                 options=month_options,
                 format_func=fmt_month,
-                key=f"mini_month_{data_type}",
+                key=f"mini_month_{data_type}_{lang}",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.  \n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。  \n👉 *季節性の分析に便利です*。")
             )
             

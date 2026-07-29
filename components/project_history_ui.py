@@ -183,6 +183,8 @@ def render_project_history():
         return f"{x}年" if l == 'JP' else str(x)
         
     def fmt_month(x, l=current_lang):
+        with open('debug_month.txt', 'a', encoding='utf-8') as f:
+            f.write(f"x={repr(x)} type={type(x)} lang={l}\n")
         if not str(x).isdigit(): return str(x)
         return f"{x}月" if l == 'JP' else f"Tháng {x}"
 
@@ -195,14 +197,14 @@ def render_project_history():
                 t(":material/calendar_today: Lọc theo Năm:", ":material/calendar_today: 年を選択:"),
                 options=year_options,
                 format_func=fmt_year,
-                key="tab1_sel_year"
+                key=f"tab1_sel_year_{current_lang}"
             )
         with col_f1_m:
             sel_month_t1 = st.selectbox(
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                 options=month_options,
                 format_func=fmt_month,
-                key="tab1_sel_month",
+                key=f"tab1_sel_month_{current_lang}",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.  \n👉 *Tiện lợi để phân tích tính mùa vụ*.", "ヒント: 「年」を「すべて」にすると、全年の該当月のデータを合算して表示します。  \n👉 *季節性の分析に便利です*。")
             )
 
@@ -1221,14 +1223,14 @@ def render_project_history():
                 t(":material/calendar_today: Lọc theo Năm:", ":material/calendar_today: 年を選択:"),
                 options=year_options,
                 format_func=fmt_year,
-                key="tab2_sel_year"
+                key=f"tab2_sel_year_{current_lang}"
             )
         with col_t2_m:
             sel_month_t2 = st.selectbox(
                 t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                 options=month_options,
                 format_func=fmt_month,
-                key="tab2_sel_month",
+                key=f"tab2_sel_month_{current_lang}",
                 help=t("Mẹo: Khi để Năm là 'Tất cả', hệ thống sẽ gộp chung dữ liệu của tháng này qua các năm.", "ヒント: 全年の該当月のデータを合算して表示します。")
             )
 
@@ -1302,7 +1304,7 @@ def render_project_history():
                 t(":material/calendar_today: Lọc theo Năm:", ":material/calendar_today: 年を選択:"),
                 options=year_options,
                 format_func=fmt_year,
-                key="tab3_sel_year"
+                key=f"tab3_sel_year_{current_lang}"
             )
             
         if not unique_emps:
@@ -1310,7 +1312,7 @@ def render_project_history():
                 sel_month_t3 = st.selectbox(
                     t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                     options=[t("Tất cả", "すべて")],
-                    key="tab3_sel_month"
+                    key=f"tab3_sel_month_{current_lang}"
                 )
             from components.ui_utils import render_empty_state
             render_empty_state(t("Chưa có dữ liệu nhân sự.", "スタッフデータがありません。"))
@@ -1333,7 +1335,7 @@ def render_project_history():
                     t(":material/calendar_month: Lọc theo Tháng:", ":material/calendar_month: 月を選択:"),
                     options=month_options_t3,
                     format_func=fmt_month,
-                    key="tab3_sel_month",
+                    key=f"tab3_sel_month_{current_lang}",
                     help=t("Mẹo: Lọc dữ liệu theo tháng.", "ヒント: 月でデータを絞り込みます。")
                 )
                 
