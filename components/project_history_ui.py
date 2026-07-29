@@ -1460,14 +1460,7 @@ def render_project_history():
                         
                         st.plotly_chart(fig_trend, use_container_width=True, config={'displayModeBar': False})
                         
-                        # Add donut chart
-                        st.markdown(f"<h3 style='font-size: 16px; font-weight: 600; margin-top:15px;'>{t('TỶ TRỌNG DỰ ÁN', 'プロジェクトの割合')}</h3>", unsafe_allow_html=True)
-                        df_proj = df_trend.groupby('order_name')['ot_hours'].sum().reset_index()
-                        if not df_proj.empty:
-                            fig_donut = px.pie(df_proj, values='ot_hours', names='order_name', hole=0.6, color_discrete_sequence=px.colors.qualitative.Pastel)
-                            fig_donut.update_traces(hovertemplate="<b>%{label}</b><br>"+t("Số giờ", "時間")+": %{value}h<br>"+t("Tỷ lệ", "割合")+": %{percent}<extra></extra>", textinfo='none')
-                            fig_donut.update_layout(margin=dict(t=10, b=10, l=10, r=10), height=250, paper_bgcolor='rgba(0,0,0,0)', showlegend=True, legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1))
-                            st.plotly_chart(fig_donut, use_container_width=True, config={'displayModeBar': False})
+
                     else:
                         from components.ui_utils import render_empty_state
                         render_empty_state(t("Không có dữ liệu giờ OT để vẽ biểu đồ.", "グラフを表示するデータがありません。"), icon="bar_chart", height=200)
