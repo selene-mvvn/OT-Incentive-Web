@@ -197,9 +197,10 @@ def render_action_history():
             k.replace("log_chk_", "") for k, v in st.session_state.items() 
             if k.startswith("log_chk_") and v is True
         ]
-        if selected_ids:
-            import streamlit.components.v1 as components
-            components.html("""
+        
+        # ALWAYS render the script to prevent Streamlit DOM recycling issues when selected_ids changes
+        import streamlit.components.v1 as components
+        components.html("""
             <script>
             setTimeout(() => {
                 const parentDoc = window.parent.document;
@@ -562,10 +563,10 @@ def render_action_history():
                     st.session_state['history_page'] += 1
                     st.rerun()
 
-        if selected_ids:
-            with st.container():
+        # Always render the bulk toolbar container to prevent Streamlit DOM recycling offset issues
+        with st.container():
+            if selected_ids:
                 st.markdown(f"<span class='bulk-marker' style='display:none' data-count='{len(selected_ids)}'></span>", unsafe_allow_html=True)
-
                 valid_logs = [l for l in logs if l.get('id') in selected_ids and l.get('file_b64')]
                 if valid_logs:
                     import zipfile
@@ -578,7 +579,6 @@ def render_action_history():
                             if sum(1 for x in valid_logs if x.get('original_filename') == safe_name) > 1:
                                 safe_name = f"{idx+1}_{safe_name}"
                             zip_file.writestr(safe_name, file_bytes)
-
                     st.download_button(
                         label=t("TẢI ZIP", "ZIP DL"),
                         data=zip_buffer.getvalue(),
@@ -586,7 +586,6 @@ def render_action_history():
                         mime="application/zip",
                         key="bulk_download"
                     )
-
                 def _do_bulk_delete():
                     for lid in selected_ids:
                         delete_action_log(lid)
@@ -595,7 +594,6 @@ def render_action_history():
                     for k in list(st.session_state.keys()):
                         if k.startswith("log_chk_"):
                             st.session_state[k] = False
-
                 if st.button(t("XÓA", "削除"), key="bulk_delete", on_click=_do_bulk_delete):
                     pass
 
