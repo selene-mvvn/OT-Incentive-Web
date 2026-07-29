@@ -1470,7 +1470,7 @@ def render_project_history():
                         if not df_proj.empty:
                             fig_donut = px.pie(df_proj, values='ot_hours', names='order_name', hole=0.6, color_discrete_sequence=px.colors.qualitative.Pastel)
                             fig_donut.update_traces(hovertemplate="<b>%{label}</b><br>"+t("Số giờ", "時間")+": %{value}h<br>"+t("Tỷ lệ", "割合")+": %{percent}<extra></extra>", textinfo='none')
-                            fig_donut.update_layout(margin=dict(t=10, b=10, l=10, r=10), height=250, paper_bgcolor='rgba(0,0,0,0)', showlegend=True, legend=dict(orientation="v", yanchor="center", y=0.5, xanchor="left", x=1))
+                            fig_donut.update_layout(margin=dict(t=10, b=10, l=10, r=10), height=250, paper_bgcolor='rgba(0,0,0,0)', showlegend=True, legend=dict(orientation="v", yanchor="middle", y=0.5, xanchor="left", x=1))
                             st.plotly_chart(fig_donut, use_container_width=True, config={'displayModeBar': False})
                     else:
                         from components.ui_utils import render_empty_state
