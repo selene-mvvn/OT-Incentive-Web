@@ -100,7 +100,7 @@ def render_action_history():
         # 1. Search and Filter
         col_search, col_filter, col_sort, col_clean, col_clear = st.columns([2.5, 1.7, 1.7, 1.5, 1.5])
         with col_search:
-            search_query = st.text_input("🔍 " + t("Tìm kiếm (tên file, mô tả)...", "検索（ファイル名、説明）..."))
+            search_query = st.text_input(t(":material/search: Tìm kiếm (tên file, mô tả)...", ":material/search: 検索（ファイル名、説明）..."))
         with col_filter:
             action_types_set = set()
             for log in logs:
@@ -110,15 +110,15 @@ def render_action_history():
                 if at_display:
                     action_types_set.add(at_display)
             action_types = ["All"] + list(action_types_set)
-            type_filter = st.selectbox("📂 " + t("Lọc thao tác", "操作で絞り込み"), action_types)
+            type_filter = st.selectbox(t(":material/folder_open: Lọc thao tác", ":material/folder_open: 操作で絞り込み"), action_types)
         with col_sort:
             sort_options = [
-                t("🔽 Mới nhất", "🔽 最新順"),
-                t("🔼 Cũ nhất", "🔼 古い順"),
-                t("🔤 Tên file (A-Z)", "🔤 ファイル名 (A-Z)"),
-                t("🔠 Tên file (Z-A)", "🔠 ファイル名 (Z-A)")
+                t(":material/arrow_downward: Mới nhất", ":material/arrow_downward: 最新順"),
+                t(":material/arrow_upward: Cũ nhất", ":material/arrow_upward: 古い順"),
+                t(":material/sort_by_alpha: Tên file (A-Z)", ":material/sort_by_alpha: ファイル名 (A-Z)"),
+                t(":material/sort_by_alpha: Tên file (Z-A)", ":material/sort_by_alpha: ファイル名 (Z-A)")
             ]
-            sort_choice = st.selectbox("🔃 " + t("Sắp xếp", "並べ替え"), sort_options)
+            sort_choice = st.selectbox(t(":material/swap_vert: Sắp xếp", ":material/swap_vert: 並べ替え"), sort_options)
         with col_clean:
             st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
             if st.button(t(":material/cleaning_services: Dọn lỗi", ":material/cleaning_services: エラークリア"), use_container_width=True):
