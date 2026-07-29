@@ -1365,7 +1365,7 @@ def render_project_history():
                 render_empty_state(t("Không có dữ liệu cho nhân sự này trong khoảng thời gian đã chọn.", "選択した期間にはこのスタッフのデータがありません。"))
             else:
                 def get_trend_html(curr_val, prev_val):
-                    if not has_trend: return ""
+                    if not has_trend or prev_df_tab3.empty: return ""
                     
                     # Pill styling
                     base_style = "display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 9999px; font-size: 11.5px; font-weight: 600; margin-top: 12px;"
