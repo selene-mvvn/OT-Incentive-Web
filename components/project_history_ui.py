@@ -1330,6 +1330,13 @@ def render_project_history():
                 prev_y = int(sel_year_t3) - 1
                 prev_df_tab3 = df_tab3_all[df_tab3_all['date_obj'].dt.year == prev_y]
                 trend_label = t("so với năm trước", "前年比")
+            elif sel_year_t3 in ["Tất cả", "すべて"] and sel_month_t3 not in ["Tất cả", "すべて"]:
+                has_trend = True
+                prev_m = int(sel_month_t3) - 1
+                if prev_m == 0:
+                    prev_m = 12
+                prev_df_tab3 = df_tab3_all[df_tab3_all['date_obj'].dt.month == prev_m]
+                trend_label = t("so với tháng trước", "先月比")
 
             df_tab3 = df_tab3_all.copy()
             if sel_year_t3 not in ["Tất cả", "すべて"]:
