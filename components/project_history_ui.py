@@ -1307,11 +1307,30 @@ def render_project_history():
             from components.ui_utils import render_empty_state
             render_empty_state(t("Chưa có dữ liệu nhân sự.", "スタッフデータがありません。"))
         else:
-            df_tab3 = df[df['employee_name'] == sel_emp_t3].copy()
-            
-            if 'date_obj' not in df_tab3.columns and 'ot_date' in df_tab3.columns:
-                df_tab3['date_obj'] = pd.to_datetime(df_tab3['ot_date'], format='%d/%m/%Y', errors='coerce')
+            df_tab3_all = df[df['employee_name'] == sel_emp_t3].copy()
+            if 'date_obj' not in df_tab3_all.columns and 'ot_date' in df_tab3_all.columns:
+                df_tab3_all['date_obj'] = pd.to_datetime(df_tab3_all['ot_date'], format='%d/%m/%Y', errors='coerce')
                 
+            prev_df_tab3 = pd.DataFrame()
+            has_trend = False
+            trend_label = ""
+            
+            if sel_year_t3 not in ["Tất cả", "すべて"] and sel_month_t3 not in ["Tất cả", "すべて"]:
+                has_trend = True
+                prev_m = int(sel_month_t3) - 1
+                prev_y = int(sel_year_t3)
+                if prev_m == 0:
+                    prev_m = 12
+                    prev_y -= 1
+                prev_df_tab3 = df_tab3_all[(df_tab3_all['date_obj'].dt.year == prev_y) & (df_tab3_all['date_obj'].dt.month == prev_m)]
+                trend_label = t("so với tháng trước", "先月比")
+            elif sel_year_t3 not in ["Tất cả", "すべて"] and sel_month_t3 in ["Tất cả", "すべて"]:
+                has_trend = True
+                prev_y = int(sel_year_t3) - 1
+                prev_df_tab3 = df_tab3_all[df_tab3_all['date_obj'].dt.year == prev_y]
+                trend_label = t("so với năm trước", "前年比")
+
+            df_tab3 = df_tab3_all.copy()
             if sel_year_t3 not in ["Tất cả", "すべて"]:
                 df_tab3 = df_tab3[df_tab3['date_obj'].dt.year == sel_year_t3]
             if sel_month_t3 not in ["Tất cả", "すべて"]:
@@ -1321,10 +1340,35 @@ def render_project_history():
                 from components.ui_utils import render_empty_state
                 render_empty_state(t("Không có dữ liệu cho nhân sự này trong khoảng thời gian đã chọn.", "選択した期間にはこのスタッフのデータがありません。"))
             else:
+                def get_trend_html(curr_val, prev_val):
+                    if not has_trend: return ""
+                    if prev_val == 0:
+                        if curr_val > 0: return f"<div style='font-size:12.5px; color:#10b981; font-weight:700; margin-top:6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size:16px; margin-right:3px;'>trending_up</span> 100% {trend_label}</div>"
+                        return ""
+                    diff = curr_val - prev_val
+                    pct = (diff / prev_val) * 100
+                    if pct > 0:
+                        return f"<div style='font-size:12.5px; color:#10b981; font-weight:700; margin-top:6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size:16px; margin-right:3px;'>trending_up</span> {pct:.1f}% {trend_label}</div>"
+                    elif pct < 0:
+                        return f"<div style='font-size:12.5px; color:#ef4444; font-weight:700; margin-top:6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size:16px; margin-right:3px;'>trending_down</span> {abs(pct):.1f}% {trend_label}</div>"
+                    else:
+                        return f"<div style='font-size:12.5px; color:#64748b; font-weight:700; margin-top:6px; display: flex; align-items: center;'><span class='material-symbols-rounded' style='font-size:16px; margin-right:3px;'>trending_flat</span> 0% {trend_label}</div>"
+
                 total_ot_hours = df_tab3['ot_hours'].sum() if 'ot_hours' in df_tab3.columns else 0
+                prev_total_ot_hours = prev_df_tab3['ot_hours'].sum() if not prev_df_tab3.empty and 'ot_hours' in prev_df_tab3.columns else 0
+                trend_hours_html = get_trend_html(total_ot_hours, prev_total_ot_hours)
+
                 total_ot_pay = df_tab3['est_cost'].sum() if 'est_cost' in df_tab3.columns else 0.0
+                prev_total_ot_pay = prev_df_tab3['est_cost'].sum() if not prev_df_tab3.empty and 'est_cost' in prev_df_tab3.columns else 0.0
+                trend_pay_html = get_trend_html(total_ot_pay, prev_total_ot_pay)
+                
                 num_projects_t3 = df_tab3['order_name'].nunique() if 'order_name' in df_tab3.columns else 0
+                prev_num_projects_t3 = prev_df_tab3['order_name'].nunique() if not prev_df_tab3.empty and 'order_name' in prev_df_tab3.columns else 0
+                trend_proj_html = get_trend_html(num_projects_t3, prev_num_projects_t3)
+                
                 num_records_t3 = len(df_tab3)
+                prev_num_records_t3 = len(prev_df_tab3)
+                trend_records_html = get_trend_html(num_records_t3, prev_num_records_t3)
                 
                 title1 = t('TỔNG TIỀN OT TÍCH LŨY', '累計残業代')
                 title2 = t('TỔNG GIỜ OT', '累計残業時間')
@@ -1339,6 +1383,7 @@ def render_project_history():
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">schedule</span></div>
                         </div>
                         <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target-float" data-target="{total_ot_hours}">{total_ot_hours:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span></div>
+                        {trend_hours_html}
                     </div>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
@@ -1346,6 +1391,7 @@ def render_project_history():
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">folder</span></div>
                         </div>
                         <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_projects_t3}">{num_projects_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span></div>
+                        {trend_proj_html}
                     </div>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
@@ -1353,6 +1399,7 @@ def render_project_history():
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #34d399 0%, #10b981 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">payments</span></div>
                         </div>
                         <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{total_ot_pay}">{total_ot_pay:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span></div>
+                        {trend_pay_html}
                     </div>
                     <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
@@ -1360,6 +1407,7 @@ def render_project_history():
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">receipt_long</span></div>
                         </div>
                         <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_records_t3}">{num_records_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('lượt', '回')}</span></div>
+                        {trend_records_html}
                     </div>
                 </div>
                 """, unsafe_allow_html=True)
@@ -1389,26 +1437,41 @@ def render_project_history():
                         x_title = t("Ngày", "日")
                         
                     if not df_grouped.empty:
-                        fig_trend = px.bar(
-                            df_grouped,
-                            x=x_col,
-                            y='ot_hours',
-                            color_discrete_sequence=['#00a8e8']
+                        df_grouped = df_trend.groupby([x_col, 'sort_key']).agg({'ot_hours': 'sum', 'est_cost': 'sum'}).reset_index().sort_values('sort_key')
+                        
+                        import plotly.graph_objects as go
+                        from plotly.subplots import make_subplots
+                        
+                        fig_trend = make_subplots(specs=[[{"secondary_y": True}]])
+                        fig_trend.add_trace(
+                            go.Bar(x=df_grouped[x_col], y=df_grouped['ot_hours'], name=t("Số giờ", "時間"), marker_color='#00a8e8', hovertemplate="<b>%{x}</b><br>"+t("Số giờ", "時間")+": %{y}h<extra></extra>"),
+                            secondary_y=False,
                         )
-                        fig_trend.update_traces(
-                            hovertemplate="<b>%{x}</b><br>"+t("Số giờ", "時間")+": %{y}h<extra></extra>",
-                            marker_line_color='rgba(0,0,0,0)',
-                            marker_line_width=0
+                        fig_trend.add_trace(
+                            go.Scatter(x=df_grouped[x_col], y=df_grouped['est_cost'], name=t("Số tiền", "金額"), mode='lines+markers', marker_color='#f59e0b', line=dict(width=3, color='#f59e0b'), hovertemplate="<b>%{x}</b><br>"+t("Số tiền", "金額")+": %{y:,.0f} VND<extra></extra>"),
+                            secondary_y=True,
                         )
                         fig_trend.update_layout(
                             margin=dict(t=20, b=20, l=10, r=10),
                             xaxis_title=x_title,
-                            yaxis_title=t("Số giờ", "時間"),
-                            height=400,
+                            height=350,
                             paper_bgcolor='rgba(0,0,0,0)',
-                            plot_bgcolor='rgba(0,0,0,0)'
+                            plot_bgcolor='rgba(0,0,0,0)',
+                            legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
                         )
+                        fig_trend.update_yaxes(title_text=t("Số giờ", "時間"), secondary_y=False, showgrid=True, gridcolor='rgba(0,0,0,0.05)')
+                        fig_trend.update_yaxes(title_text=t("Số tiền (VND)", "金額 (VND)"), secondary_y=True, showgrid=False)
+                        
                         st.plotly_chart(fig_trend, use_container_width=True, config={'displayModeBar': False})
+                        
+                        # Add donut chart
+                        st.markdown(f"<h3 style='font-size: 16px; font-weight: 600; margin-top:15px;'>{t('TỶ TRỌNG DỰ ÁN', 'プロジェクトの割合')}</h3>", unsafe_allow_html=True)
+                        df_proj = df_trend.groupby('order_name')['ot_hours'].sum().reset_index()
+                        if not df_proj.empty:
+                            fig_donut = px.pie(df_proj, values='ot_hours', names='order_name', hole=0.6, color_discrete_sequence=px.colors.qualitative.Pastel)
+                            fig_donut.update_traces(hovertemplate="<b>%{label}</b><br>"+t("Số giờ", "時間")+": %{value}h<br>"+t("Tỷ lệ", "割合")+": %{percent}<extra></extra>", textinfo='none')
+                            fig_donut.update_layout(margin=dict(t=10, b=10, l=10, r=10), height=250, paper_bgcolor='rgba(0,0,0,0)', showlegend=True, legend=dict(orientation="v", yanchor="center", y=0.5, xanchor="left", x=1))
+                            st.plotly_chart(fig_donut, use_container_width=True, config={'displayModeBar': False})
                     else:
                         from components.ui_utils import render_empty_state
                         render_empty_state(t("Không có dữ liệu giờ OT để vẽ biểu đồ.", "グラフを表示するデータがありません。"), icon="bar_chart", height=200)
