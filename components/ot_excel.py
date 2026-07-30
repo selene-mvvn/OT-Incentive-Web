@@ -746,25 +746,60 @@ def render_ot_excel():
 
                 if is_changed:
                     st.markdown("<br>", unsafe_allow_html=True)
-                    st.markdown(f"<h5 style='color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px; font-weight: 600; font-size: 16px; margin-bottom: 15px;'>⚠️ {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}</h5>", unsafe_allow_html=True)
+                    st.markdown(f"<h5 style='color: #2c3e50; border-bottom: 2px solid #0ea5e9; padding-bottom: 8px; font-weight: 600; font-size: 15px; margin-bottom: 15px;'>⚠️ {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}</h5>", unsafe_allow_html=True)
                     
                     editor_state = st.session_state.get("ot_excel_records_editor_v2", {})
                     added = editor_state.get("added_rows", [])
                     deleted = editor_state.get("deleted_rows", [])
                     edited = editor_state.get("edited_rows", {})
                     
-                    # Show summary alerts
+                    # Show summary alerts (Custom divs to remove icons and match screenshot exactly)
                     if added:
-                        st.success(f"{t('Thêm', '追加')} {len(added)} {t('dòng', '行')}")
+                        st.markdown(f"<div style='background-color: #dcfce7; color: #166534; padding: 12px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; margin-bottom: 10px;'>{t('Thêm', '追加')} {len(added)} {t('dòng', '行')}</div>", unsafe_allow_html=True)
                     if deleted:
-                        st.error(f"{t('Xóa', '削除')} {len(deleted)} {t('dòng', '行')}")
+                        st.markdown(f"<div style='background-color: #fee2e2; color: #991b1b; padding: 12px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; margin-bottom: 10px;'>{t('Xóa', '削除')} {len(deleted)} {t('dòng', '行')}</div>", unsafe_allow_html=True)
                     if edited:
-                        st.warning(f"{t('Sửa', '編集')} {len(edited)} {t('dòng', '行')}")
+                        st.markdown(f"<div style='background-color: #fef9c3; color: #854d0e; padding: 12px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; margin-bottom: 10px;'>{t('Sửa', '編集')} {len(edited)} {t('dòng', '行')}</div>", unsafe_allow_html=True)
                     
                     if not (added or deleted or edited):
                         st.info(f"{t('Có thay đổi khác', 'その他の変更')}")
+                    
+                    st.markdown("""
+                    <style>
+                        [data-testid="stExpander"]:has(.exp-red-marker) {
+                            border: 1px solid #fda4af !important;
+                            border-radius: 6px !important;
+                            overflow: hidden;
+                        }
+                        [data-testid="stExpander"]:has(.exp-red-marker) summary {
+                            background-color: #fda4af !important;
+                            color: #881337 !important;
+                            font-weight: 600 !important;
+                        }
+                        [data-testid="stExpander"]:has(.exp-red-marker) summary p {
+                            font-weight: 600 !important;
+                        }
                         
+                        /* Button Pill styles matching the screenshot */
+                        .btn-pill-cancel button {
+                            border-radius: 20px !important;
+                            color: #0ea5e9 !important;
+                            border: 1px solid #0ea5e9 !important;
+                            background-color: transparent !important;
+                            font-weight: bold !important;
+                        }
+                        .btn-pill-confirm button {
+                            border-radius: 20px !important;
+                            color: white !important;
+                            background-color: #0ea5e9 !important;
+                            border: none !important;
+                            font-weight: bold !important;
+                        }
+                    </style>
+                    """, unsafe_allow_html=True)
+                    
                     with st.expander(f"**{t('Xem chi tiết thay đổi', '変更内容の詳細')}**"):
+                        st.markdown("<div class='exp-red-marker' style='display: none;'></div>", unsafe_allow_html=True)
                         changes_html = ""
                         # Handle deleted rows
                         for idx in deleted:
@@ -774,14 +809,14 @@ def render_ot_excel():
                                 ten = row.get('employee_name', '')
                                 dh = row.get('order_id', '')
                                 ot = row.get('ot_hours', '')
-                                changes_html += f"<li style='margin-bottom: 5px; color: #ef4444;'>⊗ <b>{t('Đã xóa', '削除済み')}:</b> <del>{ngay} | {ten} | {dh} | Giờ OT: {ot}</del></li>"
+                                changes_html += f"<li style='margin-bottom: 8px; color: #ef4444; font-size: 14px;'>⊗ <b>{t('Đã xóa', '削除済み')}:</b> <del>{ngay} | {ten} | {dh} | Giờ OT: {ot}</del></li>"
                         # Handle added rows
                         for row in added:
                             ngay = row.get('ot_date', '')
                             ten = row.get('employee_name', '')
                             dh = row.get('order_id', '')
                             ot = row.get('ot_hours', '')
-                            changes_html += f"<li style='margin-bottom: 5px; color: #10b981;'>⊕ <b>{t('Thêm mới', '新規追加')}:</b> {ngay} | {ten} | {dh} | Giờ OT: {ot}</li>"
+                            changes_html += f"<li style='margin-bottom: 8px; color: #10b981; font-size: 14px;'>⊕ <b>{t('Thêm mới', '新規追加')}:</b> {ngay} | {ten} | {dh} | Giờ OT: {ot}</li>"
                         # Handle edited rows
                         for idx_str, changes in edited.items():
                             idx = int(idx_str)
@@ -793,21 +828,24 @@ def render_ot_excel():
                                     old_val = orig_row.get(col, '')
                                     change_details.append(f"{col}: <del>{old_val}</del> ➔ <b>{new_val}</b>")
                                 
-                                changes_html += f"<li style='margin-bottom: 5px; color: #f59e0b;'>✎ <b>{t('Đã sửa', '編集済み')} (Dòng {idx+1}):</b> {ten} | {' | '.join(change_details)}</li>"
+                                changes_html += f"<li style='margin-bottom: 8px; color: #d97706; font-size: 14px;'>✎ <b>{t('Đã sửa', '編集済み')} (Dòng {idx+1}):</b> {ten} | {' | '.join(change_details)}</li>"
                                 
                         if changes_html:
-                            st.markdown(f"<ul style='list-style-type: none; padding-left: 0;'>{changes_html}</ul>", unsafe_allow_html=True)
+                            st.markdown(f"<ul style='list-style-type: none; padding-left: 10px; margin-top: 5px;'>{changes_html}</ul>", unsafe_allow_html=True)
                         else:
                             st.markdown(f"*{t('Chưa có dữ liệu chi tiết', '詳細データなし')}*")
                     
                     st.markdown("<br>", unsafe_allow_html=True)
                     btn_col1, btn_col2 = st.columns(2)
                     with btn_col1:
+                        st.markdown("<div class='btn-pill-cancel'>", unsafe_allow_html=True)
                         if st.button("✕ " + t("HỦY BỎ", "キャンセル"), use_container_width=True):
                             if "ot_excel_records_editor_v2" in st.session_state:
                                 del st.session_state["ot_excel_records_editor_v2"]
                             st.rerun()
+                        st.markdown("</div>", unsafe_allow_html=True)
                     with btn_col2:
+                        st.markdown("<div class='btn-pill-confirm'>", unsafe_allow_html=True)
                         if st.button("✔ " + t("XÁC NHẬN LƯU", "確定して保存"), type="primary", use_container_width=True):
                             edited_records = edited_df_raw.to_dict('records')
                             import math
@@ -827,6 +865,7 @@ def render_ot_excel():
                             if "ot_excel_records_editor_v2" in st.session_state:
                                 del st.session_state["ot_excel_records_editor_v2"]
                             st.rerun()
+                        st.markdown("</div>", unsafe_allow_html=True)
         
             st.markdown("<hr class='custom-hr-divider' style='margin: 6px 0 10px 0 !important; border: 0; border-top: 1.5px solid #94a3b8 !important;'>", unsafe_allow_html=True)
             st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「結果ファイルダウンロード」ボタンを押してください。"))
