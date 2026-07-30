@@ -265,7 +265,7 @@ def render_ot_excel():
                     ), icon=":material/lightbulb:")
                     col_map = col_map_auto
                 else:
-                    col_opts = ["--- Bỏ qua ---"] + list(df.columns)
+                    col_opts = [t("--- Bỏ qua ---", "--- スキップ ---")] + list(df.columns)
                     def get_idx(val):
                         return col_opts.index(val) if val in col_opts else 0
                     # Khối Cột Bắt Buộc
@@ -331,19 +331,19 @@ def render_ot_excel():
                         m_col1, m_col2, m_col3 = st.columns(3)
                         with m_col1:
                             sel_ngay = st.selectbox(t(":material/calendar_today: Cột Ngày", ":material/calendar_today: 日付列"), col_opts, index=get_idx(col_map_auto["ngay"]))
-                            if sel_ngay == "--- Bỏ qua ---":
+                            if sel_ngay == t("--- Bỏ qua ---", "--- スキップ ---"):
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col2:
                             sel_ten = st.selectbox(t(":material/person: Cột Tên", ":material/person: 名前列"), col_opts, index=get_idx(col_map_auto["ten"]))
-                            if sel_ten == "--- Bỏ qua ---":
+                            if sel_ten == t("--- Bỏ qua ---", "--- スキップ ---"):
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
                         with m_col3:
                             sel_ot = st.selectbox(t(":material/schedule: Cột Số Giờ OT", ":material/schedule: OT時間列"), col_opts, index=get_idx(col_map_auto["ot"]))
-                            if sel_ot == "--- Bỏ qua ---":
+                            if sel_ot == t("--- Bỏ qua ---", "--- スキップ ---"):
                                 st.markdown(f"<div style='color: #f97316; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>warning</span> {t('Vui lòng chọn', '選択してください')}</div>", unsafe_allow_html=True)
                             else:
                                 st.markdown(f"<div style='color: #10b981; font-size: 13px; font-weight: 500; margin-top: -10px; margin-bottom: 8px; display: flex; align-items: center; gap: 4px;'><span class='material-symbols-rounded' style='font-size: 16px; color: inherit !important;'>check_circle</span> {t('Hợp lệ', '有効')}</div>", unsafe_allow_html=True)
@@ -388,10 +388,10 @@ def render_ot_excel():
             
                 # Render Smart AI Scanner & Live Mapping Preview Card
                 is_auto = (mapping_mode == t("Tự động nhận diện thông minh", "スマート自動認識"))
-                preview_ngay = col_map_auto.get("ngay") if is_auto else (sel_ngay if sel_ngay != "--- Bỏ qua ---" else None)
-                preview_ten = col_map_auto.get("ten") if is_auto else (sel_ten if sel_ten != "--- Bỏ qua ---" else None)
-                preview_ot = col_map_auto.get("ot") if is_auto else (sel_ot if sel_ot != "--- Bỏ qua ---" else None)
-                preview_lydo = col_map_auto.get("lydo") if is_auto else (sel_lydo if sel_lydo != "--- Bỏ qua ---" else None)
+                preview_ngay = col_map_auto.get("ngay") if is_auto else (sel_ngay if sel_ngay != t("--- Bỏ qua ---", "--- スキップ ---") else None)
+                preview_ten = col_map_auto.get("ten") if is_auto else (sel_ten if sel_ten != t("--- Bỏ qua ---", "--- スキップ ---") else None)
+                preview_ot = col_map_auto.get("ot") if is_auto else (sel_ot if sel_ot != t("--- Bỏ qua ---", "--- スキップ ---") else None)
+                preview_lydo = col_map_auto.get("lydo") if is_auto else (sel_lydo if sel_lydo != t("--- Bỏ qua ---", "--- スキップ ---") else None)
                 
                 badge_ok = f'<span style="background: #ebfbee; color: #1b7a3d; border: 1px solid #b7ebd1; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("🟢 Khớp chính xác", "🟢 一致")}</span>'
                 badge_missing = f'<span style="background: #fef3f2; color: #b91c1c; border: 1px solid #fecdd3; padding: 2.5px 9px; border-radius: 12px; font-size: 11.5px; font-weight: 600;">{t("⚠️ Cần kiểm tra", "⚠️ 要確認")}</span>'
@@ -445,14 +445,14 @@ def render_ot_excel():
                     if mapping_mode == t("Ghép cột thủ công", "手動マッピング"):
                         # Update map based on user selection
                         col_map = col_map_auto.copy()
-                        col_map["ngay"] = sel_ngay if sel_ngay != "--- Bỏ qua ---" else None
-                        col_map["ten"] = sel_ten if sel_ten != "--- Bỏ qua ---" else None
-                        col_map["ot"] = sel_ot if sel_ot != "--- Bỏ qua ---" else None
-                        col_map["lydo"] = sel_lydo if sel_lydo != "--- Bỏ qua ---" else None
-                        col_map["loai_da"] = sel_loai_da if sel_loai_da != "--- Bỏ qua ---" else None
-                        col_map["ma_dh"] = sel_ma_dh if sel_ma_dh != "--- Bỏ qua ---" else None
-                        col_map["ma_dh_kh"] = sel_ma_dh_kh if sel_ma_dh_kh != "--- Bỏ qua ---" else None
-                        col_map["quan_ly"] = sel_quan_ly if sel_quan_ly != "--- Bỏ qua ---" else None
+                        col_map["ngay"] = sel_ngay if sel_ngay != t("--- Bỏ qua ---", "--- スキップ ---") else None
+                        col_map["ten"] = sel_ten if sel_ten != t("--- Bỏ qua ---", "--- スキップ ---") else None
+                        col_map["ot"] = sel_ot if sel_ot != t("--- Bỏ qua ---", "--- スキップ ---") else None
+                        col_map["lydo"] = sel_lydo if sel_lydo != t("--- Bỏ qua ---", "--- スキップ ---") else None
+                        col_map["loai_da"] = sel_loai_da if sel_loai_da != t("--- Bỏ qua ---", "--- スキップ ---") else None
+                        col_map["ma_dh"] = sel_ma_dh if sel_ma_dh != t("--- Bỏ qua ---", "--- スキップ ---") else None
+                        col_map["ma_dh_kh"] = sel_ma_dh_kh if sel_ma_dh_kh != t("--- Bỏ qua ---", "--- スキップ ---") else None
+                        col_map["quan_ly"] = sel_quan_ly if sel_quan_ly != t("--- Bỏ qua ---", "--- スキップ ---") else None
                     else:
                         st.success(t(
                             f"Đã tự động nhận diện thành công: Ngày -> `{col_map['ngay']}`, Tên -> `{col_map['ten']}`, OT -> `{col_map['ot']}`, Lý do -> `{col_map['lydo']}`",
