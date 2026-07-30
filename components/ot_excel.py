@@ -736,17 +736,39 @@ def render_ot_excel():
                     key="ot_excel_records_editor_v2",
                     column_config=col_cfg
                 )
-                edited_records = edited_df_raw.to_dict('records')
-                # Clean commas and save back
-                import math
-                for r in edited_records:
-                    if 'hourly_rate' in r and isinstance(r['hourly_rate'], str):
-                        r['hourly_rate'] = int(r['hourly_rate'].replace(',', ''))
-                    for key in r.keys():
-                        if key.endswith('%') and isinstance(r[key], str):
-                            r[key] = int(r[key].replace(',', ''))
-                        
-                st.session_state['ot_excel_records'] = edited_records
+                
+                try:
+                    df1 = df_display_records.fillna("")
+                    df2 = edited_df_raw.fillna("")
+                    is_changed = not df1.equals(df2)
+                except Exception:
+                    is_changed = True
+
+                if is_changed:
+                    st.markdown("<div style='margin-top: 15px; padding: 15px; border: 1px dashed #f59e0b; border-radius: 8px; background-color: #fffbeb;'>", unsafe_allow_html=True)
+                    st.markdown(f"<h4 style='margin-top:0; color: #d97706;'>🔍 {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}</h4>", unsafe_allow_html=True)
+                    st.info(t("Dữ liệu trong bảng đã được chỉnh sửa. Bấm Xác nhận để lưu thay đổi này vào hệ thống trước khi tải file.", "表のデータが編集されました。ファイルをダウンロードする前に、「確認して保存」をクリックしてシステムに変更を保存してください。"), icon="ℹ️")
+                    
+                    if st.button("💾 " + t("XÁC NHẬN LƯU THAY ĐỔI", "変更を保存して確定"), type="primary"):
+                        edited_records = edited_df_raw.to_dict('records')
+                        import math
+                        for r in edited_records:
+                            if 'hourly_rate' in r and isinstance(r['hourly_rate'], str):
+                                try:
+                                    r['hourly_rate'] = int(r['hourly_rate'].replace(',', ''))
+                                except ValueError:
+                                    pass
+                            for key in list(r.keys()):
+                                if key.endswith('%') and isinstance(r[key], str):
+                                    try:
+                                        r[key] = int(r[key].replace(',', ''))
+                                    except ValueError:
+                                        pass
+                        st.session_state['ot_excel_records'] = edited_records
+                        if "ot_excel_records_editor_v2" in st.session_state:
+                            del st.session_state["ot_excel_records_editor_v2"]
+                        st.rerun()
+                    st.markdown("</div>", unsafe_allow_html=True)
         
             st.markdown("<hr class='custom-hr-divider' style='margin: 6px 0 10px 0 !important; border: 0; border-top: 1.5px solid #94a3b8 !important;'>", unsafe_allow_html=True)
             st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「結果ファイルダウンロード」ボタンを押してください。"))
