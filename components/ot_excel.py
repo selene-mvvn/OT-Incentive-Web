@@ -745,84 +745,30 @@ def render_ot_excel():
                     is_changed = True
 
                 if is_changed:
+                    st.markdown("---")
+                    st.markdown(f"### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
+                    
                     editor_state = st.session_state.get("ot_excel_records_editor_v2", {})
                     added = editor_state.get("added_rows", [])
                     deleted = editor_state.get("deleted_rows", [])
                     edited = editor_state.get("edited_rows", {})
                     
-                    if deleted and not added and not edited:
-                        theme_bg = "#fecaca"
-                        theme_border = "#fca5a5"
-                        theme_alert_bg = "#fee2e2"
-                        theme_text = "#b91c1c"
-                    elif added and not deleted and not edited:
-                        theme_bg = "#bbf7d0"
-                        theme_border = "#86efac"
-                        theme_alert_bg = "#dcfce7"
-                        theme_text = "#15803d"
-                    elif edited and not deleted and not added:
-                        theme_bg = "#fef08a"
-                        theme_border = "#fde047"
-                        theme_alert_bg = "#fef9c3"
-                        theme_text = "#a16207"
-                    else:
-                        theme_bg = "#e2e8f0"
-                        theme_border = "#cbd5e1"
-                        theme_alert_bg = "#f1f5f9"
-                        theme_text = "#334155"
-
-                    st.markdown("<br>", unsafe_allow_html=True)
-                    st.markdown(f"""
-                        <div style='margin-bottom: 15px;'>
-                            <h5 style='color: #334155; display: inline-block; border-bottom: 2px solid #0ea5e9; padding-bottom: 4px; margin-bottom: 0; font-weight: 600; font-size: 16px;'>
-                                <span style='color: #f59e0b;'>⚠</span> {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}
-                            </h5>
-                        </div>
-                    """, unsafe_allow_html=True)
+                    diff_count = 0
+                    details = []
                     
-                    # Show summary alerts inside standard div to match exactly
-                    if added:
-                        st.markdown(f"<div style='background-color: #dcfce7; color: #15803d; padding: 12px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; margin-bottom: 10px;'>{t('Thêm mới', '追加')} {len(added)} {t('dòng', '行')}</div>", unsafe_allow_html=True)
-                    if deleted:
-                        st.markdown(f"<div style='background-color: #fee2e2; color: #b91c1c; padding: 12px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; margin-bottom: 10px;'>{t('Xóa', '削除')} {len(deleted)} {t('dòng', '行')}</div>", unsafe_allow_html=True)
-                    if edited:
-                        st.markdown(f"<div style='background-color: #fef9c3; color: #a16207; padding: 12px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; margin-bottom: 10px;'>{t('Sửa', '編集')} {len(edited)} {t('dòng', '行')}</div>", unsafe_allow_html=True)
-                    
-                    if not (added or deleted or edited):
-                        st.markdown(f"<div style='background-color: #f1f5f9; color: #334155; padding: 12px 16px; border-radius: 6px; font-weight: 500; font-size: 14px; margin-bottom: 10px;'>{t('Có thay đổi khác', 'その他の変更')}</div>", unsafe_allow_html=True)
-                        
-                    st.markdown(f"""
-                        <style>
-                        .preview-changes-container [data-testid="stExpander"] details summary {{
-                            background-color: {theme_bg} !important;
-                            color: #000 !important;
-                            border-radius: 4px 4px 0 0 !important;
-                        }}
-                        .preview-changes-container [data-testid="stExpander"] details {{
-                            border: 1px solid {theme_border} !important;
-                            border-radius: 6px !important;
-                            overflow: hidden;
-                        }}
-                        .preview-btn-container [data-testid="stButton"] button[kind="primary"] {{
-                            background-color: #0ea5e9 !important;
-                            color: #ffffff !important;
-                            border: 1px solid #0ea5e9 !important;
-                        }}
-                        .preview-btn-container [data-testid="stButton"] button[kind="primary"] p {{
-                            color: #ffffff !important;
-                        }}
-                        .preview-btn-container [data-testid="stButton"] button[kind="secondary"] {{
-                            background-color: #ffffff !important;
-                            color: #0ea5e9 !important;
-                            border: 1px solid #0ea5e9 !important;
-                        }}
-                        </style>
-                        <div class='preview-changes-container'>
-                    """, unsafe_allow_html=True)
-
-                    with st.expander(f"{t('Xem chi tiết thay đổi', '変更内容の詳細')}"):
-                        changes_html = ""
-                        # Handle deleted rows
+                    if len(added) > 0:
+                        st.success(t(f"Thêm mới {len(added)} dòng", f"{len(added)}行を追加"))
+                        diff_count += len(added)
+                        for row in added:
+                            ngay = row.get('ot_date', '')
+                            ten = row.get('employee_name', '')
+                            dh = row.get('order_name', row.get('order_id', ''))
+                            ot = row.get('ot_hours', '')
+                            details.append(f"- :material/add_circle: **{t('Thêm mới', '追加')}**: <span style='color: #10b981;'>{ngay} | {ten} | {dh} | Giờ OT: {ot}</span>")
+                            
+                    if len(deleted) > 0:
+                        st.error(t(f"Xóa {len(deleted)} dòng", f"{len(deleted)}行を削除"))
+                        diff_count += len(deleted)
                         for idx in deleted:
                             if idx < len(df1):
                                 row = df1.iloc[idx]
@@ -830,43 +776,100 @@ def render_ot_excel():
                                 ten = row.get('employee_name', '')
                                 dh = row.get('order_name', row.get('order_id', ''))
                                 ot = row.get('ot_hours', '')
-                                changes_html += f"<li style='margin-bottom: 8px;'><span style='color: #ef4444;'>⊗ <b>{t('Đã xóa', '削除済み')}:</b> <del>{ngay} | {ten} | {dh} | Giờ OT: {ot}</del></span></li>"
-                        # Handle added rows
-                        for row in added:
-                            ngay = row.get('ot_date', '')
-                            ten = row.get('employee_name', '')
-                            dh = row.get('order_name', row.get('order_id', ''))
-                            ot = row.get('ot_hours', '')
-                            changes_html += f"<li style='margin-bottom: 8px;'><span style='color: #10b981;'>⊕ <b>{t('Thêm mới', '新規追加')}:</b> {ngay} | {ten} | {dh} | Giờ OT: {ot}</span></li>"
-                        # Handle edited rows
+                                details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='text-decoration: line-through; color: #ef4444;'>{ngay} | {ten} | {dh} | Giờ OT: {ot}</span>")
+                                
+                    if len(edited) > 0:
+                        st.info(t(f"Chỉnh sửa {len(edited)} dòng", f"{len(edited)}行を編集"))
+                        diff_count += len(edited)
                         for idx_str, changes in edited.items():
                             idx = int(idx_str)
                             if idx < len(df1):
                                 orig_row = df1.iloc[idx]
-                                ten = orig_row.get('employee_name', f"Row {idx+1}")
-                                change_details = []
+                                ngay = orig_row.get('ot_date', '')
+                                ten = orig_row.get('employee_name', '')
+                                dh = orig_row.get('order_name', orig_row.get('order_id', ''))
+                                ot = orig_row.get('ot_hours', '')
+                                row_name = f"{ngay} | {ten} | {dh} | Giờ OT: {ot}"
+                                
+                                changes_str = []
                                 for col, new_val in changes.items():
                                     old_val = orig_row.get(col, '')
-                                    change_details.append(f"{col_cfg.get(col, col)}: <del>{old_val}</del> ➔ <b>{new_val}</b>")
+                                    col_label = col_cfg.get(col, col)
+                                    changes_str.append(f"**{col_label}**: <span style='color: #ef4444; font-weight: bold; font-size: 15px;'>{old_val}</span> ➔ <span style='color: #10b981; font-weight: bold; font-size: 15px;'>{new_val}</span>")
                                 
-                                changes_html += f"<li style='margin-bottom: 8px;'><span style='color: #f59e0b;'>✎ <b>{t('Đã sửa', '編集済み')} (Dòng {idx+1}):</b> {ten} | {' | '.join(change_details)}</span></li>"
-                                
-                        if changes_html:
-                            st.markdown(f"<ul style='padding-left: 20px; font-size: 14px;'>{changes_html}</ul>", unsafe_allow_html=True)
-                        else:
-                            st.markdown(f"*{t('Chưa có dữ liệu chi tiết', '詳細データなし')}*")
-                    
-                    st.markdown("</div>", unsafe_allow_html=True)
-                    
-                    st.markdown("<br><div class='preview-btn-container'>", unsafe_allow_html=True)
-                    btn_col1, btn_col2 = st.columns(2)
-                    with btn_col1:
-                        if st.button("✕ " + t("HỦY BỎ", "キャンセル"), use_container_width=True):
+                                if changes_str:
+                                    details.append(f"- :material/edit: **{row_name}**: " + ", ".join(changes_str))
+                                    
+                    if details:
+                        with st.expander(t("Xem chi tiết thay đổi", "変更の詳細を表示"), expanded=True):
+                            st.markdown("""
+                            <div class='preview-changes-marker' style='display: none;'></div>
+                            <style>
+                            [data-testid="stExpander"]:has(.preview-changes-marker) .element-container:has(.preview-changes-marker),
+                            [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stVerticalBlock"] > div:has(.preview-changes-marker) {
+                                position: absolute !important;
+                                height: 0 !important;
+                                margin: 0 !important;
+                                padding: 0 !important;
+                                overflow: hidden !important;
+                                opacity: 0 !important;
+                            }
+                            [data-testid="stExpander"]:has(.preview-changes-marker) {
+                                background-color: #ffffff !important;
+                                border: 2px solid #fca5a5 !important;
+                                border-radius: 8px !important;
+                            }
+                            [data-testid="stExpander"]:has(.preview-changes-marker) summary {
+                                background-color: #fca5a5 !important;
+                                border-radius: 5px 5px 0 0 !important;
+                            }
+                            [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
+                            [data-testid="stExpander"]:has(.preview-changes-marker) summary span {
+                                color: #000000 !important;
+                                font-weight: bold !important;
+                                font-size: 15.5px !important;
+                            }
+                            [data-testid="stExpander"]:has(.preview-changes-marker) summary svg {
+                                fill: #000000 !important;
+                                color: #000000 !important;
+                            }
+                            [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpanderDetails"] {
+                                background-color: #ffffff !important;
+                                padding-top: 0.5rem !important;
+                                padding-bottom: 1rem !important;
+                            }
+                            
+                            /* Make the buttons solid/outlined manually because app.py forces .stButton on main page to outline */
+                            [data-testid="stMain"] .preview-action-btn button[kind="primary"] {
+                                background: linear-gradient(135deg, #00B0F0 0%, #007bff 100%) !important;
+                                color: #ffffff !important;
+                                border: none !important;
+                            }
+                            [data-testid="stMain"] .preview-action-btn button[kind="primary"] p {
+                                color: #ffffff !important;
+                            }
+                            [data-testid="stMain"] .preview-action-btn button[kind="primary"]:hover {
+                                box-shadow: 0 6px 12px rgba(0, 176, 240, 0.4) !important;
+                                transform: translateY(-2px) !important;
+                                background: linear-gradient(135deg, #007bff 0%, #00B0F0 100%) !important;
+                            }
+                            </style>
+                            """, unsafe_allow_html=True)
+                            st.markdown("\n".join(details), unsafe_allow_html=True)
+                        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+                        
+                    if diff_count == 0:
+                        st.write(t("Không có thay đổi nào.", "変更はありません。"))
+                        
+                    st.markdown("<div class='preview-action-btn'>", unsafe_allow_html=True)
+                    col_btn1, col_btn2 = st.columns(2)
+                    with col_btn1:
+                        if st.button(t(":material/close: Hủy bỏ", ":material/close: キャンセル"), use_container_width=True):
                             if "ot_excel_records_editor_v2" in st.session_state:
                                 del st.session_state["ot_excel_records_editor_v2"]
                             st.rerun()
-                    with btn_col2:
-                        if st.button("✔ " + t("XÁC NHẬN LƯU", "確定して保存"), type="primary", use_container_width=True):
+                    with col_btn2:
+                        if st.button(t(":material/check_circle: Xác nhận Lưu", ":material/check_circle: 保存を確認"), type="primary", use_container_width=True):
                             edited_records = edited_df_raw.to_dict('records')
                             import math
                             for r in edited_records:
