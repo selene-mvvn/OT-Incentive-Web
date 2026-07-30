@@ -745,9 +745,27 @@ def render_ot_excel():
                     is_changed = True
 
                 if is_changed:
-                    st.markdown("<div style='margin-top: 15px; padding: 15px; border: 1px dashed #f59e0b; border-radius: 8px; background-color: #fffbeb;'>", unsafe_allow_html=True)
-                    st.markdown(f"<h4 style='margin-top:0; color: #d97706;'>🔍 {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}</h4>", unsafe_allow_html=True)
-                    st.info(t("Dữ liệu trong bảng đã được chỉnh sửa. Bấm Xác nhận để lưu thay đổi này vào hệ thống trước khi tải file.", "表のデータが編集されました。ファイルをダウンロードする前に、「確認して保存」をクリックしてシステムに変更を保存してください。"), icon="ℹ️")
+                    st.markdown("---")
+                    st.markdown(f"<h5 style='color: #d97706; margin-bottom: 0px;'>🔍 {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}</h5>", unsafe_allow_html=True)
+                    
+                    editor_state = st.session_state.get("ot_excel_records_editor_v2", {})
+                    added = editor_state.get("added_rows", [])
+                    deleted = editor_state.get("deleted_rows", [])
+                    edited = editor_state.get("edited_rows", {})
+                    
+                    changes_md = ""
+                    if added:
+                        changes_md += f"- ➕ **{t('Thêm mới', '追加')}**: {len(added)} {t('dòng', '行')}\n"
+                    if deleted:
+                        changes_md += f"- 🗑️ **{t('Xóa', '削除')}**: {len(deleted)} {t('dòng', '行')}\n"
+                    if edited:
+                        edited_lines = ", ".join([str(int(k)+1) for k in edited.keys()])
+                        changes_md += f"- ✏️ **{t('Chỉnh sửa', '編集')}**: {len(edited)} {t('dòng', '行')} ({t('Dòng', '行')}: {edited_lines})\n"
+                    
+                    if not changes_md:
+                        changes_md = f"- 🔄 {t('Có thay đổi khác', 'その他の変更')}\n"
+                    
+                    st.warning(f"{t('Bạn vừa chỉnh sửa dữ liệu trong bảng. Chi tiết:', '表のデータが編集されました。詳細：')}\n\n{changes_md}\n\n{t('Bấm Xác nhận để lưu thay đổi này vào hệ thống.', 'ファイルをダウンロードする前に、「確認して保存」をクリックしてシステムに変更を保存してください。')}")
                     
                     if st.button("💾 " + t("XÁC NHẬN LƯU THAY ĐỔI", "変更を保存して確定"), type="primary"):
                         edited_records = edited_df_raw.to_dict('records')
@@ -768,7 +786,6 @@ def render_ot_excel():
                         if "ot_excel_records_editor_v2" in st.session_state:
                             del st.session_state["ot_excel_records_editor_v2"]
                         st.rerun()
-                    st.markdown("</div>", unsafe_allow_html=True)
         
             st.markdown("<hr class='custom-hr-divider' style='margin: 6px 0 10px 0 !important; border: 0; border-top: 1.5px solid #94a3b8 !important;'>", unsafe_allow_html=True)
             st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「結果ファイルダウンロード」ボタンを押してください。"))
