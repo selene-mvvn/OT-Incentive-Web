@@ -745,47 +745,88 @@ def render_ot_excel():
                     is_changed = True
 
                 if is_changed:
-                    st.markdown("---")
-                    st.markdown(f"<h5 style='color: #d97706; margin-bottom: 0px;'>🔍 {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}</h5>", unsafe_allow_html=True)
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    st.markdown(f"<h5 style='color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 8px; font-weight: 600; font-size: 16px; margin-bottom: 15px;'>⚠️ {t('XEM TRƯỚC THAY ĐỔI', '変更のプレビュー')}</h5>", unsafe_allow_html=True)
                     
                     editor_state = st.session_state.get("ot_excel_records_editor_v2", {})
                     added = editor_state.get("added_rows", [])
                     deleted = editor_state.get("deleted_rows", [])
                     edited = editor_state.get("edited_rows", {})
                     
-                    changes_md = ""
+                    # Show summary alerts
                     if added:
-                        changes_md += f"- ➕ **{t('Thêm mới', '追加')}**: {len(added)} {t('dòng', '行')}\n"
+                        st.success(f"{t('Thêm', '追加')} {len(added)} {t('dòng', '行')}")
                     if deleted:
-                        changes_md += f"- 🗑️ **{t('Xóa', '削除')}**: {len(deleted)} {t('dòng', '行')}\n"
+                        st.error(f"{t('Xóa', '削除')} {len(deleted)} {t('dòng', '行')}")
                     if edited:
-                        edited_lines = ", ".join([str(int(k)+1) for k in edited.keys()])
-                        changes_md += f"- ✏️ **{t('Chỉnh sửa', '編集')}**: {len(edited)} {t('dòng', '行')} ({t('Dòng', '行')}: {edited_lines})\n"
+                        st.warning(f"{t('Sửa', '編集')} {len(edited)} {t('dòng', '行')}")
                     
-                    if not changes_md:
-                        changes_md = f"- 🔄 {t('Có thay đổi khác', 'その他の変更')}\n"
+                    if not (added or deleted or edited):
+                        st.info(f"{t('Có thay đổi khác', 'その他の変更')}")
+                        
+                    with st.expander(f"**{t('Xem chi tiết thay đổi', '変更内容の詳細')}**"):
+                        changes_html = ""
+                        # Handle deleted rows
+                        for idx in deleted:
+                            if idx < len(df1):
+                                row = df1.iloc[idx]
+                                ngay = row.get('ot_date', '')
+                                ten = row.get('employee_name', '')
+                                dh = row.get('order_id', '')
+                                ot = row.get('ot_hours', '')
+                                changes_html += f"<li style='margin-bottom: 5px; color: #ef4444;'>⊗ <b>{t('Đã xóa', '削除済み')}:</b> <del>{ngay} | {ten} | {dh} | Giờ OT: {ot}</del></li>"
+                        # Handle added rows
+                        for row in added:
+                            ngay = row.get('ot_date', '')
+                            ten = row.get('employee_name', '')
+                            dh = row.get('order_id', '')
+                            ot = row.get('ot_hours', '')
+                            changes_html += f"<li style='margin-bottom: 5px; color: #10b981;'>⊕ <b>{t('Thêm mới', '新規追加')}:</b> {ngay} | {ten} | {dh} | Giờ OT: {ot}</li>"
+                        # Handle edited rows
+                        for idx_str, changes in edited.items():
+                            idx = int(idx_str)
+                            if idx < len(df1):
+                                orig_row = df1.iloc[idx]
+                                ten = orig_row.get('employee_name', f"Row {idx+1}")
+                                change_details = []
+                                for col, new_val in changes.items():
+                                    old_val = orig_row.get(col, '')
+                                    change_details.append(f"{col}: <del>{old_val}</del> ➔ <b>{new_val}</b>")
+                                
+                                changes_html += f"<li style='margin-bottom: 5px; color: #f59e0b;'>✎ <b>{t('Đã sửa', '編集済み')} (Dòng {idx+1}):</b> {ten} | {' | '.join(change_details)}</li>"
+                                
+                        if changes_html:
+                            st.markdown(f"<ul style='list-style-type: none; padding-left: 0;'>{changes_html}</ul>", unsafe_allow_html=True)
+                        else:
+                            st.markdown(f"*{t('Chưa có dữ liệu chi tiết', '詳細データなし')}*")
                     
-                    st.warning(f"{t('Bạn vừa chỉnh sửa dữ liệu trong bảng. Chi tiết:', '表のデータが編集されました。詳細：')}\n\n{changes_md}\n\n{t('Bấm Xác nhận để lưu thay đổi này vào hệ thống.', 'ファイルをダウンロードする前に、「確認して保存」をクリックしてシステムに変更を保存してください。')}")
-                    
-                    if st.button("💾 " + t("XÁC NHẬN LƯU THAY ĐỔI", "変更を保存して確定"), type="primary"):
-                        edited_records = edited_df_raw.to_dict('records')
-                        import math
-                        for r in edited_records:
-                            if 'hourly_rate' in r and isinstance(r['hourly_rate'], str):
-                                try:
-                                    r['hourly_rate'] = int(r['hourly_rate'].replace(',', ''))
-                                except ValueError:
-                                    pass
-                            for key in list(r.keys()):
-                                if key.endswith('%') and isinstance(r[key], str):
+                    st.markdown("<br>", unsafe_allow_html=True)
+                    btn_col1, btn_col2 = st.columns(2)
+                    with btn_col1:
+                        if st.button("✕ " + t("HỦY BỎ", "キャンセル"), use_container_width=True):
+                            if "ot_excel_records_editor_v2" in st.session_state:
+                                del st.session_state["ot_excel_records_editor_v2"]
+                            st.rerun()
+                    with btn_col2:
+                        if st.button("✔ " + t("XÁC NHẬN LƯU", "確定して保存"), type="primary", use_container_width=True):
+                            edited_records = edited_df_raw.to_dict('records')
+                            import math
+                            for r in edited_records:
+                                if 'hourly_rate' in r and isinstance(r['hourly_rate'], str):
                                     try:
-                                        r[key] = int(r[key].replace(',', ''))
+                                        r['hourly_rate'] = int(r['hourly_rate'].replace(',', ''))
                                     except ValueError:
                                         pass
-                        st.session_state['ot_excel_records'] = edited_records
-                        if "ot_excel_records_editor_v2" in st.session_state:
-                            del st.session_state["ot_excel_records_editor_v2"]
-                        st.rerun()
+                                for key in list(r.keys()):
+                                    if key.endswith('%') and isinstance(r[key], str):
+                                        try:
+                                            r[key] = int(r[key].replace(',', ''))
+                                        except ValueError:
+                                            pass
+                            st.session_state['ot_excel_records'] = edited_records
+                            if "ot_excel_records_editor_v2" in st.session_state:
+                                del st.session_state["ot_excel_records_editor_v2"]
+                            st.rerun()
         
             st.markdown("<hr class='custom-hr-divider' style='margin: 6px 0 10px 0 !important; border: 0; border-top: 1.5px solid #94a3b8 !important;'>", unsafe_allow_html=True)
             st.caption(t("📌 **Lưu ý:** Bạn cần bấm nút **Tải File Excel Kết Quả** thì Bảng xếp hạng mới được cập nhật.", "📌 **注意:** ランキングを更新するには「結果ファイルダウンロード」ボタンを押してください。"))
