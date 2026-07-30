@@ -42,6 +42,23 @@ def get_clean_period(row):
 def render_project_history():
     st.markdown("""
     <style>
+    .animated-card-1, .animated-card-2, .animated-card-3, .animated-card-4 {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+        opacity: 0;
+    }
+    .animated-card-1:hover, .animated-card-2:hover, .animated-card-3:hover, .animated-card-4:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+    }
+    @keyframes fadeInUpCards {
+        from { opacity: 0; transform: translateY(15px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animated-card-1 { animation: fadeInUpCards 0.4s ease-out forwards; }
+    .animated-card-2 { animation: fadeInUpCards 0.5s ease-out forwards; }
+    .animated-card-3 { animation: fadeInUpCards 0.6s ease-out forwards; }
+    .animated-card-4 { animation: fadeInUpCards 0.7s ease-out forwards; }
+    
     /* Hide Streamlit dataframe element toolbar right above tables */
     [data-testid="stDataFrame"] [data-testid="stElementToolbar"],
     [data-testid="stDataFrame"] div[class*="stElementToolbar"],
@@ -240,7 +257,7 @@ def render_project_history():
             # Summary Metric Cards
             st.markdown(f"""
             <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 20px; margin-top: 8px;'>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                <div class='animated-card-1' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                     <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                         <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('TỔNG GIỜ OT', '残業時間合計')}
@@ -253,7 +270,7 @@ def render_project_history():
                         <span class="count-up-target-float" data-target="{total_hrs}">{total_hrs:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span>
                     </div>
                 </div>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                <div class='animated-card-2' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                     <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                         <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('SỐ DỰ ÁN THAM GIA', '対象プロジェクト数')}
@@ -266,7 +283,7 @@ def render_project_history():
                         <span class="count-up-target" data-target="{num_projects}">{num_projects}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span>
                     </div>
                 </div>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                <div class='animated-card-3' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                     <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                         <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('DỰ TÍNH CHI PHÍ', '予想支出額')}
@@ -279,7 +296,7 @@ def render_project_history():
                         <span class="count-up-target" data-target="{total_cost}">{total_cost:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span>
                     </div>
                 </div>
-                <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                <div class='animated-card-4' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                     <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                         <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>
                             {t('SỐ NHÂN SỰ OT', '対象スタッフ数')}
@@ -1000,32 +1017,13 @@ def render_project_history():
             p_cost = df_t2['est_cost'].sum()
             p_staff = df_t2['employee_name'].nunique()
             p_records = len(df_t2)
+            avg_h_p_r = p_hrs / p_records if p_records > 0 else 0
 
             display_period_label = format_period_range_label(df_t2, sel_period_t2_label) if sel_period_t2_label == all_period_opt else sel_period_t2_label
 
             min_h = "height: 80px; display: flex; align-items: flex-start; overflow: hidden;" if is_compare else ""
-            
-            # CSS for Micro-animations (Idea 5)
-            st.markdown("""
-            <style>
-            .kpi-t2-card-1, .kpi-t2-card-2, .kpi-t2-card-3, .kpi-t2-card-4 {
-                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
-                opacity: 0;
-            }
-            .kpi-t2-card-1:hover, .kpi-t2-card-2:hover, .kpi-t2-card-3:hover, .kpi-t2-card-4:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
-            }
-            @keyframes fadeInUpCards {
-                from { opacity: 0; transform: translateY(15px); }
-                to { opacity: 1; transform: translateY(0); }
-            }
-            .kpi-t2-card-1 { animation: fadeInUpCards 0.4s ease-out forwards; }
-            .kpi-t2-card-2 { animation: fadeInUpCards 0.5s ease-out forwards; }
-            .kpi-t2-card-3 { animation: fadeInUpCards 0.6s ease-out forwards; }
-            .kpi-t2-card-4 { animation: fadeInUpCards 0.7s ease-out forwards; }
-            </style>
-            """, unsafe_allow_html=True)
+            pad_kpi = "8px 12px" if is_compare else "12px 16px"
+            marg_kpi = "8px" if is_compare else "15px"
             
             st.markdown(f"""
             <h3 style='font-size: 18px; margin-bottom: 20px; {min_h}'>
@@ -1426,28 +1424,28 @@ def render_project_history():
                 
                 st.markdown(f"""
                 <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 14px; margin-bottom: 20px; margin-top: 8px;'>
-                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div class='animated-card-1' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #00a8e8; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title2}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #00a8e8 0%, #0077b6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0, 168, 232, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">schedule</span></div>
                         </div>
                         <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target-float" data-target="{total_ot_hours}">{total_ot_hours:,.1f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>h</span></div>{trend_hours_html}
                     </div>
-                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div class='animated-card-2' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #8b5cf6; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title3}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">folder</span></div>
                         </div>
                         <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{num_projects_t3}">{num_projects_t3}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>{t('dự án', '件')}</span></div>{trend_proj_html}
                     </div>
-                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div class='animated-card-3' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #10b981; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title1}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #34d399 0%, #10b981 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">payments</span></div>
                         </div>
                         <div style='font-size: 23px; font-weight: 800; color: #0f172a; line-height: 1.2;'><span class="count-up-target" data-target="{total_ot_pay}">{total_ot_pay:,.0f}</span> <span style='font-size: 15px; font-weight: 600; color: #475569;'>VNĐ</span></div>{trend_pay_html}
                     </div>
-                    <div style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04); transition: all 0.2s ease;'>
+                    <div class='animated-card-4' style='background: #ffffff; border: 1px solid #e2e8f0; border-left: 5px solid #f59e0b; border-radius: 12px; padding: 12px 16px; box-shadow: 0 6px 18px -4px rgba(15, 23, 42, 0.07), 0 2px 4px -1px rgba(15, 23, 42, 0.04);'>
                         <div style='display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-bottom: 6px;'>
                             <div style='font-size: 12.5px; font-weight: 700; color: #64748b; letter-spacing: 0.3px; text-transform: uppercase;'>{title4}</div>
                             <div style='width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(245, 158, 11, 0.3); flex-shrink: 0;'><span class="material-symbols-rounded summary-white-icon" style="font-size: 20px; color: #ffffff !important;">receipt_long</span></div>
