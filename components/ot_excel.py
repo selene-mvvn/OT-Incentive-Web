@@ -729,11 +729,15 @@ def render_ot_excel():
 
                 df_display_records = pd.DataFrame(display_records)
 
+                if "ot_editor_key_counter" not in st.session_state:
+                    st.session_state["ot_editor_key_counter"] = 0
+                editor_key = f"ot_excel_records_editor_v2_{st.session_state['ot_editor_key_counter']}"
+
                 edited_df_raw = st.data_editor(
                     df_display_records,
                     num_rows="dynamic",
                     use_container_width=True,
-                    key="ot_excel_records_editor_v2",
+                    key=editor_key,
                     column_config=col_cfg
                 )
                 
@@ -748,7 +752,7 @@ def render_ot_excel():
                     st.markdown("---")
                     st.markdown(f"##### {t(':material/warning: XEM TRƯỚC THAY ĐỔI', ':material/warning: 変更のプレビュー')}")
                     
-                    editor_state = st.session_state.get("ot_excel_records_editor_v2", {})
+                    editor_state = st.session_state.get(editor_key, {})
                     added = editor_state.get("added_rows", [])
                     deleted = editor_state.get("deleted_rows", [])
                     edited = editor_state.get("edited_rows", {})
@@ -877,8 +881,7 @@ def render_ot_excel():
                     col_btn1, col_btn2 = st.columns(2)
                     with col_btn1:
                         if st.button(t(":material/close: Hủy bỏ", ":material/close: キャンセル"), use_container_width=True):
-                            if "ot_excel_records_editor_v2" in st.session_state:
-                                del st.session_state["ot_excel_records_editor_v2"]
+                            st.session_state["ot_editor_key_counter"] += 1
                             st.rerun()
                     with col_btn2:
                         if st.button(t(":material/check_circle: Xác nhận Lưu", ":material/check_circle: 保存を確認"), type="primary", use_container_width=True):
@@ -897,8 +900,7 @@ def render_ot_excel():
                                         except ValueError:
                                             pass
                             st.session_state['ot_excel_records'] = edited_records
-                            if "ot_excel_records_editor_v2" in st.session_state:
-                                del st.session_state["ot_excel_records_editor_v2"]
+                            st.session_state["ot_editor_key_counter"] += 1
                             st.rerun()
                     st.markdown("</div>", unsafe_allow_html=True)
         
