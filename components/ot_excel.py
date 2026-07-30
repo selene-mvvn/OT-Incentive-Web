@@ -791,10 +791,19 @@ def render_ot_excel():
                                 ot = orig_row.get('ot_hours', '')
                                 row_name = f"{ngay} | {ten} | {dh} | Giờ OT: {ot}"
                                 
+                                col_label_map = {
+                                    "ot_date": t("Ngày OT", "残業日"), "employee_name": t("Nhân sự", "担当者"),
+                                    "ot_hours": t("Giờ OT", "残業時間"), "ot_reason": t("Lý do", "残業理由"),
+                                    "manager_name": t("Quản lý", "PM"), "project_type": t("Loại dự án", "プロジェクト種別"),
+                                    "order_id": t("Mã dự án", "注文番号"), "order_name": t("Tên dự án", "注文名"),
+                                    "client_order_id": t("Mã đơn khách", "客先注文番号"), "hourly_rate": t("Lương/h", "時給"),
+                                    "payment_period": t("Kỳ thanh toán", "支払期間")
+                                }
+                                
                                 changes_str = []
                                 for col, new_val in changes.items():
                                     old_val = orig_row.get(col, '')
-                                    col_label = col_cfg.get(col, col)
+                                    col_label = col_label_map.get(col, col)
                                     changes_str.append(f"**{col_label}**: <span style='color: #ef4444; font-weight: bold; font-size: 15px;'>{old_val}</span> ➔ <span style='color: #10b981; font-weight: bold; font-size: 15px;'>{new_val}</span>")
                                 
                                 if changes_str:
@@ -805,8 +814,9 @@ def render_ot_excel():
                             st.markdown("""
                             <div class='preview-changes-marker' style='display: none;'></div>
                             <style>
-                            [data-testid="stExpander"]:has(.preview-changes-marker) .element-container:has(.preview-changes-marker),
-                            [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stVerticalBlock"] > div:has(.preview-changes-marker) {
+                            /* Hide the marker itself inside the element container */
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) .element-container:has(.preview-changes-marker),
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) [data-testid="stVerticalBlock"] > div:has(.preview-changes-marker) {
                                 position: absolute !important;
                                 height: 0 !important;
                                 margin: 0 !important;
@@ -814,32 +824,34 @@ def render_ot_excel():
                                 overflow: hidden !important;
                                 opacity: 0 !important;
                             }
-                            [data-testid="stExpander"]:has(.preview-changes-marker) {
+                            
+                            /* Style ONLY the innermost expander that contains the marker */
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) {
                                 background-color: #ffffff !important;
                                 border: 2px solid #fca5a5 !important;
                                 border-radius: 8px !important;
                             }
-                            [data-testid="stExpander"]:has(.preview-changes-marker) summary {
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) > details > summary {
                                 background-color: #fca5a5 !important;
                                 border-radius: 5px 5px 0 0 !important;
                             }
-                            [data-testid="stExpander"]:has(.preview-changes-marker) summary p,
-                            [data-testid="stExpander"]:has(.preview-changes-marker) summary span {
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) > details > summary p,
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) > details > summary span {
                                 color: #000000 !important;
                                 font-weight: bold !important;
                                 font-size: 15.5px !important;
                             }
-                            [data-testid="stExpander"]:has(.preview-changes-marker) summary svg {
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) > details > summary svg {
                                 fill: #000000 !important;
                                 color: #000000 !important;
                             }
-                            [data-testid="stExpander"]:has(.preview-changes-marker) [data-testid="stExpanderDetails"] {
+                            div[data-testid="stExpander"]:has(.preview-changes-marker):not(:has(div[data-testid="stExpander"] .preview-changes-marker)) > details > [data-testid="stExpanderDetails"] {
                                 background-color: #ffffff !important;
                                 padding-top: 0.5rem !important;
                                 padding-bottom: 1rem !important;
                             }
                             
-                            /* Make the buttons solid/outlined manually because app.py forces .stButton on main page to outline */
+                            /* Make the buttons solid/outlined manually */
                             [data-testid="stMain"] .preview-action-btn button[kind="primary"] {
                                 background: linear-gradient(135deg, #00B0F0 0%, #007bff 100%) !important;
                                 color: #ffffff !important;
