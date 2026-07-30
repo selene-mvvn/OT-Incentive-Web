@@ -746,7 +746,7 @@ def render_ot_excel():
 
                 if is_changed:
                     st.markdown("---")
-                    st.markdown(f"### {t(':material/warning: Xem trước thay đổi', ':material/warning: 変更のプレビュー')}")
+                    st.markdown(f"##### {t(':material/warning: XEM TRƯỚC THAY ĐỔI', ':material/warning: 変更のプレビュー')}")
                     
                     editor_state = st.session_state.get("ot_excel_records_editor_v2", {})
                     added = editor_state.get("added_rows", [])
