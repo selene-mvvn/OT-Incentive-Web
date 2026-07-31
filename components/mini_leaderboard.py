@@ -488,6 +488,12 @@ def render_mini_leaderboard(data_type="ot"):
                         df_prev = df[(df['date_obj'].dt.year == sel_year) & (df['date_obj'].dt.month == sel_month - 1)]
                 else:
                     df_prev = df[df['date_obj'].dt.year == sel_year - 1]
+            else:
+                if sel_month not in ["Tất cả", "すべて"]:
+                    if sel_month == 1:
+                        df_prev = df[df['date_obj'].dt.month == 12]
+                    else:
+                        df_prev = df[df['date_obj'].dt.month == sel_month - 1]
 
             if not df_prev.empty:
                 df_prev[val_col] = pd.to_numeric(df_prev[val_col], errors='coerce').fillna(0)
@@ -541,7 +547,7 @@ def render_mini_leaderboard(data_type="ot"):
                 prev_val = agg_prev.get(emp_name, 0)
                 diff = val - prev_val
                 trend_html = ""
-                if sel_year not in ["Tất cả", "すべて"]:
+                if not (sel_year in ["Tất cả", "すべて"] and sel_month in ["Tất cả", "すべて"]):
                     if diff > 0:
                         trend_html = f"<span style='color: {trend_color_up}; font-size: 11px; margin-left: 6px; font-weight: bold;'>↑ {diff:,.1f}</span>"
                     elif diff < 0:
