@@ -463,16 +463,37 @@ def render_mini_leaderboard(data_type="ot"):
                 agg_df = agg_df.sort_values(by='ot_hours', ascending=False).reset_index(drop=True)
                 val_col = 'ot_hours'
                 val_suffix = "h"
+                trend_color_up = "#ef4444"
+                trend_color_down = "#10b981"
             else:
                 if 'final_incentive' not in df_filtered.columns: df_filtered['final_incentive'] = 0
                 df_filtered['final_incentive'] = pd.to_numeric(df_filtered['final_incentive'], errors='coerce').fillna(0)
                 agg_df = df_filtered.groupby('employee_name')['final_incentive'].sum().reset_index()
                 agg_df = agg_df.sort_values(by='final_incentive', ascending=False).reset_index(drop=True)
                 val_col = 'final_incentive'
-                val_suffix = "¥"
+                val_suffix = "VNĐ"
+                trend_color_up = "#10b981"
+                trend_color_down = "#ef4444"
 
             agg_df['rank'] = agg_df[val_col].rank(method='min', ascending=False).astype(int)
             top_5 = agg_df.head(5)
+
+            # Calculate Trend
+            df_prev = pd.DataFrame()
+            if sel_year not in ["Tất cả", "すべて"]:
+                if sel_month not in ["Tất cả", "すべて"]:
+                    if sel_month == 1:
+                        df_prev = df[(df['date_obj'].dt.year == sel_year - 1) & (df['date_obj'].dt.month == 12)]
+                    else:
+                        df_prev = df[(df['date_obj'].dt.year == sel_year) & (df['date_obj'].dt.month == sel_month - 1)]
+                else:
+                    df_prev = df[df['date_obj'].dt.year == sel_year - 1]
+
+            if not df_prev.empty:
+                df_prev[val_col] = pd.to_numeric(df_prev[val_col], errors='coerce').fillna(0)
+                agg_prev = df_prev.groupby('employee_name')[val_col].sum().to_dict()
+            else:
+                agg_prev = {}
 
             if data_type == "ot":
                 colors = [
@@ -488,8 +509,31 @@ def render_mini_leaderboard(data_type="ot"):
                 ]
 
             medals_dict = {1: "🥇", 2: "🥈", 3: "🥉", 4: "4️⃣", 5: "5️⃣"}
+            avatar_colors = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899", "#14b8a6"]
 
-            html_content = ""
+            max_val = top_5[val_col].max() if not top_5.empty else 1
+            if max_val == 0: max_val = 1
+
+            html_content = """
+            <style>
+            .mini-leaderboard-card {
+                transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+            }
+            .mini-leaderboard-card:hover {
+                transform: translateY(-3px) scale(1.01) !important;
+                box-shadow: 0 6px 12px rgba(0,0,0,0.08) !important;
+            }
+            .progress-bar-fill {
+                animation: fillBar 1s ease-out forwards;
+                transform-origin: left;
+            }
+            @keyframes fillBar {
+                from { transform: scaleX(0); }
+                to { transform: scaleX(1); }
+            }
+            </style>
+            """
+
             for i, row in top_5.iterrows():
                 emp_name = row['employee_name']
                 val = row[val_col]
@@ -505,56 +549,56 @@ def render_mini_leaderboard(data_type="ot"):
                 
                 formatted_val = f"{val:,.1f}" if data_type == "ot" else f"{int(val):,}"
                 
+                # Avatar
+                avatar_letter = emp_name[0].upper() if emp_name else "?"
+                avatar_bg = avatar_colors[hash(emp_name) % len(avatar_colors)]
+
+                # Trend
+                prev_val = agg_prev.get(emp_name, 0)
+                diff = val - prev_val
+                trend_html = ""
+                if sel_year not in ["Tất cả", "すべて"]:
+                    if diff > 0:
+                        trend_html = f"<span style='color: {trend_color_up}; font-size: 11px; margin-left: 8px; font-weight: bold;'>↑ {diff:,.1f}</span>"
+                    elif diff < 0:
+                        trend_html = f"<span style='color: {trend_color_down}; font-size: 11px; margin-left: 8px; font-weight: bold;'>↓ {abs(diff):,.1f}</span>"
+                    else:
+                        trend_html = f"<span style='color: #94a3b8; font-size: 11px; margin-left: 8px; font-weight: bold;'>-</span>"
+
+                pct = (val / max_val) * 100
+
                 html_content += f"""
-                <div style='
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
+                <div class="mini-leaderboard-card" style='
                     background: {bg_color};
-                    padding: 8px 10px;
-                    border-radius: 8px;
-                    margin-bottom: 8px;
+                    padding: 12px 14px;
+                    border-radius: 10px;
+                    margin-bottom: 12px;
                     font-size: 13px;
-                    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-                    border-left: 3px solid {text_color};
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+                    border-left: 4px solid {text_color};
+                    position: relative;
+                    overflow: hidden;
                 '>
-                    <div style='display: flex; align-items: center; gap: 8px;'>
-                        <span style='font-size: 16px;'>{medal}</span>
-                        <span style='font-weight: 600; color: #34495e;' title='{emp_name}'>{emp_name}</span>
+                    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;'>
+                        <div style='display: flex; align-items: center; gap: 10px;'>
+                            <div style='width: 32px; height: 32px; border-radius: 50%; background: {avatar_bg}; color: white; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0;'>{avatar_letter}</div>
+                            <div style='display: flex; flex-direction: column;'>
+                                <div style='font-weight: 700; color: #1e293b; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;' title='{emp_name}'>
+                                    {emp_name} <span style='font-size: 14px; margin-left: 2px;'>{medal}</span>
+                                </div>
+                                <div style='display: flex; align-items: center;'>
+                                    <span style='font-weight: 800; color: {text_color}; font-size: 13px;'>{formatted_val} {val_suffix}</span>
+                                    {trend_html}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
+                    <div style='width: 100%; height: 6px; background: rgba(0,0,0,0.06); border-radius: 3px; overflow: hidden;'>
+                        <div class="progress-bar-fill" style='width: {pct}%; height: 100%; background: {text_color}; border-radius: 3px;'></div>
+                    </div>
                 </div>
                 """
                 
             st.markdown(html_content, unsafe_allow_html=True)
-            
-            if len(top_5) > 0:
-                fig = go.Figure(go.Bar(
-                    x=top_5[val_col][::-1],
-                    y=top_5['employee_name'][::-1],
-                    orientation='h',
-                    marker=dict(
-                        color=top_5[val_col][::-1],
-                        colorscale=[[0, '#e1f5fe'], [1, '#00a8e8']],
-                    ),
-                    text=top_5[val_col][::-1].apply(lambda x: f"{x:,.1f}" if data_type == "ot" else f"{int(x):,}"),
-                    textposition='inside',
-                    insidetextanchor='end',
-                    textfont=dict(
-                        color=['#2c3e50'] * (len(top_5) - 1) + ['white'] if len(top_5) > 0 else [],
-                        size=11
-                    )
-                ))
-                fig.update_layout(
-                    font=dict(family="'Times New Roman', serif"),
-                    margin=dict(l=0, r=0, t=5, b=5),
-                    height=max(60, len(top_5) * 32),
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    plot_bgcolor='rgba(0,0,0,0)',
-                    xaxis=dict(visible=False),
-                    yaxis=dict(tickfont=dict(size=11, color='#2c3e50')),
-                    showlegend=False
-                )
-                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
     if st.button(t("✏️ Sửa dữ liệu (Nhanh)", "✏️ 簡易編集"), use_container_width=True, key=f"btn_edit_mini_{data_type}"):
         show_mini_edit_dialog(data_type, df)
