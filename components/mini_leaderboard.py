@@ -547,7 +547,9 @@ def render_mini_leaderboard(data_type="ot"):
                 prev_val = agg_prev.get(emp_name, 0)
                 diff = val - prev_val
                 trend_html = ""
-                if not (sel_year in ["Tất cả", "すべて"] and sel_month in ["Tất cả", "すべて"]):
+                if df_prev.empty:
+                    trend_html = ""
+                elif not (sel_year in ["Tất cả", "すべて"] and sel_month in ["Tất cả", "すべて"]):
                     if diff > 0:
                         trend_html = f"<span style='color: {trend_color_up}; font-size: 11px; margin-left: 6px; font-weight: bold;'>↑ {diff:,.1f}</span>"
                     elif diff < 0:
