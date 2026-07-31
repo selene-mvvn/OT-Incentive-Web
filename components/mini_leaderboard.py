@@ -568,36 +568,36 @@ def render_mini_leaderboard(data_type="ot"):
                 pct = (val / max_val) * 100
 
                 html_content += f"""
-                <div class="mini-leaderboard-card" style='
-                    background: {bg_color};
-                    padding: 12px 14px;
-                    border-radius: 10px;
-                    margin-bottom: 12px;
-                    font-size: 13px;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
-                    border-left: 4px solid {text_color};
-                    position: relative;
-                    overflow: hidden;
-                '>
-                    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;'>
-                        <div style='display: flex; align-items: center; gap: 10px;'>
-                            <div style='width: 32px; height: 32px; border-radius: 50%; background: {avatar_bg}; color: white; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0;'>{avatar_letter}</div>
-                            <div style='display: flex; flex-direction: column;'>
-                                <div style='font-weight: 700; color: #1e293b; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;' title='{emp_name}'>
-                                    {emp_name} <span style='font-size: 14px; margin-left: 2px;'>{medal}</span>
-                                </div>
-                                <div style='display: flex; align-items: center;'>
-                                    <span style='font-weight: 800; color: {text_color}; font-size: 13px;'>{formatted_val} {val_suffix}</span>
-                                    {trend_html}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div style='width: 100%; height: 6px; background: rgba(0,0,0,0.06); border-radius: 3px; overflow: hidden;'>
-                        <div class="progress-bar-fill" style='width: {pct}%; height: 100%; background: {text_color}; border-radius: 3px;'></div>
-                    </div>
+<div class="mini-leaderboard-card" style='
+    background: {bg_color};
+    padding: 12px 14px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    border-left: 4px solid {text_color};
+    position: relative;
+    overflow: hidden;
+'>
+    <div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;'>
+        <div style='display: flex; align-items: center; gap: 10px;'>
+            <div style='width: 32px; height: 32px; border-radius: 50%; background: {avatar_bg}; color: white; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); flex-shrink: 0;'>{avatar_letter}</div>
+            <div style='display: flex; flex-direction: column;'>
+                <div style='font-weight: 700; color: #1e293b; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;' title='{emp_name}'>
+                    {emp_name} <span style='font-size: 14px; margin-left: 2px;'>{medal}</span>
                 </div>
-                """
+                <div style='display: flex; align-items: center;'>
+                    <span style='font-weight: 800; color: {text_color}; font-size: 13px;'>{formatted_val} {val_suffix}</span>
+                    {trend_html}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style='width: 100%; height: 6px; background: rgba(0,0,0,0.06); border-radius: 3px; overflow: hidden;'>
+        <div class="progress-bar-fill" style='width: {pct}%; height: 100%; background: {text_color}; border-radius: 3px;'></div>
+    </div>
+</div>
+"""
                 
             st.markdown(html_content, unsafe_allow_html=True)
     if st.button(t("✏️ Sửa dữ liệu (Nhanh)", "✏️ 簡易編集"), use_container_width=True, key=f"btn_edit_mini_{data_type}"):
