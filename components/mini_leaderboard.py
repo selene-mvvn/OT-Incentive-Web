@@ -549,8 +549,7 @@ def render_mini_leaderboard(data_type="ot"):
                     else:
                         trend_html = f"<span style='color: #94a3b8; font-size: 11px; margin-left: 6px; font-weight: bold;'>-</span>"
 
-                html_content += f"""
-<div class="mini-leaderboard-card" style='
+                html_content += f"""<div class="mini-leaderboard-card" style='
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -570,8 +569,7 @@ def render_mini_leaderboard(data_type="ot"):
         <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
         {trend_html}
     </div>
-</div>
-"""
+</div>"""
                 
             st.markdown(html_content, unsafe_allow_html=True)
 
