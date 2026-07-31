@@ -550,28 +550,28 @@ def render_mini_leaderboard(data_type="ot"):
                         trend_html = f"<span style='color: #94a3b8; font-size: 11px; margin-left: 6px; font-weight: bold;'>-</span>"
 
                 html_content += f"""
-                <div class="mini-leaderboard-card" style='
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    background: {bg_color};
-                    padding: 8px 10px;
-                    border-radius: 8px;
-                    margin-bottom: 8px;
-                    font-size: 13px;
-                    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-                    border-left: 3px solid {text_color};
-                '>
-                    <div style='display: flex; align-items: center; gap: 8px;'>
-                        <span style='font-size: 16px;'>{medal}</span>
-                        <span style='font-weight: 600; color: #34495e;' title='{emp_name}'>{emp_name}</span>
-                    </div>
-                    <div style='display: flex; align-items: center;'>
-                        <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
-                        {trend_html}
-                    </div>
-                </div>
-                """
+<div class="mini-leaderboard-card" style='
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: {bg_color};
+    padding: 8px 10px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 13px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    border-left: 3px solid {text_color};
+'>
+    <div style='display: flex; align-items: center; gap: 8px;'>
+        <span style='font-size: 16px;'>{medal}</span>
+        <span style='font-weight: 600; color: #34495e;' title='{emp_name}'>{emp_name}</span>
+    </div>
+    <div style='display: flex; align-items: center;'>
+        <span style='font-weight: 700; color: {text_color};'>{formatted_val} {val_suffix}</span>
+        {trend_html}
+    </div>
+</div>
+"""
                 
             st.markdown(html_content, unsafe_allow_html=True)
 
