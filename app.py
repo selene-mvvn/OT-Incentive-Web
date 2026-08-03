@@ -1300,7 +1300,7 @@ def show_sticky_note_exit_modal():
                         const iconName = icon.innerText;
                         
                         p.innerHTML = `
-                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; padding: 6px 0;">
                             <div style="display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700;">
                                 <span class="material-symbols-rounded" style="color: ${iconColor}; font-size: 21px; margin-right: 6px;">${iconName}</span>
                                 <span>${mainText}</span>
