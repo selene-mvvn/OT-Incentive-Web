@@ -1295,9 +1295,9 @@ def show_sticky_note_exit_modal():
         </p>
     """, unsafe_allow_html=True)
 
-    col_done, col_later = st.columns(2, gap="small")
+    col_done, col_stay = st.columns(2, gap="small")
     with col_done:
-        if st.button(t("Xong (Xóa & Tắt)", "完了 (終了)"), icon=":material/check_circle:", key="btn_note_done_exit", use_container_width=True):
+        if st.button(t("Xong (Xóa ghi chú)", "完了 (メモを削除)"), icon=":material/check_circle:", key="btn_note_done_exit", use_container_width=True):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
@@ -1312,8 +1312,8 @@ def show_sticky_note_exit_modal():
                 </script>
             """, height=0)
             st.rerun()
-    with col_later:
-        if st.button(t("Để hôm sau (Tắt)", "明日に回す (終了)"), icon=":material/schedule:", key="btn_note_later_exit", use_container_width=True):
+    with col_stay:
+        if st.button(t("Chưa xong (Giữ ghi chú)", "未完了 (メモを保持)"), icon=":material/cancel:", key="btn_note_stay_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
@@ -1325,9 +1325,6 @@ def show_sticky_note_exit_modal():
                 </script>
             """, height=0)
             st.rerun()
-
-    if st.button(t("Chưa xong (Ở lại trang)", "未完了 (戻る)"), icon=":material/cancel:", key="btn_note_stay", use_container_width=True):
-        st.rerun()
 
 
 @st.dialog(t("📝 GHI CHÚ NHẮC VIỆC", "📝 クイックメモ"))
