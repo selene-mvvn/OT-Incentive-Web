@@ -501,7 +501,7 @@ def render_project_history():
                                     node_color.append('#0284c7')
                                     node_size.append(max(15, min(45, 15 + (total / max_p * 30))))
                                     node_symbol.append('diamond')
-                                    node_hover.append(f"<b>DỰ ÁN: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                    node_hover.append(f"<b>{t('DỰ ÁN', 'プロジェクト')}: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
                                     node_label.append(f"<b>{short_node}</b>")
                                 else:
                                     node_color.append('#f59e0b')
