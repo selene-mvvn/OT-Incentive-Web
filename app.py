@@ -1245,7 +1245,14 @@ def show_sticky_note_exit_modal():
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button [data-testid="stIconMaterial"],
     [role="dialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded,
     [data-testid="stDialog"] [data-testid="stHorizontalBlock"] [data-testid="stColumn"]:nth-of-type(2) button .material-symbols-rounded {
-        color: #f59e0b !important;
+        color: #ef4444 !important;
+    }
+    /* Allow newlines in button text */
+    [role="dialog"] button p,
+    [data-testid="stDialog"] button p {
+        white-space: pre-wrap !important;
+        text-align: center !important;
+        line-height: 1.3 !important;
     }
     </style>""", unsafe_allow_html=True)
 
@@ -1297,7 +1304,7 @@ def show_sticky_note_exit_modal():
 
     col_done, col_stay = st.columns(2, gap="small")
     with col_done:
-        if st.button(t("Xong (Xóa ghi chú)", "完了 (メモを削除)"), icon=":material/check_circle:", key="btn_note_done_exit", use_container_width=True):
+        if st.button(t("XONG\n(XÓA GHI CHÚ)", "完了\n(メモを削除)"), icon=":material/check_circle:", key="btn_note_done_exit", use_container_width=True):
             save_sticky_note("")
             st.session_state['sidebar_sticky_note'] = ""
             import streamlit.components.v1 as components
@@ -1313,7 +1320,7 @@ def show_sticky_note_exit_modal():
             """, height=0)
             st.rerun()
     with col_stay:
-        if st.button(t("Chưa xong (Giữ ghi chú)", "未完了 (メモを保持)"), icon=":material/cancel:", key="btn_note_stay_exit", use_container_width=True):
+        if st.button(t("CHƯA XONG\n(GIỮ GHI CHÚ)", "未完了\n(メモを保持)"), icon=":material/cancel:", key="btn_note_stay_exit", use_container_width=True):
             import streamlit.components.v1 as components
             components.html("""
                 <script>
