@@ -1269,8 +1269,24 @@ def show_sticky_note_exit_modal():
             if (titleEl && titleEl.parentElement) {
                 titleEl.parentElement.querySelectorAll('button').forEach(b => b.style.display = 'none');
             }
+            // Enhance button formatting
+            const btnPs = dialog.querySelectorAll('button p');
+            btnPs.forEach(p => {
+                if (p.innerHTML.includes('(XÓA GHI CHÚ)')) {
+                    p.innerHTML = 'XONG<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(Xóa ghi chú)</span>';
+                }
+                if (p.innerHTML.includes('(GIỮ GHI CHÚ)')) {
+                    p.innerHTML = 'CHƯA XONG<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(Giữ ghi chú)</span>';
+                }
+                if (p.innerHTML.includes('(メモを削除)')) {
+                    p.innerHTML = '完了<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(メモを削除)</span>';
+                }
+                if (p.innerHTML.includes('(メモを保持)')) {
+                    p.innerHTML = '未完了<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(メモを保持)</span>';
+                }
+            });
         }
-    }, 30);
+    }, 50);
     </script>
     """, height=0, width=0)
 
