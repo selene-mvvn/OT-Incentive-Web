@@ -207,8 +207,8 @@ def render_welcome():
     """, unsafe_allow_html=True)
     
     lang = st.session_state.get('lang', 'VN')
-    info_text_vn = "Nền tảng tập trung giúp quản lý OT, incentive và công số dự án của Công ty TNHH Viet.mos. Tự động hóa việc tính toán, tổng hợp dữ liệu và xuất báo cáo, giúp tiết kiệm thời gian và nâng cao độ chính xác trong công tác quản lý nhân sự và dự án."
-    info_text_jp = "Viet.mos株式会社のOT、インセンティブ、プロジェクト工数を一元管理するプラットフォーム。計算、データ集計、レポート出力を自動化し、人事・プロジェクト管理の時間を節約して精度を向上させます。"
+    info_text_vn = "Nền tảng tập trung giúp quản lý OT, incentive và công số dự án của Công ty TNHH VIET.MOS. Tự động hóa việc tính toán, tổng hợp dữ liệu và xuất báo cáo, giúp tiết kiệm thời gian và nâng cao độ chính xác trong công tác quản lý nhân sự và dự án."
+    info_text_jp = "VIET.MOS株式会社のOT、インセンティブ、プロジェクト工数を一元管理するプラットフォーム。計算、データ集計、レポート出力を自動化し、人事・プロジェクト管理の時間を節約して精度を向上させます。"
     info_text = info_text_jp if lang == 'JP' else info_text_vn
 
 
