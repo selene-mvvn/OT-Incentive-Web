@@ -1272,17 +1272,24 @@ def show_sticky_note_exit_modal():
             // Enhance button formatting
             const btnPs = dialog.querySelectorAll('button p');
             btnPs.forEach(p => {
-                if (p.innerHTML.includes('(XÓA GHI CHÚ)')) {
-                    p.innerHTML = 'XONG<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(Xóa ghi chú)</span>';
+                // Force flex column to ensure newlines work
+                p.style.display = 'flex';
+                p.style.flexDirection = 'column';
+                p.style.alignItems = 'center';
+                p.style.justifyContent = 'center';
+                p.style.lineHeight = '1.2';
+                
+                if (p.innerHTML.includes('(XÓA GHI CHÚ)') || p.innerHTML.includes('(Xóa ghi chú)')) {
+                    p.innerHTML = '<span>XONG</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(Xóa ghi chú)</span>';
                 }
-                if (p.innerHTML.includes('(GIỮ GHI CHÚ)')) {
-                    p.innerHTML = 'CHƯA XONG<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(Giữ ghi chú)</span>';
+                else if (p.innerHTML.includes('(GIỮ GHI CHÚ)') || p.innerHTML.includes('(Giữ ghi chú)')) {
+                    p.innerHTML = '<span>CHƯA XONG</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(Giữ ghi chú)</span>';
                 }
-                if (p.innerHTML.includes('(メモを削除)')) {
-                    p.innerHTML = '完了<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(メモを削除)</span>';
+                else if (p.innerHTML.includes('(メモを削除)')) {
+                    p.innerHTML = '<span>完了</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(メモを削除)</span>';
                 }
-                if (p.innerHTML.includes('(メモを保持)')) {
-                    p.innerHTML = '未完了<br><span style="font-size: 13.5px; font-weight: normal; opacity: 0.85;">(メモを保持)</span>';
+                else if (p.innerHTML.includes('(メモを保持)')) {
+                    p.innerHTML = '<span>未完了</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(メモを保持)</span>';
                 }
             });
         }
