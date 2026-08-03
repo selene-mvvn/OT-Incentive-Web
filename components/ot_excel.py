@@ -780,7 +780,7 @@ def render_ot_excel():
                                 ten = row.get('employee_name', '')
                                 dh = row.get('order_name', row.get('order_id', ''))
                                 ot = row.get('ot_hours', '')
-                                details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='text-decoration: line-through; color: #ef4444;'>{ngay} | {ten} | {dh} | Giờ OT: {ot}</span>")
+                                details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='color: #9ca3af; text-decoration: line-through; text-decoration-color: #ef4444;'>{ngay} | {ten} | {dh} | Giờ OT: {ot}</span>")
                                 
                     if len(edited) > 0:
                         st.info(t(f"Chỉnh sửa {len(edited)} dòng", f"{len(edited)}行を編集"))

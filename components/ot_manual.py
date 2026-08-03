@@ -666,7 +666,7 @@ def render_base_data():
             if deleted > 0:
                 diff_count += deleted
                 for idx in deleted_idx:
-                    details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='text-decoration: line-through; color: #ef4444;'>{format_emp_row(display_df, idx)}</span>")
+                    details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='color: #9ca3af; text-decoration: line-through; text-decoration-color: #ef4444;'>{format_emp_row(display_df, idx)}</span>")
 
             common_idx = display_df.index.intersection(edited_emp.index)
             if len(common_idx) > 0:
