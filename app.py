@@ -1270,26 +1270,52 @@ def show_sticky_note_exit_modal():
                 titleEl.parentElement.querySelectorAll('button').forEach(b => b.style.display = 'none');
             }
             // Enhance button formatting
-            const btnPs = dialog.querySelectorAll('button p');
-            btnPs.forEach(p => {
-                // Force flex column to ensure newlines work
-                p.style.display = 'flex';
-                p.style.flexDirection = 'column';
-                p.style.alignItems = 'center';
-                p.style.justifyContent = 'center';
-                p.style.lineHeight = '1.2';
-                
-                if (p.innerHTML.includes('(XÓA GHI CHÚ)') || p.innerHTML.includes('(Xóa ghi chú)')) {
-                    p.innerHTML = '<span>XONG</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(Xóa ghi chú)</span>';
-                }
-                else if (p.innerHTML.includes('(GIỮ GHI CHÚ)') || p.innerHTML.includes('(Giữ ghi chú)')) {
-                    p.innerHTML = '<span>CHƯA XONG</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(Giữ ghi chú)</span>';
-                }
-                else if (p.innerHTML.includes('(メモを削除)')) {
-                    p.innerHTML = '<span>完了</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(メモを削除)</span>';
-                }
-                else if (p.innerHTML.includes('(メモを保持)')) {
-                    p.innerHTML = '<span>未完了</span><span style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">(メモを保持)</span>';
+            const buttons = dialog.querySelectorAll('button');
+            buttons.forEach(btn => {
+                const p = btn.querySelector('p');
+                const icon = btn.querySelector('[data-testid="stIconMaterial"]') || btn.querySelector('.material-symbols-rounded');
+                if (p && icon && !p.dataset.reformatted) {
+                    p.dataset.reformatted = "true";
+                    
+                    let mainText = "";
+                    let subText = "";
+                    
+                    if (p.innerHTML.includes('(XÓA GHI CHÚ)') || p.innerHTML.includes('(Xóa ghi chú)')) {
+                        mainText = "XONG"; subText = "(Xóa ghi chú)";
+                    } else if (p.innerHTML.includes('(GIỮ GHI CHÚ)') || p.innerHTML.includes('(Giữ ghi chú)')) {
+                        mainText = "CHƯA XONG"; subText = "(Giữ ghi chú)";
+                    } else if (p.innerHTML.includes('(メモを削除)')) {
+                        mainText = "完了"; subText = "(メモを削除)";
+                    } else if (p.innerHTML.includes('(メモを保持)')) {
+                        mainText = "未完了"; subText = "(メモを保持)";
+                    }
+                    
+                    if (mainText) {
+                        icon.style.display = 'none';
+                        if (icon.parentElement && icon.parentElement.children.length === 1) {
+                            icon.parentElement.style.display = 'none';
+                        }
+                        
+                        const iconColor = window.getComputedStyle(icon).color;
+                        const iconName = icon.innerText;
+                        
+                        p.innerHTML = `
+                        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                            <div style="display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600;">
+                                <span class="material-symbols-rounded" style="color: ${iconColor}; font-size: 19px; margin-right: 6px;">${iconName}</span>
+                                <span>${mainText}</span>
+                            </div>
+                            <div style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">
+                                ${subText}
+                            </div>
+                        </div>`;
+                        
+                        p.style.margin = "0";
+                        p.style.width = "100%";
+                        if (p.parentElement) {
+                            p.parentElement.style.width = '100%';
+                        }
+                    }
                 }
             });
         }
