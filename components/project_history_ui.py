@@ -519,6 +519,7 @@ def render_project_history():
                                 hovertext=node_hover,
                                 text=node_label,
                                 textposition='bottom center',
+                                cliponaxis=False,
                                 textfont=dict(size=11, color='#334155'),
                                 marker=dict(
                                     showscale=False,
@@ -531,7 +532,7 @@ def render_project_history():
                             
                             fig_net = go.Figure(data=[edge_trace, node_trace], layout=go.Layout(
                                 title='', showlegend=False, hovermode='closest',
-                                margin=dict(b=10, l=10, r=10, t=10),
+                                margin=dict(b=20, l=80, r=80, t=20),
                                 xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                                 yaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
                                 height=400,
