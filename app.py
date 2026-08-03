@@ -1254,6 +1254,14 @@ def show_sticky_note_exit_modal():
         text-align: center !important;
         line-height: 1.3 !important;
     }
+    /* Force buttons to be taller/spacious */
+    [role="dialog"] [data-testid="stHorizontalBlock"] button,
+    [data-testid="stDialog"] [data-testid="stHorizontalBlock"] button {
+        min-height: 68px !important;
+        height: auto !important;
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+    }
     </style>""", unsafe_allow_html=True)
 
     import streamlit.components.v1 as components
