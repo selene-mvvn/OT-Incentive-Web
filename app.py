@@ -1301,11 +1301,11 @@ def show_sticky_note_exit_modal():
                         
                         p.innerHTML = `
                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
-                            <div style="display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600;">
-                                <span class="material-symbols-rounded" style="color: ${iconColor}; font-size: 19px; margin-right: 6px;">${iconName}</span>
+                            <div style="display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700;">
+                                <span class="material-symbols-rounded" style="color: ${iconColor}; font-size: 21px; margin-right: 6px;">${iconName}</span>
                                 <span>${mainText}</span>
                             </div>
-                            <div style="font-size: 12.5px; font-weight: normal; opacity: 0.9; margin-top: 3px;">
+                            <div style="font-size: 13.5px; font-weight: normal; opacity: 0.95; margin-top: 3px;">
                                 ${subText}
                             </div>
                         </div>`;
