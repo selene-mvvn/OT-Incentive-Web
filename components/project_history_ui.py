@@ -507,7 +507,7 @@ def render_project_history():
                                     node_color.append('#f59e0b')
                                     node_size.append(max(10, min(25, 10 + (total / max_e * 15))))
                                     node_symbol.append('circle')
-                                    node_hover.append(f"<b>NV: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
+                                    node_hover.append(f"<b>{t('NV', '社員')}: {node}</b><br>{t('Tổng OT', '総残業')}: {total:,.1f} h")
                                     name_parts = str(node).strip().split()
                                     short_name = name_parts[-1] if name_parts else str(node).strip()
                                     node_label.append(f"<b>{short_name}</b>")
