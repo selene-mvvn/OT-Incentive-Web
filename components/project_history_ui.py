@@ -574,7 +574,7 @@ def render_project_history():
                         
                         fig_tree.update_layout(
                             font=dict(family="'Times New Roman', serif"),
-                            margin=dict(t=20, l=10, r=10, b=10),
+                            margin=dict(t=40, l=10, r=10, b=10),
                             height=400,
                             paper_bgcolor='rgba(0,0,0,0)',
                             plot_bgcolor='rgba(0,0,0,0)',
