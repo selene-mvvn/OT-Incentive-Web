@@ -242,7 +242,7 @@ def show_mini_edit_dialog(data_type, df):
             st.error(t(f"Xóa {deleted} dòng", f"{deleted}行を削除"))
             diff_count += deleted
             for idx in deleted_idx:
-                details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='color: #9ca3af; text-decoration: line-through; text-decoration-color: #ef4444;'>{format_row_name(edit_df, idx)}</span>")
+                details.append(f"- :material/cancel: **{t('Đã xóa', '削除')}**: <span style='color: #9ca3af; text-decoration: line-through; text-decoration-color: black;'>{format_row_name(edit_df, idx)}</span>")
             
         common_idx = edit_df.index.intersection(staged_df.index)
         if len(common_idx) > 0:
